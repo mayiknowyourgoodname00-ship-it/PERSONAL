@@ -1,0 +1,665 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --navy:#0a1628;--navy2:#0f2040;--gold:#c8973a;--gold2:#e8b84b;
+    --cream:#f5f0e8;--light:#f9f7f3;--border:#d4c9b0;
+    --text:#1a1a2e;--muted:#6b6b7a;--danger:#c0392b;--success:#1a7a4a;
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--text);min-height:100vh}
+
+  /* SCREENS */
+  .screen{display:none;min-height:100vh}
+  .screen.active{display:flex}
+
+  /* LOGIN */
+  #loginScreen{background:var(--navy);align-items:stretch;min-height:600px}
+  .login-left{width:45%;background:linear-gradient(160deg,#0a1628 60%,#1a3a6e);display:flex;flex-direction:column;justify-content:center;padding:3rem;position:relative;overflow:hidden}
+  .login-left::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;border:1px solid rgba(200,151,58,0.15);border-radius:50%}
+  .login-left::after{content:'';position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border:1px solid rgba(200,151,58,0.1);border-radius:50%}
+  .college-badge{display:flex;align-items:center;gap:14px;margin-bottom:2.5rem;position:relative;z-index:1}
+  .badge-icon{width:52px;height:52px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .college-name{color:white;font-family:'Playfair Display',serif;font-size:13px;line-height:1.3;opacity:0.95}
+  .college-name span{display:block;font-size:11px;opacity:0.6;font-family:'DM Sans',sans-serif;font-weight:300;margin-top:2px}
+  .login-title{font-family:'Playfair Display',serif;font-size:2rem;color:white;line-height:1.2;margin-bottom:1rem;position:relative;z-index:1}
+  .login-title em{color:var(--gold);font-style:normal}
+  .login-desc{color:rgba(255,255,255,0.5);font-size:13px;line-height:1.7;position:relative;z-index:1}
+  .stats-row{display:flex;gap:1.5rem;margin-top:2.5rem;position:relative;z-index:1}
+  .stat-box{text-align:center}
+  .stat-box .num{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold2);font-weight:600}
+  .stat-box .lbl{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+  .login-right{flex:1;background:var(--light);display:flex;flex-direction:column;justify-content:center;padding:3rem 2.5rem}
+  .login-right h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:.25rem}
+  .login-right p{color:var(--muted);font-size:13px;margin-bottom:2rem}
+  .role-tabs{display:flex;gap:8px;margin-bottom:1.5rem}
+  .role-tab{flex:1;padding:8px;border:1px solid var(--border);border-radius:6px;background:white;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:center;color:var(--muted);transition:all .2s}
+  .role-tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+  .field{margin-bottom:1rem}
+  .field label{display:block;font-size:12px;font-weight:500;color:var(--text);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+  .field input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:'DM Sans',sans-serif;background:white;outline:none;transition:border .2s}
+  .field input:focus{border-color:var(--gold)}
+  .btn-login{width:100%;padding:12px;background:var(--navy);color:white;border:none;border-radius:6px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;letter-spacing:.3px;transition:background .2s;margin-top:.5rem}
+  .btn-login:hover{background:var(--navy2)}
+  .err-msg{color:var(--danger);font-size:12px;margin-top:8px;display:none}
+  .demo-hint{margin-top:1rem;padding:10px;background:#f0ede6;border-radius:6px;font-size:11px;color:var(--muted);line-height:1.6}
+  .demo-hint strong{color:var(--text)}
+
+  /* MAIN APP */
+  #appScreen{flex-direction:column;background:var(--light)}
+  .topbar{background:var(--navy);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+  .topbar-left{display:flex;align-items:center;gap:12px}
+  .topbar-logo{font-family:'Playfair Display',serif;font-size:15px;color:white}
+  .topbar-logo span{color:var(--gold);font-size:11px;display:block;font-family:'DM Sans',sans-serif;font-weight:300;letter-spacing:.5px}
+  .topbar-right{display:flex;align-items:center;gap:12px}
+  .user-pill{background:rgba(255,255,255,0.1);padding:5px 12px;border-radius:20px;font-size:12px;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:7px}
+  .user-dot{width:7px;height:7px;background:var(--gold2);border-radius:50%}
+  .btn-logout{background:transparent;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);padding:5px 12px;border-radius:4px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+  .btn-logout:hover{background:rgba(255,255,255,0.1)}
+
+  .app-body{display:flex;flex:1;overflow:hidden;min-height:540px}
+  .sidebar{width:200px;background:white;border-right:1px solid var(--border);flex-shrink:0;padding:1rem 0}
+  .nav-section{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:1rem 1.25rem .4rem;font-weight:500}
+  .nav-item{display:flex;align-items:center;gap:9px;padding:9px 1.25rem;font-size:13px;color:var(--muted);cursor:pointer;border-left:3px solid transparent;transition:all .15s}
+  .nav-item:hover{background:#f5f0e8;color:var(--text)}
+  .nav-item.active{color:var(--navy);background:rgba(10,22,40,0.05);border-left-color:var(--gold);font-weight:500}
+  .nav-item i{font-size:16px}
+
+  .main-content{flex:1;overflow-y:auto;padding:1.5rem}
+
+  /* PAGES */
+  .page{display:none}
+  .page.active{display:block}
+  .page-header{margin-bottom:1.5rem}
+  .page-header h1{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy)}
+  .page-header p{font-size:13px;color:var(--muted);margin-top:3px}
+
+  /* CARDS */
+  .cards-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+  .kpi{background:white;border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem}
+  .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:.4rem}
+  .kpi-value{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);font-weight:600}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:3px}
+  .kpi-accent{border-top:3px solid var(--gold)}
+
+  /* TABLE */
+  .card{background:white;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:1.2rem}
+  .card-head{padding:.85rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .card-head h3{font-size:14px;font-weight:500;color:var(--navy)}
+  .btn-sm{padding:5px 12px;font-size:12px;border-radius:4px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
+  .btn-primary{background:var(--navy);color:white}
+  .btn-gold{background:var(--gold);color:white}
+  .btn-outline{background:white;border:1px solid var(--border)!important;color:var(--text)}
+  tbl{width:100%}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding:.6rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);font-weight:500}
+  td{padding:.7rem 1.25rem;font-size:13px;border-bottom:1px solid #f0ece4}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fafaf7}
+  .badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:500}
+  .badge-issued{background:#e8f4ec;color:#1a7a4a}
+  .badge-available{background:#e8f0fa;color:#1a4a9a}
+  .badge-overdue{background:#fce8e8;color:#b03030}
+  .badge-reserved{background:#fef3e2;color:#b06800}
+
+  /* SEARCH BAR */
+  .search-bar{display:flex;gap:8px;margin-bottom:1rem}
+  .search-bar input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none}
+  .search-bar input:focus{border-color:var(--gold)}
+
+  /* FORM MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center}
+  .modal-bg.open{display:flex}
+  .modal{background:white;border-radius:10px;padding:1.5rem;width:460px;max-width:95vw}
+  .modal h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:1rem}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .form-grid .full{grid-column:1/-1}
+  .modal-field label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:4px}
+  .modal-field input,.modal-field select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none}
+  .modal-field input:focus,.modal-field select:focus{border-color:var(--gold)}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1rem}
+  .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:white;padding:10px 18px;border-radius:6px;font-size:13px;z-index:200;display:none;border-left:4px solid var(--gold)}
+
+  /* ISSUE PAGE */
+  .issue-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+  .issue-form .form-field{background:white;border:1px solid var(--border);border-radius:7px;padding:1rem}
+  .issue-form .form-field label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:6px}
+  .issue-form .form-field input,.issue-form .form-field select{width:100%;border:1px solid var(--border);padding:8px;border-radius:4px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none}
+  .issue-form .form-field input:focus{border-color:var(--gold)}
+
+  /* FINE CALCULATOR */
+  .fine-box{background:white;border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem}
+  .fine-result{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--danger)}
+  .fine-result.zero{color:var(--success)}
+
+  /* REPORTS */
+  .report-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .report-card{background:white;border:1px solid var(--border);border-radius:8px;padding:1.25rem}
+  .report-card h4{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.75rem;display:flex;align-items:center;gap:7px}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:12px}
+  .bar-track{flex:1;height:6px;background:#f0ece4;border-radius:3px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:3px;background:var(--gold)}
+  .bar-label{width:100px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bar-count{width:24px;text-align:right;color:var(--text);font-weight:500}
+</style>
+
+<h2 class="sr-only">Amritsar Law College – Library Management System</h2>
+
+<!-- LOGIN SCREEN -->
+<div class="screen active" id="loginScreen">
+  <div class="login-left">
+    <div class="college-badge">
+      <div class="badge-icon">⚖</div>
+      <div class="college-name">Amritsar Law College<span>Est. 1973 · Amritsar, Punjab</span></div>
+    </div>
+    <h2 class="login-title">Library<br><em>Management</em><br>System</h2>
+    <p class="login-desc">Centralized digital portal for book management, member records, issue & return tracking, and fine management.</p>
+    <div class="stats-row">
+      <div class="stat-box"><div class="num">4,800+</div><div class="lbl">Books</div></div>
+      <div class="stat-box"><div class="num">920</div><div class="lbl">Members</div></div>
+      <div class="stat-box"><div class="num">187</div><div class="lbl">Issued</div></div>
+    </div>
+  </div>
+  <div class="login-right">
+    <h2>Welcome Back</h2>
+    <p>Sign in to access the library portal</p>
+    <div class="role-tabs">
+      <button class="role-tab active" onclick="setRole('admin',this)"><i class="ti ti-shield" style="font-size:14px"></i> Admin</button>
+      <button class="role-tab" onclick="setRole('librarian',this)"><i class="ti ti-books" style="font-size:14px"></i> Librarian</button>
+      <button class="role-tab" onclick="setRole('student',this)"><i class="ti ti-user" style="font-size:14px"></i> Student</button>
+    </div>
+    <div class="field"><label>User ID / Roll No.</label><input type="text" id="uid" placeholder="Enter your ID"></div>
+    <div class="field"><label>Password</label><input type="password" id="pwd" placeholder="••••••••"></div>
+    <div class="err-msg" id="errMsg">Invalid credentials. Please check and try again.</div>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="demo-hint"><strong>Demo Credentials:</strong><br>Admin: admin / admin123 &nbsp;|&nbsp; Librarian: lib / lib123 &nbsp;|&nbsp; Student: student / student123</div>
+  </div>
+</div>
+
+<!-- MAIN APP SCREEN -->
+<div class="screen" id="appScreen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">ALC Library<span>Amritsar Law College</span></div>
+    </div>
+    <div class="topbar-right">
+      <div class="user-pill"><div class="user-dot"></div><span id="userLabel">Admin</span></div>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+  <div class="app-body">
+    <div class="sidebar" id="sidebar">
+      <div class="nav-section">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</div>
+      <div class="nav-item" onclick="showPage('books',this)"><i class="ti ti-books" aria-hidden="true"></i> Books Catalog</div>
+      <div class="nav-item" onclick="showPage('members',this)"><i class="ti ti-users" aria-hidden="true"></i> Members</div>
+      <div class="nav-section">Transactions</div>
+      <div class="nav-item" onclick="showPage('issue',this)"><i class="ti ti-book-upload" aria-hidden="true"></i> Issue / Return</div>
+      <div class="nav-item" onclick="showPage('fines',this)"><i class="ti ti-coin" aria-hidden="true"></i> Fine Management</div>
+      <div class="nav-section">Reports</div>
+      <div class="nav-item" onclick="showPage('reports',this)"><i class="ti ti-chart-bar" aria-hidden="true"></i> Reports</div>
+      <div class="nav-item" onclick="showPage('notices',this)"><i class="ti ti-bell" aria-hidden="true"></i> Notices</div>
+    </div>
+    <div class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header"><h1>Dashboard</h1><p>Library overview — Academic Year 2025–26</p></div>
+        <div class="cards-row">
+          <div class="kpi kpi-accent"><div class="kpi-label">Total Books</div><div class="kpi-value">4,823</div><div class="kpi-sub">312 added this year</div></div>
+          <div class="kpi kpi-accent"><div class="kpi-label">Members</div><div class="kpi-value">924</div><div class="kpi-sub">Students + Faculty</div></div>
+          <div class="kpi kpi-accent"><div class="kpi-label">Books Issued</div><div class="kpi-value">187</div><div class="kpi-sub">Active loans</div></div>
+          <div class="kpi kpi-accent"><div class="kpi-label">Overdue</div><div class="kpi-value" style="color:var(--danger)">23</div><div class="kpi-sub">Fine: ₹4,600 pending</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Recent Transactions</h3><span class="badge badge-issued">Live</span></div>
+          <table>
+            <thead><tr><th>Member</th><th>Book</th><th>Type</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="dashTxns"></tbody>
+          </table>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="card">
+            <div class="card-head"><h3>New Arrivals</h3></div>
+            <table>
+              <thead><tr><th>Title</th><th>Author</th><th>Added</th></tr></thead>
+              <tbody id="newArrivals"></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Overdue Members</h3></div>
+            <table>
+              <thead><tr><th>Member</th><th>Book</th><th>Fine</th></tr></thead>
+              <tbody>
+                <tr><td>Harpreet Singh (LLB-2)</td><td>Constitution of India</td><td style="color:var(--danger)">₹200</td></tr>
+                <tr><td>Manpreet Kaur (LLB-1)</td><td>Indian Penal Code</td><td style="color:var(--danger)">₹150</td></tr>
+                <tr><td>Gurpreet Singh (LLM)</td><td>Criminal Procedure</td><td style="color:var(--danger)">₹300</td></tr>
+                <tr><td>Simran Batra (LLB-3)</td><td>Contract Law</td><td style="color:var(--danger)">₹100</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKS -->
+      <div class="page" id="page-books">
+        <div class="page-header"><h1>Books Catalog</h1><p>Manage all books, add new titles, and track availability</p></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:1rem;align-items:center">
+          <div class="search-bar" style="flex:1;margin-bottom:0;margin-right:12px">
+            <input type="text" id="bookSearch" placeholder="Search by title, author, or ISBN..." oninput="filterBooks()">
+          </div>
+          <button class="btn-sm btn-primary" onclick="openAddBook()"><i class="ti ti-plus" style="font-size:13px"></i> Add Book</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>ISBN</th><th>Title</th><th>Author</th><th>Category</th><th>Copies</th><th>Status</th></tr></thead>
+            <tbody id="booksTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MEMBERS -->
+      <div class="page" id="page-members">
+        <div class="page-header"><h1>Member Registry</h1><p>Students, faculty, and staff registered with the library</p></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:1rem;align-items:center">
+          <div class="search-bar" style="flex:1;margin-bottom:0;margin-right:12px">
+            <input type="text" id="memberSearch" placeholder="Search members by name or roll no..." oninput="filterMembers()">
+          </div>
+          <button class="btn-sm btn-primary" onclick="openAddMember()"><i class="ti ti-user-plus" style="font-size:13px"></i> Add Member</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Course</th><th>Year</th><th>Books Issued</th><th>Status</th></tr></thead>
+            <tbody id="membersTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ISSUE/RETURN -->
+      <div class="page" id="page-issue">
+        <div class="page-header"><h1>Issue &amp; Return</h1><p>Issue books to members or process returns</p></div>
+        <div class="issue-form">
+          <div class="form-field">
+            <label>Member ID / Roll No.</label>
+            <input type="text" id="issueMemId" placeholder="e.g. ALC2024001">
+          </div>
+          <div class="form-field">
+            <label>Book ISBN / Title</label>
+            <input type="text" id="issueBookId" placeholder="e.g. 978-81-903099-1-5">
+          </div>
+          <div class="form-field">
+            <label>Issue Date</label>
+            <input type="date" id="issueDate">
+          </div>
+          <div class="form-field">
+            <label>Due Date</label>
+            <input type="date" id="dueDate">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:1.5rem">
+          <button class="btn-sm btn-primary" onclick="issueBook()"><i class="ti ti-book-upload" style="font-size:13px"></i> Issue Book</button>
+          <button class="btn-sm" style="background:var(--success);color:white;padding:5px 14px;font-size:12px;border-radius:4px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif" onclick="returnBook()"><i class="ti ti-book-download" style="font-size:13px"></i> Return Book</button>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Active Issued Books</h3></div>
+          <table>
+            <thead><tr><th>Member</th><th>Book</th><th>Issued On</th><th>Due Date</th><th>Status</th></tr></thead>
+            <tbody id="issuedTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FINES -->
+      <div class="page" id="page-fines">
+        <div class="page-header"><h1>Fine Management</h1><p>Calculate and collect overdue fines — ₹10 per day</p></div>
+        <div class="fine-box">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end">
+            <div class="modal-field"><label>Member ID</label><input type="text" id="fMember" placeholder="ALC2024001"></div>
+            <div class="modal-field"><label>Due Date</label><input type="date" id="fDue"></div>
+            <div class="modal-field"><label>Return Date</label><input type="date" id="fReturn"></div>
+            <button class="btn-sm btn-primary" onclick="calcFine()" style="height:34px">Calculate</button>
+          </div>
+          <div style="margin-top:1rem;display:flex;align-items:center;gap:12px">
+            <span style="font-size:13px;color:var(--muted)">Fine Amount:</span>
+            <div class="fine-result zero" id="fineResult">₹ 0</div>
+            <button class="btn-sm" id="collectBtn" style="display:none;background:var(--success);color:white;border:none;border-radius:4px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif" onclick="collectFine()">Mark Collected</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Pending Fines</h3><span style="font-size:12px;color:var(--danger)">Total: ₹4,600</span></div>
+          <table>
+            <thead><tr><th>Member</th><th>Book</th><th>Days Overdue</th><th>Fine</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>Harpreet Singh</td><td>Constitution of India</td><td>20 days</td><td style="color:var(--danger)">₹200</td><td><button class="btn-sm btn-outline" style="border:1px solid var(--border);padding:3px 10px;font-size:11px;border-radius:3px;cursor:pointer;background:white">Collect</button></td></tr>
+              <tr><td>Manpreet Kaur</td><td>Indian Penal Code</td><td>15 days</td><td style="color:var(--danger)">₹150</td><td><button class="btn-sm btn-outline" style="border:1px solid var(--border);padding:3px 10px;font-size:11px;border-radius:3px;cursor:pointer;background:white">Collect</button></td></tr>
+              <tr><td>Gurpreet Singh</td><td>Criminal Procedure</td><td>30 days</td><td style="color:var(--danger)">₹300</td><td><button class="btn-sm btn-outline" style="border:1px solid var(--border);padding:3px 10px;font-size:11px;border-radius:3px;cursor:pointer;background:white">Collect</button></td></tr>
+              <tr><td>Simran Batra</td><td>Contract Law</td><td>10 days</td><td style="color:var(--danger)">₹100</td><td><button class="btn-sm btn-outline" style="border:1px solid var(--border);padding:3px 10px;font-size:11px;border-radius:3px;cursor:pointer;background:white">Collect</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="page" id="page-reports">
+        <div class="page-header"><h1>Reports &amp; Analytics</h1><p>Circulation and collection insights for the current academic year</p></div>
+        <div class="cards-row">
+          <div class="kpi"><div class="kpi-label">Books Issued (Month)</div><div class="kpi-value">94</div><div class="kpi-sub">↑ 12% vs last month</div></div>
+          <div class="kpi"><div class="kpi-label">Returns (Month)</div><div class="kpi-value">81</div></div>
+          <div class="kpi"><div class="kpi-label">New Members</div><div class="kpi-value">38</div><div class="kpi-sub">This month</div></div>
+          <div class="kpi"><div class="kpi-label">Fines Collected</div><div class="kpi-value">₹2.1k</div><div class="kpi-sub">This month</div></div>
+        </div>
+        <div class="report-grid">
+          <div class="report-card">
+            <h4><i class="ti ti-books" aria-hidden="true"></i> Most Issued Categories</h4>
+            <div id="catBars"></div>
+          </div>
+          <div class="report-card">
+            <h4><i class="ti ti-trophy" aria-hidden="true"></i> Most Issued Books</h4>
+            <div id="topBookBars"></div>
+          </div>
+          <div class="report-card">
+            <h4><i class="ti ti-users" aria-hidden="true"></i> Top Borrowers</h4>
+            <table style="width:100%;font-size:12px">
+              <tr><th style="padding:3px 0">Name</th><th style="padding:3px 0;text-align:right">Books</th></tr>
+              <tr><td style="padding:3px 0;color:var(--muted)">Harpreet Singh</td><td style="padding:3px 0;text-align:right">14</td></tr>
+              <tr><td style="padding:3px 0;color:var(--muted)">Simranpreet Kaur</td><td style="padding:3px 0;text-align:right">12</td></tr>
+              <tr><td style="padding:3px 0;color:var(--muted)">Rajveer Bains</td><td style="padding:3px 0;text-align:right">11</td></tr>
+              <tr><td style="padding:3px 0;color:var(--muted)">Gurinder Pal</td><td style="padding:3px 0;text-align:right">10</td></tr>
+            </table>
+          </div>
+          <div class="report-card">
+            <h4><i class="ti ti-calendar" aria-hidden="true"></i> Monthly Issue Trend</h4>
+            <div id="trendBars"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTICES -->
+      <div class="page" id="page-notices">
+        <div class="page-header"><h1>Notice Board</h1><p>Library announcements and circulars</p></div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+          <button class="btn-sm btn-primary" onclick="openNotice()"><i class="ti ti-plus" style="font-size:13px"></i> Post Notice</button>
+        </div>
+        <div id="noticesList"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD BOOK MODAL -->
+<div class="modal-bg" id="addBookModal">
+  <div class="modal">
+    <h3>Add New Book</h3>
+    <div class="form-grid">
+      <div class="modal-field full"><label>Title</label><input type="text" id="nb_title" placeholder="e.g. Indian Contract Act"></div>
+      <div class="modal-field"><label>Author</label><input type="text" id="nb_author" placeholder="Author name"></div>
+      <div class="modal-field"><label>ISBN</label><input type="text" id="nb_isbn" placeholder="978-..."></div>
+      <div class="modal-field"><label>Category</label><select id="nb_cat"><option>Constitutional Law</option><option>Criminal Law</option><option>Civil Law</option><option>Contract Law</option><option>Legal Theory</option><option>Evidence Law</option></select></div>
+      <div class="modal-field"><label>Copies</label><input type="number" id="nb_copies" value="1" min="1"></div>
+      <div class="modal-field"><label>Publisher</label><input type="text" id="nb_pub" placeholder="Publisher"></div>
+      <div class="modal-field"><label>Year</label><input type="text" id="nb_year" placeholder="2024"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-outline" style="border:1px solid var(--border);padding:6px 14px;font-size:12px;border-radius:4px;cursor:pointer;background:white" onclick="closeModal('addBookModal')">Cancel</button>
+      <button class="btn-sm btn-primary" style="padding:6px 14px;font-size:12px" onclick="addBook()">Add Book</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MEMBER MODAL -->
+<div class="modal-bg" id="addMemberModal">
+  <div class="modal">
+    <h3>Register New Member</h3>
+    <div class="form-grid">
+      <div class="modal-field full"><label>Full Name</label><input type="text" id="nm_name" placeholder="Student or Faculty name"></div>
+      <div class="modal-field"><label>Roll No. / ID</label><input type="text" id="nm_id" placeholder="ALC2024001"></div>
+      <div class="modal-field"><label>Course</label><select id="nm_course"><option>LLB 1st Year</option><option>LLB 2nd Year</option><option>LLB 3rd Year</option><option>LLM</option><option>Faculty</option></select></div>
+      <div class="modal-field"><label>Phone</label><input type="text" id="nm_phone" placeholder="98XXXXXXXX"></div>
+      <div class="modal-field"><label>Email</label><input type="email" id="nm_email" placeholder="student@alc.ac.in"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-outline" style="border:1px solid var(--border);padding:6px 14px;font-size:12px;border-radius:4px;cursor:pointer;background:white" onclick="closeModal('addMemberModal')">Cancel</button>
+      <button class="btn-sm btn-primary" style="padding:6px 14px;font-size:12px" onclick="addMember()">Register</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTICE MODAL -->
+<div class="modal-bg" id="noticeModal">
+  <div class="modal">
+    <h3>Post Notice</h3>
+    <div class="modal-field" style="margin-bottom:10px"><label>Title</label><input type="text" id="nt_title" placeholder="Notice heading"></div>
+    <div class="modal-field"><label>Message</label><textarea id="nt_body" rows="4" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:'DM Sans',sans-serif;resize:vertical;outline:none" placeholder="Type your announcement..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-outline" style="border:1px solid var(--border);padding:6px 14px;font-size:12px;border-radius:4px;cursor:pointer;background:white" onclick="closeModal('noticeModal')">Cancel</button>
+      <button class="btn-sm btn-primary" style="padding:6px 14px;font-size:12px" onclick="postNotice()">Post</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let currentRole = 'admin';
+const CREDS = {admin:'admin123', lib:'lib123', student:'student123'};
+
+let books = [
+  {isbn:'978-81-903099-1-5',title:'The Constitution of India',author:'P.M. Bakshi',cat:'Constitutional Law',copies:5,available:3},
+  {isbn:'978-93-5009-076-0',title:'Indian Penal Code',author:'K.D. Gaur',cat:'Criminal Law',copies:4,available:2},
+  {isbn:'978-93-5141-330-0',title:'Code of Criminal Procedure',author:'R.V. Kelkar',cat:'Criminal Law',copies:3,available:3},
+  {isbn:'978-81-7534-481-7',title:'Law of Contracts',author:'Avtar Singh',cat:'Contract Law',copies:6,available:4},
+  {isbn:'978-93-5009-047-0',title:'Constitutional Law of India',author:'H.M. Seervai',cat:'Constitutional Law',copies:2,available:0},
+  {isbn:'978-81-7534-221-9',title:'Jurisprudence & Legal Theory',author:'V.D. Mahajan',cat:'Legal Theory',copies:4,available:4},
+  {isbn:'978-93-5268-501-2',title:'Law of Evidence',author:'Batuk Lal',cat:'Evidence Law',copies:5,available:3},
+  {isbn:'978-81-7534-321-6',title:'Civil Procedure Code',author:'C.K. Takwani',cat:'Civil Law',copies:4,available:2},
+];
+
+let members = [
+  {id:'ALC2024001',name:'Harpreet Singh',course:'LLB 2nd Year',year:2,issued:3,status:'Active'},
+  {id:'ALC2024002',name:'Manpreet Kaur',course:'LLB 1st Year',year:1,issued:1,status:'Active'},
+  {id:'ALC2024003',name:'Gurpreet Singh',course:'LLM',year:1,issued:2,status:'Active'},
+  {id:'ALC2024004',name:'Simran Batra',course:'LLB 3rd Year',year:3,issued:1,status:'Active'},
+  {id:'ALC2024005',name:'Rajveer Bains',course:'LLB 2nd Year',year:2,issued:0,status:'Active'},
+  {id:'FAC001',name:'Prof. Gurinder Pal Singh',course:'Faculty',year:0,issued:2,status:'Active'},
+];
+
+let issued = [
+  {member:'Harpreet Singh',book:'Constitution of India',date:'2025-04-15',due:'2025-04-29',status:'overdue'},
+  {member:'Gurpreet Singh',book:'Criminal Procedure',date:'2025-04-20',due:'2025-05-04',status:'overdue'},
+  {member:'Simran Batra',book:'Contract Law',date:'2025-04-28',due:'2025-05-12',status:'active'},
+  {member:'Manpreet Kaur',book:'Indian Penal Code',date:'2025-04-18',due:'2025-05-02',status:'overdue'},
+  {member:'Prof. Gurinder Pal',book:'Constitutional Law',date:'2025-05-01',due:'2025-05-22',status:'active'},
+];
+
+let notices = [
+  {title:'Library Closed on 26 Jan (Republic Day)',body:'The library will remain closed on 26th January 2026 on account of Republic Day. Normal services resume on 27th January.',date:'2025-01-20'},
+  {title:'New Law Journals Arrived',body:'New issues of Supreme Court Cases (SCC), All India Reporter (AIR), and Criminal Law Journal are now available at the periodicals section.',date:'2025-05-10'},
+  {title:'Fine Waiver for LLM Students',body:'All pending fines up to ₹200 for LLM students are waived for the examination period. Please visit the library counter with your ID card.',date:'2025-05-14'},
+];
+
+function setRole(r,btn){
+  currentRole=r;
+  document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function doLogin(){
+  const uid=document.getElementById('uid').value.trim();
+  const pwd=document.getElementById('pwd').value.trim();
+  const err=document.getElementById('errMsg');
+  if(CREDS[uid]===pwd){
+    err.style.display='none';
+    document.getElementById('loginScreen').classList.remove('active');
+    document.getElementById('appScreen').classList.add('active');
+    document.getElementById('userLabel').textContent=uid==='admin'?'Administrator':uid==='lib'?'Librarian':'Student';
+    initApp();
+  } else {
+    err.style.display='block';
+  }
+}
+
+function logout(){
+  document.getElementById('appScreen').classList.remove('active');
+  document.getElementById('loginScreen').classList.add('active');
+  document.getElementById('uid').value='';
+  document.getElementById('pwd').value='';
+}
+
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+function initApp(){
+  renderBooks(); renderMembers(); renderIssued();
+  renderDashboard(); renderReports(); renderNotices();
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('issueDate').value=today;
+  const due=new Date(); due.setDate(due.getDate()+14);
+  document.getElementById('dueDate').value=due.toISOString().split('T')[0];
+}
+
+function renderDashboard(){
+  const txns=[
+    {m:'Harpreet Singh',b:'Constitution of India',type:'Issue',d:'15 May'},
+    {m:'Gurpreet Singh',b:'Criminal Procedure',type:'Return',d:'14 May'},
+    {m:'Simran Batra',b:'Contract Law',type:'Issue',d:'13 May'},
+    {m:'Prof. Gurinder Pal',b:'Constitutional Law',type:'Issue',d:'12 May'},
+    {m:'Manpreet Kaur',b:'Indian Penal Code',type:'Return',d:'11 May'},
+  ];
+  document.getElementById('dashTxns').innerHTML=txns.map(t=>`<tr><td>${t.m}</td><td>${t.b}</td><td><span class="badge ${t.type==='Issue'?'badge-issued':'badge-available'}">${t.type}</span></td><td>${t.d}</td><td><span class="badge ${t.type==='Issue'?'badge-issued':'badge-available'}">${t.type==='Issue'?'Active':'Returned'}</span></td></tr>`).join('');
+  const arr=[
+    {t:'Administrative Law',a:'I.P. Massey',d:'10 May 2025'},
+    {t:'Family Law',a:'Paras Diwan',d:'08 May 2025'},
+    {t:'International Law',a:'S.K. Kapoor',d:'03 May 2025'},
+  ];
+  document.getElementById('newArrivals').innerHTML=arr.map(b=>`<tr><td>${b.t}</td><td>${b.a}</td><td style="color:var(--muted)">${b.d}</td></tr>`).join('');
+}
+
+function renderBooks(){
+  const q=(document.getElementById('bookSearch')||{value:''}).value.toLowerCase();
+  const filtered=books.filter(b=>b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q)||b.isbn.includes(q));
+  document.getElementById('booksTable').innerHTML=filtered.map(b=>`<tr>
+    <td style="font-size:11px;color:var(--muted)">${b.isbn}</td>
+    <td style="font-weight:500">${b.title}</td>
+    <td>${b.author}</td>
+    <td><span class="badge badge-reserved">${b.cat}</span></td>
+    <td>${b.copies}</td>
+    <td><span class="badge ${b.available>0?'badge-available':'badge-overdue'}">${b.available>0?b.available+' Available':'Unavailable'}</span></td>
+  </tr>`).join('');
+}
+
+function filterBooks(){renderBooks();}
+
+function renderMembers(){
+  const q=(document.getElementById('memberSearch')||{value:''}).value.toLowerCase();
+  const filtered=members.filter(m=>m.name.toLowerCase().includes(q)||m.id.toLowerCase().includes(q));
+  document.getElementById('membersTable').innerHTML=filtered.map(m=>`<tr>
+    <td style="font-size:11px;color:var(--muted)">${m.id}</td>
+    <td style="font-weight:500">${m.name}</td>
+    <td>${m.course}</td>
+    <td>${m.year===0?'—':m.year}</td>
+    <td>${m.issued}</td>
+    <td><span class="badge badge-available">${m.status}</span></td>
+  </tr>`).join('');
+}
+
+function filterMembers(){renderMembers();}
+
+function renderIssued(){
+  document.getElementById('issuedTable').innerHTML=issued.map(i=>`<tr>
+    <td>${i.member}</td>
+    <td>${i.book}</td>
+    <td>${i.date}</td>
+    <td>${i.due}</td>
+    <td><span class="badge ${i.status==='overdue'?'badge-overdue':'badge-issued'}">${i.status==='overdue'?'Overdue':'Active'}</span></td>
+  </tr>`).join('');
+}
+
+function renderReports(){
+  const cats=[{l:'Constitutional Law',v:38},{l:'Criminal Law',v:34},{l:'Contract Law',v:22},{l:'Civil Law',v:18},{l:'Evidence Law',v:12}];
+  const max=cats[0].v;
+  document.getElementById('catBars').innerHTML=cats.map(c=>`<div class="bar-row"><div class="bar-label">${c.l}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c.v/max*100)}%"></div></div><div class="bar-count">${c.v}</div></div>`).join('');
+  const topB=[{l:'Constitution of India',v:18},{l:'Indian Penal Code',v:15},{l:'Contract Law',v:12},{l:'CrPC',v:11}];
+  document.getElementById('topBookBars').innerHTML=topB.map(b=>`<div class="bar-row"><div class="bar-label">${b.l}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(b.v/topB[0].v*100)}%"></div></div><div class="bar-count">${b.v}</div></div>`).join('');
+  const trend=[{l:'Jan',v:60},{l:'Feb',v:72},{l:'Mar',v:85},{l:'Apr',v:91},{l:'May',v:94}];
+  document.getElementById('trendBars').innerHTML=trend.map(t=>`<div class="bar-row"><div class="bar-label" style="width:32px">${t.l}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(t.v/94*100)}%;background:var(--navy)"></div></div><div class="bar-count">${t.v}</div></div>`).join('');
+}
+
+function renderNotices(){
+  document.getElementById('noticesList').innerHTML=notices.map(n=>`
+    <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:12px;border-left:4px solid var(--gold)">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div style="font-weight:500;font-size:14px;color:var(--navy)">${n.title}</div>
+        <span style="font-size:11px;color:var(--muted)">${n.date}</span>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6">${n.body}</p>
+    </div>`).join('');
+}
+
+function openAddBook(){document.getElementById('addBookModal').classList.add('open')}
+function openAddMember(){document.getElementById('addMemberModal').classList.add('open')}
+function openNotice(){document.getElementById('noticeModal').classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+function addBook(){
+  const t=document.getElementById('nb_title').value.trim();
+  if(!t){return}
+  books.push({isbn:document.getElementById('nb_isbn').value||'N/A',title:t,author:document.getElementById('nb_author').value,cat:document.getElementById('nb_cat').value,copies:parseInt(document.getElementById('nb_copies').value)||1,available:parseInt(document.getElementById('nb_copies').value)||1});
+  closeModal('addBookModal');renderBooks();showToast('Book added successfully');
+}
+
+function addMember(){
+  const n=document.getElementById('nm_name').value.trim();
+  if(!n){return}
+  members.push({id:document.getElementById('nm_id').value,name:n,course:document.getElementById('nm_course').value,year:1,issued:0,status:'Active'});
+  closeModal('addMemberModal');renderMembers();showToast('Member registered successfully');
+}
+
+function issueBook(){
+  const m=document.getElementById('issueMemId').value.trim();
+  const b=document.getElementById('issueBookId').value.trim();
+  if(!m||!b){showToast('Please enter Member ID and Book');return}
+  issued.push({member:m,book:b,date:document.getElementById('issueDate').value,due:document.getElementById('dueDate').value,status:'active'});
+  renderIssued();showToast('Book issued successfully');
+  document.getElementById('issueMemId').value='';
+  document.getElementById('issueBookId').value='';
+}
+
+function returnBook(){showToast('Book returned and record updated');}
+
+function calcFine(){
+  const d1=new Date(document.getElementById('fDue').value);
+  const d2=new Date(document.getElementById('fReturn').value);
+  if(!d1||!d2||isNaN(d1)||isNaN(d2)){return}
+  const days=Math.max(0,Math.floor((d2-d1)/(1000*60*60*24)));
+  const fine=days*10;
+  const el=document.getElementById('fineResult');
+  el.textContent='₹ '+fine;
+  el.className='fine-result '+(fine===0?'zero':'');
+  document.getElementById('collectBtn').style.display=fine>0?'inline-block':'none';
+}
+
+function collectFine(){showToast('Fine of '+document.getElementById('fineResult').textContent+' collected');document.getElementById('fineResult').textContent='₹ 0';document.getElementById('fineResult').className='fine-result zero';document.getElementById('collectBtn').style.display='none';}
+
+function postNotice(){
+  const t=document.getElementById('nt_title').value.trim();
+  const b=document.getElementById('nt_body').value.trim();
+  if(!t||!b){return}
+  const today=new Date().toISOString().split('T')[0];
+  notices.unshift({title:t,body:b,date:today});
+  closeModal('noticeModal');renderNotices();showToast('Notice posted successfully');
+  document.getElementById('nt_title').value='';
+  document.getElementById('nt_body').value='';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  setTimeout(()=>{t.style.display='none'},2800);
+}
+</script>
