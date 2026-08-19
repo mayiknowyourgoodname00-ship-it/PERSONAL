@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proforma Repository & Administrative Console | Amritsar Law College</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            body * { visibility: hidden; }
+            #printableDocument, #printableDocument * { visibility: visible; }
+            #printableDocument { position: absolute; left: 0; top: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- TOP HEADER / BRAND BAR -->
+    <header class="bg-slate-900 text-white border-b-4 border-amber-600 shadow-lg sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center font-black text-xl shadow-md text-white border border-amber-500">
+                    ALC
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight leading-tight">AMRITSAR LAW COLLEGE</h1>
+                    <p class="text-[11px] text-amber-400 font-medium tracking-wider uppercase">Official Proforma & Document Portal</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div id="adminBadge" class="hidden bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-semibold px-3 py-1.5 rounded-md flex items-center shadow-inner">
+                    <span class="w-2 h-2 bg-amber-400 rounded-full animate-ping mr-2"></span>
+                    <i class="fas fa-user-shield mr-1.5"></i> Admin Console Active
+                </div>
+
+                <button id="addDocBtn" onclick="openAddModal()" class="hidden bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-3.5 py-2 rounded-md transition duration-150 flex items-center shadow-md">
+                    <i class="fas fa-plus-circle mr-1.5"></i> New Proforma
+                </button>
+
+                <button id="logoutBtn" onclick="adminLogout()" class="hidden bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white text-xs font-semibold px-3 py-2 rounded-md transition duration-150 border border-slate-700">
+                    <i class="fas fa-power-off mr-1"></i> Exit Admin
+                </button>
+
+                <button id="adminLoginBtn" onclick="openAuthModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-2 rounded-md transition flex items-center border border-slate-700">
+                    <i class="fas fa-lock text-amber-500 mr-1.5"></i> Administrative Access
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ADMIN BACKDOOR BANNER -->
+    <div id="adminBanner" class="hidden bg-slate-800 border-b border-slate-700 text-slate-200 px-4 py-2.5 text-xs">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-2">
+                <span class="bg-amber-600 text-white font-bold px-1.5 py-0.5 rounded text-[10px] uppercase">Control Panel</span>
+                <span class="text-slate-300 font-medium">Full management access enabled: Upload, Rename, Edit metadata, Toggle Visibility, and Purge records.</span>
+            </div>
+            <div class="text-slate-400">
+                Logged in as: <strong class="text-white">Office Incharge (Admin)</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-grow w-full space-y-6">
+
+        <!-- METRICS & DASHBOARD STATS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Documents</p>
+                    <p class="text-2xl font-black text-slate-900 mt-1" id="statTotal">0</p>
+                </div>
+                <div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                    <i class="fas fa-folder-open text-lg"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Published</p>
+                    <p class="text-2xl font-black text-emerald-600 mt-1" id="statPublished">0</p>
+                </div>
+                <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
+                    <i class="fas fa-check-circle text-lg"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Draft / Internal</p>
+                    <p class="text-2xl font-black text-amber-600 mt-1" id="statDraft">0</p>
+                </div>
+                <div class="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600">
+                    <i class="fas fa-eye-slash text-lg"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Academic Session</p>
+                    <p class="text-2xl font-black text-slate-900 mt-1">2026-27</p>
+                </div>
+                <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
+                    <i class="fas fa-graduation-cap text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEARCH AND FILTER CONTROLS BAR -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+            <div class="md:col-span-5 relative">
+                <i class="fas fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" onkeyup="applyFilters()" placeholder="Search title, ref number, keywords..." class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+            </div>
+
+            <div class="md:col-span-3">
+                <select id="categoryFilter" onchange="applyFilters()" class="w-full py-2 px-3 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <option value="ALL">All Categories</option>
+                    <option value="Transport & Logistics">Transport & Logistics</option>
+                    <option value="Finance & Accounts">Finance & Accounts</option>
+                    <option value="Events & Academics">Events & Academics</option>
+                    <option value="Store & Requisition">Store & Requisition</option>
+                    <option value="Examinations">Examinations</option>
+                    <option value="Student Undertakings">Student Undertakings</option>
+                    <option value="Faculty & Staff">Faculty & Staff</option>
+                </select>
+            </div>
+
+            <div class="md:col-span-2">
+                <select id="audienceFilter" onchange="applyFilters()" class="w-full py-2 px-3 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <option value="ALL">All Target Groups</option>
+                    <option value="Students">Students</option>
+                    <option value="Faculty">Faculty</option>
+                    <option value="Administrative Staff">Admin Staff</option>
+                </select>
+            </div>
+
+            <div class="md:col-span-2">
+                <select id="statusFilter" onchange="applyFilters()" class="w-full py-2 px-3 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <option value="ALL">All Statuses</option>
+                    <option value="Published">Published</option>
+                    <option value="Draft">Draft</option>
+                    <option value="Archived">Archived</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- MAIN DATA TABLE -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-800 text-slate-200 text-xs font-semibold uppercase tracking-wider">
+                            <th class="py-3.5 px-4">Document Title & Ref No.</th>
+                            <th class="py-3.5 px-4">Category</th>
+                            <th class="py-3.5 px-4">Target Group</th>
+                            <th class="py-3.5 px-4">Version & Size</th>
+                            <th class="py-3.5 px-4">Status</th>
+                            <th class="py-3.5 px-4">Updated</th>
+                            <th class="py-3.5 px-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="documentTableBody" class="divide-y divide-slate-200 text-sm">
+                        <!-- Rendered via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- MODAL 1: AUTHENTICATION / ADMIN LOGIN -->
+    <div id="authModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex justify-center items-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md border border-slate-200 overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
+                <h3 class="font-bold text-sm uppercase tracking-wider flex items-center">
+                    <i class="fas fa-shield-halved text-amber-500 mr-2"></i> Admin Gateway Passkey
+                </h3>
+                <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form onsubmit="authenticateAdmin(event)" class="p-6 space-y-4">
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Enter the administrative passkey to unlock management controls (Upload, Rename, Edit, Visibility, and Deletion).
+                </p>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Passkey</label>
+                    <input type="password" id="adminPasskeyInput" placeholder="Enter administrative key" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                    <p class="text-[11px] text-slate-400 mt-1">Default demo passkey: <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-700 font-mono">admin123</code></p>
+                </div>
+                <button type="submit" class="w-full bg-slate-900 hover:bg-amber-600 text-white font-bold py-2.5 rounded-lg text-sm transition shadow">
+                    Authorize & Launch Console
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD / UPLOAD NEW PROFORMA -->
+    <div id="addModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex justify-center items-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg border border-slate-200 overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-amber-600">
+                <h3 class="font-bold text-sm uppercase tracking-wider flex items-center">
+                    <i class="fas fa-cloud-arrow-up text-amber-500 mr-2"></i> Register New Proforma
+                </h3>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form onsubmit="handleCreateProforma(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Proforma Title</label>
+                    <input type="text" id="addTitle" placeholder="e.g. Official Car / Vehicle Requisition Proforma" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Ref Code</label>
+                        <input type="text" id="addRef" placeholder="e.g. ALC/ADMIN/VEH-001" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Version</label>
+                        <input type="text" id="addVersion" value="v1.0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Category</label>
+                        <select id="addCategory" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="Transport & Logistics">Transport & Logistics</option>
+                            <option value="Finance & Accounts">Finance & Accounts</option>
+                            <option value="Events & Academics">Events & Academics</option>
+                            <option value="Store & Requisition">Store & Requisition</option>
+                            <option value="Examinations">Examinations</option>
+                            <option value="Student Undertakings">Student Undertakings</option>
+                            <option value="Faculty & Staff">Faculty & Staff</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Target Audience</label>
+                        <select id="addAudience" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="Students">Students</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Administrative Staff">Administrative Staff</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Publish Status</label>
+                        <select id="addStatus" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="Published">Published (Public)</option>
+                            <option value="Draft">Draft (Admin Only)</option>
+                            <option value="Archived">Archived</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">PDF Document File</label>
+                        <input type="file" id="addFile" accept="application/pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-900 file:text-white border border-slate-300 rounded-lg">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-amber-600 text-white font-bold py-2.5 rounded-lg text-sm transition shadow">
+                        Save & Publish Proforma
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: EDIT / RENAME / UPDATE PROFORMA METADATA -->
+    <div id="editModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex justify-center items-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg border border-slate-200 overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-amber-600">
+                <h3 class="font-bold text-sm uppercase tracking-wider flex items-center">
+                    <i class="fas fa-pen-to-square text-amber-500 mr-2"></i> Edit & Rename Proforma
+                </h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form onsubmit="handleUpdateProforma(event)" class="p-6 space-y-4">
+                <input type="hidden" id="editId">
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Proforma Title / Name</label>
+                    <input type="text" id="editTitle" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Ref Code</label>
+                        <input type="text" id="editRef" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Version Tag</label>
+                        <input type="text" id="editVersion" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Category</label>
+                        <select id="editCategory" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="Transport & Logistics">Transport & Logistics</option>
+                            <option value="Finance & Accounts">Finance & Accounts</option>
+                            <option value="Events & Academics">Events & Academics</option>
+                            <option value="Store & Requisition">Store & Requisition</option>
+                            <option value="Examinations">Examinations</option>
+                            <option value="Student Undertakings">Student Undertakings</option>
+                            <option value="Faculty & Staff">Faculty & Staff</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Target Audience</label>
+                        <select id="editAudience" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="Students">Students</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Administrative Staff">Administrative Staff</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Status Visibility</label>
+                    <select id="editStatus" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <option value="Published">Published (Public)</option>
+                        <option value="Draft">Draft (Admin Only)</option>
+                        <option value="Archived">Archived</option>
+                    </select>
+                </div>
+
+                <div class="pt-2 flex space-x-2">
+                    <button type="button" onclick="closeEditModal()" class="w-1/2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 rounded-lg text-sm transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="w-1/2 bg-slate-900 hover:bg-amber-600 text-white font-bold py-2.5 rounded-lg text-sm transition shadow">
+                        Update Proforma Record
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: GUARANTEED PROFORMA DOCUMENT PREVIEWER & PRINT SHEET -->
+    <div id="pdfViewerModal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-md z-50 hidden flex flex-col items-center justify-center p-2 sm:p-4">
+        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-5xl h-[92vh] flex flex-col overflow-hidden border border-slate-700">
+            <!-- Modal Header Controls -->
+            <div class="bg-slate-900 text-white px-6 py-3 flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-bold text-xs text-white">PDF</div>
+                    <div>
+                        <h3 id="viewerTitle" class="font-bold text-sm truncate">Document Preview</h3>
+                        <p id="viewerSubtitle" class="text-[11px] text-slate-400 font-mono">Ref No: Pending</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="printProformaDocument()" class="bg-amber-600 hover:bg-amber-500 text-white px-3.5 py-1.5 text-xs font-bold rounded transition flex items-center shadow">
+                        <i class="fas fa-print mr-1.5"></i> Print Document
+                    </button>
+                    <button onclick="closePdfViewer()" class="text-slate-400 hover:text-white p-1 text-xl ml-2">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interactive Printable Document View Area -->
+            <div class="flex-grow bg-slate-600 overflow-y-auto p-4 sm:p-8 flex justify-center">
+                
+                <!-- IFRAME FOR EXTERNAL/UPLOADED REAL PDF BLOBS -->
+                <iframe id="pdfFrame" class="w-full h-full border-none rounded bg-white hidden" src=""></iframe>
+
+                <!-- OFFICIAL GENERATED PROFORMA PRINT PAPER SHEET (FALLBACK & STANDARD TEMPLATES) -->
+                <div id="printableDocument" class="bg-white text-slate-900 w-full max-w-3xl min-h-[1000px] shadow-2xl rounded p-8 sm:p-12 border border-slate-300 flex flex-col justify-between text-xs">
+                    
+                    <div>
+                        <!-- College Letterhead -->
+                        <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-start">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 bg-amber-700 text-white font-black text-2xl flex items-center justify-center rounded border-2 border-slate-900">
+                                    ALC
+                                </div>
+                                <div>
+                                    <h1 class="text-xl font-black tracking-tight text-slate-900">AMRITSAR LAW COLLEGE</h1>
+                                    <p class="text-xs font-semibold text-slate-700">G.T. Road, Administrative Block, Amritsar, Punjab - 143001</p>
+                                    <p class="text-[10px] text-slate-500">Approved by Bar Council of India | Affiliated Academic Institution</p>
+                                </div>
+                            </div>
+                            <div class="text-right font-mono">
+                                <span class="inline-block bg-slate-900 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded" id="docRenderRef">ALC/PROFORMA</span>
+                                <p class="text-[10px] text-slate-500 mt-1">Date: <span id="docRenderDate">--</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Proforma Title Header -->
+                        <div class="text-center my-6">
+                            <h2 class="text-base font-black uppercase tracking-wider underline underline-offset-4 text-slate-900" id="docRenderTitle">
+                                OFFICIAL ADMINISTRATIVE PROFORMA
+                            </h2>
+                            <p class="text-[11px] text-slate-600 italic mt-1" id="docRenderCategory">Category: Academic & Administrative Requisition</p>
+                        </div>
+
+                        <!-- Applicant Info Grid Box -->
+                        <div class="bg-slate-50 p-4 rounded border border-slate-300 mb-6 grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="font-bold text-slate-700 uppercase text-[10px]">Requisitioner / Applicant:</p>
+                                <p class="text-slate-900 font-semibold text-xs mt-0.5" id="docRenderApplicant">________________________</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-700 uppercase text-[10px]">Department / Class:</p>
+                                <p class="text-slate-900 font-semibold text-xs mt-0.5">Faculty of Law / Admin Cell</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-700 uppercase text-[10px]">Target Group:</p>
+                                <p class="text-slate-900 font-semibold text-xs mt-0.5" id="docRenderAudience">Faculty & Staff</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-700 uppercase text-[10px]">Academic Version:</p>
+                                <p class="text-slate-900 font-semibold text-xs mt-0.5 font-mono" id="docRenderVersion">v1.0</p>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Structural Table Content -->
+                        <div id="dynamicFormFields" class="space-y-4">
+                            <!-- Injected dynamically based on category -->
+                        </div>
+                    </div>
+
+                    <!-- Authorization & Signatures Block -->
+                    <div class="pt-12 border-t border-slate-300 mt-12 grid grid-cols-3 gap-6 text-center">
+                        <div>
+                            <div class="border-b border-slate-800 mb-2 h-10 flex items-end justify-center">
+                                <span class="italic font-serif text-slate-400 text-[10px]">Signature</span>
+                            </div>
+                            <p class="font-bold text-slate-900">Applicant / Student</p>
+                            <p class="text-[10px] text-slate-500">Signature & Date</p>
+                        </div>
+                        <div>
+                            <div class="border-b border-slate-800 mb-2 h-10 flex items-end justify-center">
+                                <span class="italic font-serif text-slate-400 text-[10px]">Verified Stamp</span>
+                            </div>
+                            <p class="font-bold text-slate-900">Head of Department</p>
+                            <p class="text-[10px] text-slate-500">Recommendation</p>
+                        </div>
+                        <div>
+                            <div class="border-b border-slate-800 mb-2 h-10 flex items-end justify-center">
+                                <span class="italic font-serif text-slate-400 text-[10px]">Official Seal</span>
+                            </div>
+                            <p class="font-bold text-slate-900">Administrative Incharge</p>
+                            <p class="text-[10px] text-slate-500">Final Approval Authority</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p>&copy; 2026 Amritsar Law College. Office of Administrative Incharge & Institutional Legal Cell.</p>
+            <div class="flex items-center space-x-4">
+                <span class="text-slate-500 text-[11px]">Key Shortcut: <kbd class="bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded border border-slate-700">Ctrl + Shift + A</kbd> for Admin Gate</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APPLICATION CORE LOGIC -->
+    <script>
+        let isAdmin = false;
+        const DEFAULT_PASSKEY = "admin123";
+
+        // Repository of Proforma Documents
+        let proformaStore = [
+            {
+                id: 101,
+                title: "Official Car / Vehicle Requisition Proforma",
+                refNo: "ALC/ADMIN/VEH-001",
+                category: "Transport & Logistics",
+                audience: "Faculty & Staff",
+                version: "v2.1",
+                size: "380 KB",
+                status: "Published",
+                updatedDate: "02 Aug 2026",
+                isCustomUploaded: false
+            },
+            {
+                id: 102,
+                title: "Annual Seminar & Event Budget Allocation Proforma",
+                refNo: "ALC/ACCT/BDG-004",
+                category: "Finance & Accounts",
+                audience: "Faculty",
+                version: "v1.4",
+                size: "520 KB",
+                status: "Published",
+                updatedDate: "28 Jul 2026",
+                isCustomUploaded: false
+            },
+            {
+                id: 103,
+                title: "College Event & Moot Court Venue Approval Proforma",
+                refNo: "ALC/EVT/APPR-012",
+                category: "Events & Academics",
+                audience: "Faculty & Students",
+                version: "v1.0",
+                size: "410 KB",
+                status: "Published",
+                updatedDate: "15 Jul 2026",
+                isCustomUploaded: false
+            },
+            {
+                id: 104,
+                title: "IT Equipment & General Store Requirement Proforma",
+                refNo: "ALC/STORE/REQ-089",
+                category: "Store & Requisition",
+                audience: "Administrative Staff",
+                version: "v3.0",
+                size: "310 KB",
+                status: "Published",
+                updatedDate: "04 Aug 2026",
+                isCustomUploaded: false
+            },
+            {
+                id: 105,
+                title: "Examination Duty Relief & Re-evaluation Proforma",
+                refNo: "ALC/EXAM/REV-003",
+                category: "Examinations",
+                audience: "Students",
+                version: "v1.2",
+                size: "600 KB",
+                status: "Published",
+                updatedDate: "01 Aug 2026",
+                isCustomUploaded: false
+            },
+            {
+                id: 106,
+                title: "Student Anti-Ragging & General Discipline Undertaking",
+                refNo: "ALC/STU/UND-005",
+                category: "Student Undertakings",
+                audience: "Students",
+                version: "v2.0",
+                size: "290 KB",
+                status: "Published",
+                updatedDate: "10 Jun 2026",
+                isCustomUploaded: false
+            }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderTable(proformaStore);
+            updateDashboardMetrics();
+
+            document.addEventListener("keydown", (e) => {
+                if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                    e.preventDefault();
+                    if (!isAdmin) openAuthModal();
+                    else showToast("Admin Mode is already active", "info");
+                }
+            });
+        });
+
+        function renderTable(data) {
+            const tbody = document.getElementById("documentTableBody");
+            tbody.innerHTML = "";
+
+            const visibleData = data.filter(item => isAdmin || item.status === "Published");
+
+            if (visibleData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-10 text-center text-slate-400">
+                            <i class="fas fa-folder-open text-3xl mb-2 block text-slate-300"></i>
+                            No matching proforma records found.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            visibleData.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-200/80";
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-200">
+                            <i class="far fa-file-pdf text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 leading-snug">${escapeHtml(item.title)}</p>
+                            <p class="text-xs text-slate-500 font-mono mt-0.5">Ref: ${escapeHtml(item.refNo)}</p>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <span class="text-xs font-semibold px-2.5 py-1 rounded-md ${getCategoryBadge(item.category)}">
+                            ${item.category}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-xs font-medium text-slate-700">
+                        <i class="fas fa-users text-slate-400 mr-1"></i> ${item.audience}
+                    </td>
+                    <td class="py-3.5 px-4 text-xs text-slate-600">
+                        <span class="font-mono text-slate-800 font-semibold">${item.version}</span>
+                        <span class="text-slate-400">(${item.size})</span>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${getStatusBadge(item.status)}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-xs text-slate-500">${item.updatedDate}</td>
+                    <td class="py-3.5 px-4 text-right space-x-1">
+                        <button onclick="openPdfViewer(${item.id})" title="Preview Proforma Document" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded text-xs font-bold transition inline-flex items-center shadow-sm">
+                            <i class="fas fa-eye mr-1.5"></i> View Form
+                        </button>
+
+                        ${isAdmin ? `
+                            <button onclick="openEditModal(${item.id})" title="Edit & Rename" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition">
+                                <i class="fas fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="toggleItemStatus(${item.id})" title="Quick Toggle Visibility" class="p-1.5 text-amber-600 hover:bg-amber-50 rounded transition">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                            <button onclick="deleteProforma(${item.id})" title="Delete Record" class="p-1.5 text-red-600 hover:bg-red-50 rounded transition">
+                                <i class="fas fa-trash-can"></i>
+                            </button>
+                        ` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateDashboardMetrics() {
+            document.getElementById("statTotal").innerText = proformaStore.length;
+            document.getElementById("statPublished").innerText = proformaStore.filter(i => i.status === "Published").length;
+            document.getElementById("statDraft").innerText = proformaStore.filter(i => i.status !== "Published").length;
+        }
+
+        function getCategoryBadge(cat) {
+            switch(cat) {
+                case 'Transport & Logistics': return 'bg-amber-100 text-amber-800 border border-amber-200';
+                case 'Finance & Accounts': return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
+                case 'Events & Academics': return 'bg-blue-100 text-blue-800 border border-blue-200';
+                case 'Store & Requisition': return 'bg-purple-100 text-purple-800 border border-purple-200';
+                case 'Examinations': return 'bg-red-100 text-red-800 border border-red-200';
+                case 'Student Undertakings': return 'bg-teal-100 text-teal-800 border border-teal-200';
+                default: return 'bg-slate-100 text-slate-800 border border-slate-200';
+            }
+        }
+
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'Published': return 'bg-emerald-100 text-emerald-800';
+                case 'Draft': return 'bg-amber-100 text-amber-800';
+                case 'Archived': return 'bg-slate-200 text-slate-700';
+                default: return 'bg-slate-100 text-slate-800';
+            }
+        }
+
+        function applyFilters() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            const cat = document.getElementById("categoryFilter").value;
+            const aud = document.getElementById("audienceFilter").value;
+            const stat = document.getElementById("statusFilter").value;
+
+            const filtered = proformaStore.filter(item => {
+                const matchesSearch = item.title.toLowerCase().includes(query) || item.refNo.toLowerCase().includes(query);
+                const matchesCat = (cat === "ALL" || item.category === cat);
+                const matchesAud = (aud === "ALL" || item.audience.includes(aud));
+                const matchesStat = (stat === "ALL" || item.status === stat);
+                return matchesSearch && matchesCat && matchesAud && matchesStat;
+            });
+
+            renderTable(filtered);
+        }
+
+        // --- FIXED PROFORMA DOCUMENT VIEW ENGINE ---
+        function openPdfViewer(id) {
+            const item = proformaStore.find(doc => doc.id === id);
+            if (!item) return;
+
+            document.getElementById("viewerTitle").innerText = item.title;
+            document.getElementById("viewerSubtitle").innerText = `Ref Code: ${item.refNo}`;
+
+            const iframe = document.getElementById("pdfFrame");
+            const printSheet = document.getElementById("printableDocument");
+
+            // If user uploaded a custom PDF file blob, render it directly inside iframe
+            if (item.isCustomUploaded && item.blobUrl) {
+                iframe.src = item.blobUrl;
+                iframe.classList.remove("hidden");
+                printSheet.classList.add("hidden");
+            } else {
+                // Render structured official printable document sheet
+                iframe.classList.add("hidden");
+                printSheet.classList.remove("hidden");
+
+                document.getElementById("docRenderTitle").innerText = item.title;
+                document.getElementById("docRenderRef").innerText = item.refNo;
+                document.getElementById("docRenderDate").innerText = item.updatedDate;
+                document.getElementById("docRenderCategory").innerText = `Category: ${item.category}`;
+                document.getElementById("docRenderAudience").innerText = item.audience;
+                document.getElementById("docRenderVersion").innerText = item.version;
+
+                generateDynamicFormFields(item);
+            }
+
+            document.getElementById("pdfViewerModal").classList.remove("hidden");
+        }
+
+        // Generate dynamic printable table columns and fields based on category
+        function generateDynamicFormFields(item) {
+            const container = document.getElementById("dynamicFormFields");
+            container.innerHTML = "";
+
+            if (item.category === "Transport & Logistics") {
+                container.innerHTML = `
+                    <p class="font-bold text-slate-800 uppercase text-[11px] mb-2">Vehicle / Car Requisition Particulars:</p>
+                    <table class="w-full border-collapse border border-slate-300 text-left text-xs mb-4">
+                        <tr class="bg-slate-100 font-bold"><th class="border p-2">Requirement Particulars</th><th class="border p-2">Details / Entries</th></tr>
+                        <tr><td class="border p-2 font-semibold">Purpose of Travel</td><td class="border p-2">Official Institutional Duty / Guest Transport</td></tr>
+                        <tr><td class="border p-2 font-semibold">Destination / Route</td><td class="border p-2">Amritsar District Court / High Court Campus</td></tr>
+                        <tr><td class="border p-2 font-semibold">Date & Departure Time</td><td class="border p-2">____/____/2026 at ____:____ AM/PM</td></tr>
+                        <tr><td class="border p-2 font-semibold">Driver Required?</td><td class="border p-2">[  ] Yes  |  [  ] Self Driven</td></tr>
+                    </table>
+                `;
+            } else if (item.category === "Finance & Accounts") {
+                container.innerHTML = `
+                    <p class="font-bold text-slate-800 uppercase text-[11px] mb-2">Budget Allocation & Expenditure Breakdown:</p>
+                    <table class="w-full border-collapse border border-slate-300 text-left text-xs mb-4">
+                        <tr class="bg-slate-100 font-bold">
+                            <th class="border p-2">S.No</th><th class="border p-2">Expenditure Head</th><th class="border p-2">Estimated Amount (INR)</th>
+                        </tr>
+                        <tr><td class="border p-2">1</td><td class="border p-2">Honorarium for Guest Lecturers & Judges</td><td class="border p-2 font-mono">Rs. ____________</td></tr>
+                        <tr><td class="border p-2">2</td><td class="border p-2">Printing of Certificates & Legal Kits</td><td class="border p-2 font-mono">Rs. ____________</td></tr>
+                        <tr><td class="border p-2">3</td><td class="border p-2">Refreshment & Hospitality Services</td><td class="border p-2 font-mono">Rs. ____________</td></tr>
+                        <tr class="font-bold bg-slate-50"><td class="border p-2 text-right" colspan="2">TOTAL SANCTIONED AMOUNT:</td><td class="border p-2 font-mono">Rs. ____________</td></tr>
+                    </table>
+                `;
+            } else if (item.category === "Student Undertakings") {
+                container.innerHTML = `
+                    <div class="border border-slate-300 p-4 rounded bg-slate-50/50 leading-relaxed text-slate-800 text-[11px] space-y-3">
+                        <p><strong>I, Student Name:</strong> ____________________________________________________</p>
+                        <p><strong>Roll No / Registration No:</strong> _____________________ <strong>Semester:</strong> ____________</p>
+                        <p class="text-justify">
+                            I solemnly undertake that I shall abide by all the rules, regulations, and disciplinary guidelines established by the Amritsar Law College. I understand that failure to maintain minimum attendance or engaging in prohibited activities will lead to administrative disciplinary action.
+                        </p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <p class="font-bold text-slate-800 uppercase text-[11px] mb-2">General Requirement & Requisition Details:</p>
+                    <table class="w-full border-collapse border border-slate-300 text-left text-xs mb-4">
+                        <tr class="bg-slate-100 font-bold"><th class="border p-2">Item / Service Description</th><th class="border p-2">Quantity</th><th class="border p-2">Remarks / Justification</th></tr>
+                        <tr><td class="border p-2">1. Standard Official Requisition Item</td><td class="border p-2">____ Units</td><td class="border p-2">For Academic/Departmental Use</td></tr>
+                        <tr><td class="border p-2">2. Stationary & Office Supplies</td><td class="border p-2">____ Sets</td><td class="border p-2">Institutional Management</td></tr>
+                    </table>
+                `;
+            }
+        }
+
+        function closePdfViewer() {
+            document.getElementById("pdfViewerModal").classList.add("hidden");
+        }
+
+        function printProformaDocument() {
+            window.print();
+        }
+
+        // --- AUTHENTICATION & CRUD OPERATIONS ---
+        function openAuthModal() {
+            document.getElementById("authModal").classList.remove("hidden");
+            document.getElementById("adminPasskeyInput").focus();
+        }
+
+        function closeAuthModal() {
+            document.getElementById("authModal").classList.add("hidden");
+            document.getElementById("adminPasskeyInput").value = "";
+        }
+
+        function authenticateAdmin(e) {
+            e.preventDefault();
+            const inputPasskey = document.getElementById("adminPasskeyInput").value;
+
+            if (inputPasskey === DEFAULT_PASSKEY) {
+                isAdmin = true;
+                closeAuthModal();
+
+                document.getElementById("adminBadge").classList.remove("hidden");
+                document.getElementById("addDocBtn").classList.remove("hidden");
+                document.getElementById("logoutBtn").classList.remove("hidden");
+                document.getElementById("adminBanner").classList.remove("hidden");
+                document.getElementById("adminLoginBtn").classList.add("hidden");
+
+                renderTable(proformaStore);
+                showToast("Admin Dashboard Controls Unlocked", "success");
+            } else {
+                showToast("Invalid Passkey!", "error");
+            }
+        }
+
+        function adminLogout() {
+            isAdmin = false;
+            document.getElementById("adminBadge").classList.add("hidden");
+            document.getElementById("addDocBtn").classList.add("hidden");
+            document.getElementById("logoutBtn").classList.add("hidden");
+            document.getElementById("adminBanner").classList.add("hidden");
+            document.getElementById("adminLoginBtn").classList.remove("hidden");
+
+            renderTable(proformaStore);
+            showToast("Exited Admin Dashboard", "info");
+        }
+
+        function openAddModal() {
+            document.getElementById("addModal").classList.remove("hidden");
+        }
+
+        function closeAddModal() {
+            document.getElementById("addModal").classList.add("hidden");
+        }
+
+        function handleCreateProforma(e) {
+            e.preventDefault();
+
+            const title = document.getElementById("addTitle").value;
+            const refNo = document.getElementById("addRef").value;
+            const version = document.getElementById("addVersion").value;
+            const category = document.getElementById("addCategory").value;
+            const audience = document.getElementById("addAudience").value;
+            const status = document.getElementById("addStatus").value;
+            const fileInput = document.getElementById("addFile");
+
+            let blobUrl = null;
+            let fileSize = "350 KB";
+            let isCustomUploaded = false;
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                blobUrl = URL.createObjectURL(file);
+                fileSize = (file.size / 1024).toFixed(0) + " KB";
+                isCustomUploaded = true;
+            }
+
+            const newDoc = {
+                id: Date.now(),
+                title: title,
+                refNo: refNo,
+                category: category,
+                audience: audience,
+                version: version,
+                size: fileSize,
+                status: status,
+                updatedDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                isCustomUploaded: isCustomUploaded,
+                blobUrl: blobUrl
+            };
+
+            proformaStore.unshift(newDoc);
+            updateDashboardMetrics();
+            applyFilters();
+            closeAddModal();
+            showToast(`Registered New Proforma: ${refNo}`, "success");
+
+            document.getElementById("addTitle").value = "";
+            document.getElementById("addRef").value = "";
+        }
+
+        function openEditModal(id) {
+            const item = proformaStore.find(doc => doc.id === id);
+            if (!item) return;
+
+            document.getElementById("editId").value = item.id;
+            document.getElementById("editTitle").value = item.title;
+            document.getElementById("editRef").value = item.refNo;
+            document.getElementById("editVersion").value = item.version;
+            document.getElementById("editCategory").value = item.category;
+            document.getElementById("editAudience").value = item.audience;
+            document.getElementById("editStatus").value = item.status;
+
+            document.getElementById("editModal").classList.remove("hidden");
+        }
+
+        function closeEditModal() {
+            document.getElementById("editModal").classList.add("hidden");
+        }
+
+        function handleUpdateProforma(e) {
+            e.preventDefault();
+
+            const id = parseInt(document.getElementById("editId").value);
+            const item = proformaStore.find(doc => doc.id === id);
+
+            if (item) {
+                item.title = document.getElementById("editTitle").value;
+                item.refNo = document.getElementById("editRef").value;
+                item.version = document.getElementById("editVersion").value;
+                item.category = document.getElementById("editCategory").value;
+                item.audience = document.getElementById("editAudience").value;
+                item.status = document.getElementById("editStatus").value;
+                item.updatedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                updateDashboardMetrics();
+                applyFilters();
+                closeEditModal();
+                showToast(`Updated Proforma: ${item.refNo}`, "success");
+            }
+        }
+
+        function toggleItemStatus(id) {
+            const item = proformaStore.find(doc => doc.id === id);
+            if (item) {
+                item.status = item.status === "Published" ? "Draft" : "Published";
+                updateDashboardMetrics();
+                applyFilters();
+                showToast(`${item.refNo} status changed to ${item.status}`, "info");
+            }
+        }
+
+        function deleteProforma(id) {
+            const item = proformaStore.find(doc => doc.id === id);
+            if (!item) return;
+
+            if (confirm(`Are you sure you want to delete '${item.title}' (${item.refNo})?`)) {
+                proformaStore = proformaStore.filter(doc => doc.id !== id);
+                updateDashboardMetrics();
+                applyFilters();
+                showToast(`Deleted ${item.refNo} from repository`, "error");
+            }
+        }
+
+        function showToast(message, type = "info") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+
+            let bgColor = "bg-slate-900 border-l-4 border-amber-500";
+            let icon = "fa-circle-info text-amber-400";
+
+            if (type === "success") {
+                bgColor = "bg-slate-900 border-l-4 border-emerald-500";
+                icon = "fa-circle-check text-emerald-400";
+            } else if (type === "error") {
+                bgColor = "bg-slate-900 border-l-4 border-red-500";
+                icon = "fa-triangle-exclamation text-red-400";
+            }
+
+            toast.className = `${bgColor} text-white text-xs font-semibold px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 pointer-events-auto transition duration-300 transform translate-y-2`;
+            toast.innerHTML = `<i class="fas ${icon} text-base"></i> <span>${escapeHtml(message)}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "translate-y-4");
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+    </script>
+</body>
+</html>
