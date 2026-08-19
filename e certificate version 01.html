@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pro Certificate Studio & Custom Draft Builder</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts Expansion -->
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    .font-lora { font-family: 'Lora', serif; }
+    .font-raleway { font-family: 'Raleway', sans-serif; }
+    .font-signature { font-family: 'Alex Brush', cursive; }
+    .font-greatvibes { font-family: 'Great Vibes', cursive; }
+    
+    #certificate-container {
+      width: 900px;
+      height: 636px;
+      box-sizing: border-box;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Decorative Corner Ornaments */
+    .corner-ornament {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      border-color: currentColor;
+      pointer-events: none;
+    }
+    .corner-tl { top: 16px; left: 16px; border-top-width: 3px; border-left-width: 3px; }
+    .corner-tr { top: 16px; right: 16px; border-top-width: 3px; border-right-width: 3px; }
+    .corner-bl { bottom: 16px; left: 16px; border-bottom-width: 3px; border-left-width: 3px; }
+    .corner-br { bottom: 16px; right: 16px; border-bottom-width: 3px; border-right-width: 3px; }
+
+    /* Watermark Styling */
+    #watermarkDisplay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      font-weight: 800;
+      opacity: 0.04;
+      pointer-events: none;
+      user-select: none;
+      transform: rotate(-25deg);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #certificate-container, #certificate-container * { visibility: visible; }
+      #certificate-container { position: absolute; left: 0; top: 0; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen py-8 px-4">
+
+  <div class="max-w-7xl mx-auto space-y-8">
+    
+    <!-- Application Header -->
+    <header class="text-center space-y-2">
+      <span class="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold rounded-full uppercase tracking-wider">
+        Enterprise Studio
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Advanced Certificate Studio & Dynamic Formatter</h1>
+      <p class="text-slate-400 max-w-2xl mx-auto text-sm">Design custom credentials with dynamic draft text, uploaded signatures, seals, decorative frames, and complete typography controls.</p>
+    </header>
+
+    <!-- Controls Container -->
+    <div class="bg-slate-900/90 backdrop-blur-md rounded-2xl border border-slate-800 shadow-2xl p-6 sm:p-8 space-y-8">
+      
+      <!-- QUICK TEMPLATE PRESETS -->
+      <div>
+        <label class="block text-xs font-semibold uppercase tracking-wider text-amber-400 mb-3">Quick Template Presets</label>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <button type="button" onclick="applyPreset('classic')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 p-2.5 rounded-lg text-xs font-medium text-slate-200 transition text-center">🏛️ Classic Academic</button>
+          <button type="button" onclick="applyPreset('modern')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 p-2.5 rounded-lg text-xs font-medium text-slate-200 transition text-center">💻 Modern Minimalist</button>
+          <button type="button" onclick="applyPreset('royal')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 p-2.5 rounded-lg text-xs font-medium text-slate-200 transition text-center">👑 Royal Luxury</button>
+          <button type="button" onclick="applyPreset('dark')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 p-2.5 rounded-lg text-xs font-medium text-slate-200 transition text-center">🌙 Dark Gold Studio</button>
+        </div>
+      </div>
+
+      <form id="certForm" class="space-y-8" onsubmit="generateCertificate(event)">
+        
+        <!-- SECTION 1: Institution & Specific Information -->
+        <div class="space-y-4">
+          <h2 class="text-sm font-bold text-slate-200 border-b border-slate-800 pb-2 flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            1. Institution, Course & Specific Metadata
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Institution / Company Name</label>
+              <input type="text" id="institutionName" value="Global Academy of Excellence" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none text-xs focus:border-amber-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Course / Program Title</label>
+              <input type="text" id="courseName" value="Executive Leadership & Data Strategy" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none text-xs focus:border-amber-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Full Name (Recipient) *</label>
+              <input type="text" id="fullName" required value="Dr. Jane Foster" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none text-xs focus:border-amber-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Father's / Guardian Name *</label>
+              <input type="text" id="fatherName" required value="Robert Foster" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Roll / Reg Number</label>
+              <input type="text" id="regNo" value="REG-2026-8890" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Grade / Performance</label>
+              <input type="text" id="grade" value="First Class with Distinction" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Custom Text Format Draft Editor -->
+        <div class="space-y-4">
+          <h2 class="text-sm font-bold text-slate-200 border-b border-slate-800 pb-2 flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            2. Draft Text & Line Customizer
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Header Title (Main Header Line)</label>
+              <input type="text" id="headerText" value="Certificate of Achievement" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Sub-Header Line (Italic / Normal)</label>
+              <input type="text" id="subHeaderText" value="This official credential is proudly presented to" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Custom Body Draft Text (Paste Draft Body Paragraph Here)</label>
+              <textarea id="bodyDraft" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-white outline-none leading-relaxed focus:border-amber-500">has successfully fulfilled all institutional academic requirements, completed practical capstone projects, and achieved outstanding proficiency in the specialized curriculum.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Advanced Visuals, Typography & Boundary Controls -->
+        <div class="space-y-4">
+          <h2 class="text-sm font-bold text-slate-200 border-b border-slate-800 pb-2 flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-23"></path></svg>
+            3. Typography, Colors & Boundary Line Controls
+          </h2>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Font Style</label>
+              <select id="fontFamily" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-lg p-2 outline-none">
+                <option value="font-cormorant">Cormorant Garamond</option>
+                <option value="font-cinzel">Cinzel (Formal)</option>
+                <option value="font-playfair">Playfair Display</option>
+                <option value="font-montserrat">Montserrat (Modern)</option>
+                <option value="font-lora">Lora Serif</option>
+                <option value="font-raleway">Raleway Minimal</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Boundary Line Style</label>
+              <select id="borderStyle" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-lg p-2 outline-none">
+                <option value="solid">Solid Line</option>
+                <option value="double">Double Line</option>
+                <option value="dashed">Dashed Line</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Boundary Line Width</label>
+              <select id="borderWidth" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-lg p-2 outline-none">
+                <option value="2px">Thin (2px)</option>
+                <option value="4px" selected>Medium (4px)</option>
+                <option value="8px">Thick (8px)</option>
+                <option value="12px">Large Frame (12px)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Corner Ornaments</label>
+              <select id="cornerOrnament" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-lg p-2 outline-none">
+                <option value="show">Show Ornaments</option>
+                <option value="hide">Hide Ornaments</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Name Font Size</label>
+              <select id="nameFontSize" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-lg p-2 outline-none">
+                <option value="text-3xl">Small (33px)</option>
+                <option value="text-4xl">Medium (36px)</option>
+                <option value="text-5xl" selected>Large (48px)</option>
+                <option value="text-6xl">Extra Large (60px)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Line Height / Spacing</label>
+              <select id="lineSpacing" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-lg p-2 outline-none">
+                <option value="leading-tight">Tight</option>
+                <option value="leading-normal" selected>Normal</option>
+                <option value="leading-relaxed">Relaxed</option>
+                <option value="leading-loose">Loose</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Letter Spacing</label>
+              <select id="letterSpacing" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-lg p-2 outline-none">
+                <option value="tracking-normal">Normal</option>
+                <option value="tracking-wide" selected>Wide</option>
+                <option value="tracking-widest">Widest</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Watermark Text</label>
+              <input type="text" id="watermarkInput" placeholder="e.g. OFFICIAL COPY" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Background Color</label>
+              <input type="color" id="bgColor" value="#020617" class="w-full h-8 bg-slate-950 rounded border border-slate-800 cursor-pointer">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Text Color</label>
+              <input type="color" id="textColor" value="#f8fafc" class="w-full h-8 bg-slate-950 rounded border border-slate-800 cursor-pointer">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Accent Line Color</label>
+              <input type="color" id="accentColor" value="#f59e0b" class="w-full h-8 bg-slate-950 rounded border border-slate-800 cursor-pointer">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Background Frame Image</label>
+              <input type="file" id="bgUpload" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-amber-500/10 file:text-amber-400 cursor-pointer">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: Signature & Stamp/Seal Image Uploads -->
+        <div class="space-y-4">
+          <h2 class="text-sm font-bold text-slate-200 border-b border-slate-800 pb-2 flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+            4. Signature & Official Stamp/Seal Overlays
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Upload Signature Image (PNG Translucent Preferred)</label>
+              <input type="file" id="signatureUpload" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-slate-800 file:text-slate-200 cursor-pointer">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Upload Official Stamp / Emblem Seal</label>
+              <input type="file" id="sealUpload" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-slate-800 file:text-slate-200 cursor-pointer">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg transition uppercase tracking-wider text-sm">
+          Generate Customized Certificate
+        </button>
+      </form>
+    </div>
+
+    <!-- CERTIFICATE PREVIEW DISPLAY -->
+    <div id="outputSection" class="hidden space-y-6">
+      
+      <!-- Toolbar Controls for Zoom & Print -->
+      <div class="flex flex-wrap justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-xl gap-4">
+        <div class="flex items-center gap-3">
+          <label class="text-xs font-semibold text-slate-300">Preview Zoom:</label>
+          <input type="range" id="zoomSlider" min="0.6" max="1.2" step="0.05" value="1" oninput="adjustZoom(this.value)" class="cursor-pointer accent-amber-500">
+          <span id="zoomVal" class="text-xs font-mono text-slate-400">100%</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-xs font-semibold border border-slate-700 transition">🖨️ Print Directly</button>
+        </div>
+      </div>
+
+      <!-- CANVAS CONTAINER -->
+      <div class="flex justify-center overflow-x-auto py-4">
+        <div id="certificate-container" class="p-8 flex flex-col justify-between shadow-2xl rounded-sm">
+          
+          <!-- Watermark Overlay -->
+          <div id="watermarkDisplay"></div>
+
+          <!-- Decorative Corner Ornaments -->
+          <div id="ornamentTL" class="corner-ornament corner-tl"></div>
+          <div id="ornamentTR" class="corner-ornament corner-tr"></div>
+          <div id="ornamentBL" class="corner-ornament corner-bl"></div>
+          <div id="ornamentBR" class="corner-ornament corner-br"></div>
+
+          <!-- Customizable Boundary Lines -->
+          <div id="boundaryLineOuter" class="absolute inset-4 pointer-events-none">
+            <div id="boundaryLineInner" class="absolute inset-2 pointer-events-none"></div>
+          </div>
+
+          <!-- Header Section (Institution & Header Lines) -->
+          <div class="relative z-10 text-center flex flex-col items-center space-y-1">
+            <p id="renderInstitution" class="text-xs font-bold tracking-widest uppercase opacity-80">Global Academy of Excellence</p>
+            <h1 id="renderHeader" class="font-cormorant text-3xl font-bold tracking-widest uppercase">Certificate of Achievement</h1>
+            <p id="renderSubHeader" class="font-playfair italic text-[11px] tracking-widest uppercase opacity-90">This official credential is presented to</p>
+          </div>
+
+          <!-- Body Details Section -->
+          <div class="relative z-10 text-center my-auto py-1 space-y-2">
+            
+            <!-- Recipient Name (Bold Line) -->
+            <h2 id="renderName" class="font-cormorant text-5xl font-bold border-b inline-block px-10 pb-1">
+              Recipient Name
+            </h2>
+            
+            <!-- Father Line (Semi-Bold) & Course Name -->
+            <p class="text-xs font-normal">
+              Child of <span id="renderFather" class="font-semibold">Guardian Name</span> — Completed <span id="renderCourse" class="font-semibold text-amber-400">Course Title</span>
+            </p>
+
+            <!-- Custom Draft Body Paragraph (Normal Lines) -->
+            <p id="renderDraft" class="text-[11px] max-w-xl mx-auto opacity-85">
+              Draft text goes here...
+            </p>
+
+            <!-- Metadata Row -->
+            <div class="flex justify-center gap-6 text-[10px] font-medium pt-1">
+              <span>Roll / Reg No: <strong id="renderRegNo" class="font-semibold">N/A</strong></span>
+              <span>Grade: <strong id="renderGrade" class="font-semibold">N/A</strong></span>
+            </div>
+          </div>
+
+          <!-- Footer Section (QR Code, Stamp, Signatures) -->
+          <div class="relative z-10 flex justify-between items-end px-4 pt-2 border-t border-slate-700/40">
+            
+            <!-- QR & Date -->
+            <div class="text-left space-y-1 flex items-end gap-3">
+              <div class="flex flex-col items-center bg-white p-1 rounded shadow-md border border-slate-200">
+                <div id="qrcode"></div>
+                <span class="text-[6px] text-slate-800 font-bold uppercase mt-0.5">Scan to Verify</span>
+              </div>
+              <div>
+                <p class="text-[8px] opacity-60 uppercase tracking-widest">Date Issued</p>
+                <p id="certDate" class="text-[10px] font-semibold">DD/MM/YYYY</p>
+                <p class="text-[8px] opacity-60 uppercase tracking-widest mt-0.5">Verification ID</p>
+                <p id="certID" class="text-[9px] font-mono">CERT-00000000</p>
+              </div>
+            </div>
+
+            <!-- Official Seal Overlay (If Uploaded) -->
+            <div id="sealContainer" class="hidden flex-col items-center justify-center">
+              <img id="renderSeal" src="" alt="Official Seal" class="w-16 h-16 object-contain">
+            </div>
+
+            <!-- Signature Line / Upload -->
+            <div class="text-right flex flex-col items-end min-w-[120px]">
+              <div id="sigDisplayContainer" class="h-10 flex items-end justify-end">
+                <span id="renderSignatureText" class="font-signature text-xl block">Authorized Signatory</span>
+                <img id="renderSignatureImg" src="" alt="Signature" class="hidden h-10 object-contain">
+              </div>
+              <div class="w-28 border-b border-slate-500/40 my-1"></div>
+              <p class="text-[8px] opacity-60 uppercase tracking-widest">Verification Officer</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action Export Buttons -->
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-wrap justify-center gap-4">
+        <button onclick="downloadJPG()" class="bg-slate-950 hover:bg-black text-emerald-400 border border-emerald-500/30 font-semibold px-6 py-3 rounded-xl shadow-lg transition text-sm">Download High-Res JPG</button>
+        <button onclick="downloadPDF()" class="bg-slate-950 hover:bg-black text-red-400 border border-red-500/30 font-semibold px-6 py-3 rounded-xl shadow-lg transition text-sm">Download Official PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function renderQRCode(certID) {
+      const qrContainer = document.getElementById("qrcode");
+      qrContainer.innerHTML = "";
+      new QRCode(qrContainer, {
+        text: `https://verify.yourdomain.com/cert?id=${certID}`,
+        width: 38,
+        height: 38,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+    }
+
+    function adjustZoom(val) {
+      const cert = document.getElementById('certificate-container');
+      cert.style.transform = `scale(${val})`;
+      document.getElementById('zoomVal').innerText = `${Math.round(val * 100)}%`;
+    }
+
+    function applyPreset(type) {
+      if (type === 'classic') {
+        document.getElementById('fontFamily').value = 'font-cormorant';
+        document.getElementById('bgColor').value = '#fdfbf7';
+        document.getElementById('textColor').value = '#1e293b';
+        document.getElementById('accentColor').value = '#92400e';
+        document.getElementById('borderStyle').value = 'double';
+        document.getElementById('borderWidth').value = '8px';
+      } else if (type === 'modern') {
+        document.getElementById('fontFamily').value = 'font-montserrat';
+        document.getElementById('bgColor').value = '#ffffff';
+        document.getElementById('textColor').value = '#0f172a';
+        document.getElementById('accentColor').value = '#2563eb';
+        document.getElementById('borderStyle').value = 'solid';
+        document.getElementById('borderWidth').value = '4px';
+      } else if (type === 'royal') {
+        document.getElementById('fontFamily').value = 'font-cinzel';
+        document.getElementById('bgColor').value = '#fafaf9';
+        document.getElementById('textColor').value = '#1c1917';
+        document.getElementById('accentColor').value = '#d97706';
+        document.getElementById('borderStyle').value = 'double';
+        document.getElementById('borderWidth').value = '12px';
+      } else if (type === 'dark') {
+        document.getElementById('fontFamily').value = 'font-cinzel';
+        document.getElementById('bgColor').value = '#020617';
+        document.getElementById('textColor').value = '#f8fafc';
+        document.getElementById('accentColor').value = '#f59e0b';
+        document.getElementById('borderStyle').value = 'solid';
+        document.getElementById('borderWidth').value = '4px';
+      }
+    }
+
+    function generateCertificate(e) {
+      e.preventDefault();
+
+      // Extract Inputs
+      const instName = document.getElementById('institutionName').value;
+      const course = document.getElementById('courseName').value;
+      const name = document.getElementById('fullName').value;
+      const father = document.getElementById('fatherName').value;
+      const regNo = document.getElementById('regNo').value || 'N/A';
+      const grade = document.getElementById('grade').value || 'N/A';
+      const header = document.getElementById('headerText').value;
+      const subHeader = document.getElementById('subHeaderText').value;
+      const draft = document.getElementById('bodyDraft').value;
+      const watermark = document.getElementById('watermarkInput').value;
+
+      // Styling Selections
+      const fontStyle = document.getElementById('fontFamily').value;
+      const borderStyle = document.getElementById('borderStyle').value;
+      const borderWidth = document.getElementById('borderWidth').value;
+      const ornamentChoice = document.getElementById('cornerOrnament').value;
+      const nameSize = document.getElementById('nameFontSize').value;
+      const lineSpacing = document.getElementById('lineSpacing').value;
+      const letterSpacing = document.getElementById('letterSpacing').value;
+      const bgColor = document.getElementById('bgColor').value;
+      const textColor = document.getElementById('textColor').value;
+      const accentColor = document.getElementById('accentColor').value;
+
+      // Apply Container Base Styles
+      const certContainer = document.getElementById('certificate-container');
+      certContainer.style.backgroundColor = bgColor;
+      certContainer.style.color = textColor;
+
+      // Apply Boundary Line Styles
+      const outerBorder = document.getElementById('boundaryLineOuter');
+      const innerBorder = document.getElementById('boundaryLineInner');
+      outerBorder.style.borderStyle = borderStyle;
+      outerBorder.style.borderWidth = borderWidth;
+      outerBorder.style.borderColor = accentColor;
+      innerBorder.style.borderStyle = borderStyle;
+      innerBorder.style.borderWidth = '1px';
+      innerBorder.style.borderColor = accentColor;
+
+      // Corner Ornaments Control
+      const ornaments = [document.getElementById('ornamentTL'), document.getElementById('ornamentTR'), document.getElementById('ornamentBL'), document.getElementById('ornamentBR')];
+      ornaments.forEach(o => {
+        o.style.color = accentColor;
+        o.style.display = ornamentChoice === 'show' ? 'block' : 'none';
+      });
+
+      // Apply Watermark
+      document.getElementById('watermarkDisplay').innerText = watermark;
+
+      // Render Text & Font Classes
+      document.getElementById('renderInstitution').innerText = instName;
+      document.getElementById('renderCourse').innerText = course;
+      document.getElementById('renderHeader').innerText = header;
+      document.getElementById('renderHeader').className = `${fontStyle} text-3xl font-bold ${letterSpacing} uppercase`;
+      document.getElementById('renderSubHeader').innerText = subHeader;
+      
+      const renderName = document.getElementById('renderName');
+      renderName.innerText = name;
+      renderName.className = `${fontStyle} ${nameSize} font-bold border-b inline-block px-10 pb-1 ${letterSpacing}`;
+      renderName.style.borderColor = accentColor;
+      renderName.style.color = accentColor;
+
+      document.getElementById('renderFather').innerText = father;
+      
+      const renderDraft = document.getElementById('renderDraft');
+      renderDraft.innerText = draft;
+      renderDraft.className = `text-[11px] max-w-xl mx-auto opacity-85 ${lineSpacing}`;
+
+      document.getElementById('renderRegNo').innerText = regNo;
+      document.getElementById('renderGrade').innerText = grade;
+
+      // File Reader for Signature Upload
+      const sigInput = document.getElementById('signatureUpload');
+      const renderSigText = document.getElementById('renderSignatureText');
+      const renderSigImg = document.getElementById('renderSignatureImg');
+      if (sigInput.files && sigInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          renderSigImg.src = evt.target.result;
+          renderSigImg.classList.remove('hidden');
+          renderSigText.classList.add('hidden');
+        };
+        reader.readAsDataURL(sigInput.files[0]);
+      } else {
+        renderSigImg.classList.add('hidden');
+        renderSigText.classList.remove('hidden');
+      }
+
+      // File Reader for Official Seal Upload
+      const sealInput = document.getElementById('sealUpload');
+      const sealContainer = document.getElementById('sealContainer');
+      const renderSeal = document.getElementById('renderSeal');
+      if (sealInput.files && sealInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          renderSeal.src = evt.target.result;
+          sealContainer.classList.remove('hidden');
+          sealContainer.classList.add('flex');
+        };
+        reader.readAsDataURL(sealInput.files[0]);
+      } else {
+        sealContainer.classList.add('hidden');
+      }
+
+      // Unique Identifier & Date
+      const certID = 'CERT-' + Array.from(crypto.getRandomValues(new Uint8Array(4)), b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+      document.getElementById('certID').innerText = certID;
+      document.getElementById('certDate').innerText = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+      renderQRCode(certID);
+
+      // Custom Background Image Frame Logic
+      const bgInput = document.getElementById('bgUpload');
+      if (bgInput.files && bgInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          certContainer.style.backgroundImage = `url('${evt.target.result}')`;
+          outerBorder.style.display = 'none';
+        };
+        reader.readAsDataURL(bgInput.files[0]);
+      } else {
+        certContainer.style.backgroundImage = 'none';
+        outerBorder.style.display = 'block';
+      }
+
+      const output = document.getElementById('outputSection');
+      output.classList.remove('hidden');
+      output.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function downloadJPG() {
+      const certElement = document.getElementById('certificate-container');
+      html2canvas(certElement, { scale: 3 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Certificate_${document.getElementById('renderName').innerText.replace(/\s+/g, '_')}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+      });
+    }
+
+    function downloadPDF() {
+      const certElement = document.getElementById('certificate-container');
+      html2canvas(certElement, { scale: 3 }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('landscape', 'mm', 'a4');
+        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+        pdf.save(`Certificate_${document.getElementById('renderName').innerText.replace(/\s+/g, '_')}.pdf`);
+      });
+    }
+  </script>
+</body>
+</html>
