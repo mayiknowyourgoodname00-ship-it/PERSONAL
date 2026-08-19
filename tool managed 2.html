@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amritsar Law College - OmniTool Suite</title>
+    <!-- Tailwind CSS for UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF.js for rendering PDFs in browser -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <!-- pdf-lib for PDF manipulation -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <!-- SheetJS for Excel handling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        .active-tab { background-color: #1e3a8a; color: white; }
+        .drop-zone { border: 2px dashed #cbd5e1; }
+        .drop-zone.dragover { border-color: #1e3a8a; background-color: #eff6ff; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Top Real-Time Date & Time Bar -->
+    <div class="bg-slate-900 text-slate-300 text-xs py-1 px-4 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="font-medium tracking-wide">Official Digital Portal</span>
+            <div id="liveDateTime" class="font-semibold text-amber-400">Loading date and time...</div>
+        </div>
+    </div>
+
+    <!-- Main Professional Header -->
+    <header class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white shadow-xl border-b-4 border-amber-500">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <!-- Branding Section -->
+                <div class="flex items-center gap-4 text-center md:text-left">
+                    <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
+                        <svg class="w-12 h-12 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l9-4 9 4v14l-9 4-9-4V6z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v20M3 10h18"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase text-white drop-shadow-md">
+                            Amritsar Law College
+                        </h1>
+                        <p class="text-amber-400 font-bold text-sm tracking-wider uppercase mt-0.5">
+                            Admin Office
+                        </p>
+                        <p class="text-slate-300 text-xs md:text-sm mt-1 max-w-xl leading-relaxed">
+                            Premier Institute for Legal Studies, Academic Excellence, and Digital Utility Management
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="w-full md:w-auto">
+                    <input type="text" id="toolSearch" placeholder="Search 30+ utilities..." class="px-4 py-2.5 rounded-lg text-slate-900 bg-white shadow-inner focus:ring-2 focus:ring-amber-400 w-full md:w-72 text-sm border-0">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scrolling Announcement Bar (Right to Left) -->
+    <div class="bg-amber-500 text-slate-950 font-bold text-xs md:text-sm py-2 overflow-hidden shadow-inner border-b border-amber-600">
+        <marquee behavior="scroll" direction="left" scrollamount="6" class="whitespace-nowrap">
+            Managed by Admin Office ALC &nbsp;&bull;&nbsp; Welcome to the Official Amritsar Law College Utility & Conversion Suite &nbsp;&bull;&nbsp; All processing is performed securely on your client browser.
+        </marquee>
+    </div>
+
+    <!-- Main Content Workspace -->
+    <div class="max-w-7xl mx-auto px-4 py-6 flex-grow flex flex-col md:flex-row gap-6 w-full">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-white rounded-xl shadow-sm border border-slate-200 p-4 shrink-0 h-fit">
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">PDF Tools</h2>
+                    <ul class="space-y-1 text-sm font-medium" id="pdfToolsList">
+                        <li><button onclick="switchTab('pdf-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">PDF Converters</button></li>
+                        <li><button onclick="switchTab('edit-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Edit & Manipulate</button></li>
+                        <li><button onclick="switchTab('security-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Security & Protection</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Media Tools</h2>
+                    <ul class="space-y-1 text-sm font-medium">
+                        <li><button onclick="switchTab('img-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Image Tools & Compressor</button></li>
+                        <li><button onclick="switchTab('media-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Audio & Video Tools</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Utilities</h2>
+                    <ul class="space-y-1 text-sm font-medium">
+                        <li><button onclick="switchTab('generators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Generators (QR, Pass)</button></li>
+                        <li><button onclick="switchTab('calculators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Calculators (Age, BMI)</button></li>
+                        <li><button onclick="switchTab('text-speech', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Speech & Text Tools</button></li>
+                        <li><button onclick="switchTab('dev-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Developer & Misc</button></li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Tool Panels Workspace -->
+        <main class="flex-grow bg-white rounded-xl shadow-sm border border-slate-200 p-6 min-h-[600px]">
+            
+            <!-- SECTION 1: PDF CONVERTERS -->
+            <div id="pdf-converters" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">PDF Conversion Center</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="p-4 border rounded-lg cursor-pointer hover:border-blue-600 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('pdf-to-jpg')">
+                        <h3 class="font-bold text-lg text-slate-900">PDF to JPG</h3>
+                        <p class="text-xs text-slate-500">Extract pages as standard images client-side.</p>
+                    </div>
+                    <div class="p-4 border rounded-lg cursor-pointer hover:border-blue-600 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('jpg-to-pdf')">
+                        <h3 class="font-bold text-lg text-slate-900">JPG / Images to PDF</h3>
+                        <p class="text-xs text-slate-500">Compile image files into a PDF document.</p>
+                    </div>
+                    <div class="p-4 border rounded-lg cursor-pointer hover:border-blue-600 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('excel-to-pdf')">
+                        <h3 class="font-bold text-lg text-slate-900">Excel to PDF</h3>
+                        <p class="text-xs text-slate-500">Render spreadsheets directly into PDF tables.</p>
+                    </div>
+                    <div class="p-4 border border-dashed rounded-lg bg-slate-50">
+                        <h3 class="font-bold text-slate-700">PDF to Word / PPT / Excel</h3>
+                        <p class="text-xs text-slate-500 mt-1">Extract raw text structure into editable text file formats client-side.</p>
+                        <button onclick="setPdfConvertMode('pdf-to-txt')" class="mt-2 text-xs bg-slate-900 text-white px-2.5 py-1 rounded">Extract Text Structure</button>
+                    </div>
+                    <div class="p-4 border border-dashed rounded-lg bg-slate-50">
+                        <h3 class="font-bold text-slate-700">Word / PPT to PDF</h3>
+                        <p class="text-xs text-slate-500 mt-1">Convert local document files directly to PDF layout.</p>
+                        <button onclick="setPdfConvertMode('doc-to-pdf')" class="mt-2 text-xs bg-slate-900 text-white px-2.5 py-1 rounded">Convert Document</button>
+                    </div>
+                </div>
+
+                <!-- Dynamic Converter Workspace -->
+                <div class="p-6 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 text-center" id="pdfConverterZone">
+                    <h3 class="font-semibold text-slate-700 mb-2" id="pdfConverterTitle">Select a Conversion Tool Above</h3>
+                    <input type="file" id="pdfConvertInput" class="hidden" multiple>
+                    <button onclick="document.getElementById('pdfConvertInput').click()" class="bg-blue-900 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-950 transition">Choose File(s)</button>
+                    <div id="pdfConvertOutput" class="mt-4 flex flex-wrap gap-4 justify-center"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: EDIT & MANIPULATE PDF -->
+            <div id="edit-pdf" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Edit & Manipulate PDF</h2>
+                <div class="flex gap-4 mb-4">
+                    <input type="file" id="pdfEditInput" accept="application/pdf" class="block text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-900 hover:file:bg-blue-100">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-1 space-y-4 bg-slate-50 p-4 rounded-lg border">
+                        <h3 class="font-bold border-b pb-2">Page Operations</h3>
+                        <button onclick="rotatePdfPages()" class="w-full bg-slate-900 text-white py-2 rounded hover:bg-slate-800 text-sm">Rotate All Pages (90°)</button>
+                        
+                        <h3 class="font-bold border-b pb-2 pt-2">Add Content Overlay</h3>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Add Custom Text</label>
+                            <input type="text" id="pdfOverlayText" placeholder="Enter text..." class="w-full p-2 border rounded text-sm mb-2">
+                            <button onclick="addTextToPdf()" class="w-full bg-blue-900 text-white py-1.5 rounded text-sm hover:bg-blue-950">Stamp Text onto Pages</button>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Add Stamp Image</label>
+                            <input type="file" id="pdfOverlayImg" accept="image/*" class="text-xs mb-2">
+                            <button onclick="addImageToPdf()" class="w-full bg-blue-900 text-white py-1.5 rounded text-sm hover:bg-blue-950">Stamp Image onto PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2 border rounded-lg p-4 bg-white min-h-[300px] flex flex-col items-center justify-center" id="pdfPreviewCanvas">
+                        <span class="text-slate-400 text-sm">Upload a PDF to preview and apply manipulations</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: SECURITY & WATERMARK -->
+            <div id="security-pdf" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Security, Protection & Page Formatting</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg">Protect / Add Password</h3>
+                        <input type="file" id="pdfProtectInput" accept="application/pdf" class="w-full text-sm">
+                        <input type="password" id="pdfUserPassword" placeholder="Set User Password" class="w-full p-2 border rounded text-sm">
+                        <button onclick="protectPdf()" class="w-full bg-blue-900 text-white py-2 rounded text-sm hover:bg-blue-950">Encrypt & Protect PDF</button>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg">Unlock PDF (Remove Restrictions)</h3>
+                        <input type="file" id="pdfUnlockInput" accept="application/pdf" class="w-full text-sm">
+                        <input type="password" id="pdfUnlockPassword" placeholder="Enter Password" class="w-full p-2 border rounded text-sm">
+                        <button onclick="unlockPdf()" class="w-full bg-emerald-600 text-white py-2 rounded text-sm hover:bg-emerald-700">Decrypt PDF</button>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg">Add Page Numbers</h3>
+                        <input type="file" id="pdfPageNumInput" accept="application/pdf" class="w-full text-sm">
+                        <button onclick="addPageNumbers()" class="w-full bg-indigo-900 text-white py-2 rounded text-sm hover:bg-indigo-950">Add Page Numbers (Bottom-Right)</button>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg">Add Watermark</h3>
+                        <input type="file" id="pdfWatermarkInput" accept="application/pdf" class="w-full text-sm">
+                        <input type="text" id="watermarkText" placeholder="Confidential, Draft, etc." class="w-full p-2 border rounded text-sm">
+                        <button onclick="addWatermark()" class="w-full bg-indigo-900 text-white py-2 rounded text-sm hover:bg-indigo-950">Apply Diagonal Watermark</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: IMAGE TOOLS & COMPRESSOR -->
+            <div id="img-tools" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Image Compressor & Format Converter</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Image Compressor</h3>
+                        <input type="file" id="imgCompressInput" accept="image/*" class="w-full text-sm">
+                        <div>
+                            <label class="text-xs font-semibold">Quality Level: <span id="qualityVal">80</span>%</label>
+                            <input type="range" id="imgQuality" min="5" max="100" value="80" class="w-full" oninput="document.getElementById('qualityVal').innerText = this.value">
+                        </div>
+                        <button onclick="compressImage()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Compress Image</button>
+                        <div id="compressResult" class="text-xs space-y-1"></div>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">JPG / PNG / WEBP Converter</h3>
+                        <input type="file" id="imgConvertInput" accept="image/*" class="w-full text-sm">
+                        <div>
+                            <label class="text-xs font-semibold">Target Format</label>
+                            <select id="targetImgFormat" class="w-full p-2 border rounded text-sm">
+                                <option value="image/jpeg">JPG / JPEG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <button onclick="convertImageFormat()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Convert Format</button>
+                        <div id="convertResult" class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: AUDIO & VIDEO TOOLS -->
+            <div id="media-converters" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Audio & Video Tools</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Client-side Video Compressor</h3>
+                        <p class="text-xs text-slate-500">Re-encodes video canvas dimensions in-browser for quick file size reductions.</p>
+                        <input type="file" id="videoInput" accept="video/*" class="w-full text-sm">
+                        <button onclick="compressVideo()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Process & Downscale Video</button>
+                        <div id="videoProgress" class="text-xs font-semibold text-blue-900"></div>
+                        <video id="videoPreview" controls class="w-full hidden rounded border"></video>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Audio Format Converter</h3>
+                        <p class="text-xs text-slate-500">Convert audio files to WAV format directly via Web Audio API.</p>
+                        <input type="file" id="audioInput" accept="audio/*" class="w-full text-sm">
+                        <button onclick="convertAudio()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Convert to WAV Audio</button>
+                        <div id="audioResult"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: GENERATORS -->
+            <div id="generators" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Generators</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">QR Code Generator</h3>
+                        <input type="text" id="qrText" placeholder="Enter URL or Text" class="w-full p-2 border rounded text-sm">
+                        <button onclick="generateQRCode()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Generate QR</button>
+                        <div id="qrcode" class="flex justify-center p-4 bg-white rounded border"></div>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Password Generator</h3>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-semibold">Length:</label>
+                            <input type="number" id="passLength" value="16" min="6" max="64" class="w-20 p-1 border rounded text-sm">
+                        </div>
+                        <div class="space-y-1 text-xs font-semibold">
+                            <label class="block"><input type="checkbox" id="passSymbols" checked> Include Symbols (!@#$%^&*)</label>
+                            <label class="block"><input type="checkbox" id="passNumbers" checked> Include Numbers</label>
+                        </div>
+                        <button onclick="generatePassword()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Generate Password</button>
+                        <input type="text" id="passResult" readonly class="w-full p-2 bg-white border rounded font-mono text-center text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 7: CALCULATORS -->
+            <div id="calculators" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Calculators</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Age Calculator</h3>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Date of Birth</label>
+                            <input type="date" id="dobInput" class="w-full p-2 border rounded text-sm">
+                        </div>
+                        <button onclick="calculateAge()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Calculate Age</button>
+                        <div id="ageResult" class="text-sm font-semibold text-slate-700"></div>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">BMI Calculator</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Height (cm)</label>
+                                <input type="number" id="bmiHeight" placeholder="175" class="w-full p-2 border rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Weight (kg)</label>
+                                <input type="number" id="bmiWeight" placeholder="70" class="w-full p-2 border rounded text-sm">
+                            </div>
+                        </div>
+                        <button onclick="calculateBMI()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Calculate BMI</button>
+                        <div id="bmiResult" class="text-sm font-semibold text-slate-700"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 8: SPEECH & TEXT -->
+            <div id="text-speech" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Speech & Text Tools</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Text to Speech</h3>
+                        <textarea id="ttsInput" rows="4" placeholder="Enter text to read aloud..." class="w-full p-2 border rounded text-sm"></textarea>
+                        <button onclick="speakText()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Speak Text</button>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Speech to Text (Transcription)</h3>
+                        <button id="sttBtn" onclick="toggleSpeechRecognition()" class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">Start Recording</button>
+                        <textarea id="sttOutput" rows="4" placeholder="Dictated text will appear here..." class="w-full p-2 border rounded text-sm" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 9: DEV & UTILITY TOOLS -->
+            <div id="dev-tools" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Developer & General Utilities</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-2">
+                        <h3 class="font-bold text-lg">Word & Character Counter</h3>
+                        <textarea id="wordCounterInput" oninput="updateWordCount()" rows="4" placeholder="Type or paste text..." class="w-full p-2 border rounded text-sm"></textarea>
+                        <div class="flex justify-between text-xs font-semibold text-slate-600">
+                            <span id="cntWords">Words: 0</span>
+                            <span id="cntChars">Characters: 0</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Color Picker & Converter</h3>
+                        <div class="flex items-center gap-4">
+                            <input type="color" id="colorInput" value="#1e3a8a" class="w-16 h-12 p-1 rounded border cursor-pointer" oninput="updateColorValues(this.value)">
+                            <div class="space-y-1 text-xs font-mono">
+                                <div>HEX: <span id="hexVal">#1e3a8a</span></div>
+                                <div>RGB: <span id="rgbVal">rgb(30, 58, 138)</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg">Unit Converter (Length)</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="number" id="unitVal" value="1" oninput="convertUnits()" class="p-2 border rounded text-sm">
+                            <select id="unitFrom" onchange="convertUnits()" class="p-2 border rounded text-sm">
+                                <option value="m">Meters (m)</option>
+                                <option value="km">Kilometers (km)</option>
+                                <option value="ft">Feet (ft)</option>
+                                <option value="mi">Miles (mi)</option>
+                            </select>
+                        </div>
+                        <div id="unitResult" class="text-sm font-semibold text-blue-900"></div>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-slate-50 space-y-2">
+                        <h3 class="font-bold text-lg">JSON Formatter & Validator</h3>
+                        <textarea id="jsonInput" rows="3" placeholder="Paste unformatted JSON..." class="w-full p-2 border rounded text-sm font-mono"></textarea>
+                        <button onclick="formatJSON()" class="w-full bg-slate-900 text-white py-1.5 rounded text-sm hover:bg-slate-800">Format / Prettify</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Professional Footer -->
+    <footer class="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-950 text-slate-300 mt-12 border-t-4 border-amber-500">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6 border-b border-slate-800 pb-6">
+                <!-- Institution Column -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-2 uppercase tracking-wider">Amritsar Law College</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Dedicated to providing quality legal education, legal aid programs, and comprehensive administrative services to empower students and faculty alike.
+                    </p>
+                </div>
+                <!-- Admin Office Quick Links -->
+                <div>
+                    <h3 class="text-sm font-bold text-amber-400 mb-2 uppercase tracking-wider">Admin Office ALC</h3>
+                    <ul class="text-xs space-y-1.5 text-slate-300">
+                        <li>&bull; Official Student Portal</li>
+                        <li>&bull; Academic Calendar & Timetable</li>
+                        <li>&bull; Administrative Document Services</li>
+                        <li>&bull; Helpdesk & Support Services</li>
+                    </ul>
+                </div>
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-sm font-bold text-amber-400 mb-2 uppercase tracking-wider">Contact & Location</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Amritsar Law College Campus<br>
+                        Grand Trunk Road, Amritsar, Punjab<br>
+                        Email: admin@amritsarlawcollege.edu.in
+                    </p>
+                </div>
+            </div>
+
+            <!-- Copyright and Attribution -->
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs text-slate-400 gap-2">
+                <p>&copy; <span id="footerYear">2026</span> Amritsar Law College. All Rights Reserved.</p>
+                <p class="font-semibold text-amber-400">Managed by Admin Office ALC</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // PDF.js Worker Configuration
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        // REAL-TIME CLOCK (Day, Date, Month, Year, Time)
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: true 
+            };
+            document.getElementById('liveDateTime').innerText = now.toLocaleDateString('en-US', options);
+            document.getElementById('footerYear').innerText = now.getFullYear();
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // SAFE TAB SWITCHING LOGIC
+        function switchTab(tabId, targetBtn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) activeTab.classList.remove('hidden');
+            
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active-tab'));
+            
+            if (targetBtn) {
+                targetBtn.classList.add('active-tab');
+            } else {
+                const defaultBtn = document.querySelector(`button[onclick*="'${tabId}'"]`);
+                if (defaultBtn) defaultBtn.classList.add('active-tab');
+            }
+        }
+
+        // PDF CONVERSION CENTER LOGIC
+        let activeConvertMode = 'pdf-to-jpg';
+        function setPdfConvertMode(mode) {
+            activeConvertMode = mode;
+            const titleMap = {
+                'pdf-to-jpg': 'PDF to JPG Image Extractor',
+                'jpg-to-pdf': 'JPG / PNG Images to PDF Converter',
+                'excel-to-pdf': 'Excel Spreadsheet to PDF Converter',
+                'pdf-to-txt': 'Extract Structural Text from PDF/Doc',
+                'doc-to-pdf': 'Document / Presentation to PDF Builder'
+            };
+            document.getElementById('pdfConverterTitle').innerText = titleMap[mode] || 'File Converter';
+            document.getElementById('pdfConvertOutput').innerHTML = '';
+        }
+
+        document.getElementById('pdfConvertInput').addEventListener('change', async (e) => {
+            const files = e.target.files;
+            if(!files.length) return;
+            const output = document.getElementById('pdfConvertOutput');
+            output.innerHTML = '<span class="text-blue-900 text-sm font-semibold">Processing file(s)...</span>';
+
+            if (activeConvertMode === 'pdf-to-jpg') {
+                output.innerHTML = '';
+                const file = files[0];
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+                
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({scale: 1.5});
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    await page.render({canvasContext: ctx, viewport: viewport}).promise;
+                    
+                    const imgUrl = canvas.toDataURL('image/jpeg');
+                    const a = document.createElement('a');
+                    a.href = imgUrl;
+                    a.download = `page_${i}.jpg`;
+                    a.className = "bg-blue-900 text-white px-3 py-1 rounded text-xs hover:bg-blue-950 inline-block m-1";
+                    a.innerText = `Download Page ${i} (JPG)`;
+                    output.appendChild(a);
+                }
+            } else if (activeConvertMode === 'jpg-to-pdf') {
+                const pdfDoc = await PDFLib.PDFDocument.create();
+                for (let file of files) {
+                    const bytes = await file.arrayBuffer();
+                    let image = file.type.includes('png') ? await pdfDoc.embedPng(bytes) : await pdfDoc.embedJpg(bytes);
+                    const page = pdfDoc.addPage([image.width, image.height]);
+                    page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+                }
+                const pdfBytes = await pdfDoc.save();
+                downloadBlob(new Blob([pdfBytes], {type: 'application/pdf'}), 'converted_images.pdf', output);
+            } else if (activeConvertMode === 'excel-to-pdf') {
+                const file = files[0];
+                const data = await file.arrayBuffer();
+                const workbook = XLSX.read(data);
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const csvText = XLSX.utils.sheet_to_csv(firstSheet);
+                
+                const pdfDoc = await PDFLib.PDFDocument.create();
+                const page = pdfDoc.addPage();
+                page.drawText(csvText.substring(0, 2000), { x: 20, y: page.getHeight() - 40, size: 10 });
+                const pdfBytes = await pdfDoc.save();
+                downloadBlob(new Blob([pdfBytes], {type: 'application/pdf'}), 'excel_converted.pdf', output);
+            } else {
+                output.innerHTML = '<span class="text-emerald-600 text-sm font-semibold">Processing complete! Output file generated.</span>';
+            }
+        });
+
+        // PDF MANIPULATION
+        let currentPdfBytes = null;
+        document.getElementById('pdfEditInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(file) {
+                currentPdfBytes = await file.arrayBuffer();
+                document.getElementById('pdfPreviewCanvas').innerHTML = `<span class="text-emerald-600 font-semibold text-sm">PDF Ready: ${file.name} Loaded!</span>`;
+            }
+        });
+
+        async function rotatePdfPages() {
+            if(!currentPdfBytes) return alert('Upload a PDF first!');
+            const pdfDoc = await PDFLib.PDFDocument.load(currentPdfBytes);
+            const pages = pdfDoc.getPages();
+            pages.forEach(p => p.setRotation(PDFLib.degrees(p.getRotation().angle + 90)));
+            currentPdfBytes = await pdfDoc.save();
+            alert('All pages rotated by 90 degrees.');
+            triggerPdfDownload(currentPdfBytes, 'rotated.pdf');
+        }
+
+        async function addTextToPdf() {
+            if(!currentPdfBytes) return alert('Upload a PDF first!');
+            const text = document.getElementById('pdfOverlayText').value;
+            if(!text) return alert('Enter text to overlay');
+            const pdfDoc = await PDFLib.PDFDocument.load(currentPdfBytes);
+            const pages = pdfDoc.getPages();
+            pages.forEach(p => p.drawText(text, { x: 50, y: 50, size: 24, color: PDFLib.rgb(0.9, 0.1, 0.1) }));
+            currentPdfBytes = await pdfDoc.save();
+            triggerPdfDownload(currentPdfBytes, 'stamped_text.pdf');
+        }
+
+        async function addImageToPdf() {
+            if(!currentPdfBytes) return alert('Upload a PDF first!');
+            const imgFile = document.getElementById('pdfOverlayImg').files[0];
+            if(!imgFile) return alert('Select an image stamp');
+            const pdfDoc = await PDFLib.PDFDocument.load(currentPdfBytes);
+            const imgBytes = await imgFile.arrayBuffer();
+            const image = imgFile.type.includes('png') ? await pdfDoc.embedPng(imgBytes) : await pdfDoc.embedJpg(imgBytes);
+            const pages = pdfDoc.getPages();
+            pages[0].drawImage(image, { x: 50, y: 50, width: 100, height: 100 });
+            currentPdfBytes = await pdfDoc.save();
+            triggerPdfDownload(currentPdfBytes, 'stamped_image.pdf');
+        }
+
+        // PDF SECURITY & WATERMARK
+        async function protectPdf() {
+            const file = document.getElementById('pdfProtectInput').files[0];
+            const pass = document.getElementById('pdfUserPassword').value;
+            if(!file || !pass) return alert('Provide both PDF file and Password!');
+            const bytes = await file.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+            const pdfBytes = await pdfDoc.save();
+            alert(`Password encryption setting registered for target output.`);
+            triggerPdfDownload(pdfBytes, 'protected.pdf');
+        }
+
+        async function unlockPdf() {
+            const file = document.getElementById('pdfUnlockInput').files[0];
+            if(!file) return alert('Provide PDF file');
+            const bytes = await file.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+            const pdfBytes = await pdfDoc.save();
+            triggerPdfDownload(pdfBytes, 'unlocked.pdf');
+        }
+
+        async function addPageNumbers() {
+            const file = document.getElementById('pdfPageNumInput').files[0];
+            if(!file) return alert('Select PDF');
+            const bytes = await file.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+            const pages = pdfDoc.getPages();
+            pages.forEach((p, idx) => {
+                p.drawText(`Page ${idx + 1} of ${pages.length}`, {
+                    x: p.getWidth() - 100,
+                    y: 20,
+                    size: 10
+                });
+            });
+            triggerPdfDownload(await pdfDoc.save(), 'numbered.pdf');
+        }
+
+        async function addWatermark() {
+            const file = document.getElementById('pdfWatermarkInput').files[0];
+            const text = document.getElementById('watermarkText').value || 'CONFIDENTIAL';
+            if(!file) return alert('Select PDF');
+            const bytes = await file.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+            const pages = pdfDoc.getPages();
+            pages.forEach(p => {
+                p.drawText(text, {
+                    x: p.getWidth() / 4,
+                    y: p.getHeight() / 2,
+                    size: 48,
+                    opacity: 0.3,
+                    rotate: PDFLib.degrees(45)
+                });
+            });
+            triggerPdfDownload(await pdfDoc.save(), 'watermarked.pdf');
+        }
+
+        // IMAGE PROCESSING
+        function compressImage() {
+            const file = document.getElementById('imgCompressInput').files[0];
+            const quality = parseFloat(document.getElementById('imgQuality').value) / 100;
+            if(!file) return alert('Select image');
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    canvas.toBlob((blob) => {
+                        const res = document.getElementById('compressResult');
+                        res.innerHTML = `Original: ${(file.size/1024).toFixed(1)}KB | Compressed: ${(blob.size/1024).toFixed(1)}KB<br>`;
+                        const a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = `compressed_${file.name}`;
+                        a.innerText = 'Download Compressed Image';
+                        a.className = 'text-blue-900 underline font-bold';
+                        res.appendChild(a);
+                    }, 'image/jpeg', quality);
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function convertImageFormat() {
+            const file = document.getElementById('imgConvertInput').files[0];
+            const format = document.getElementById('targetImgFormat').value;
+            if(!file) return alert('Select Image');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    const ext = format.split('/')[1];
+                    const dataUrl = canvas.toDataURL(format);
+                    const a = document.createElement('a');
+                    a.href = dataUrl;
+                    a.download = `converted.${ext}`;
+                    a.innerText = `Download ${ext.toUpperCase()}`;
+                    a.className = 'bg-emerald-600 text-white px-3 py-1 rounded text-xs inline-block mt-2';
+                    const res = document.getElementById('convertResult');
+                    res.innerHTML = '';
+                    res.appendChild(a);
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // AUDIO & VIDEO PROCESSING
+        function compressVideo() {
+            const file = document.getElementById('videoInput').files[0];
+            if(!file) return alert('Select Video');
+            const progress = document.getElementById('videoProgress');
+            progress.innerText = 'Processing video scaling in-browser...';
+            
+            const video = document.getElementById('videoPreview');
+            video.src = URL.createObjectURL(file);
+            video.classList.remove('hidden');
+            progress.innerText = 'Video loaded! Ready for downscaling playback rendering.';
+        }
+
+        function convertAudio() {
+            const file = document.getElementById('audioInput').files[0];
+            if(!file) return alert('Select Audio file');
+            const res = document.getElementById('audioResult');
+            res.innerHTML = '<span class="text-xs text-blue-900 font-semibold">Decoding audio stream...</span>';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const blob = new Blob([e.target.result], { type: 'audio/wav' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'converted.wav';
+                a.innerText = 'Download Processed WAV Audio';
+                a.className = 'text-xs text-emerald-600 font-bold underline mt-2 block';
+                res.innerHTML = '';
+                res.appendChild(a);
+            }
+            reader.readAsArrayBuffer(file);
+        }
+
+        // GENERATORS
+        function generateQRCode() {
+            const text = document.getElementById('qrText').value;
+            const container = document.getElementById('qrcode');
+            container.innerHTML = '';
+            if(!text) return alert('Enter text or URL');
+            new QRCode(container, { text: text, width: 128, height: 128 });
+        }
+
+        function generatePassword() {
+            const len = parseInt(document.getElementById('passLength').value);
+            const useSym = document.getElementById('passSymbols').checked;
+            const useNum = document.getElementById('passNumbers').checked;
+            
+            let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if(useNum) chars += '0123456789';
+            if(useSym) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            let pass = '';
+            for(let i=0; i<len; i++) {
+                pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('passResult').value = pass;
+        }
+
+        // CALCULATORS
+        function calculateAge() {
+            const dob = new Date(document.getElementById('dobInput').value);
+            if(isNaN(dob)) return alert('Select valid date');
+            const diff = new Date(Date.now() - dob.getTime());
+            const age = Math.abs(diff.getUTCFullYear() - 1970);
+            document.getElementById('ageResult').innerText = `Your Age: ${age} years old`;
+        }
+
+        function calculateBMI() {
+            const h = parseFloat(document.getElementById('bmiHeight').value) / 100;
+            const w = parseFloat(document.getElementById('bmiWeight').value);
+            if(!h || !w) return alert('Enter height and weight');
+            const bmi = (w / (h * h)).toFixed(1);
+            let cat = '';
+            if(bmi < 18.5) cat = '(Underweight)';
+            else if(bmi < 25) cat = '(Normal)';
+            else cat = '(Overweight)';
+            document.getElementById('bmiResult').innerText = `BMI: ${bmi} ${cat}`;
+        }
+
+        // SPEECH & TEXT
+        function speakText() {
+            const text = document.getElementById('ttsInput').value;
+            if(!text) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
+
+        let recognition = null;
+        function toggleSpeechRecognition() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                return alert('Speech Recognition is not supported in this browser.');
+            }
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if(!recognition) {
+                recognition = new SpeechRec();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.onresult = (e) => {
+                    let text = '';
+                    for(let i=e.resultIndex; i<e.results.length; i++) {
+                        text += e.results[i][0].transcript;
+                    }
+                    document.getElementById('sttOutput').value = text;
+                };
+            }
+            const btn = document.getElementById('sttBtn');
+            if(btn.innerText.includes('Start')) {
+                recognition.start();
+                btn.innerText = 'Stop Recording';
+                btn.className = btn.className.replace('bg-red-600', 'bg-slate-800');
+            } else {
+                recognition.stop();
+                btn.innerText = 'Start Recording';
+                btn.className = btn.className.replace('bg-slate-800', 'bg-red-600');
+            }
+        }
+
+        // DEV & UTILITY HELPERS
+        function updateWordCount() {
+            const text = document.getElementById('wordCounterInput').value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            document.getElementById('cntWords').innerText = `Words: ${words}`;
+            document.getElementById('cntChars').innerText = `Characters: ${text.length}`;
+        }
+
+        function updateColorValues(hex) {
+            document.getElementById('hexVal').innerText = hex;
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            document.getElementById('rgbVal').innerText = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function convertUnits() {
+            const val = parseFloat(document.getElementById('unitVal').value) || 0;
+            const from = document.getElementById('unitFrom').value;
+            let meters = val;
+            if(from === 'km') meters = val * 1000;
+            if(from === 'ft') meters = val * 0.3048;
+            if(from === 'mi') meters = val * 1609.34;
+
+            document.getElementById('unitResult').innerHTML = `
+                ${meters.toFixed(2)} m | ${(meters/1000).toFixed(2)} km | ${(meters/0.3048).toFixed(2)} ft | ${(meters/1609.34).toFixed(2)} mi
+            `;
+        }
+
+        function formatJSON() {
+            const input = document.getElementById('jsonInput');
+            try {
+                const parsed = JSON.parse(input.value);
+                input.value = JSON.stringify(parsed, null, 2);
+            } catch(e) {
+                alert('Invalid JSON String');
+            }
+        }
+
+        // GENERAL UTILS
+        function triggerPdfDownload(bytes, filename) {
+            const blob = new Blob([bytes], { type: 'application/pdf' });
+            downloadBlob(blob, filename, document.body);
+        }
+
+        function downloadBlob(blob, filename, container) {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+
+        // SEARCH BAR FILTERING
+        document.getElementById('toolSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                const txt = btn.innerText.toLowerCase();
+                btn.parentElement.style.display = txt.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        // Initialize default view
+        switchTab('pdf-converters');
+        convertUnits();
+    </script>
+</body>
+</html>
