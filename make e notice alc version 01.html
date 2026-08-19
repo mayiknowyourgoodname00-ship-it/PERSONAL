@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALC Attendance Notice Generator Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .times-font { font-family: "Times New Roman", Times, serif !important; }
+        
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
+
+        /* Force Color Reproduction for Print */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        /* Print Specific Setup */
+        @media print {
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
+            #dashboard { display: none !important; }
+            #printArea { display: block !important; visibility: visible; position: absolute; top: 0; left: 0; width: 100%; }
+            
+            .page-container { 
+                page-break-after: always; 
+                clear: both; 
+                display: flex; 
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+                width: 210mm;
+                min-height: 297mm;
+                box-sizing: border-box;
+                padding: 2rem; 
+                background: white;
+            }
+            @page { size: A4; margin: 0; }
+        }
+        #printArea { display: none; }
+    </style>
+</head>
+<body class="bg-slate-200 min-h-screen font-sans text-slate-800">
+
+    <!-- Interactive Dashboard Interface -->
+    <div id="dashboard" class="flex flex-col h-screen mx-auto w-full max-w-[1600px] p-3 gap-3">
+        
+        <!-- Header Controls -->
+        <header class="bg-slate-900 text-white shadow-md rounded-lg p-3 flex justify-between items-center z-20">
+            <div class="flex items-center gap-3">
+                <div class="bg-slate-100 text-slate-900 font-black text-xl px-2.5 py-1 rounded shadow tracking-tighter">ALC</div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-wide">Amritsar Law College</h1>
+                    <p class="text-slate-400 text-xs uppercase tracking-widest font-semibold">Attendance Shortage Notice Management Engine</p>
+                </div>
+            </div>
+            <div class="text-right flex items-center gap-4">
+                <button onclick="toggleInstructions()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded transition-colors border border-slate-700">
+                    📖 Toggle Instructions
+                </button>
+                <div class="flex flex-col items-end border-l border-slate-700 pl-4">
+                    <div id="liveClockTime" class="text-lg font-mono font-bold tracking-tight text-white">--:--:--</div>
+                    <div id="liveClockDate" class="text-slate-400 text-[11px] font-medium uppercase tracking-wider">Loading...</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Instructions Panel -->
+        <div id="instructionsPanel" class="hidden bg-blue-50 border border-blue-200 shadow-md rounded-lg p-4 text-xs text-blue-900 transition-all">
+            <h3 class="font-bold text-sm mb-1 flex items-center gap-2">🛠️ Dashboard Operational Instructions</h3>
+            <ul class="list-disc pl-5 space-y-1">
+                <li><strong>Configure Details:</strong> Fill in the Ref Prefix, Dispatch #, Date, and Contact Information.</li>
+                <li><strong>Upload Assets:</strong> Optionally upload logo and transparent signature PNG images.</li>
+                <li><strong>Parse Data:</strong> Copy tab-separated columns directly from Excel and paste into the text area, then click <strong>Parse & Load Data</strong>.</li>
+                <li><strong>Generate & Export:</strong> Filter student records, select checkboxes, and generate official formatted print documents or download the dispatch tracking CSV log.</li>
+            </ul>
+        </div>
+
+        <!-- Main Workspace Grid -->
+        <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 min-h-0">
+            
+            <!-- Left Input Column (Span 4) -->
+            <section class="lg:col-span-4 flex flex-col gap-3 overflow-y-auto pr-1 pb-4">
+                
+                <!-- Notice Configuration -->
+                <div class="bg-white border border-slate-300 shadow-sm rounded-lg p-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-200 pb-2">1. Notice Configuration</h2>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Ref No. Prefix</label>
+                            <input type="text" id="confRefNo" value="ALC/PDR/2026/08" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1.5 border">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1 bg-amber-100 px-1 rounded inline-block">Start Dispatch #</label>
+                            <input type="number" id="confStartRef" value="155" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1.5 border font-mono font-bold text-amber-900">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Notice Date</label>
+                            <input type="text" id="confDate" value="20/07/2026" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1.5 border">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Target %</label>
+                            <input type="text" id="confTargetAtt" value="75%" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1.5 border">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block font-bold text-slate-700 mb-1">Semester Period</label>
+                            <input type="text" id="confPeriod" value="July 2026 - Dec 2026" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1.5 border">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block font-bold text-slate-700 mb-1">Contact Phone Nos.</label>
+                            <input type="text" id="confContact" value="0183-5010426, 5069527" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1.5 border">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Authority Details -->
+                <div class="bg-white border border-slate-300 shadow-sm rounded-lg p-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-200 pb-2">2. Signatures & Names</h2>
+                    
+                    <div class="space-y-3 text-xs">
+                        <div class="flex items-center justify-between p-2 bg-slate-50 border rounded">
+                            <label class="font-bold text-slate-700">College Logo</label>
+                            <input type="file" accept="image/*" class="text-[10px] w-40" onchange="handleImageUpload(this, 'logo')">
+                        </div>
+
+                        <div class="p-2 border rounded border-slate-200">
+                            <label class="block font-bold text-slate-700 mb-1">Class Coordinator</label>
+                            <input type="text" id="confTeacher" value="Name of Faculty" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1 mb-2 border">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] text-slate-500">Upload Signature:</span>
+                                <input type="file" accept="image/*" class="text-[10px] w-40" onchange="handleImageUpload(this, 'teacherSig')">
+                            </div>
+                        </div>
+
+                        <div class="p-2 border rounded border-slate-200">
+                            <label class="block font-bold text-slate-700 mb-1">Academic In-charge</label>
+                            <input type="text" id="confIncharge" value="Manpreet Kaur Lehal" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1 mb-2 border">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] text-slate-500">Upload Signature:</span>
+                                <input type="file" accept="image/*" class="text-[10px] w-40" onchange="handleImageUpload(this, 'inchargeSig')">
+                            </div>
+                        </div>
+
+                        <div class="p-2 border rounded border-slate-200">
+                            <label class="block font-bold text-slate-700 mb-1">Principal</label>
+                            <input type="text" id="confPrincipal" value="Dr. Avon Kuamr Vaid" class="w-full border-slate-300 rounded bg-slate-50 px-2 py-1 mb-2 border">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] text-slate-500">Upload Signature:</span>
+                                <input type="file" accept="image/*" class="text-[10px] w-40" onchange="handleImageUpload(this, 'principalSig')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Paste Area -->
+                <div class="bg-white border border-slate-300 shadow-sm rounded-lg p-4 flex flex-col flex-1 min-h-[180px]">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-800 mb-2 border-b border-slate-200 pb-2">3. Excel Data Paste</h2>
+                    <textarea id="excelPasteArea" class="w-full flex-1 border border-slate-300 rounded p-2 text-xs font-mono bg-slate-50 focus:outline-none whitespace-pre" placeholder="RollNo&#9;Name&#9;Father&#9;Course&#9;Sem&#9;Batch&#9;Att%"></textarea>
+                    <button onclick="processExcelData()" class="mt-2 w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 rounded shadow transition-colors text-xs">
+                        📥 Parse & Load Data
+                    </button>
+                </div>
+
+            </section>
+
+            <!-- Right Roster Column (Span 8) -->
+            <section class="lg:col-span-8 bg-white border border-slate-300 shadow-sm rounded-lg p-4 flex flex-col h-full overflow-hidden">
+                
+                <!-- Action Controls -->
+                <div class="flex flex-wrap justify-between items-center mb-3 pb-3 border-b border-slate-200 gap-2">
+                    <div class="flex items-center gap-2">
+                        <select id="filterCourse" onchange="applyFilters()" class="border border-slate-300 text-xs rounded bg-slate-50 px-2 py-1 font-semibold outline-none">
+                            <option value="ALL">All Courses</option>
+                            <option value="BA.LL.B">BA.LL.B</option>
+                            <option value="LL.B">LL.B</option>
+                        </select>
+                        <select id="filterSem" onchange="applyFilters()" class="border border-slate-300 text-xs rounded bg-slate-50 px-2 py-1 font-semibold outline-none">
+                            <option value="ALL">All Semesters</option>
+                            <option value="1ST">1ST Sem</option>
+                            <option value="3RD">3RD Sem</option>
+                            <option value="5TH">5TH Sem</option>
+                            <option value="7TH">7TH Sem</option>
+                            <option value="9TH">9TH Sem</option>
+                        </select>
+                        <select id="filterAtt" onchange="applyFilters()" class="border border-slate-300 text-xs rounded bg-slate-50 px-2 py-1 font-semibold text-rose-800 outline-none">
+                            <option value="SHORT">Deficit Only (&lt;75%)</option>
+                            <option value="ALL">All Students</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="downloadCSVLog()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-1.5 px-3 rounded shadow transition-colors flex items-center gap-1.5 text-xs">
+                            📥 Export CSV
+                        </button>
+                        <button onclick="generateBulkPDFs()" class="bg-slate-900 hover:bg-slate-950 text-white font-bold py-1.5 px-3 rounded shadow transition-colors flex items-center gap-1.5 text-xs">
+                            🖨️ Print Selected Notices
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table View -->
+                <div class="overflow-y-auto flex-1 border border-slate-300 rounded bg-slate-50">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-slate-200 text-slate-700 text-xs uppercase tracking-wider sticky top-0 z-10">
+                            <tr>
+                                <th class="p-2 w-10 text-center border-b border-slate-300">
+                                    <input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes(this)" class="w-3 h-3 cursor-pointer">
+                                </th>
+                                <th class="p-2 border-b border-slate-300">Roll No</th>
+                                <th class="p-2 border-b border-slate-300">Student Name</th>
+                                <th class="p-2 border-b border-slate-300">Father's Name</th>
+                                <th class="p-2 border-b border-slate-300">Course / Sem</th>
+                                <th class="p-2 text-center border-b border-slate-300">Att %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody" class="divide-y divide-slate-200 text-xs bg-white">
+                            <tr><td colspan="6" class="p-8 text-center text-slate-500 italic">No records loaded. Paste data and click 'Parse & Load Data'.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-2 text-xs text-slate-600 flex justify-between px-1 font-medium">
+                    <span id="recordCount" class="font-bold text-slate-800 bg-slate-100 px-2 py-1 rounded">0 records selected</span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Print Canvas (Render Target) -->
+    <div id="printArea" class="times-font"></div>
+
+    <script>
+        let masterData = [];
+        let filteredData = [];
+        const uploadedImages = { logo: '', teacherSig: '', inchargeSig: '', principalSig: '' };
+
+        function toggleInstructions() {
+            document.getElementById('instructionsPanel').classList.toggle('hidden');
+        }
+
+        function handleImageUpload(input, imageKey) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { uploadedImages[imageKey] = e.target.result; }
+                reader.readAsDataURL(file);
+            } else { uploadedImages[imageKey] = ''; }
+        }
+
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveClockTime').innerText = now.toLocaleTimeString('en-IN');
+            document.getElementById('liveClockDate').innerText = now.toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+        }, 1000);
+
+        function processExcelData() {
+            const rawText = document.getElementById('excelPasteArea').value.trim();
+            if (!rawText) return alert("Please paste tabular data from Excel.");
+
+            const rows = rawText.split('\n').map(r => r.split('\t'));
+            if (rows.length < 2) return alert("Header and data rows are required.");
+
+            const headers = rows[0].map(h => h.trim().toLowerCase());
+            const map = {
+                roll: headers.findIndex(h => h.includes('roll') || h.includes('id')),
+                name: headers.findIndex(h => h.includes('name') && !h.includes('father')),
+                father: headers.findIndex(h => h.includes('father')),
+                course: headers.findIndex(h => h.includes('course') || h.includes('class')),
+                sem: headers.findIndex(h => h.includes('sem')),
+                batch: headers.findIndex(h => h.includes('batch') || h.includes('session')),
+                att: headers.findIndex(h => h.includes('att') || h.includes('%'))
+            };
+
+            masterData = [];
+            let validCount = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                const r = rows[i];
+                if (r.length < 3) continue;
+                const attStr = map.att >= 0 && r[map.att] ? r[map.att].replace(/[^0-9.]/g, '') : '0';
+                
+                masterData.push({
+                    id: validCount + 1,
+                    rollNo: map.roll >= 0 ? r[map.roll].trim() : 'N/A',
+                    name: map.name >= 0 ? r[map.name].trim() : 'Unknown',
+                    fatherName: map.father >= 0 ? r[map.father].trim() : '---',
+                    course: map.course >= 0 ? r[map.course].trim().toUpperCase() : 'BA.LL.B',
+                    semester: map.sem >= 0 ? r[map.sem].trim().toUpperCase() : '---',
+                    batch: map.batch >= 0 ? r[map.batch].trim() : '2024-2029',
+                    attendance: parseFloat(attStr) || 0
+                });
+                validCount++;
+            }
+            document.getElementById('excelPasteArea').value = ''; 
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const fCourse = document.getElementById('filterCourse').value;
+            const fSem = document.getElementById('filterSem').value;
+            const fAtt = document.getElementById('filterAtt').value;
+
+            filteredData = masterData.filter(student => {
+                let match = true;
+                if (fCourse !== 'ALL' && !student.course.includes(fCourse)) match = false;
+                if (fSem !== 'ALL' && !student.semester.includes(fSem.replace('SEM','').trim())) match = false;
+                if (fAtt === 'SHORT' && student.attendance >= 75) match = false;
+                return match;
+            });
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+            document.getElementById('selectAll').checked = false;
+
+            if (filteredData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No records found.</td></tr>`;
+                updateSelectionCount();
+                return;
+            }
+
+            filteredData.forEach(student => {
+                const isShort = student.attendance < 75;
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-100 cursor-pointer";
+                tr.onclick = (e) => {
+                    if(e.target.type !== 'checkbox') {
+                        const cb = tr.querySelector('.student-checkbox');
+                        cb.checked = !cb.checked;
+                        updateSelectionCount();
+                    }
+                };
+
+                tr.innerHTML = `
+                    <td class="p-2 text-center">
+                        <input type="checkbox" class="student-checkbox w-3 h-3 cursor-pointer" value="${student.id}" onchange="updateSelectionCount()">
+                    </td>
+                    <td class="p-2 font-mono text-slate-700">${student.rollNo}</td>
+                    <td class="p-2 font-bold text-slate-900">${student.name}</td>
+                    <td class="p-2 text-slate-600">${student.fatherName}</td>
+                    <td class="p-2">${student.course} ${student.semester}</td>
+                    <td class="p-2 text-center">
+                        <span class="px-1.5 py-0.5 rounded font-bold border ${isShort ? 'bg-rose-50 text-rose-800 border-rose-200' : 'bg-slate-100 text-slate-800 border-slate-300'}">
+                            ${student.attendance}%
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            updateSelectionCount();
+        }
+
+        function toggleAllCheckboxes(source) {
+            document.querySelectorAll('.student-checkbox').forEach(cb => cb.checked = source.checked);
+            updateSelectionCount();
+        }
+
+        function updateSelectionCount() {
+            const count = document.querySelectorAll('.student-checkbox:checked').length;
+            document.getElementById('recordCount').innerText = `${count} record(s) selected`;
+        }
+
+        function downloadCSVLog() {
+            const selectedIds = Array.from(document.querySelectorAll('.student-checkbox:checked')).map(cb => parseInt(cb.value));
+            if (selectedIds.length === 0) return alert("Select at least one student to export the log.");
+
+            const confRefNo = document.getElementById('confRefNo').value;
+            const confDate = document.getElementById('confDate').value;
+            let refCounter = parseInt(document.getElementById('confStartRef').value) || 1;
+
+            const selectedStudents = masterData.filter(s => selectedIds.includes(s.id));
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Dispatch Ref No,Notice Date,Roll No,Student Name,Father Name,Course,Semester,Batch,Attendance %,Status\n";
+
+            selectedStudents.forEach(student => {
+                const dispatchNo = `${confRefNo}/${refCounter}`;
+                const statusText = student.attendance < 75 ? "Deficit" : "Regular";
+                
+                const row = [
+                    dispatchNo, confDate, student.rollNo, student.name, student.fatherName, 
+                    student.course, student.semester, student.batch, student.attendance, statusText
+                ].map(item => `"${item}"`).join(",");
+                
+                csvContent += row + "\n";
+                refCounter++;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Dispatch_Log_ALC_${confDate.replace(/\//g, '-')}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function generateBulkPDFs() {
+            const selectedIds = Array.from(document.querySelectorAll('.student-checkbox:checked')).map(cb => parseInt(cb.value));
+            if (selectedIds.length === 0) return alert("Select at least one student.");
+
+            const confData = {
+                refNo: document.getElementById('confRefNo').value,
+                date: document.getElementById('confDate').value,
+                period: document.getElementById('confPeriod').value,
+                teacher: document.getElementById('confTeacher').value,
+                incharge: document.getElementById('confIncharge').value,
+                principal: document.getElementById('confPrincipal').value,
+                target: document.getElementById('confTargetAtt').value,
+                contact: document.getElementById('confContact').value
+            };
+
+            const selectedStudents = masterData.filter(s => selectedIds.includes(s.id));
+            const printContainer = document.getElementById('printArea');
+            printContainer.innerHTML = ''; 
+
+            let refCounter = parseInt(document.getElementById('confStartRef').value) || 1; 
+
+            selectedStudents.forEach((student) => {
+                const dispatchStr = `${confData.refNo}/${refCounter}`;
+                printContainer.innerHTML += buildLetterHTML(student, dispatchStr, confData);
+                refCounter++;
+            });
+
+            setTimeout(() => { window.print(); }, 400);
+        }
+
+        // Standard Notice Layout
+        function buildLetterHTML(student, dispatchNo, conf) {
+            const logoHTML = uploadedImages.logo 
+                ? `<img src="${uploadedImages.logo}" class="w-[130px] h-[130px] object-contain">` 
+                : `<div class="w-[130px] h-[130px] border-2 border-slate-300 rounded-full flex items-center justify-center text-[10px] text-slate-400 bg-slate-50 text-center leading-tight">Logo<br>Placeholder</div>`;
+
+            const sigTeacherHTML = uploadedImages.teacherSig ? `<img src="${uploadedImages.teacherSig}" class="h-10 mx-auto object-contain">` : `<div class="h-10"></div>`;
+            const sigInchargeHTML = uploadedImages.inchargeSig ? `<img src="${uploadedImages.inchargeSig}" class="h-10 mx-auto object-contain">` : `<div class="h-10"></div>`;
+            const sigPrincipalHTML = uploadedImages.principalSig ? `<img src="${uploadedImages.principalSig}" class="h-12 mx-auto object-contain">` : `<div class="h-12"></div>`;
+
+            return `
+            <div class="page-container w-[210mm] min-h-[297mm] bg-white border-double border-[6px] border-slate-800 p-8 flex flex-col justify-between box-border shadow-xl relative times-font text-slate-900">
+                <div>
+                    <!-- Header Section -->
+                    <div class="flex items-center justify-between border-b-[3px] border-slate-800 pb-5 mb-8">
+                        <div class="w-1/4 flex justify-start pl-1">
+                            ${logoHTML}
+                        </div>
+                        <div class="w-0.1/4 text-left">
+                            <h1 class="text-[42px] font-bold text-slate-900 uppercase tracking-wide m-0 leading-none whitespace-nowrap">AMRITSAR LAW COLLEGE</h1>
+                            <p class="text-[24px] font-semibold mt-2 text-slate-800 text-center">Affiliated to Guru Nanak Dev University, Amritsar</p>
+                            <p class="text-[24px] font-normal text-slate-800 text-center">Approved by Bar Council of India, New Delhi.</p>
+                            <p class="text-[15px] font-normal text-slate-600 mt-1 text-center">12 KM Stone, Amritsar Jalandhar G.T. Road, Amritsar - 143001.</p>
+                        </div>
+                        <div class="w-1/4"></div>
+                    </div>
+
+                    <!-- Ref No & Date -->
+                    <div class="flex justify-between text-[14px] mb-8 font-bold text-slate-800 px-4">
+                        <div>Ref No: <span class="font-normal">${dispatchNo}</span></div>
+                        <div>Date: <span class="font-normal">${conf.date}</span></div>
+                    </div>
+
+                    <!-- Subject Line -->
+                    <div class="text-center mb-8 px-4">
+                        <h2 class="text-[20px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-400 inline-block pb-4">Notice Regarding Shortage of attendance</h2>
+                        <p class="text-[14px] font-bold text-slate-700 mt-3 uppercase underline">Attendance Status: ${student.attendance}% Current Attendance</p> 
+                    </div>
+
+                    <!-- Letter Body Content -->
+                    <div class="px-6 text-[16px] leading-[1.8] text-justify space-y-6 relative text-slate-900">
+                        <p>
+                            This is to bring to your notice that Mr/ Ms., 
+                            <strong>${student.name}</strong> (Son/Daughter of <strong>${student.fatherName}</strong>), 
+                            of class <strong>${student.course} ${student.semester} (${student.batch})</strong>, 
+                            University Roll No. <strong>${student.rollNo}</strong>, 
+                            is found to be irregular in lectures.
+                        </p>
+                        
+                        <p>
+                            Therefore, S/he is falling short of mandatory ${conf.target} of attendance to appear for semester examination as prescribed by
+                            <strong class="text-[18px] text-[#800000] px-2 py-0.5 bg-slate-50"> Guru Nanak Dev University, Amritsar </strong>
+                            and <strong class="text-[18px] text-[#000000] px-2 py-0.5 bg-slate-50"> Bar Council of India, New Delhi </strong>.
+                        </p>
+
+                        <p class="text-[#800000] font-bold">
+                            Current Aggregated Attendance Record: ${student.attendance}%
+                        </p>
+
+                        <p>
+                            So, in order to fulfill this criterion s/he is advised to remain Present in the upcoming lectures of all the classes
+                            in the current semester. i.e (${conf.period}).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer Signatures Section -->
+                <div class="px-6 pt-12 flex justify-between items-end text-[14px] text-center text-slate-800 font-bold mb-4">
+                    <div class="flex flex-col items-center w-1/3">
+                        ${sigTeacherHTML}
+                        <div class="w-3/4 border-t border-slate-800 pt-1 mt-1">
+                            ${conf.teacher}<br>
+                            <span class="text-[11px] font-normal text-slate-600">Class Coordinator</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center w-1/3">
+                        ${sigInchargeHTML}
+                        <div class="w-3/4 border-t border-slate-800 pt-1 mt-1">
+                            ${conf.incharge}<br>
+                            <span class="text-[11px] font-normal text-slate-600">Academic In-charge</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center w-1/3">
+                        ${sigPrincipalHTML}
+                        <div class="w-3/4 border-t border-slate-800 pt-1 mt-1">
+                            ${conf.principal}<br>
+                            <span class="text-[11px] font-normal text-slate-600">Principal, ALC</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Contact -->
+                <div class="absolute bottom-2 left-0 right-0 text-center">
+                    <div class="text-[10px] text-slate-500 border-t border-slate-300 mx-8 pt-1">
+                        For any queries, Feel Free to Contact: ${conf.contact}
+                    </div>
+                    <div class="text-[10px] text-slate-500 mt-1">
+                        Managed by Admin Office, ALC
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+    </script>
+</body>
+</html>
