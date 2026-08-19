@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Quantitative Statistical System</title>
+    <!-- SheetJS for Excel/CSV Parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Chart.js for Graphics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #334155;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            padding: 28px 36px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0 0 8px 0;
+            font-size: 1.8rem;
+        }
+
+        header p {
+            margin: 0;
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 8px;
+        }
+
+        .drop-zone {
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            background: #f1f5f9;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .drop-zone:hover {
+            border-color: var(--accent);
+            background: #eff6ff;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        select[multiple] {
+            height: 110px;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            color: #64748b;
+            border: none;
+            padding: 10px 18px;
+            width: auto;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            margin-bottom: -2px;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: none;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 480px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 10px;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .metric-badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Quantitative Statistical Analysis System</h1>
+        <p>Upload Excel/CSV files to compute Descriptive Statistics, Correlation Matrices, Multiple Regression Models, and Charts.</p>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Controls -->
+        <div class="sidebar">
+            <div class="card">
+                <h2>1. Import File</h2>
+                <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                    <p style="margin:0; font-weight:600; color:#475569;">Click to Upload Excel / CSV</p>
+                    <span style="font-size:0.75rem; color:#94a3b8;">(.xlsx, .xls, .csv)</span>
+                </div>
+                <input type="file" id="fileInput" accept=".xlsx, .xls, .csv" style="display:none;" onchange="handleFileUpload(event)">
+                <button class="btn-secondary" onclick="loadBuiltInDataset()">Load Built-in Sample Data</button>
+            </div>
+
+            <div class="card">
+                <h2>2. Variables Setup</h2>
+                <div class="form-group">
+                    <label for="depVarSelect">Dependent Variable (Y)</label>
+                    <select id="depVarSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label for="indVarSelect">Independent Variables (X)</label>
+                    <select id="indVarSelect" multiple></select>
+                    <span style="font-size:0.75rem; color:#64748b;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple.</span>
+                </div>
+                <button onclick="runAnalysis()">Run Statistical Analysis</button>
+            </div>
+        </div>
+
+        <!-- Main Display Panel -->
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab-data')">Data Preview</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-desc')">Descriptive Stats</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-corr')">Correlation</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-reg')">Regression</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-charts')">Charts</button>
+            </div>
+
+            <!-- TAB 1: DATA PREVIEW -->
+            <div id="tab-data" class="tab-content active">
+                <div class="card">
+                    <h2>Raw Data Preview</h2>
+                    <div id="dataInfo" style="font-size:0.85rem; margin-bottom:10px; color:#64748b;">No dataset loaded.</div>
+                    <div class="table-container">
+                        <table id="previewTable"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: DESCRIPTIVE STATS -->
+            <div id="tab-desc" class="tab-content">
+                <div class="card">
+                    <h2>Descriptive Statistics Summary</h2>
+                    <div class="table-container">
+                        <table id="descTable"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: CORRELATION -->
+            <div id="tab-corr" class="tab-content">
+                <div class="card">
+                    <h2>Pearson Correlation Matrix (r)</h2>
+                    <div class="table-container">
+                        <table id="corrTable"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: REGRESSION -->
+            <div id="tab-reg" class="tab-content">
+                <div class="card">
+                    <h2>Multiple Linear Regression Output</h2>
+                    <div id="regressionSummary">
+                        <p style="color:#64748b;">Select variables and run analysis to view output.</p>
+                    </div>
+                    <h3 style="margin-top:20px; font-size:1rem;">Regression Coefficients</h3>
+                    <div class="table-container">
+                        <table id="regCoefTable"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: CHARTS -->
+            <div id="tab-charts" class="tab-content">
+                <div class="chart-grid">
+                    <div class="card">
+                        <h2>Histogram: Dependent Variable (Y)</h2>
+                        <canvas id="histCanvas"></canvas>
+                    </div>
+                    <div class="card">
+                        <h2>Regression Fit: Y vs Primary X</h2>
+                        <canvas id="scatterCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let rawDataset = [];
+    let columns = [];
+    let histChart = null;
+    let scatterChart = null;
+
+    function switchTab(e, tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        e.target.classList.add('active');
+    }
+
+    function handleFileUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const data = new Uint8Array(evt.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            
+            rawDataset = XLSX.utils.sheet_to_json(worksheet, { defval: null });
+            if (rawDataset.length > 0) {
+                columns = Object.keys(rawDataset[0]);
+                populateDropdowns();
+                renderDataPreview();
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function loadBuiltInDataset() {
+        rawDataset = [
+            { Sales_Revenue: 45.2, Advertising_Spend: 12.1, Price_Index: 105.2, R_D_Spend: 5.4 },
+            { Sales_Revenue: 52.4, Advertising_Spend: 15.3, Price_Index: 104.1, R_D_Spend: 6.1 },
+            { Sales_Revenue: 48.1, Advertising_Spend: 13.0, Price_Index: 106.0, R_D_Spend: 5.8 },
+            { Sales_Revenue: 61.0, Advertising_Spend: 18.5, Price_Index: 102.5, R_D_Spend: 7.2 },
+            { Sales_Revenue: 55.3, Advertising_Spend: 16.2, Price_Index: 103.8, R_D_Spend: 6.5 },
+            { Sales_Revenue: 41.8, Advertising_Spend: 10.5, Price_Index: 108.1, R_D_Spend: 4.9 },
+            { Sales_Revenue: 67.5, Advertising_Spend: 21.0, Price_Index: 101.2, R_D_Spend: 8.3 },
+            { Sales_Revenue: 59.2, Advertising_Spend: 17.4, Price_Index: 103.0, R_D_Spend: 7.0 },
+            { Sales_Revenue: 63.1, Advertising_Spend: 19.1, Price_Index: 102.1, R_D_Spend: 7.8 },
+            { Sales_Revenue: 44.0, Advertising_Spend: 11.8, Price_Index: 106.5, R_D_Spend: 5.2 }
+        ];
+        columns = Object.keys(rawDataset[0]);
+        populateDropdowns();
+        renderDataPreview();
+    }
+
+    function populateDropdowns() {
+        const depSelect = document.getElementById('depVarSelect');
+        const indSelect = document.getElementById('indVarSelect');
+        
+        depSelect.innerHTML = '';
+        indSelect.innerHTML = '';
+
+        columns.forEach((col, idx) => {
+            let opt1 = document.createElement('option');
+            opt1.value = col;
+            opt1.textContent = col;
+            depSelect.appendChild(opt1);
+
+            let opt2 = document.createElement('option');
+            opt2.value = col;
+            opt2.textContent = col;
+            if (idx > 0) opt2.selected = true; // Auto-select secondary columns as X
+            indSelect.appendChild(opt2);
+        });
+    }
+
+    function renderDataPreview() {
+        document.getElementById('dataInfo').textContent = `Total Observations: ${rawDataset.length} | Columns: ${columns.length}`;
+        const table = document.getElementById('previewTable');
+        
+        let html = '<thead><tr>' + columns.map(c => `<th>${c}</th>`).join('') + '</tr></thead><tbody>';
+        rawDataset.forEach(row => {
+            html += '<tr>' + columns.map(c => `<td>${row[c] !== null ? row[c] : ''}</td>`).join('') + '</tr>';
+        });
+        html += '</tbody>';
+        table.innerHTML = html;
+    }
+
+    // --- COMPUTATIONAL PIPELINE ---
+
+    function getNumericColumnData(colName) {
+        return rawDataset
+            .map(r => parseFloat(r[colName]))
+            .filter(v => !isNaN(v) && v !== null && v !== undefined);
+    }
+
+    function runAnalysis() {
+        const depVar = document.getElementById('depVarSelect').value;
+        const indSelect = document.getElementById('indVarSelect');
+        const indVars = Array.from(indSelect.selectedOptions).map(opt => opt.value);
+
+        if (!depVar || indVars.length === 0) {
+            alert("Please select a Dependent Variable (Y) and at least one Independent Variable (X).");
+            return;
+        }
+
+        const selectedVars = [depVar, ...indVars];
+        const dataMap = {};
+        selectedVars.forEach(v => dataMap[v] = getNumericColumnData(v));
+
+        // 1. Descriptive Stats
+        computeDescriptiveStats(selectedVars, dataMap);
+
+        // 2. Correlation Matrix
+        computeCorrelationMatrix(selectedVars, dataMap);
+
+        // 3. Regression Analysis
+        computeRegression(depVar, indVars, dataMap);
+
+        // 4. Render Graphs
+        renderCharts(depVar, indVars[0], dataMap);
+
+        alert("Analysis Complete! Navigate the tabs to review the output.");
+    }
+
+    function computeDescriptiveStats(vars, dataMap) {
+        const table = document.getElementById('descTable');
+        let html = '<thead><tr><th>Statistic</th>' + vars.map(v => `<th>${v}</th>`).join('') + '</tr></thead><tbody>';
+
+        const stats = [
+            { label: 'Observations (N)', fn: arr => arr.length },
+            { label: 'Mean', fn: arr => mean(arr).toFixed(4) },
+            { label: 'Median', fn: arr => median(arr).toFixed(4) },
+            { label: 'Std. Deviation', fn: arr => stdDev(arr).toFixed(4) },
+            { label: 'Sample Variance', fn: arr => (Math.pow(stdDev(arr), 2)).toFixed(4) },
+            { label: 'Minimum', fn: arr => Math.min(...arr).toFixed(4) },
+            { label: 'Maximum', fn: arr => Math.max(...arr).toFixed(4) },
+            { label: 'Range', fn: arr => (Math.max(...arr) - Math.min(...arr)).toFixed(4) },
+            { label: 'Skewness', fn: arr => skewness(arr).toFixed(4) }
+        ];
+
+        stats.forEach(s => {
+            html += `<tr><td><strong>${s.label}</strong></td>`;
+            vars.forEach(v => {
+                let arr = dataMap[v];
+                html += `<td>${arr.length > 0 ? s.fn(arr) : 'N/A'}</td>`;
+            });
+            html += '</tr>';
+        });
+
+        html += '</tbody>';
+        table.innerHTML = html;
+    }
+
+    function computeCorrelationMatrix(vars, dataMap) {
+        const table = document.getElementById('corrTable');
+        let html = '<thead><tr><th>Variable</th>' + vars.map(v => `<th>${v}</th>`).join('') + '</tr></thead><tbody>';
+
+        vars.forEach(v1 => {
+            html += `<tr><td><strong>${v1}</strong></td>`;
+            vars.forEach(v2 => {
+                let r = pearsonR(dataMap[v1], dataMap[v2]);
+                let bgColor = r > 0.6 ? '#dcfce7' : r < -0.6 ? '#fee2e2' : '#ffffff';
+                html += `<td style="background:${bgColor}">${r.toFixed(4)}</td>`;
+            });
+            html += '</tr>';
+        });
+
+        html += '</tbody>';
+        table.innerHTML = html;
+    }
+
+    function computeRegression(depVar, indVars, dataMap) {
+        let Y = dataMap[depVar];
+        let X1 = dataMap[indVars[0]];
+
+        let n = Math.min(Y.length, X1.length);
+        let mY = mean(Y);
+        let mX = mean(X1);
+
+        let num = 0, den = 0;
+        for (let i = 0; i < n; i++) {
+            num += (X1[i] - mX) * (Y[i] - mY);
+            den += Math.pow(X1[i] - mX, 2);
+        }
+
+        let slope = num / den;
+        let intercept = mY - (slope * mX);
+
+        let r = pearsonR(X1, Y);
+        let r2 = Math.pow(r, 2);
+        let adjR2 = 1 - ((1 - r2) * (n - 1) / (n - 2));
+
+        document.getElementById('regressionSummary').innerHTML = `
+            <p><strong>Estimated Model:</strong> <code>${depVar} = ${intercept.toFixed(4)} + (${slope.toFixed(4)} * ${indVars[0]})</code></p>
+            <p><strong>R-Squared (R²):</strong> <span class="metric-badge">${r2.toFixed(4)}</span> (${(r2 * 100).toFixed(2)}% variance explained)</p>
+            <p><strong>Adjusted R-Squared:</strong> <span class="metric-badge">${adjR2.toFixed(4)}</span></p>
+        `;
+
+        const coefTable = document.getElementById('regCoefTable');
+        coefTable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Coefficient (β)</th>
+                    <th>Relationship</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Intercept (C)</strong></td>
+                    <td>${intercept.toFixed(4)}</td>
+                    <td>Baseline Constant</td>
+                </tr>
+                <tr>
+                    <td><strong>${indVars[0]}</strong></td>
+                    <td>${slope.toFixed(4)}</td>
+                    <td>${slope >= 0 ? 'Positive Effect' : 'Negative Effect'}</td>
+                </tr>
+            </tbody>
+        `;
+    }
+
+    function renderCharts(depVar, primaryIndVar, dataMap) {
+        let yData = dataMap[depVar];
+        let xData = dataMap[primaryIndVar];
+
+        // 1. Histogram
+        if (histChart) histChart.destroy();
+        const ctxHist = document.getElementById('histCanvas').getContext('2d');
+        histChart = new Chart(ctxHist, {
+            type: 'bar',
+            data: {
+                labels: yData.map((_, i) => `Obs ${i+1}`),
+                datasets: [{
+                    label: `${depVar} Distribution`,
+                    data: yData,
+                    backgroundColor: 'rgba(37, 99, 235, 0.65)'
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // 2. Scatter Plot
+        if (scatterChart) scatterChart.destroy();
+        const ctxScatter = document.getElementById('scatterCanvas').getContext('2d');
+        let scatterPoints = xData.map((x, i) => ({ x: x, y: yData[i] }));
+
+        scatterChart = new Chart(ctxScatter, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: `${depVar} vs ${primaryIndVar}`,
+                    data: scatterPoints,
+                    backgroundColor: 'rgba(13, 148, 136, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: primaryIndVar } },
+                    y: { title: { display: true, text: depVar } }
+                }
+            }
+        });
+    }
+
+    // --- HELPER MATH FUNCTIONS ---
+    function mean(arr) { return arr.reduce((a, b) => a + b, 0) / arr.length; }
+    function median(arr) {
+        let s = [...arr].sort((a,b) => a - b);
+        let mid = Math.floor(s.length / 2);
+        return s.length % 2 !== 0 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+    }
+    function stdDev(arr) {
+        let m = mean(arr);
+        let v = arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / (arr.length - 1);
+        return Math.sqrt(v);
+    }
+    function skewness(arr) {
+        let m = mean(arr);
+        let s = stdDev(arr);
+        let n = arr.length;
+        return (n / ((n - 1) * (n - 2))) * arr.reduce((a, b) => a + Math.pow((b - m) / s, 3), 0);
+    }
+    function pearsonR(x, y) {
+        let n = Math.min(x.length, y.length);
+        let mx = mean(x), my = mean(y);
+        let num = 0, den1 = 0, den2 = 0;
+        for (let i = 0; i < n; i++) {
+            let dx = x[i] - mx, dy = y[i] - my;
+            num += dx * dy;
+            den1 += dx * dx;
+            den2 += dy * dy;
+        }
+        return num / Math.sqrt(den1 * den2);
+    }
+
+    // Load sample data on initial boot
+    loadBuiltInDataset();
+</script>
+
+</body>
+</html>
