@@ -1,0 +1,1627 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amritsar Law College - Enterprise Timetable & Google Sheets Sync</title>
+  
+  <!-- EXTERNAL DEPENDENCIES FOR EXCEL AND PDF EXPORTS -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- TAILWIND CSS FOR STYLING AND LAYOUT STABILITY -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --primary: #1A237E;
+      --primary-light: #303F9F;
+      --secondary: #00897B;
+      --dark: #212121;
+      --light: #F5F5F5;
+      --white: #FFFFFF;
+      --success: #2E7D32;
+      --danger: #C62828;
+      --warning: #EF6C00;
+      --info: #0277BD;
+      --gray-border: #E0E0E0;
+      
+      --gradient-header: linear-gradient(135deg, #1A237E 0%, #00897B 100%);
+      --gradient-card-1: linear-gradient(135deg, #3F51B5 0%, #2196F3 100%);
+      --gradient-card-2: linear-gradient(135deg, #009688 0%, #4CAF50 100%);
+      --gradient-card-3: linear-gradient(135deg, #FF9800 0%, #FFC107 100%);
+      --gradient-card-4: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #F0F2F5;
+      color: var(--dark);
+    }
+
+    /* Core Layout Header */
+    header {
+      background: var(--gradient-header);
+      color: var(--white);
+      padding: 20px 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .header-content {
+      max-width: 1650px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-logo h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 0.5px;
+      font-weight: 800;
+    }
+
+    .header-logo p {
+      margin: 5px 0 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .dashboard-switcher {
+      display: flex;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px;
+      border-radius: 8px;
+      gap: 5px;
+    }
+
+    .switch-btn {
+      background: transparent;
+      border: none;
+      color: var(--white);
+      padding: 8px 18px;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .switch-btn.active {
+      background: var(--white);
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    /* Clock Widget */
+    .live-clock-panel {
+      text-align: right;
+      color: var(--white);
+    }
+
+    #liveTimeText {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    #liveDateText {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1650px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .dashboard-section {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+    .dashboard-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Dashboard Title Headers */
+    .section-title {
+      font-size: 22px;
+      color: var(--primary);
+      margin-bottom: 20px;
+      border-left: 5px solid var(--secondary);
+      padding-left: 10px;
+      font-weight: 700;
+    }
+
+    /* Master Timetable Grid Styles */
+    .timetable-grid-wrapper {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+
+    .timetable-grid {
+      display: grid;
+      /* 12 Columns Total: Room (100px), Teacher (160px), Class (150px) + 9 Time Slots */
+      grid-template-columns: 100px 160px 150px repeat(9, minmax(130px, 1fr));
+      gap: 1px;
+      background: var(--gray-border);
+      min-width: 1650px;
+    }
+
+    .grid-header {
+      background: var(--primary);
+      color: var(--white);
+      padding: 15px 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .room-cell, .teacher-cell {
+      background: #E8EAF6;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 12px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.3;
+      border-right: 1px solid #C5CAE9;
+      border-bottom: 1px solid #ECEFF1;
+    }
+
+    .class-name {
+      background: #E8EAF6;
+      color: var(--primary);
+      font-weight: 800;
+      padding: 15px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.4;
+      border-right: 2px solid #C5CAE9;
+      border-bottom: 1px solid #ECEFF1;
+    }
+
+    .grid-cell {
+      background: #FAFAFA;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 12px;
+      min-height: 65px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease;
+      color: #424242;
+      border-bottom: 1px solid #ECEFF1;
+    }
+
+    .grid-cell.clickable {
+      cursor: pointer;
+      background: var(--white);
+    }
+
+    .grid-cell.clickable:hover {
+      background: #F1F3FA;
+      transform: scale(1.02);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+
+    .grid-cell strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+
+    .grid-cell span.teacher-initials {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-light);
+      background: #E8EAF6;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    /* Dynamic Grid-cell Attendance States */
+    .grid-cell.attended {
+      background-color: #E8F5E9 !important;
+      border-left: 4px solid var(--success);
+    }
+    .grid-cell.attended strong {
+      color: #1B5E20;
+    }
+    .grid-cell.attended span.teacher-initials {
+      background: #C8E6C9;
+      color: #1B5E20;
+    }
+
+    .grid-cell.not-attended {
+      background-color: #FFEBEE !important;
+      border-left: 4px solid var(--danger);
+    }
+    .grid-cell.not-attended strong {
+      color: #B71C1C;
+    }
+    .grid-cell.not-attended span.teacher-initials {
+      background: #FFCDD2;
+      color: #B71C1C;
+    }
+
+    .grid-cell.mcq-status {
+      background-color: #E8EAF6 !important;
+      border-left: 4px solid var(--primary-light);
+    }
+    .grid-cell.mcq-status strong {
+      color: var(--primary-light);
+    }
+    .grid-cell.mcq-status span.teacher-initials {
+      background: #C5CAE9;
+      color: var(--primary);
+    }
+
+    .interval-cell {
+      background: #ECEFF1;
+      color: #37474F;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Teacher Directory */
+    .directory-drawer {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+    }
+
+    .drawer-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 0;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #EEEEEE;
+      padding-bottom: 8px;
+    }
+
+    .directory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 15px;
+    }
+
+    .directory-card {
+      background: #F8F9FA;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border-left: 3px solid var(--secondary);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .directory-card span.initials {
+      font-weight: 800;
+      color: var(--primary);
+      background: #E8EAF6;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .directory-card span.full-name {
+      font-weight: 500;
+      color: #424242;
+      text-align: right;
+    }
+
+    /* Toast Notification Engine */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast-card {
+      background: #323232;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100%);
+      opacity: 0;
+      animation: toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes toastSlideIn {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Analytics Dashboard Layouts */
+    .analytics-ribbon {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .metric-card {
+      padding: 20px;
+      border-radius: 12px;
+      color: var(--white);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100px;
+    }
+
+    .metric-card.card-1 { background: var(--gradient-card-1); }
+    .metric-card.card-2 { background: var(--gradient-card-2); }
+    .metric-card.card-3 { background: var(--gradient-card-3); }
+    .metric-card.card-4 { background: var(--gradient-card-4); }
+
+    .metric-title {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      opacity: 0.9;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .filter-engine-panel {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-bottom: 25px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .filter-field-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-field-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #555;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .filter-field-group select, .filter-field-group input {
+      padding: 10px 12px;
+      border: 1.5px solid #CFD8DC;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--dark);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .filter-field-group select:focus, .filter-field-group input:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 6px rgba(0, 137, 123, 0.2);
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .action-btn-ui {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      height: 42px;
+      box-sizing: border-box;
+    }
+
+    .btn-apply { background-color: var(--secondary); color: var(--white); }
+    .btn-apply:hover { background-color: #00796B; }
+    .btn-reset { background-color: #ECEFF1; color: #37474F; }
+    .btn-reset:hover { background-color: #CFD8DC; }
+
+    .btn-excel { background-color: #1E7E34; color: var(--white); }
+    .btn-excel:hover { background-color: #155724; }
+    .btn-pdf { background-color: #BD2130; color: var(--white); }
+    .btn-pdf:hover { background-color: #721C24; }
+
+    .export-ribbon-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .audit-log-wrapper {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+      padding: 15px;
+    }
+
+    .audit-table-container { overflow-x: auto; }
+    .audit-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    .audit-table th { background-color: #ECEFF1; color: #37474F; font-weight: 700; padding: 14px 18px; border-bottom: 2px solid #CFD8DC; text-transform: uppercase; font-size: 12px; }
+    .audit-table td { padding: 14px 18px; border-bottom: 1px solid #ECEFF1; color: #424242; }
+    .audit-table tr:hover { background-color: #F9FAFB; }
+
+    .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; display: inline-block; }
+    .badge.badge-success { background: #E8F5E9; color: var(--success); }
+    .badge.badge-danger { background: #FFEBEE; color: var(--danger); }
+    .badge.badge-mcq { background: #E8EAF6; color: var(--primary); }
+    
+    .table-empty-state { padding: 40px; text-align: center; color: #90A4AE; }
+    .table-empty-state svg { width: 64px; height: 64px; fill: currentColor; margin-bottom: 15px; margin-left: auto; margin-right: auto; }
+
+    /* Modal Styling */
+    .modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+    .modal-view { background: var(--white); border-radius: 16px; width: 90%; max-width: 580px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); animation: modalSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; }
+    @keyframes modalSlideIn { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-header-ui { background: var(--gradient-header); color: var(--white); padding: 20px 25px; position: relative; }
+    .modal-header-ui h3 { margin: 0; font-size: 20px; font-weight: 700; }
+    .modal-header-ui p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.85; }
+    .modal-body { padding: 25px; max-height: 72vh; overflow-y: auto; }
+    .detail-strip { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; border-bottom: 1px dashed var(--gray-border); padding-bottom: 8px; }
+    .detail-strip strong { color: #555; }
+    .detail-strip span { font-weight: 600; color: #111; }
+    .state-toggle-container { margin: 20px 0; }
+    .state-toggle-label { font-size: 13px; font-weight: 700; color: #555; margin-bottom: 8px; display: block; text-transform: uppercase; }
+    .toggle-buttons { display: flex; gap: 8px; }
+    .toggle-option { flex: 1; padding: 12px 6px; border: 2px solid transparent; border-radius: 8px; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.2s; font-size: 13px; }
+    
+    .toggle-option.option-present { background: #E8F5E9; color: var(--success); }
+    .toggle-option.option-present.active { background: var(--success); color: var(--white); }
+    .toggle-option.option-absent { background: #FFEBEE; color: var(--danger); }
+    .toggle-option.option-absent.active { background: var(--danger); color: var(--white); }
+    .toggle-option.option-mcq { background: #E8EAF6; color: var(--primary); }
+    .toggle-option.option-mcq.active { background: var(--primary); color: var(--white); }
+
+    .input-group { margin-top: 15px; }
+    .input-group label { display: block; font-size: 13px; font-weight: 700; color: #555; margin-bottom: 6px; }
+    .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    .modal-footer { padding: 15px 25px; background: #F8F9FA; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--gray-border); }
+    .btn-apply.loading::after { content: ""; display: inline-block; width: 12px; height: 12px; margin-left: 8px; border: 2px solid var(--white); border-radius: 50%; border-top-color: transparent; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* AUTH / LOGIN SCREEN STYLES */
+    #authOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, #1A237E, #0d1245 60%, #001f24);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      padding: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTH / LOGIN OVERLAY LAYER -->
+<div id="authOverlay">
+  <div class="login-card">
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-indigo-900 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-indigo-900/30">
+        <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-black text-gray-900 tracking-tight">AMRITSAR LAW COLLEGE</h2>
+      <p class="text-xs text-teal-700 font-bold tracking-widest uppercase mt-1">Executive Portal</p>
+    </div>
+
+    <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+      <div>
+        <label class="block text-xs font-extrabold text-gray-600 uppercase mb-1">User Identifier</label>
+        <div class="relative">
+          <input type="text" id="loginUsername" required value="Principal/Admin" readonly class="w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:border-indigo-600 focus:outline-none text-sm font-extrabold transition text-indigo-900 bg-indigo-50/50 pl-10 cursor-not-allowed">
+          <span class="absolute left-3 top-3.5 text-indigo-700">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-extrabold text-gray-600 uppercase mb-1">Security Password</label>
+        <div class="relative">
+          <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-600 focus:outline-none text-sm font-semibold transition text-gray-800 bg-gray-50 focus:bg-white pl-10 pr-10">
+          <span class="absolute left-3 top-3.5 text-gray-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </span>
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-3.5 text-gray-400 hover:text-indigo-600 focus:outline-none">
+            <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between text-xs font-semibold text-indigo-900 pt-1">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="rememberMe" class="rounded text-indigo-900 focus:ring-0"> Remember Session
+        </label>
+        <span class="hover:underline cursor-pointer text-indigo-700" onclick="showToast('Contact IT Administrator for access assistance.', 'warning')">Help & Support</span>
+      </div>
+
+      <button type="submit" id="btnLoginSubmit" class="w-full py-3.5 bg-indigo-900 hover:bg-indigo-800 text-white font-extrabold rounded-xl shadow-lg shadow-indigo-900/30 transition duration-200 mt-2 text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+        <span>Sign In to Executive Portal</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </button>
+    </form>
+
+    <!-- Quick Demo Tip -->
+    <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+      <p class="text-[11px] text-gray-500 font-medium">This is Managed by the ALC Admin Office. <strong class="text-indigo-900"><!-- add new password for demo --></strong></p>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="header-content">
+    <div class="header-logo">
+      <h1>AMRITSAR LAW COLLEGE</h1>
+      <p>Master Timetable & Executive Academic Management</p>
+    </div>
+    <div class="dashboard-switcher">
+      <button class="switch-btn active" onclick="switchDashboard('timetable')">📅 Timetable Board</button>
+      <button class="switch-btn" onclick="switchDashboard('analytics')">📊 Analytics & Filtering</button>
+    </div>
+    <div class="live-clock-panel flex items-center gap-4">
+      <div class="text-right">
+        <div id="liveTimeText">00:00:00 AM</div>
+        <div id="liveDateText">Loading Date...</div>
+      </div>
+      <button onclick="handleLogout()" class="bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-3 py-2 rounded-lg transition" title="Sign Out">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- DASHBOARD 1 -->
+  <section id="timetableDashboard" class="dashboard-section active">
+    <div class="section-title">Academic Class Scheduling System</div>
+    <div class="timetable-grid-wrapper">
+      <div class="timetable-grid" id="masterGrid">
+        <div class="grid-header">ROOM NO.</div>
+        <div class="grid-header">CLASS TEACHER</div>
+        <div class="grid-header">CLASS</div>
+        <div class="grid-header">9:15-9:50</div>
+        <div class="grid-header">09:50- 10:40</div>
+        <div class="grid-header">10:40-11:30</div>
+        <div class="grid-header">11:30- 12:20</div>
+        <div class="grid-header">12:20- 1:10</div>
+        <div class="grid-header">1:10-2:00</div>
+        <div class="grid-header">02:00- 02:45</div>
+        <div class="grid-header">02:45-03:30</div>
+        <div class="grid-header">03:30-04:15</div>
+      </div>
+    </div>
+    <div class="directory-drawer">
+      <h3 class="drawer-title">Teacher Reference Directory Lookup</h3>
+      <div class="directory-grid" id="teacherDirectoryGrid"></div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD 2 -->
+  <section id="analyticsDashboard" class="dashboard-section">
+    <div class="section-title">Audit Monitoring & Metric Reporting</div>
+    <div class="analytics-ribbon">
+      <div class="metric-card card-1"><span class="metric-title">Total Logs Stored</span><span class="metric-value" id="kpiTotalLogs">0</span></div>
+      <div class="metric-card card-2"><span class="metric-title">Lectures Attended</span><span class="metric-value" id="kpiAttended">0</span></div>
+      <div class="metric-card card-3"><span class="metric-title">Attendance Rate</span><span class="metric-value" id="kpiAttendanceRate">0%</span></div>
+      <div class="metric-card card-4"><span class="metric-title">Avg. Present Headcount</span><span class="metric-value" id="kpiAvgStudents">0</span></div>
+    </div>
+
+    <div class="filter-engine-panel">
+      <div class="filter-grid">
+        <div class="filter-field-group"><label>Specific Date</label><input type="date" id="filterDate"></div>
+        <div class="filter-field-group"><label>Target Class</label><select id="filterClass"><option value="">-- All Classes --</option></select></div>
+        <div class="filter-field-group"><label>Subject Topic</label><select id="filterSubject"><option value="">-- All Subjects --</option></select></div>
+        <div class="filter-field-group"><label>Assigned Faculty</label><select id="filterTeacher"><option value="">-- All Teachers --</option></select></div>
+        <div class="filter-field-group"><label>Session Status</label><select id="filterStatus">
+          <option value="">-- All Statuses --</option>
+          <option value="Attended">Attended</option>
+          <option value="Not Attended">Not Attended</option>
+          <option value="MCQs">MCQs</option>
+        </select></div>
+        <div class="filter-actions">
+          <button class="action-btn-ui btn-apply" onclick="applyAttendanceFilters()">Apply Filters</button>
+          <button class="action-btn-ui btn-reset" onclick="resetFilters()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Action Utility Ribbon -->
+    <div class="export-ribbon-container">
+      <button class="action-btn-ui btn-excel" onclick="exportToExcel()">📥 Download Excel</button>
+      <button class="action-btn-ui btn-pdf" onclick="exportToPDF()">📄 Download PDF</button>
+    </div>
+
+    <div class="audit-log-wrapper" id="pdfExportWrapper">
+      <div class="audit-table-container">
+        <table class="audit-table" id="attendanceAuditTable">
+          <thead>
+            <tr>
+              <th>Date Stamp</th>
+              <th>Class Year</th>
+              <th>Subject Module</th>
+              <th>Time Slot</th>
+              <th>Faculty Name</th>
+              <th>Presence Status</th>
+              <th>MCQ Verification Details</th>
+              <th>Total Strength</th>
+              <th>Present Students</th>
+              <th>Absent Students</th>
+              <th>Status Comment/Reason</th>
+            </tr>
+          </thead>
+          <tbody id="auditLogsBody"></tbody>
+        </table>
+      </div>
+      <div id="tableEmptyState" class="table-empty-state" style="display: none;">
+        <svg viewBox="0 0 24 24" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <p>No logged attendance records detected matching the filter setup.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ATTENDANCE MODAL -->
+<div id="attendanceModal" class="modal-backdrop">
+  <div class="modal-view">
+    <div class="modal-header-ui">
+      <h3 id="modalTitle">Mark Lecture Presence</h3>
+      <p>Sync entries seamlessly with Google Sheets and Local Cache</p>
+    </div>
+    <div class="modal-body">
+      <div class="detail-strip"><strong>Class Section:</strong><span id="modalClass"></span></div>
+      <div class="detail-strip"><strong>Subject Unit:</strong><span id="modalSubject"></span></div>
+      <div class="detail-strip"><strong>Scheduled Time:</strong><span id="modalTime"></span></div>
+      <div class="detail-strip"><strong>Scheduled Faculty:</strong><span id="modalScheduledTeacher"></span></div>
+      
+      <div class="state-toggle-container">
+        <span class="state-toggle-label">Attendance Status</span>
+        <div class="toggle-buttons">
+          <div class="toggle-option option-present active" id="togglePresent" onclick="toggleSelectionStatus('Attended')">✅ Lecture Attended</div>
+          <div class="toggle-option option-absent" id="toggleAbsent" onclick="toggleSelectionStatus('Not Attended')">❌ Not Attended</div>
+          <div class="toggle-option option-mcq" id="toggleMCQ" onclick="toggleSelectionStatus('MCQs')">📝 MCQs</div>
+        </div>
+      </div>
+
+      <div class="input-group" id="headcountGroup">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-3">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-xs font-extrabold text-emerald-800 uppercase tracking-wider">Class Strengths Dashboard</span>
+            <span class="text-[11px] font-semibold text-emerald-600 italic">Auto-calculating Absentees</span>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="text-[10px] font-extrabold text-emerald-900 block mb-1">TOTAL STRENGTH</label>
+              <input type="number" id="modalTotalStrength" class="p-2 border border-emerald-300 rounded bg-white w-full text-center font-bold text-gray-700" value="60" oninput="calculateAbsentees()">
+            </div>
+            <div>
+              <label class="text-[10px] font-extrabold text-emerald-900 block mb-1">PRESENT STUDENTS</label>
+              <input type="number" id="presentHeadcount" class="p-2 border border-emerald-400 rounded bg-emerald-100 w-full text-center font-bold text-emerald-950" placeholder="0" min="0" oninput="calculateAbsentees()">
+            </div>
+            <div>
+              <label class="text-[10px] font-extrabold text-emerald-900 block mb-1">ABSENT STUDENTS</label>
+              <input type="number" id="absentHeadcount" class="p-2 border border-emerald-300 rounded bg-gray-100 w-full text-center font-bold text-gray-500 cursor-not-allowed" value="60" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group" id="absenceGroup" style="display: none;">
+        <label for="absenceReason" class="font-bold text-gray-700">Cancellation/Absence Description</label>
+        <select id="absenceReason">
+          <option value="">Choose Reason...</option>
+          <option value="Unexcused Absence">Faculty Not Present</option>
+          <option value="Medical Health Leave">Health / Sick Exemption</option>
+          <option value="Institutional Seminar">Institutional Seminar/Workshops</option>
+          <option value="Special Academic Event">Official ALC Event</option>
+          <option value="Gazetted Holiday">National or Regional Holiday</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+
+      <div class="input-group" id="MCQGroup" style="display: none;">
+        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 mb-4">
+          <span class="text-xs font-bold text-indigo-900 block mb-3 uppercase tracking-wider">Class Delivery Configurations</span>
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label class="text-[11px] font-bold text-gray-500 block mb-1">DELIVERY MODE</label>
+              <select id="mcqDeliveryMode" class="p-1.5 text-xs border border-gray-300 rounded-md bg-white w-full font-medium" onchange="autoGenerateMCQText()">
+                <option value="Regular Class">Regular Class</option>
+                <option value="Class Adjustment">Class Adjustment</option>
+                <option value="Combined Lecture">Combined Lecture</option>
+                <option value="Guest Session">Guest Session</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-gray-500 block mb-1">DELIVERED BY (NAME)</label>
+              <input type="text" id="mcqDeliveredBy" class="p-1.5 text-xs border border-gray-300 rounded-md bg-white w-full font-medium" placeholder="Lecturer Name" oninput="autoGenerateMCQText()">
+            </div>
+          </div>
+
+          <span class="text-[11px] font-bold text-gray-500 block mb-2 uppercase tracking-wider">Alphabetical MCQ Generation Actions</span>
+          <div class="flex flex-col gap-2 mb-4">
+            <button type="button" class="text-left text-xs bg-white hover:bg-indigo-100 border border-indigo-200 p-2 rounded-lg transition text-indigo-900 font-medium cursor-pointer" onclick="clickSelectPreset('A')">
+              <strong>Option A:</strong> Regular Delivery by scheduled faculty.
+            </button>
+            <button type="button" class="text-left text-xs bg-white hover:bg-indigo-100 border border-indigo-200 p-2 rounded-lg transition text-indigo-900 font-medium cursor-pointer" onclick="clickSelectPreset('B')">
+              <strong>Option B:</strong> Syllabus adjustment delivered by substitute.
+            </button>
+            <button type="button" class="text-left text-xs bg-white hover:bg-indigo-100 border border-indigo-200 p-2 rounded-lg transition text-indigo-900 font-medium cursor-pointer" onclick="clickSelectPreset('C')">
+              <strong>Option C:</strong> Combined classroom delivered collectively.
+            </button>
+            <button type="button" class="text-left text-xs bg-white hover:bg-indigo-100 border border-indigo-200 p-2 rounded-lg transition text-indigo-900 font-medium cursor-pointer" onclick="clickSelectPreset('D')">
+              <strong>Option D:</strong> Special academic guest lecture format.
+            </button>
+          </div>
+        </div>
+
+        <label for="mcqCustomText" class="font-bold text-gray-700">MCQ Verification (Type/Customize Text Format Here)</label>
+        <textarea id="mcqCustomText" rows="4" class="w-full p-2.5 border border-gray-300 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white" placeholder="Type or click one-click preset above to format MCQs..."></textarea>
+      </div> 
+
+      <div class="input-group">
+        <label for="logDatePicker" class="font-bold text-gray-700">Action Log Date</label>
+        <input type="date" id="logDatePicker">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn-ui btn-reset bg-gray-200 hover:bg-gray-300 text-gray-700" onclick="closeModal()">Cancel</button>
+      <button class="action-btn-ui btn-apply bg-indigo-900 hover:bg-indigo-800 text-white" id="btnSubmitAttendance" onclick="saveLoggedAttendance()">Sync & Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER FOR NOTIFICATIONS -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+       const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/a/macros/acetedu.in/s/AKfycbwsoQufqiurDXEddtNuI2BFds_sRFfslfMwaQrtx4joi-7C5BkH1Ut7aM72_PZSjgTDaA/exec";
+
+  let isAuthenticated = false;
+  let inactivityTimer = null;
+  const INACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 Minutes in milliseconds
+
+  function startInactivityTimer() {
+    clearTimeout(inactivityTimer);
+    if (isAuthenticated) {
+      inactivityTimer = setTimeout(() => {
+        handleLogout("Session expired due to 10 minutes of inactivity.");
+      }, INACTIVITY_TIMEOUT);
+    }
+  }
+
+  function resetInactivity() {
+    if (isAuthenticated) {
+      startInactivityTimer();
+    }
+  }
+
+  // Register inactivity event listeners
+  ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+    window.addEventListener(evt, resetInactivity, true);
+  });
+
+  function togglePasswordVisibility() {
+    const pwdInput = document.getElementById('loginPassword');
+    if (pwdInput.type === 'password') {
+      pwdInput.type = 'text';
+    } else {
+      pwdInput.type = 'password';
+    }
+  }
+
+  function handleLoginSubmit(e) {
+    e.preventDefault();
+    const passVal = document.getElementById('loginPassword').value.trim();
+
+    if (!passVal) {
+      showToast("Please provide your security password.", "error");
+      return;
+    }
+
+    if (passVal !== "123456" && passVal !== "admin") {
+      showToast("Invalid Security Password. Demo Access Code: 123456", "error");
+      return;
+    }
+
+    isAuthenticated = true;
+    const authOverlay = document.getElementById('authOverlay');
+    authOverlay.style.opacity = '0';
+    authOverlay.style.transition = 'opacity 0.3s ease';
+    
+    setTimeout(() => {
+      authOverlay.style.display = 'none';
+      showToast(`Logged in successfully as Principal / Admin.`, "success");
+      startInactivityTimer();
+    }, 300);
+  }
+
+  function handleLogout(reasonStr) {
+    isAuthenticated = false;
+    clearTimeout(inactivityTimer);
+    const authOverlay = document.getElementById('authOverlay');
+    authOverlay.style.display = 'flex';
+    authOverlay.style.opacity = '1';
+    document.getElementById('loginPassword').value = '';
+    
+    showToast(reasonStr || "Signed out successfully.", "info");
+  }
+
+  const TEACHER_DIRECTORY = { 
+    "AKV": "Dr. Avon Kumar Vaid", 
+    "KK": "Dr. Kiranpreet Kaur", 
+    "HK": "Harmanjot Kaur", 
+    "RJ": "Rajmeet Kaur", 
+    "MKL": "Manpreet Kaur Lehal", 
+    "MB": "Manvi Badyal", 
+    "SA": "Shivani Arora", 
+    "GK": "Gunpreet Kaur", 
+    "APK": "Dr. Amanpreet Kaur", 
+    "NM": "Nitasha Mahajan", 
+    "AJ": "Ankita Joshi", 
+    "AM": "Anant Meera", 
+    "SH": "Shefali", 
+    "SSM": "Surindar Singh Manan", 
+    "AK": "Amit Kumar", 
+    "MK": "Mehak", 
+    "AI": "Academic Instructor" 
+  };
+
+  const TIMETABLE_DATA = [
+    { roomNo: "Room 101", classTeacher: "Dr. Avon Kumar Vaid", className: "BA. LLB Sem IX", strength: 60, slots: [{ type: "empty" }, { type: "lecture", subject: "DRAFTING", teacher: "SA", time: "09:50-10:40" }, { type: "lecture", subject: "EVIDENCE", teacher: "MKL", time: "10:40-11:30" }, { type: "lecture", subject: "OFFENCES AGAINST CHILD", teacher: "NM", time: "11:30-12:20" }, { type: "lecture", subject: "IOS", teacher: "AJ", time: "12:20-1:10" }, { type: "interval", label: "B" }, { type: "lecture", subject: "SMALL ACTS", teacher: "MK", time: "02:00-02:45" }, { type: "lecture", subject: "MOOT COURT", teacher: "AJ", time: "02:45-03:30" }, { type: "empty" }] },
+    { roomNo: "Room 102", classTeacher: "Harmanjot Kaur", className: "BA. LLB Sem VII", strength: 55, slots: [{ type: "empty" }, { type: "lecture", subject: "BNSS", teacher: "AJ", time: "09:50-10:40" }, { type: "lecture", subject: "PRS ADM", teacher: "HK", time: "10:40-11:30" }, { type: "lecture", subject: "LABOUR LAW", teacher: "AK", time: "11:30-12:20" }, { type: "lecture", subject: "ADR", teacher: "MKL", time: "12:20-1:10" }, { type: "interval", label: "R" }, { type: "lecture", subject: "Rent Law", teacher: "NM", time: "02:00-02:45" }, { type: "lecture", subject: "MOOT COURT", teacher: "AJ", time: "02:45-03:30" }, { type: "empty" }] },
+    { roomNo: "Room 103", classTeacher: "Shivani Arora", className: "BA. LLB Sem V Sec (A)", strength: 50, slots: [{ type: "empty" }, { type: "lecture", subject: "Adm Law", teacher: "NM", time: "09:50-10:40" }, { type: "lecture", subject: "REGULATORY LAW", teacher: "AM", time: "10:40-11:30" }, { type: "lecture", subject: "POLITICAL- SCIENCE", teacher: "MK", time: "11:30-12:20" }, { type: "lecture", subject: "Law of Crimes BNS", teacher: "SA", time: "12:20-1:10" }, { type: "interval", label: "E" }, { type: "lecture", subject: "LAW OF PROPERTY", teacher: "MB", time: "02:00-02:45" }, { type: "lecture", subject: "SOCIOLOGY", teacher: "KK", time: "02:45-03:30" }, { type: "empty" }] },
+    { roomNo: "Room 104", classTeacher: "Manvi Badyal", className: "BA. LLB Sem V Sec (B)", strength: 50, slots: [{ type: "empty" }, { type: "lecture", subject: "LAW OF PROPERTY", teacher: "MB", time: "09:50-10:40" }, { type: "lecture", subject: "Adm Law", teacher: "NM", time: "10:40-11:30" }, { type: "lecture", subject: "law of Crimes BNS", teacher: "SA", time: "11:30-12:20" }, { type: "lecture", subject: "REGULATORY LAW", teacher: "AM", time: "12:20-1:10" }, { type: "interval", label: "A" }, { type: "lecture", subject: "SOCIOLOGY", teacher: "KK", time: "02:00-02:45" }, { type: "lecture", subject: "POLITICAL- SCIENCE", teacher: "MK", time: "02:45-03:30" }, { type: "empty" }] },
+    { roomNo: "Room 105", classTeacher: "Manpreet Kaur Lehal", className: "BA. LLB SEM III Sec (A)", strength: 45, slots: [{ type: "empty" }, { type: "lecture", subject: "Family Law", teacher: "HK", time: "09:50-10:40" }, { type: "lecture", subject: "PUBLIC INTERNATIONAL LAW", teacher: "AK", time: "10:40-11:30" }, { type: "lecture", subject: "CONSTITUTIONAL LAW", teacher: "MB", time: "11:30-12:20" }, { type: "lecture", subject: "English", teacher: "SH", time: "12:20-1:10" }, { type: "interval", label: "K" }, { type: "lecture", subject: "POLITICAL- SCIENCE", teacher: "AM", time: "02:00-02:45" }, { type: "lecture", subject: "ECONOMICS", teacher: "SSM", time: "02:45-03:30" }, { type: "lecture", subject: "PUNJABI", teacher: "RJ", time: "03:30-04:15" }] },
+    { roomNo: "Room 106", classTeacher: "Shefali", className: "BA. LLB SEM III Sec (B)", strength: 45, slots: [{ type: "lecture", subject: "PH & C", teacher: "SA", time: "9:15-9:50" }, { type: "lecture", subject: "English", teacher: "SH", time: "09:50-10:40" }, { type: "lecture", subject: "CONSTITUTIONAL LAW", teacher: "MB", time: "10:40-11:30" }, { type: "lecture", subject: "ECONOMICS", teacher: "SSM", time: "11:30-12:20" }, { type: "lecture", subject: "Family Law", teacher: "HK", time: "12:20-1:10" }, { type: "interval", label: "" }, { type: "lecture", subject: "PUBLIC INTERNATIONAL LAW", teacher: "AK", time: "02:00-02:45" }, { type: "lecture", subject: "PUNJABI", teacher: "RJ", time: "02:45-03:30" }, { type: "lecture", subject: "POLITICAL- SCIENCE", teacher: "AM", time: "03:30-04:15" }] },
+    { roomNo: "Room 107", classTeacher: "Dr. Kiranpreet Kaur", className: "BA. LLB Sem I (Sec A)", strength: 60, slots: [{ type: "empty" }, { type: "lecture", subject: "LAW OF Contract- I", teacher: "AKV", time: "09:50-10:40" }, { type: "lecture", subject: "POLITICAL- SCIENCE", teacher: "KK", time: "10:40-11:30" }, { type: "lecture", subject: "Punjabi", teacher: "RJ", time: "11:30-12:20" }, { type: "lecture", subject: "ECONOMICS", teacher: "SSM", time: "12:20-1:10" }, { type: "interval", label: "" }, { type: "lecture", subject: "law of Torts", teacher: "GK", time: "02:00-02:45" }, { type: "lecture", subject: "English", teacher: "SH", time: "02:45-03:30" }, { type: "lecture", subject: "Entrepreneurship mindset", teacher: "APK", time: "03:30-04:15" }] },
+    { roomNo: "Room 108", classTeacher: "Rajmeet Kaur", className: "BA. LLB Sem I (Sec B)", strength: 60, slots: [{ type: "lecture", subject: "PH & C", teacher: "SA", time: "9:15-9:50" }, { type: "lecture", subject: "POLITICAL- SCIENCE", teacher: "KK", time: "09:50-10:40" }, { type: "lecture", subject: "LAW OF Contract- I", teacher: "AKV", time: "10:40-11:30" }, { type: "lecture", subject: "English", teacher: "SH", time: "11:30-12:20" }, { type: "lecture", subject: "Punjabi", teacher: "RJ", time: "12:20-1:10" }, { type: "interval", label: "" }, { type: "lecture", subject: "ECONOMICS", teacher: "SSM", time: "02:00-02:45" }, { type: "lecture", subject: "law of Torts", teacher: "GK", time: "02:45-03:30" }, { type: "lecture", subject: "Entrepreneurship mindset", teacher: "APK", time: "03:30-04:15" }] },
+    { roomNo: "Room 109", classTeacher: "Dr. Amanpreet Kaur", className: "LLB Sem - V", strength: 50, slots: [{ type: "empty" }, { type: "lecture", subject: "CPC", teacher: "APK", time: "09:50-10:40" }, { type: "lecture", subject: "Environment Law", teacher: "MK", time: "10:40-11:30" }, { type: "lecture", subject: "OFFENCES AGAINST CHILD", teacher: "NM", time: "11:30-12:20" }, { type: "lecture", subject: "CONSUMER PROTECTION", teacher: "AK", time: "12:20-1:10" }, { type: "interval", label: "" }, { type: "lecture", subject: "COMPANY LAW", teacher: "HK", time: "02:00-02:45" }, { type: "lecture", subject: "MOOT COURT", teacher: "AKV", time: "02:45-03:30" }, { type: "empty" }] },
+    { roomNo: "Room 110", classTeacher: "Nitasha Mahajan", className: "LLB Sem-III", strength: 55, slots: [{ type: "empty" }, { type: "lecture", subject: "LAW OF PROPERTY", teacher: "MB", time: "09:50-10:40" }, { type: "lecture", subject: "ADMINISTRATIVE LAW", teacher: "NM", time: "10:40-11:30" }, { type: "lecture", subject: "Labour Law", teacher: "AK", time: "11:30-12:20" }, { type: "lecture", subject: "Law of Crimes", teacher: "SA", time: "12:20-1:10" }, { type: "interval", label: "" }, { type: "lecture", subject: "PRINCIPAL OF TAXATION", teacher: "MKL", time: "02:00-02:45" }, { type: "empty" }, { type: "empty" }] },
+    { roomNo: "Room 111", classTeacher: "Ankita Joshi", className: "LLB Sem-I", strength: 55, slots: [{ type: "empty" }, { type: "lecture", subject: "LAW OF Contract- I", teacher: "AKV", time: "09:50-10:40" }, { type: "lecture", subject: "CONSTITUTIONAL LAW", teacher: "APK", time: "10:40-11:30" }, { type: "lecture", subject: "JURISPRUDENCE", teacher: "MKL", time: "11:30-12:20" }, { type: "lecture", subject: "Family Law", teacher: "HK", time: "12:20-1:10" }, { type: "interval", label: "" }, { type: "lecture", subject: "law of Torts", teacher: "GK", time: "02:00-02:45" }, { type: "empty" }, { type: "empty" }] }
+  ];
+
+  let localLogs = JSON.parse(localStorage.getItem('alc_attendance_logs_v4')) || [];
+  let currentSelection = null;
+  let activeStatus = "Attended";
+  let lastCheckedDate = new Date().toISOString().split('T')[0];
+
+  function showToast(message, type = "success") {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast-card ${type === 'success' ? 'border-l-4 border-emerald-500' : 'border-l-4 border-indigo-500'} bg-neutral-900 text-white`;
+    
+    let icon = `✅`;
+    if (type === 'error') icon = `❌`;
+    if (type === 'warning') icon = `⚠️`;
+
+    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = "toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) reverse forwards";
+      setTimeout(() => { toast.remove(); }, 300);
+    }, 4000);
+  }
+
+  function runLiveClock() {
+    function refreshClock() {
+      const now = new Date();
+      const currentTodayStr = now.toISOString().split('T')[0];
+      
+      if (currentTodayStr !== lastCheckedDate) {
+        lastCheckedDate = currentTodayStr;
+        refreshTimetableUI();
+      }
+
+      document.getElementById('liveDateText').textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('liveTimeText').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    refreshClock();
+    setInterval(refreshClock, 1000);
+  }
+
+  function switchDashboard(target) {
+    if (!isAuthenticated) {
+      showToast("Please log in to access system dashboards.", "warning");
+      return;
+    }
+
+    document.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
+    
+    if (target === 'timetable') {
+      document.querySelector('[onclick*="timetable"]').classList.add('active');
+      document.getElementById('timetableDashboard').classList.add('active');
+    } else {
+      document.querySelector('[onclick*="analytics"]').classList.add('active');
+      document.getElementById('analyticsDashboard').classList.add('active');
+      generateAuditLogs();
+      updateKPIWidgets();
+    }
+  }
+
+  function refreshTimetableUI() {
+    const grid = document.getElementById('masterGrid');
+    const elementsToKeep = 12; // 12 Header Cells (Room, Teacher, Class + 9 Slots)
+    while (grid.children.length > elementsToKeep) {
+      grid.removeChild(grid.lastChild);
+    }
+    initDynamicEngine();
+  }
+
+  function initDynamicEngine() {
+    const grid = document.getElementById('masterGrid');
+    const todayStr = new Date().toISOString().split('T')[0];
+    
+    TIMETABLE_DATA.forEach(row => {
+      // 1. Render Serial Room Number Cell
+      const roomCol = document.createElement('div');
+      roomCol.className = 'room-cell';
+      roomCol.innerHTML = `<strong>${row.roomNo}</strong>`;
+      grid.appendChild(roomCol);
+
+      // 2. Render Teacher's Name Cell
+      const teacherCol = document.createElement('div');
+      teacherCol.className = 'teacher-cell';
+      teacherCol.innerHTML = `<span>${row.classTeacher}</span>`;
+      grid.appendChild(teacherCol);
+
+      // 3. Render Class Name Cell
+      const classCol = document.createElement('div');
+      classCol.className = 'class-name';
+      classCol.innerHTML = `${row.className} <br/><span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded-full mt-1 inline-block">Str: ${row.strength}</span>`;
+      grid.appendChild(classCol);
+
+      // 4. Render Time Slots
+      row.slots.forEach((slot, idx) => {
+        const cell = document.createElement('div');
+        
+        if (slot.type === 'empty') {
+          cell.className = 'grid-cell';
+        } else if (slot.type === 'interval') {
+          cell.className = 'grid-cell interval-cell';
+          cell.textContent = slot.label || 'BREAK';
+        } else if (slot.type === 'lecture') {
+          cell.className = 'grid-cell clickable';
+          cell.innerHTML = `<strong>${slot.subject}</strong><span class="teacher-initials">${slot.teacher}</span>`;
+          
+          cell.dataset.class = row.className;
+          cell.dataset.subject = slot.subject;
+          cell.dataset.teacher = slot.teacher;
+          cell.dataset.time = slot.time;
+          cell.dataset.strength = row.strength;
+          cell.dataset.cellIdx = `${row.className}_${idx}`;
+          
+          cell.onclick = () => launchAttendanceWizard(cell);
+          
+          const matchedLog = localLogs.find(l => l.cellIdx === cell.dataset.cellIdx && l.date === todayStr);
+          if (matchedLog) {
+            if (matchedLog.status === 'Attended') {
+              cell.classList.add('attended');
+            } else if (matchedLog.status === 'Not Attended') {
+              cell.classList.add('not-attended');
+            } else if (matchedLog.status === 'MCQs') {
+              cell.classList.add('mcq-status');
+            }
+          }
+        }
+        grid.appendChild(cell);
+      });
+    });
+
+    const dirContainer = document.getElementById('teacherDirectoryGrid');
+    dirContainer.innerHTML = '';
+    Object.keys(TEACHER_DIRECTORY).sort().forEach(initials => {
+      const card = document.createElement('div');
+      card.className = 'directory-card';
+      card.innerHTML = `<span class="initials">${initials}</span><span class="full-name">${TEACHER_DIRECTORY[initials]}</span>`;
+      dirContainer.appendChild(card);
+    });
+
+    populateFilterDropdowns();
+  }
+
+  function calculateAbsentees() {
+    const totalInput = document.getElementById('modalTotalStrength');
+    const presentInput = document.getElementById('presentHeadcount');
+    const absentInput = document.getElementById('absentHeadcount');
+
+    let total = parseInt(totalInput.value) || 0;
+    let present = parseInt(presentInput.value) || 0;
+
+    if (total < 0) {
+      total = 0;
+      totalInput.value = 0;
+    }
+
+    if (present < 0) {
+      present = 0;
+      presentInput.value = 0;
+    }
+
+    if (present > total) {
+      showToast(`Presence count exceeds Total strength (${total})! Auto-adjusting.`, "warning");
+      present = total;
+      presentInput.value = total;
+    }
+
+    absentInput.value = total - present;
+  }
+
+  function launchAttendanceWizard(element) {
+    if (!isAuthenticated) {
+      showToast("Access Restricted. Please log in first.", "warning");
+      return;
+    }
+
+    currentSelection = element;
+    const schedTeacherCode = element.dataset.teacher;
+    const schedTeacherName = TEACHER_DIRECTORY[schedTeacherCode] || schedTeacherCode;
+    const classTotalStrength = element.dataset.strength || "60";
+
+    document.getElementById('modalClass').textContent = element.dataset.class;
+    document.getElementById('modalSubject').textContent = element.dataset.subject;
+    document.getElementById('modalTime').textContent = element.dataset.time;
+    document.getElementById('modalScheduledTeacher').textContent = schedTeacherName;
+    
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('logDatePicker').value = todayStr;
+
+    const existing = localLogs.find(l => l.cellIdx === element.dataset.cellIdx && l.date === todayStr);
+    
+    document.getElementById('modalTotalStrength').value = classTotalStrength;
+
+    if (existing) {
+      toggleSelectionStatus(existing.status);
+      document.getElementById('modalTotalStrength').value = existing.totalStrength || classTotalStrength;
+      document.getElementById('presentHeadcount').value = existing.headcount !== undefined ? existing.headcount : '';
+      document.getElementById('absentHeadcount').value = existing.absentCount !== undefined ? existing.absentCount : classTotalStrength;
+      document.getElementById('absenceReason').value = existing.reason || '';
+      
+      document.getElementById('mcqDeliveryMode').value = existing.mcqMode || 'Regular Class';
+      document.getElementById('mcqDeliveredBy').value = existing.mcqDeliveredBy || schedTeacherName;
+      document.getElementById('mcqCustomText').value = existing.mcqCustomText || '';
+    } else {
+      toggleSelectionStatus('Attended');
+      document.getElementById('presentHeadcount').value = '';
+      document.getElementById('absentHeadcount').value = classTotalStrength;
+      document.getElementById('absenceReason').value = '';
+      
+      document.getElementById('mcqDeliveryMode').value = 'Regular Class';
+      document.getElementById('mcqDeliveredBy').value = schedTeacherName;
+      document.getElementById('mcqCustomText').value = '';
+    }
+    
+    calculateAbsentees();
+    document.getElementById('attendanceModal').style.display = 'flex';
+  }
+
+  function toggleSelectionStatus(status) {
+    activeStatus = status;
+    const btnPresent = document.getElementById('togglePresent');
+    const btnAbsent = document.getElementById('toggleAbsent');
+    const btnMCQ = document.getElementById('toggleMCQ');
+
+    btnPresent.className = "toggle-option option-present text-emerald-800";
+    btnAbsent.className = "toggle-option option-absent text-red-800";
+    btnMCQ.className = "toggle-option option-mcq text-indigo-800";
+
+    document.getElementById('headcountGroup').style.display = 'none';
+    document.getElementById('absenceGroup').style.display = 'none';
+    document.getElementById('MCQGroup').style.display = 'none';
+
+    if (status === 'Attended') {
+      btnPresent.className = "toggle-option option-present active bg-emerald-700 text-white font-bold";
+      document.getElementById('headcountGroup').style.display = 'block';
+    } else if (status === 'Not Attended') {
+      btnAbsent.className = "toggle-option option-absent active bg-red-700 text-white font-bold";
+      document.getElementById('absenceGroup').style.display = 'block';
+    } else if (status === 'MCQs') {
+      btnMCQ.className = "toggle-option option-mcq active bg-indigo-800 text-white font-bold";
+      document.getElementById('MCQGroup').style.display = 'block';
+      autoGenerateMCQText();
+    }
+  }
+
+  function autoGenerateMCQText() {
+    if (!currentSelection) return;
+    const currentVal = document.getElementById('mcqCustomText').value.trim();
+    if (currentVal === '') {
+      clickSelectPreset('A');
+    }
+  }
+
+  function clickSelectPreset(optionLetter) {
+    if (!currentSelection) return;
+    
+    const schedTeacherCode = currentSelection.dataset.teacher;
+    const schedTeacherName = TEACHER_DIRECTORY[schedTeacherCode] || schedTeacherCode;
+    const activeDeliveredBy = document.getElementById('mcqDeliveredBy').value.trim() || schedTeacherName;
+    const activeMode = document.getElementById('mcqDeliveryMode').value;
+    const targetClass = currentSelection.dataset.class;
+    const targetSubject = currentSelection.dataset.subject;
+
+    let text = "";
+    if (optionLetter === 'A') {
+      text = `Option A: Regular ${activeMode} delivery conducted by scheduled faculty member (${activeDeliveredBy}) for the subject "${targetSubject}", with full syllabus progression and students of ${targetClass} attending dynamically.`;
+    } else if (optionLetter === 'B') {
+      text = `Option B: Official Syllabus Adjustment mapped onto "${targetSubject}". Delivered as an adjustment lecture by substitute lecturer ${activeDeliveredBy} in place of scheduled faculty with dynamic tracking for ${targetClass}.`;
+    } else if (optionLetter === 'C') {
+      text = `Option C: Merged Combined Classroom format. Lecture of "${targetSubject}" delivered by ${activeDeliveredBy} and co-attended simultaneously by multiple class blocks including ${targetClass}.`;
+    } else if (optionLetter === 'D') {
+      text = `Option D: Special guest session arrangement. Session on "${targetSubject}" delivered as guest lecturer slot by ${activeDeliveredBy} with mandatory academic reporting for ${targetClass}.`;
+    }
+    
+    document.getElementById('mcqCustomText').value = text;
+  }
+
+  function closeModal() { document.getElementById('attendanceModal').style.display = 'none'; currentSelection = null; }
+
+  async function saveLoggedAttendance() {
+    if (!currentSelection) return;
+    const dateVal = document.getElementById('logDatePicker').value;
+    if (!dateVal) { 
+      showToast("Please choose an execution date.", "error"); 
+      return; 
+    }
+
+    const cellId = currentSelection.dataset.cellIdx;
+    const isAttended = activeStatus === 'Attended';
+    const isMCQ = activeStatus === 'MCQs';
+    
+    const totalStrengthVal = parseInt(document.getElementById('modalTotalStrength').value) || 0;
+    const presentCountVal = isAttended ? (parseInt(document.getElementById('presentHeadcount').value) || 0) : 0;
+    const absentCountVal = isAttended ? (parseInt(document.getElementById('absentHeadcount').value) || 0) : totalStrengthVal;
+    const reasonVal = document.getElementById('absenceReason').value;
+
+    const mcqModeVal = document.getElementById('mcqDeliveryMode').value;
+    const mcqDeliveredByVal = document.getElementById('mcqDeliveredBy').value;
+    const mcqTextVal = document.getElementById('mcqCustomText').value;
+
+    if (isAttended && presentCountVal < 0) { 
+      showToast("Student presence count must be zero or higher.", "error"); 
+      return; 
+    }
+    if (!isAttended && !isMCQ && !reasonVal) { 
+      showToast("Please supply an absence description reason.", "error"); 
+      return; 
+    }
+    if (isMCQ && !mcqTextVal.trim()) {
+      showToast("Please supply MCQ Verification text details.", "error");
+      return;
+    }
+
+    const teacherInitials = currentSelection.dataset.teacher;
+    const teacherFullName = TEACHER_DIRECTORY[teacherInitials] || teacherInitials;
+
+    const entryData = {
+      cellIdx: cellId, 
+      date: dateVal, 
+      className: currentSelection.dataset.class,
+      subject: currentSelection.dataset.subject, 
+      time: currentSelection.dataset.time,
+      teacher: teacherInitials, 
+      teacherName: teacherFullName, 
+      status: activeStatus,
+      totalStrength: totalStrengthVal,
+      headcount: presentCountVal,
+      absentCount: absentCountVal,
+      reason: isAttended ? "Class Executed Successfully" : (isMCQ ? "MCQ Marked Details" : reasonVal),
+      
+      mcqMode: isMCQ ? mcqModeVal : "",
+      mcqDeliveredBy: isMCQ ? mcqDeliveredByVal : "",
+      mcqCustomText: isMCQ ? mcqTextVal : ""
+    };
+
+    const submitBtn = document.getElementById('btnSubmitAttendance');
+    submitBtn.disabled = true; 
+    submitBtn.classList.add('loading');
+
+    if (GOOGLE_SHEET_WEBAPP_URL && GOOGLE_SHEET_WEBAPP_URL !== "YOUR_WEB_APP_URL_HERE") {
+      try {
+        await fetch(GOOGLE_SHEET_WEBAPP_URL, { 
+          method: "POST", 
+          mode: "no-cors", 
+          cache: "no-cache", 
+          headers: { "Content-Type": "application/json" }, 
+          body: JSON.stringify(entryData) 
+        });
+      } catch (e) { 
+        console.error(e); 
+      }
+    }
+
+    localLogs = localLogs.filter(log => !(log.cellIdx === cellId && log.date === dateVal));
+    localLogs.push(entryData);
+    localStorage.setItem('alc_attendance_logs_v4', JSON.stringify(localLogs));
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (dateVal === todayStr) {
+      currentSelection.classList.remove('attended', 'not-attended', 'mcq-status');
+      if (activeStatus === 'Attended') {
+        currentSelection.classList.add('attended');
+      } else if (activeStatus === 'Not Attended') {
+        currentSelection.classList.add('not-attended');
+      } else if (activeStatus === 'MCQs') {
+        currentSelection.classList.add('mcq-status');
+      }
+    }
+
+    submitBtn.disabled = false; 
+    submitBtn.classList.remove('loading');
+    closeModal();
+    generateAuditLogs();
+    updateKPIWidgets();
+    showToast("Synchronized successfully to administrative database!", "success");
+  }
+
+  function populateFilterDropdowns() {
+    const classes = new Set(), subjects = new Set(), teachers = new Set();
+    TIMETABLE_DATA.forEach(row => {
+      classes.add(row.className);
+      row.slots.forEach(slot => { 
+        if (slot.type === 'lecture') { 
+          subjects.add(slot.subject); 
+          teachers.add(slot.teacher); 
+        } 
+      });
+    });
+    
+    const populateSelect = (elementId, values) => {
+      const select = document.getElementById(elementId);
+      while(select.children.length > 1) { select.removeChild(select.lastChild); }
+      Array.from(values).sort().forEach(val => { 
+        const opt = document.createElement('option'); 
+        opt.value = val; 
+        opt.textContent = val; 
+        select.appendChild(opt); 
+      });
+    };
+    
+    populateSelect('filterClass', classes);
+    populateSelect('filterSubject', subjects);
+    populateSelect('filterTeacher', teachers);
+  }
+
+  function generateAuditLogs() {
+    const tableBody = document.getElementById('auditLogsBody');
+    const emptyState = document.getElementById('tableEmptyState');
+    
+    const dateVal = document.getElementById('filterDate').value;
+    const classVal = document.getElementById('filterClass').value;
+    const subVal = document.getElementById('filterSubject').value;
+    const teachVal = document.getElementById('filterTeacher').value;
+    const statusVal = document.getElementById('filterStatus').value;
+
+    tableBody.innerHTML = '';
+    const filtered = localLogs.filter(log => {
+      if (dateVal && log.date !== dateVal) return false;
+      if (classVal && log.className !== classVal) return false;
+      if (subVal && log.subject !== subVal) return false;
+      if (teachVal && log.teacher !== teachVal) return false;
+      if (statusVal && log.status !== statusVal) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) { 
+      emptyState.style.display = 'block'; 
+      return; 
+    }
+    
+    emptyState.style.display = 'none';
+    filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    filtered.forEach(log => {
+      const row = document.createElement('tr');
+      let badgeClass = 'badge-success';
+      if (log.status === 'Not Attended') badgeClass = 'badge-danger';
+      if (log.status === 'MCQs') badgeClass = 'badge-mcq';
+
+      const mcqCellContent = log.status === 'MCQs' 
+        ? `<div class="bg-indigo-50 text-indigo-950 p-2 border border-indigo-100 rounded text-xs font-semibold max-w-[280px]">${log.mcqCustomText || "Custom MCQ Action Saved"}</div>`
+        : `<span class="text-gray-400 font-medium italic text-xs">Standard Session</span>`;
+
+      const totalStrength = log.totalStrength || 60;
+      const presentCount = log.status === 'Attended' ? (log.headcount || 0) : 0;
+      const absentCount = log.status === 'Attended' ? (log.absentCount !== undefined ? log.absentCount : (totalStrength - presentCount)) : totalStrength;
+
+      row.innerHTML = `
+        <td><strong>${log.date}</strong></td>
+        <td>${log.className}</td>
+        <td>${log.subject}</td>
+        <td>${log.time}</td>
+        <td>${TEACHER_DIRECTORY[log.teacher] || log.teacher} (${log.teacher})</td>
+        <td><span class="badge ${badgeClass}">${log.status}</span></td>
+        <td>${mcqCellContent}</td>
+        <td><strong>${totalStrength}</strong></td>
+        <td class="text-emerald-700 font-bold">${presentCount}</td>
+        <td class="text-red-600 font-bold">${absentCount}</td>
+        <td style="font-style: italic; color: #555;">${log.reason || 'N/A'}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  function applyAttendanceFilters() { generateAuditLogs(); updateKPIWidgets(); }
+  function resetFilters() { document.querySelectorAll('.filter-grid input, .filter-grid select').forEach(el => el.value = ''); applyAttendanceFilters(); }
+
+  function getFilteredDataset() {
+    const dateVal = document.getElementById('filterDate').value;
+    const classVal = document.getElementById('filterClass').value;
+    const subVal = document.getElementById('filterSubject').value;
+    const teachVal = document.getElementById('filterTeacher').value;
+    const statusVal = document.getElementById('filterStatus').value;
+
+    return localLogs.filter(log => {
+      if (dateVal && log.date !== dateVal) return false;
+      if (classVal && log.className !== classVal) return false;
+      if (subVal && log.subject !== subVal) return false;
+      if (teachVal && log.teacher !== teachVal) return false;
+      if (statusVal && log.status !== statusVal) return false;
+      return true;
+    });
+  }
+
+  function updateKPIWidgets() {
+    const filtered = getFilteredDataset();
+
+    const totalLogs = filtered.length;
+    const attendedCount = filtered.filter(l => l.status === 'Attended').length;
+    const rate = totalLogs > 0 ? Math.round((attendedCount / totalLogs) * 100) : 0;
+    const attendedLogs = filtered.filter(l => l.status === 'Attended');
+    const avgStudents = attendedLogs.length > 0 ? Math.round(attendedLogs.reduce((acc, curr) => acc + (curr.headcount || 0), 0) / attendedLogs.length) : 0;
+
+    document.getElementById('kpiTotalLogs').textContent = totalLogs;
+    document.getElementById('kpiAttended').textContent = attendedCount;
+    document.getElementById('kpiAttendanceRate').textContent = `${rate}%`;
+    document.getElementById('kpiAvgStudents').textContent = avgStudents;
+  }
+
+  function exportToExcel() {
+    const table = document.getElementById("attendanceAuditTable");
+    if (!table || table.getElementsByTagName("tbody")[0].children.length === 0) {
+      showToast("No log data available to compile excel worksheet.", "warning");
+      return;
+    }
+
+    const wsOriginal = XLSX.utils.table_to_sheet(table);
+    const tableMatrix = XLSX.utils.sheet_to_json(wsOriginal, { header: 1 });
+
+    const reportDate = new Date().toISOString().split('T')[0];
+    const structuredAOA = [
+      ["AMRITSAR LAW COLLEGE - COMPREHENSIVE ATTENDANCE DATABASE REPORT"],
+      [`Generated On: ${reportDate} | System Sync Mode: Active Local Cache & Sheet Sync`],
+      [] 
+    ].concat(tableMatrix);
+
+    structuredAOA.push([]); 
+    structuredAOA.push(["This document is an administrative academic record generated automatically by the ALC Scheduling & Sync Engine."]);
+
+    const newWs = XLSX.utils.aoa_to_sheet(structuredAOA);
+
+    if (!newWs['!merges']) newWs['!merges'] = [];
+    newWs['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: 10 } });
+    newWs['!merges'].push({ s: { r: 1, c: 0 }, e: { r: 1, c: 10 } });
+    newWs['!merges'].push({ s: { r: structuredAOA.length - 1, c: 0 }, e: { r: structuredAOA.length - 1, c: 10 } });
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, newWs, "Attendance Log Report");
+    XLSX.writeFile(wb, `ALC_Attendance_Report_${reportDate}.xlsx`);
+    showToast("Excel spreadsheet compiled with full dataset successfully!", "success");
+  }
+
+  function exportToPDF() {
+    const originalElement = document.getElementById("pdfExportWrapper");
+    const tbody = document.getElementById("auditLogsBody");
+    if (!tbody || tbody.children.length === 0) {
+      showToast("No audit logs detected to build a PDF print job.", "error");
+      return;
+    }
+
+    const hiddenPrintView = document.createElement("div");
+    hiddenPrintView.style.padding = "25px";
+    hiddenPrintView.style.backgroundColor = "#FFFFFF";
+    hiddenPrintView.style.color = "#212121";
+    hiddenPrintView.style.fontFamily = "'Segoe UI', Arial, sans-serif";
+
+    const brandHeaderHTML = `
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #1A237E; padding-bottom: 12px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <svg width="45" height="45" viewBox="0 0 24 24" fill="#1A237E" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z"/>
+            <path d="M4.5 12.06V16.5L12 20.5L19.5 16.5V12.06L12 16.15L4.5 12.06Z"/>
+          </svg>
+          <div style="text-align: left;">
+            <h1 style="margin: 0; color: #1A237E; font-size: 20px; font-weight: 800; letter-spacing: 0.5px;">AMRITSAR LAW COLLEGE</h1>
+            <p style="margin: 3px 0 0 0; color: #00897B; font-size: 10px; font-weight: 600; text-transform: uppercase;">Official Enterprise Academic Timetable & Attendance Audit Report</p>
+          </div>
+        </div>
+        <div style="text-align: right; font-size: 10px; color: #555;">
+          <strong>Export Date:</strong> ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}<br/>
+          <strong>Security Level:</strong> Internal Academic Use
+        </div>
+      </div>
+    `;
+    hiddenPrintView.innerHTML = brandHeaderHTML;
+
+    const filtered = getFilteredDataset();
+    const totalLogs = filtered.length;
+    const attendedCount = filtered.filter(l => l.status === 'Attended').length;
+    const rate = totalLogs > 0 ? Math.round((attendedCount / totalLogs) * 100) : 0;
+    const attendedLogs = filtered.filter(l => l.status === 'Attended');
+    const avgStudents = attendedLogs.length > 0 ? Math.round(attendedLogs.reduce((acc, curr) => acc + (curr.headcount || 0), 0) / attendedLogs.length) : 0;
+
+    const kpiSummaryBoxHTML = `
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; background-color: #F8F9FA; padding: 12px; border-radius: 8px; border: 1px solid #ECEFF1;">
+        <div style="text-align: center;">
+          <span style="font-size: 8px; text-transform: uppercase; color: #78909C; font-weight: 700; display: block;">Total Logs Stored</span>
+          <strong style="font-size: 16px; color: #1A237E;">${totalLogs}</strong>
+        </div>
+        <div style="text-align: center; border-left: 1px solid #CFD8DC;">
+          <span style="font-size: 8px; text-transform: uppercase; color: #78909C; font-weight: 700; display: block;">Lectures Attended</span>
+          <strong style="font-size: 16px; color: #2E7D32;">${attendedCount}</strong>
+        </div>
+        <div style="text-align: center; border-left: 1px solid #CFD8DC;">
+          <span style="font-size: 8px; text-transform: uppercase; color: #78909C; font-weight: 700; display: block;">Attendance Rate</span>
+          <strong style="font-size: 16px; color: #EF6C00;">${rate}%</strong>
+        </div>
+        <div style="text-align: center; border-left: 1px solid #CFD8DC;">
+          <span style="font-size: 8px; text-transform: uppercase; color: #78909C; font-weight: 700; display: block;">Avg. Student Attendance</span>
+          <strong style="font-size: 16px; color: #0277BD;">${avgStudents} Students</strong>
+        </div>
+      </div>
+    `;
+    hiddenPrintView.insertAdjacentHTML('beforeend', kpiSummaryBoxHTML);
+
+    const clonedTableLayer = originalElement.cloneNode(true);
+    clonedTableLayer.style.boxShadow = "none";
+    clonedTableLayer.style.padding = "0";
+    
+    const cleanTable = clonedTableLayer.querySelector('table');
+    if (cleanTable) {
+      cleanTable.style.width = "100%";
+      cleanTable.style.fontSize = "8px";
+      cleanTable.style.borderCollapse = "collapse";
+      
+      const tableHeaders = cleanTable.querySelectorAll('th');
+      tableHeaders.forEach(th => { 
+        th.style.padding = "4px 6px"; 
+        th.style.fontSize = "7.5px"; 
+        th.style.backgroundColor = "#E8EAF6";
+        th.style.color = "#1A237E";
+        th.style.border = "1px solid #CFD8DC";
+      });
+      
+      const tableCells = cleanTable.querySelectorAll('td');
+      tableCells.forEach(td => { 
+        td.style.padding = "4px 6px"; 
+        td.style.fontSize = "7.5px";
+        td.style.border = "1px solid #ECEFF1";
+        if (td.querySelector('.bg-indigo-50')) {
+          td.querySelector('.bg-indigo-50').style.fontSize = "7px";
+          td.querySelector('.bg-indigo-50').style.padding = "4px";
+          td.querySelector('.bg-indigo-50').style.maxWidth = "200px";
+        }
+      });
+    }
+    
+    hiddenPrintView.appendChild(clonedTableLayer);
+
+    const brandFooterHTML = `
+      <div style="margin-top: 30px; border-top: 1px dashed #CFD8DC; padding-top: 12px; text-align: center; font-size: 10px; font-style: italic; color: #78909C;">
+        This document is an administrative academic report generated dynamically by the Amritsar Law College Academic Timetable Dashboard.
+      </div>
+    `;
+    hiddenPrintView.insertAdjacentHTML('beforeend', brandFooterHTML);
+
+    document.body.appendChild(hiddenPrintView);
+
+    const opt = {
+      margin:       [0.2, 0.2, 0.2, 0.2], 
+      filename:     `ALC_Full_Attendance_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' } 
+    };
+
+    html2pdf().set(opt).from(hiddenPrintView).save().then(() => {
+      document.body.removeChild(hiddenPrintView);
+      showToast("PDF document compiled and exported with full data summary!", "success");
+    }).catch(err => {
+      console.error(err);
+      showToast("PDF generation failed. Please review layout constraints.", "error");
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => { 
+    runLiveClock(); 
+    initDynamicEngine(); 
+  });
+  
+  window.onclick = function(e) { 
+    if (e.target === document.getElementById('attendanceModal')) closeModal(); 
+  };
+</script>
+</body>
+</html>
