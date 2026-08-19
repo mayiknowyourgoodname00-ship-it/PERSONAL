@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Student Administration & Attendance System</title>
+    <!-- SheetJS CDN for parsing and exporting Excel files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #f8fafc;
+            --sidebar-bg: #0f172a;
+            --sidebar-hover: #1e293b;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --accent-green: #059669;
+            --accent-green-hover: #047857;
+            --accent-red: #dc2626;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 270px;
+            background-color: var(--sidebar-bg);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .sidebar-header span {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 14px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--sidebar-hover);
+            color: #ffffff;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        /* Main Workspace */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            background-color: var(--card-bg);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .role-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background-color: #dbeafe;
+            color: var(--accent-blue);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Views Container */
+        .view-container {
+            padding: 32px;
+            display: none;
+        }
+
+        .view-container.active {
+            display: block;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            margin-bottom: 24px;
+        }
+
+        h3 {
+            margin-bottom: 16px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        /* Form Controls & Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input[type="text"], input[type="tel"], input[type="email"], input[type="password"], input[type="file"], input[type="date"], select {
+            padding: 9px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            outline: none;
+            font-size: 0.88rem;
+            background-color: #ffffff;
+            color: var(--text-main);
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            padding: 9px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:active { transform: translateY(1px); }
+        .btn-primary { background-color: var(--accent-blue); color: #ffffff; }
+        .btn-primary:hover { background-color: var(--accent-blue-hover); }
+        .btn-success { background-color: var(--accent-green); color: #ffffff; }
+        .btn-success:hover { background-color: var(--accent-green-hover); }
+        .btn-danger { background-color: var(--accent-red); color: #ffffff; }
+        .btn-danger:hover { background-color: #b91c1c; }
+        .btn-outline { background-color: #ffffff; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { background-color: #f1f5f9; }
+
+        /* Metric Counters */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .metric-card.total { border-left: 5px solid var(--accent-blue); }
+        .metric-card.present { border-left: 5px solid var(--accent-green); }
+        .metric-card.absent { border-left: 5px solid var(--accent-red); }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Data Tables */
+        .table-responsive {
+            overflow-x: auto;
+            max-height: 520px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover { background-color: #f8fafc; }
+
+        tr.row-absent { background-color: #fef2f2; }
+        tr.row-present { background-color: #ffffff; }
+
+        .status-tag {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .badge-present { background-color: #dcfce7; color: #15803d; }
+        .badge-absent { background-color: #fee2e2; color: #b91c1c; }
+
+        .chk-absent {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent-red);
+        }
+
+        .col-filter-input {
+            width: 100%;
+            margin-top: 6px;
+            padding: 4px 8px;
+            font-size: 0.78rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-weight: normal;
+        }
+
+        /* Checkbox Grid Generator */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: #ffffff;
+            border-radius: 8px;
+            width: 850px;
+            max-width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styling */
+        @media print {
+            body * { visibility: hidden; }
+            .print-area-target, .print-area-target * { visibility: visible; }
+            .print-area-target {
+                position: absolute;
+                left: 0; top: 0; width: 100%;
+                padding: 0; margin: 0; background: white;
+            }
+            .no-print { display: none !important; }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
+            th, td {
+                border: 1px solid #000 !important;
+                padding: 6px 8px;
+                color: #000 !important;
+                font-size: 9pt;
+                text-align: left;
+            }
+            th {
+                background-color: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+            }
+            .col-filter-input { display: none !important; }
+
+            .print-header {
+                display: block !important;
+                text-align: center;
+                border-bottom: 2px solid #000;
+                padding-bottom: 12px;
+                margin-bottom: 16px;
+            }
+            .print-header h1 {
+                font-size: 1.4rem;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+            .print-header h3 {
+                font-size: 1.1rem;
+                margin-bottom: 4px;
+            }
+            .print-header p {
+                font-size: 0.85rem;
+            }
+            .print-footer {
+                display: block !important;
+                margin-top: 30px;
+            }
+            .print-summary-box {
+                border: 1px solid #000;
+                padding: 10px 14px;
+                margin-bottom: 40px;
+                display: flex;
+                justify-content: space-between;
+                font-weight: bold;
+                font-size: 10pt;
+            }
+            .sig-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                margin-top: 50px;
+                text-align: center;
+            }
+            .sig-box {
+                border-top: 1px solid #000;
+                padding-top: 6px;
+                font-size: 9pt;
+                font-weight: bold;
+            }
+        }
+
+        .print-header, .print-footer { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Faculty Management</h2>
+            <span>Student Admin Portal</span>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="switchTab('dashboard', this)">
+                <span>📂</span> Student Records Data
+            </li>
+            <li class="nav-item" onclick="switchTab('generator', this)">
+                <span>🖨️</span> Custom Teacher Sheet
+            </li>
+            <li class="nav-item" onclick="switchTab('attendance', this)">
+                <span>📋</span> Short Attendance System
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="main-content">
+        <!-- Top Control Header -->
+        <div class="topbar">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <h2 id="page-title" style="font-size: 1.25rem; font-weight: 700;">Student Records Database</h2>
+                <span id="record-count" style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">(0 records)</span>
+            </div>
+            
+            <div class="topbar-right">
+                <div class="role-selector">
+                    <label for="userRole">Access Level:</label>
+                    <select id="userRole" onchange="toggleRole()">
+                        <option value="Admin">Admin (Full Control)</option>
+                        <option value="Staff">Faculty / Teacher (View & Print)</option>
+                    </select>
+                </div>
+                <span class="role-badge" id="roleBadge">ADMIN</span>
+            </div>
+        </div>
+
+        <!-- VIEW 1: Central Student Directory -->
+        <div id="dashboard" class="view-container active">
+            <div class="card">
+                <h3>Excel Import / Data File Manager</h3>
+                <div class="toolbar">
+                    <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" onchange="handleFileUpload(event)">
+                    <button class="btn btn-outline" onclick="resetToSampleDataset()">🔄 Reload Default Dataset</button>
+                    <button class="btn btn-danger admin-only" onclick="clearAllData()">🗑️ Clear All Records</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Student Directory</h3>
+                <div class="toolbar">
+                    <input type="text" id="searchInput" placeholder="Search Name, Roll, Student ID, Phone..." onkeyup="filterData()">
+                    
+                    <select id="courseFilter" onchange="filterData()">
+                        <option value="">All Courses</option>
+                    </select>
+
+                    <select id="batchFilter" onchange="filterData()">
+                        <option value="">All Batches</option>
+                    </select>
+
+                    <button class="btn btn-outline" onclick="resetFilters()">Reset Filters</button>
+                    
+                    <div style="flex-grow: 1;"></div>
+                    
+                    <button class="btn btn-outline" onclick="exportDirectoryXLSX()">📊 Export Current Directory (.XLSX)</button>
+                    <button class="btn btn-primary admin-only" onclick="openAddStudentModal()">+ Add Student Record</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Uni Roll</th>
+                                <th>Student Name</th>
+                                <th>Course</th>
+                                <th>Batch</th>
+                                <th>Father Name</th>
+                                <th>Mother Name</th>
+                                <th>Gender</th>
+                                <th>Student Phone</th>
+                                <th>Teacher Name (Mentor)</th>
+                                <th>Status</th>
+                                <th>Aadhar Card No</th>
+                                <th class="admin-only">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: Custom Teacher Sheet Generator -->
+        <div id="generator" class="view-container">
+            <div class="card">
+                <h3>Custom Teacher Sheet & Attendance Roll List Generator</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">
+                    Select course, batch, and required student data columns to generate clean, print-ready attendance sheets or official roll lists for faculty members.
+                </p>
+
+                <h4 style="margin-bottom: 12px; font-size: 0.95rem; font-weight: 700;">Step 1: Select Target Class</h4>
+                <div class="toolbar" style="margin-bottom: 24px;">
+                    <div class="form-group">
+                        <label>Course *</label>
+                        <select id="genCourse">
+                            <option value="">Select Course...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Batch *</label>
+                        <select id="genBatch">
+                            <option value="">Select Batch...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Subject / Exam Title (Optional)</label>
+                        <input type="text" id="genSubject" placeholder="e.g. Constitutional Law">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date (Optional)</label>
+                        <input type="date" id="genDate">
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom: 12px; font-size: 0.95rem; font-weight: 700;">Step 2: Choose Columns to Display</h4>
+                <div class="checkbox-grid" id="columnCheckboxes">
+                    <label class="checkbox-item"><input type="checkbox" value="SNo" checked> Serial No (SNo)</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Studentid"> Student ID</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Uni Roll" checked> University Roll No.</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Student Name" checked> Student Name</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Father name" checked> Father's Name</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Mother Name"> Mother Name</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Gender" checked> Gender</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Student Phone Number" checked> Student Phone</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Father Phone Number"> Father Phone</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Mother Phone Number"> Mother Phone</label>
+                    <label class="checkbox-item"><input type="checkbox" value="TEACHER NAME" checked> Teacher Name (Mentor)</label>
+                    <label class="checkbox-item"><input type="checkbox" value="category" checked> Category</label>
+                    <label class="checkbox-item"><input type="checkbox" value="DATE OF BIRTH"> Date of Birth</label>
+                    <label class="checkbox-item"><input type="checkbox" value="E- Mail"> E-Mail</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Adress"> Address</label>
+                    <label class="checkbox-item"><input type="checkbox" value="City"> City</label>
+                    <label class="checkbox-item"><input type="checkbox" value="State"> State</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Pincode"> Pincode</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Blood Group"> Blood Group</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Religion"> Religion</label>
+                    <label class="checkbox-item"><input type="checkbox" value="PMSS"> PMSS</label>
+                    <label class="checkbox-item"><input type="checkbox" value="STATUS"> Status</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Allotedreg"> Alloted Reg</label>
+                    <label class="checkbox-item"><input type="checkbox" value="Addhar card no"> Aadhar Card No</label>
+                    <label class="checkbox-item"><input type="checkbox" value="LL.B (2022- 2025)University Roll Number"> Legacy Uni Roll</label>
+                </div>
+
+                <h4 style="margin-bottom: 12px; font-size: 0.95rem; font-weight: 700;">Step 3: Extra Attendance & Evaluation Fields</h4>
+                <div class="checkbox-grid" style="background: #ffffff; border: 1px dashed var(--border-color);">
+                    <label class="checkbox-item"><input type="checkbox" id="addColAttendance" checked> Append 5 Blank Columns for Daily Attendance</label>
+                    <label class="checkbox-item"><input type="checkbox" id="addColSign" checked> Append Blank Column for Student Signature</label>
+                    <label class="checkbox-item"><input type="checkbox" id="addColMarks" checked> Append Blank Column for Internal Assessment Marks</label>
+                </div>
+
+                <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="btn btn-success" onclick="generateSheetPreview(true)">🖨️ Generate & Print Sheet</button>
+                    <button class="btn btn-outline" onclick="generateSheetPreview(false)">👁️ Preview Sheet Below</button>
+                    <button class="btn btn-outline" onclick="exportGeneratedSheetToExcel()">📥 Download Filtered Sheet (.xlsx)</button>
+                </div>
+            </div>
+
+            <!-- Preview / Print Area Container -->
+            <div id="print-section" class="card print-area-target" style="display: none;">
+                <div class="no-print" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">Official Document Preview</span>
+                    <button class="btn btn-success" onclick="triggerPrintTarget('print-section')">🖨️ Print Sheet Now</button>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 12px;">
+                    <h2 style="font-size: 1.3rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">LAW COLLEGE DEPARTMENT</h2>
+                    <h4 id="printSheetTitle" style="font-size: 1.05rem; margin-top: 4px; font-weight: 700;">FACULTY ROLL LIST / ATTENDANCE SHEET</h4>
+                    <p id="printSheetSubtitle" style="font-size: 0.85rem; margin-top: 4px; font-style: italic; color: #333;"></p>
+                </div>
+
+                <div id="printTableContainer"></div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: Short Attendance & Column Filter System -->
+        <div id="attendance" class="view-container">
+            <div class="card no-print">
+                <h3>Short Attendance Management System</h3>
+                <div class="toolbar">
+                    <select id="attCourseFilter" onchange="filterAttendanceData()">
+                        <option value="">Select Course...</option>
+                    </select>
+                    <select id="attBatchFilter" onchange="filterAttendanceData()">
+                        <option value="">Select Batch...</option>
+                    </select>
+                    <select id="attStatusFilter" onchange="filterAttendanceData()">
+                        <option value="all">Filter Status: All Students</option>
+                        <option value="present">Filter Status: Present Only</option>
+                        <option value="absent">Filter Status: Absent Only</option>
+                    </select>
+                </div>
+                
+                <div class="toolbar" style="margin-bottom: 0;">
+                    <input type="text" id="teacherInput" placeholder="Teacher / Faculty Name" style="width: 180px;" oninput="updatePrintHeaders()">
+                    <input type="text" id="designationInput" placeholder="Designation (e.g. Asst. Prof)" style="width: 180px;" oninput="updatePrintHeaders()">
+                    <input type="text" id="subjectInput" placeholder="Subject Name" style="width: 160px;" oninput="updatePrintHeaders()">
+                    <button class="btn btn-outline" onclick="resetAttendanceFilters()">Reset Filters</button>
+                    <button class="btn btn-outline" onclick="markAllPresent()">Reset All to Present</button>
+                    <div style="flex-grow: 1;"></div>
+                    <!-- Download Excel button for Short Attendance -->
+                    <button class="btn btn-outline" onclick="exportShortAttendanceXLSX()">📥 Download Attendance Excel (.xlsx)</button>
+                    <button class="btn btn-success" onclick="triggerPrintTarget('attPrintSection')">🖨️ Print Short Attendance Sheet</button>
+                </div>
+            </div>
+
+            <!-- Live Metric Counters Bar -->
+            <div class="metrics-grid no-print">
+                <div class="metric-card total">
+                    <div class="metric-label">Total Strength</div>
+                    <div class="metric-value" id="metricTotal">0</div>
+                </div>
+                <div class="metric-card present">
+                    <div class="metric-label">Present Number</div>
+                    <div class="metric-value" id="metricPresent" style="color: var(--accent-green);">0</div>
+                </div>
+                <div class="metric-card absent">
+                    <div class="metric-label">Absent Number</div>
+                    <div class="metric-value" id="metricAbsent" style="color: var(--accent-red);">0</div>
+                </div>
+            </div>
+
+            <!-- Printable & View Container -->
+            <div class="card print-area-target" id="attPrintSection" style="margin-bottom: 0;">
+                <!-- PRINTABLE OFFICIAL HEADER -->
+                <div class="print-header">
+                    <h1>LAW COLLEGE DEPARTMENT</h1>
+                    <h3>SHORT ATTENDANCE & ABSENTEE REPORT</h3>
+                    <p id="printMeta">Course: N/A | Batch: N/A | Subject: N/A | Date: <span id="currentDate"></span></p>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">SNo</th>
+                                <th style="width: 150px;">
+                                    Uni Roll No.
+                                    <input type="text" id="colRollFilter" class="col-filter-input no-print" placeholder="Search Roll..." onkeyup="filterAttendanceData()">
+                                </th>
+                                <th>
+                                    Student Name
+                                    <input type="text" id="colNameFilter" class="col-filter-input no-print" placeholder="Search Name..." onkeyup="filterAttendanceData()">
+                                </th>
+                                <th>
+                                    Father's Name
+                                    <input type="text" id="colFatherFilter" class="col-filter-input no-print" placeholder="Search Father..." onkeyup="filterAttendanceData()">
+                                </th>
+                                <th>
+                                    Student Phone
+                                    <input type="text" id="colPhoneFilter" class="col-filter-input no-print" placeholder="Search Phone..." onkeyup="filterAttendanceData()">
+                                </th>
+                                <th style="width: 110px;">Status</th>
+                                <th class="no-print" style="width: 120px; text-align: center;">Mark Absent ( Tick = Absent )</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                    Please select a Course and Batch to load student attendance.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PRINTABLE OFFICIAL FOOTER -->
+                <div class="print-footer">
+                    <div class="print-summary-box">
+                        <span>TOTAL STRENGTH: <span id="printTotal">0</span></span>
+                        <span>PRESENT NUMBER: <span id="printPresent">0</span></span>
+                        <span>ABSENT NUMBER: <span id="printAbsent">0</span></span>
+                    </div>
+
+                    <div class="sig-grid">
+                        <div class="sig-box">
+                            <span id="printTeacherName">Faculty Name</span><br>
+                            <span id="printDesignation">Designation</span>
+                        </div>
+                        <div class="sig-box">
+                            Department In-Charge Signature
+                        </div>
+                        <div class="sig-box">
+                            Principal / Director Signature
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD / EDIT STUDENT MODAL -->
+    <div class="modal-overlay" id="studentModal">
+        <div class="modal">
+            <h3 id="modalTitle">Add New Student Record</h3>
+            <form id="studentForm" onsubmit="handleSaveStudent(event)">
+                <input type="hidden" id="editIndex">
+                <div class="modal-grid">
+                    <div class="form-group">
+                        <label>Student ID *</label>
+                        <input type="text" id="mStudentId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Uni Roll No *</label>
+                        <input type="text" id="mUniRoll" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Student Name *</label>
+                        <input type="text" id="mStudentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Course *</label>
+                        <select id="mCourse" required>
+                            <option value="BALLB">BALLB</option>
+                            <option value="LLB">LLB</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Batch *</label>
+                        <select id="mBatch" required>
+                            <option value="2024- 2029">2024- 2029</option>
+                            <option value="2023- 2028">2023- 2028</option>
+                            <option value="2022-2027">2022-2027</option>
+                            <option value="2021-2026">2021-2026</option>
+                            <option value="2025-2028">2025-2028</option>
+                            <option value="2024-2027">2024-2027</option>
+                            <option value="2023-2026">2023-2026</option>
+                            <option value="2025- 2030">2025- 2030</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Father Name</label>
+                        <input type="text" id="mFatherName">
+                    </div>
+                    <div class="form-group">
+                        <label>Mother Name</label>
+                        <input type="text" id="mMotherName">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="mGender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Alloted Reg</label>
+                        <input type="text" id="mAllotedreg">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="mPassword">
+                    </div>
+                    <div class="form-group">
+                        <label>Student Phone Number</label>
+                        <input type="tel" id="mStudentPhone">
+                    </div>
+                    <div class="form-group">
+                        <label>Father Phone Number</label>
+                        <input type="tel" id="mFatherPhone">
+                    </div>
+                    <div class="form-group">
+                        <label>Mother Phone Number</label>
+                        <input type="tel" id="mMotherPhone">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="mDob">
+                    </div>
+                    <div class="form-group">
+                        <label>E-Mail</label>
+                        <input type="email" id="mEmail">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="mAddress">
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="mCity">
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <input type="text" id="mState">
+                    </div>
+                    <div class="form-group">
+                        <label>Pincode</label>
+                        <input type="text" id="mPincode">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="mCategory">
+                            <option value="General">General</option>
+                            <option value="OBC">OBC</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="mStatus">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Blood Group</label>
+                        <input type="text" id="mBloodGroup" placeholder="e.g. O+">
+                    </div>
+                    <div class="form-group">
+                        <label>Religion</label>
+                        <input type="text" id="mReligion">
+                    </div>
+                    <div class="form-group">
+                        <label>PMSS</label>
+                        <input type="text" id="mPmss">
+                    </div>
+                    <div class="form-group">
+                        <label>Teacher Name (Mentor)</label>
+                        <input type="text" id="mMentor">
+                    </div>
+                    <div class="form-group">
+                        <label>Aadhar Card No</label>
+                        <input type="text" id="mAadharNo">
+                    </div>
+                    <div class="form-group">
+                        <label>Aadhar Card (Front Side)</label>
+                        <input type="text" id="mAadharFront" placeholder="URL or Document ID">
+                    </div>
+                    <div class="form-group">
+                        <label>Aadhar Card (Back Side)</label>
+                        <input type="text" id="mAadharBack" placeholder="URL or Document ID">
+                    </div>
+                    <div class="form-group">
+                        <label>Upload ID- Card Photo</label>
+                        <input type="text" id="mIdCardPhoto" placeholder="Photo URL or File Reference">
+                    </div>
+                    <div class="form-group">
+                        <label>Legacy Uni Roll (2022-2025)</label>
+                        <input type="text" id="mLegacyRoll">
+                    </div>
+                </div>
+                <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" class="btn btn-outline" onclick="closeStudentModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Student Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Default Sample Dataset
+        const defaultStudentRecords = [
+            {
+                "Batch": "2024- 2029", "Course": "BALLB", "Studentid": "STU1001", "Uni Roll": "20240101",
+                "Student Name": "Aarav Sharma", "Father name": "Rajesh Sharma", "Mother Name": "Sunita Sharma",
+                "Gender": "Male", "Allotedreg": "REG9901", "Password": "••••••••", "Student Phone Number": "9876543210",
+                "Father Phone Number": "9876543211", "Mother Phone Number": "9876543212", "DATE OF BIRTH": "2004-05-14",
+                "E- Mail": "aarav@example.com", "Adress": "123 Park Street", "City": "Jalandhar", "State": "Punjab",
+                "Pincode": "144001", "category": "General", "GENDER": "Male", "STATUS": "Active", "Blood Group": "O+",
+                "Religion": "Hinduism", "PMSS": "No", "TEACHER NAME": "Dr. V. Kapoor", "Aadhar Card (Front Side)": "front1.jpg",
+                "Aadhar Card (Back Side)": "back1.jpg", "Upload ID- Card Photo": "photo1.jpg",
+                "LL.B (2022- 2025)University Roll Number": "20220101", "Addhar card no": "[Aadhaar Redacted]"
+            },
+            {
+                "Batch": "2023- 2028", "Course": "LLB", "Studentid": "STU1002", "Uni Roll": "20230105",
+                "Student Name": "Ananya Verma", "Father name": "Sanjeev Verma", "Mother Name": "Anita Verma",
+                "Gender": "Female", "Allotedreg": "REG9902", "Password": "••••••••", "Student Phone Number": "9876543220",
+                "Father Phone Number": "9876543221", "Mother Phone Number": "9876543222", "DATE OF BIRTH": "2003-08-21",
+                "E- Mail": "ananya@example.com", "Adress": "45 Mall Road", "City": "Ludhiana", "State": "Punjab",
+                "Pincode": "141001", "category": "OBC", "GENDER": "Female", "STATUS": "Active", "Blood Group": "B+",
+                "Religion": "Hinduism", "PMSS": "Yes", "TEACHER NAME": "Prof. R. Mehta", "Aadhar Card (Front Side)": "front2.jpg",
+                "Aadhar Card (Back Side)": "back2.jpg", "Upload ID- Card Photo": "photo2.jpg",
+                "LL.B (2022- 2025)University Roll Number": "20220102", "Addhar card no": "[Aadhaar Redacted]"
+            }
+        ];
+
+        let rawStudentData = [];
+        let filteredStudentData = [];
+        let currentRole = "Admin";
+        let absentMap = {}; // Attendance state map
+        
+        let currentGeneratedData = [];
+        let currentGeneratedHeaders = [];
+
+        // App Initialization
+        function initializeDatabase() {
+            document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
+            
+            const stored = localStorage.getItem('full_student_records_db');
+            if (stored) {
+                try {
+                    rawStudentData = JSON.parse(stored);
+                } catch (e) {
+                    rawStudentData = JSON.parse(JSON.stringify(defaultStudentRecords));
+                }
+            } else {
+                rawStudentData = JSON.parse(JSON.stringify(defaultStudentRecords));
+                saveDatabase();
+            }
+            
+            populateAllDropdowns();
+            filterData();
+            filterAttendanceData();
+        }
+
+        function saveDatabase() {
+            localStorage.setItem('full_student_records_db', JSON.stringify(rawStudentData));
+        }
+
+        function resetToSampleDataset() {
+            if (confirm("Reset dataset back to default sample records? Custom additions will be lost.")) {
+                rawStudentData = JSON.parse(JSON.stringify(defaultStudentRecords));
+                saveDatabase();
+                populateAllDropdowns();
+                filterData();
+                filterAttendanceData();
+            }
+        }
+
+        function clearAllData() {
+            if (confirm("Are you sure you want to delete ALL student records?")) {
+                rawStudentData = [];
+                saveDatabase();
+                populateAllDropdowns();
+                filterData();
+                filterAttendanceData();
+            }
+        }
+
+        function updateRecordCount() {
+            document.getElementById('record-count').innerText = `(${filteredStudentData.length} records active)`;
+        }
+
+        // Dynamic Dropdown Population
+        function populateAllDropdowns() {
+            const courses = [...new Set(rawStudentData.map(r => String(r.Course || '').trim()).filter(Boolean))];
+            const batches = [...new Set(rawStudentData.map(r => String(r.Batch || '').trim()).filter(Boolean))];
+
+            // Helper to fill dropdown options
+            const fillSelect = (elemId, items, defaultText) => {
+                const el = document.getElementById(elemId);
+                if (!el) return;
+                const currVal = el.value;
+                el.innerHTML = `<option value="">${defaultText}</option>`;
+                items.forEach(item => {
+                    el.innerHTML += `<option value="${item}">${item}</option>`;
+                });
+                if (items.includes(currVal)) el.value = currVal;
+            };
+
+            fillSelect('courseFilter', courses, 'All Courses');
+            fillSelect('batchFilter', batches, 'All Batches');
+            fillSelect('genCourse', courses, 'Select Course...');
+            fillSelect('genBatch', batches, 'Select Batch...');
+            fillSelect('attCourseFilter', courses, 'Select Course...');
+            fillSelect('attBatchFilter', batches, 'Select Batch...');
+
+            // Default selections for attendance tab if not set
+            const attC = document.getElementById('attCourseFilter');
+            const attB = document.getElementById('attBatchFilter');
+            if (attC && !attC.value && courses.length > 0) attC.value = courses[0];
+            if (attB && !attB.value && batches.length > 0) attB.value = batches[0];
+        }
+
+        // Tab Navigation
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+
+            const titles = {
+                'dashboard': 'Student Records Database',
+                'generator': 'Custom Teacher Sheet Generator',
+                'attendance': 'Short Attendance System'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        // Access Control Switch
+        function toggleRole() {
+            currentRole = document.getElementById('userRole').value;
+            const badge = document.getElementById('roleBadge');
+            badge.innerText = currentRole.toUpperCase();
+
+            if (currentRole === "Admin") {
+                badge.style.backgroundColor = "#dbeafe";
+                badge.style.color = "#2563eb";
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+            } else {
+                badge.style.backgroundColor = "#fef3c7";
+                badge.style.color = "#d97706";
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            }
+            renderTable(filteredStudentData);
+        }
+
+        // File Upload Handler mapping exact column keys
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                let targetSheetName = workbook.SheetNames.find(name => name.toLowerCase().includes('student')) || workbook.SheetNames[0];
+                const sheet = workbook.Sheets[targetSheetName];
+                let jsonData = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+
+                rawStudentData = jsonData.map((row) => ({
+                    "Batch": String(row['Batch'] || '-').trim(),
+                    "Course": String(row['Course'] || '-').trim(),
+                    "Studentid": String(row['Studentid'] || row['Student ID'] || '-').trim(),
+                    "Uni Roll": String(row['Uni Roll'] || row['Uni Roll No.'] || row['University Roll Number'] || '-').trim(),
+                    "Student Name": String(row['Student Name'] || '-').trim(),
+                    "Father name": String(row['Father name'] || row["Father's Name"] || '-').trim(),
+                    "Mother Name": String(row['Mother Name'] || '-').trim(),
+                    "Gender": String(row['Gender'] || 'Male').trim(),
+                    "Allotedreg": String(row['Allotedreg'] || '-').trim(),
+                    "Password": String(row['Password'] || '••••••••').trim(),
+                    "Student Phone Number": String(row['Student Phone Number'] || row['Student Phone'] || '-').trim(),
+                    "Father Phone Number": String(row['Father Phone Number'] || '-').trim(),
+                    "Mother Phone Number": String(row['Mother Phone Number'] || '-').trim(),
+                    "DATE OF BIRTH": String(row['DATE OF BIRTH'] || row['DOB'] || '-').trim(),
+                    "E- Mail": String(row['E- Mail'] || row['Email'] || '-').trim(),
+                    "Adress": String(row['Adress'] || row['Address'] || '-').trim(),
+                    "City": String(row['City'] || '-').trim(),
+                    "State": String(row['State'] || '-').trim(),
+                    "Pincode": String(row['Pincode'] || '-').trim(),
+                    "category": String(row['category'] || row['Category'] || 'General').trim(),
+                    "GENDER": String(row['GENDER'] || row['Gender'] || 'Male').trim(),
+                    "STATUS": String(row['STATUS'] || 'Active').trim(),
+                    "Blood Group": String(row['Blood Group'] || '-').trim(),
+                    "Religion": String(row['Religion'] || '-').trim(),
+                    "PMSS": String(row['PMSS'] || 'No').trim(),
+                    "TEACHER NAME": String(row['TEACHER NAME'] || row['Teacher Name (Mentor)'] || '-').trim(),
+                    "Aadhar Card (Front Side)": String(row['Aadhar Card (Front Side)'] || '-').trim(),
+                    "Aadhar Card (Back Side)": String(row['Aadhar Card (Back Side)'] || '-').trim(),
+                    "Upload ID- Card Photo": String(row['Upload ID- Card Photo'] || '-').trim(),
+                    "LL.B (2022- 2025)University Roll Number": String(row['LL.B (2022- 2025)University Roll Number'] || '-').trim(),
+                    "Addhar card no": String(row['Addhar card no'] || row['Aadhar card no'] || '-').trim()
+                }));
+
+                saveDatabase();
+                populateAllDropdowns();
+                filterData();
+                filterAttendanceData();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        /* -------------------------------------------------------------
+           VIEW 1: DIRECTORY TAB LOGIC
+        ------------------------------------------------------------- */
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="13" style="text-align: center; color: var(--text-muted); padding: 24px;">No student records found.</td></tr>`;
+                return;
+            }
+
+            data.forEach((row) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row['Studentid']}</td>
+                    <td><strong>${row['Uni Roll']}</strong></td>
+                    <td>${row['Student Name']}</td>
+                    <td>${row['Course']}</td>
+                    <td>${row['Batch']}</td>
+                    <td>${row['Father name']}</td>
+                    <td>${row['Mother Name']}</td>
+                    <td>${row['Gender']}</td>
+                    <td>${row['Student Phone Number']}</td>
+                    <td>${row['TEACHER NAME']}</td>
+                    <td><span class="status-tag">${row['STATUS']}</span></td>
+                    <td>${row['Addhar card no']}</td>
+                    <td class="admin-only" style="${currentRole === 'Staff' ? 'display:none;' : ''}">
+                        <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.75rem;" onclick="openEditStudentModal('${row['Studentid']}')">Edit</button>
+                        <button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteStudent('${row['Studentid']}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterData() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const courseVal = document.getElementById('courseFilter').value;
+            const batchVal = document.getElementById('batchFilter').value;
+
+            filteredStudentData = rawStudentData.filter(row => {
+                const matchesSearch = !searchVal || 
+                    String(row['Student Name']).toLowerCase().includes(searchVal) ||
+                    String(row['Uni Roll']).toLowerCase().includes(searchVal) ||
+                    String(row['Studentid']).toLowerCase().includes(searchVal) ||
+                    String(row['Student Phone Number']).toLowerCase().includes(searchVal) ||
+                    String(row['TEACHER NAME']).toLowerCase().includes(searchVal);
+
+                const matchesCourse = !courseVal || String(row['Course']).trim() === courseVal;
+                const matchesBatch = !batchVal || String(row['Batch']).trim() === batchVal;
+
+                return matchesSearch && matchesCourse && matchesBatch;
+            });
+
+            updateRecordCount();
+            renderTable(filteredStudentData);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('courseFilter').value = '';
+            document.getElementById('batchFilter').value = '';
+            filteredStudentData = [...rawStudentData];
+            updateRecordCount();
+            renderTable(filteredStudentData);
+        }
+
+        function exportDirectoryXLSX() {
+            if (filteredStudentData.length === 0) {
+                alert("No records to export.");
+                return;
+            }
+            const ws = XLSX.utils.json_to_sheet(filteredStudentData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Students");
+            XLSX.writeFile(wb, "Student_Directory.xlsx");
+        }
+
+        /* -------------------------------------------------------------
+           MODAL & CRUD OPERATIONS
+        ------------------------------------------------------------- */
+        function openAddStudentModal() {
+            document.getElementById('modalTitle').innerText = "Add New Student Record";
+            document.getElementById('editIndex').value = "-1";
+            document.getElementById('studentForm').reset();
+            document.getElementById('studentModal').style.display = "flex";
+        }
+
+        function openEditStudentModal(studentId) {
+            const index = rawStudentData.findIndex(s => s['Studentid'] === studentId);
+            if (index === -1) return;
+
+            const s = rawStudentData[index];
+            document.getElementById('modalTitle').innerText = "Edit Student Record";
+            document.getElementById('editIndex').value = index;
+
+            document.getElementById('mStudentId').value = s['Studentid'] || '';
+            document.getElementById('mUniRoll').value = s['Uni Roll'] || '';
+            document.getElementById('mStudentName').value = s['Student Name'] || '';
+            document.getElementById('mCourse').value = s['Course'] || 'BALLB';
+            document.getElementById('mBatch').value = s['Batch'] || '2024- 2029';
+            document.getElementById('mFatherName').value = s['Father name'] || '';
+            document.getElementById('mMotherName').value = s['Mother Name'] || '';
+            document.getElementById('mGender').value = s['Gender'] || 'Male';
+            document.getElementById('mAllotedreg').value = s['Allotedreg'] || '';
+            document.getElementById('mPassword').value = s['Password'] || '';
+            document.getElementById('mStudentPhone').value = s['Student Phone Number'] || '';
+            document.getElementById('mFatherPhone').value = s['Father Phone Number'] || '';
+            document.getElementById('mMotherPhone').value = s['Mother Phone Number'] || '';
+            document.getElementById('mDob').value = s['DATE OF BIRTH'] || '';
+            document.getElementById('mEmail').value = s['E- Mail'] || '';
+            document.getElementById('mAddress').value = s['Adress'] || '';
+            document.getElementById('mCity').value = s['City'] || '';
+            document.getElementById('mState').value = s['State'] || '';
+            document.getElementById('mPincode').value = s['Pincode'] || '';
+            document.getElementById('mCategory').value = s['category'] || 'General';
+            document.getElementById('mStatus').value = s['STATUS'] || 'Active';
+            document.getElementById('mBloodGroup').value = s['Blood Group'] || '';
+            document.getElementById('mReligion').value = s['Religion'] || '';
+            document.getElementById('mPmss').value = s['PMSS'] || 'No';
+            document.getElementById('mMentor').value = s['TEACHER NAME'] || '';
+            document.getElementById('mAadharNo').value = s['Addhar card no'] || '';
+            document.getElementById('mAadharFront').value = s['Aadhar Card (Front Side)'] || '';
+            document.getElementById('mAadharBack').value = s['Aadhar Card (Back Side)'] || '';
+            document.getElementById('mIdCardPhoto').value = s['Upload ID- Card Photo'] || '';
+            document.getElementById('mLegacyRoll').value = s['LL.B (2022- 2025)University Roll Number'] || '';
+
+            document.getElementById('studentModal').style.display = "flex";
+        }
+
+        function closeStudentModal() {
+            document.getElementById('studentModal').style.display = "none";
+        }
+
+        function handleSaveStudent(e) {
+            e.preventDefault();
+            const editIdx = parseInt(document.getElementById('editIndex').value);
+
+            const studentObj = {
+                "Batch": document.getElementById('mBatch').value,
+                "Course": document.getElementById('mCourse').value,
+                "Studentid": document.getElementById('mStudentId').value.trim(),
+                "Uni Roll": document.getElementById('mUniRoll').value.trim(),
+                "Student Name": document.getElementById('mStudentName').value.trim(),
+                "Father name": document.getElementById('mFatherName').value.trim(),
+                "Mother Name": document.getElementById('mMotherName').value.trim(),
+                "Gender": document.getElementById('mGender').value,
+                "Allotedreg": document.getElementById('mAllotedreg').value.trim(),
+                "Password": document.getElementById('mPassword').value,
+                "Student Phone Number": document.getElementById('mStudentPhone').value.trim(),
+                "Father Phone Number": document.getElementById('mFatherPhone').value.trim(),
+                "Mother Phone Number": document.getElementById('mMotherPhone').value.trim(),
+                "DATE OF BIRTH": document.getElementById('mDob').value,
+                "E- Mail": document.getElementById('mEmail').value.trim(),
+                "Adress": document.getElementById('mAddress').value.trim(),
+                "City": document.getElementById('mCity').value.trim(),
+                "State": document.getElementById('mState').value.trim(),
+                "Pincode": document.getElementById('mPincode').value.trim(),
+                "category": document.getElementById('mCategory').value,
+                "GENDER": document.getElementById('mGender').value,
+                "STATUS": document.getElementById('mStatus').value,
+                "Blood Group": document.getElementById('mBloodGroup').value.trim(),
+                "Religion": document.getElementById('mReligion').value.trim(),
+                "PMSS": document.getElementById('mPmss').value.trim(),
+                "TEACHER NAME": document.getElementById('mMentor').value.trim(),
+                "Aadhar Card (Front Side)": document.getElementById('mAadharFront').value.trim(),
+                "Aadhar Card (Back Side)": document.getElementById('mAadharBack').value.trim(),
+                "Upload ID- Card Photo": document.getElementById('mIdCardPhoto').value.trim(),
+                "LL.B (2022- 2025)University Roll Number": document.getElementById('mLegacyRoll').value.trim(),
+                "Addhar card no": document.getElementById('mAadharNo').value.trim()
+            };
+
+            if (editIdx >= 0) {
+                rawStudentData[editIdx] = studentObj;
+            } else {
+                rawStudentData.push(studentObj);
+            }
+
+            saveDatabase();
+            populateAllDropdowns();
+            filterData();
+            filterAttendanceData();
+            closeStudentModal();
+        }
+
+        function deleteStudent(studentId) {
+            if (confirm(`Delete student record with ID: ${studentId}?`)) {
+                rawStudentData = rawStudentData.filter(s => s['Studentid'] !== studentId);
+                saveDatabase();
+                populateAllDropdowns();
+                filterData();
+                filterAttendanceData();
+            }
+        }
+
+        /* -------------------------------------------------------------
+           VIEW 2: TEACHER SHEET GENERATOR ENGINE
+        ------------------------------------------------------------- */
+        function generateSheetPreview(triggerPrint = false) {
+            const course = document.getElementById('genCourse').value;
+            const batch = document.getElementById('genBatch').value;
+            const subject = document.getElementById('genSubject').value;
+            const customDate = document.getElementById('genDate').value;
+
+            if (!course || !batch) {
+                alert("Please select both Course and Batch to generate the teacher sheet.");
+                return;
+            }
+
+            const selectedCheckboxes = document.querySelectorAll('#columnCheckboxes input[type="checkbox"]:checked');
+            const baseCols = Array.from(selectedCheckboxes).map(cb => cb.value);
+
+            if (baseCols.length === 0) {
+                alert("Select at least one column to display.");
+                return;
+            }
+
+            const sheetData = rawStudentData.filter(r => 
+                String(r['Course']).trim() === course && String(r['Batch']).trim() === batch
+            );
+
+            if (sheetData.length === 0) {
+                alert(`No records found for Course: ${course} | Batch: ${batch}`);
+                return;
+            }
+
+            const addAtt = document.getElementById('addColAttendance').checked;
+            const addSign = document.getElementById('addColSign').checked;
+            const addMarks = document.getElementById('addColMarks').checked;
+
+            let headers = [...baseCols];
+            if (addAtt) {
+                for (let i = 1; i <= 5; i++) headers.push(`P/A (${i})`);
+            }
+            if (addSign) headers.push("Signature");
+            if (addMarks) headers.push("Internal Marks (100)");
+
+            currentGeneratedHeaders = headers;
+            currentGeneratedData = [];
+
+            let tableHTML = `<table><thead><tr>`;
+            headers.forEach(h => { tableHTML += `<th>${h}</th>`; });
+            tableHTML += `</tr></thead><tbody>`;
+
+            sheetData.forEach((student, index) => {
+                let rowDataObj = {};
+                tableHTML += `<tr>`;
+                
+                headers.forEach(col => {
+                    let cellVal = "";
+                    if (col === 'SNo') {
+                        cellVal = index + 1;
+                    } else if (baseCols.includes(col)) {
+                        cellVal = student[col] || '';
+                    } else {
+                        cellVal = '';
+                    }
+                    
+                    rowDataObj[col] = cellVal;
+                    tableHTML += `<td>${cellVal}</td>`;
+                });
+
+                currentGeneratedData.push(rowDataObj);
+                tableHTML += `</tr>`;
+            });
+
+            tableHTML += `</tbody></table>`;
+
+            const printSection = document.getElementById('print-section');
+            document.getElementById('printSheetTitle').innerText = `${course} FACULTY ATTENDANCE & ROLL LIST`;
+            
+            let subtitleText = `Batch: ${batch}  |  Total Students: ${sheetData.length}`;
+            if (subject) subtitleText += `  |  Subject: ${subject}`;
+            subtitleText += `  |  Date: ${customDate ? new Date(customDate).toLocaleDateString() : new Date().toLocaleDateString()}`;
+
+            document.getElementById('printSheetSubtitle').innerText = subtitleText;
+            document.getElementById('printTableContainer').innerHTML = tableHTML;
+
+            printSection.style.display = 'block';
+
+            if (triggerPrint) {
+                triggerPrintTarget('print-section');
+            }
+        }
+
+        function exportGeneratedSheetToExcel() {
+            if (currentGeneratedData.length === 0) {
+                generateSheetPreview(false);
+                if (currentGeneratedData.length === 0) return;
+            }
+
+            const course = document.getElementById('genCourse').value || "Class";
+            const batch = document.getElementById('genBatch').value || "Batch";
+
+            const ws = XLSX.utils.json_to_sheet(currentGeneratedData, { header: currentGeneratedHeaders });
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Attendance Sheet");
+            XLSX.writeFile(wb, `${course}_${batch}_Attendance_Sheet.xlsx`);
+        }
+
+        /* -------------------------------------------------------------
+           VIEW 3: SHORT ATTENDANCE TRACKER LOGIC
+        ------------------------------------------------------------- */
+        function filterAttendanceData() {
+            const course = document.getElementById('attCourseFilter').value;
+            const batch = document.getElementById('attBatchFilter').value;
+            const statusFilter = document.getElementById('attStatusFilter').value;
+
+            const rollVal = document.getElementById('colRollFilter').value.toLowerCase();
+            const nameVal = document.getElementById('colNameFilter').value.toLowerCase();
+            const fatherVal = document.getElementById('colFatherFilter').value.toLowerCase();
+            const phoneVal = document.getElementById('colPhoneFilter').value.toLowerCase();
+
+            const fullClassList = rawStudentData.filter(r => {
+                const matchCourse = !course || String(r.Course).trim() === course;
+                const matchBatch = !batch || String(r.Batch).trim() === batch;
+                return matchCourse && matchBatch;
+            });
+
+            let totalStrength = fullClassList.length;
+            let absentCount = 0;
+
+            fullClassList.forEach(row => {
+                const rollKey = String(row['Uni Roll'] || row['Studentid']).toLowerCase();
+                if (absentMap[rollKey]) absentCount++;
+            });
+
+            let presentCount = totalStrength - absentCount;
+
+            document.getElementById('metricTotal').innerText = totalStrength;
+            document.getElementById('metricPresent').innerText = presentCount;
+            document.getElementById('metricAbsent').innerText = absentCount;
+
+            document.getElementById('printTotal').innerText = totalStrength;
+            document.getElementById('printPresent').innerText = presentCount;
+            document.getElementById('printAbsent').innerText = absentCount;
+
+            updatePrintHeaders();
+
+            const filteredAttendance = fullClassList.filter(r => {
+                const roll = String(r['Uni Roll'] || r['Studentid'] || '').toLowerCase();
+                const name = String(r['Student Name'] || '').toLowerCase();
+                const father = String(r['Father name'] || '').toLowerCase();
+                const phone = String(r['Student Phone Number'] || '').toLowerCase();
+
+                const isAbsent = absentMap[roll] === true;
+
+                let matchStatus = true;
+                if (statusFilter === 'present') matchStatus = !isAbsent;
+                if (statusFilter === 'absent') matchStatus = isAbsent;
+
+                const matchRoll = !rollVal || roll.includes(rollVal);
+                const matchName = !nameVal || name.includes(nameVal);
+                const matchFather = !fatherVal || father.includes(fatherVal);
+                const matchPhone = !phoneVal || phone.includes(phoneVal);
+
+                return matchStatus && matchRoll && matchName && matchFather && matchPhone;
+            });
+
+            renderAttendanceTable(filteredAttendance);
+        }
+
+        function renderAttendanceTable(data) {
+            const tbody = document.getElementById('attTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 25px;">No students match the selected filter criteria.</td></tr>`;
+                return;
+            }
+
+            data.forEach((row, index) => {
+                const rollKey = String(row['Uni Roll'] || row['Studentid']).toLowerCase();
+                const isAbsent = absentMap[rollKey] === true;
+
+                const tr = document.createElement('tr');
+                tr.className = isAbsent ? 'row-absent' : 'row-present';
+
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${row['Uni Roll'] || '-'}</strong></td>
+                    <td>${row['Student Name'] || '-'}</td>
+                    <td>${row['Father name'] || '-'}</td>
+                    <td>${row['Student Phone Number'] || '-'}</td>
+                    <td>
+                        ${isAbsent ? 
+                            '<span class="badge-status badge-absent">ABSENT</span>' : 
+                            '<span class="badge-status badge-present">PRESENT</span>'}
+                    </td>
+                    <td class="no-print" style="text-align: center;">
+                        <input type="checkbox" class="chk-absent" ${isAbsent ? 'checked' : ''} onchange="toggleAbsent('${rollKey}', this.checked)">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleAbsent(rollKey, isChecked) {
+            absentMap[rollKey] = isChecked;
+            filterAttendanceData();
+        }
+
+        function markAllPresent() {
+            absentMap = {};
+            filterAttendanceData();
+        }
+
+        function resetAttendanceFilters() {
+            document.getElementById('colRollFilter').value = '';
+            document.getElementById('colNameFilter').value = '';
+            document.getElementById('colFatherFilter').value = '';
+            document.getElementById('colPhoneFilter').value = '';
+            document.getElementById('attStatusFilter').value = 'all';
+            filterAttendanceData();
+        }
+
+        function updatePrintHeaders() {
+            const course = document.getElementById('attCourseFilter').value || 'All';
+            const batch = document.getElementById('attBatchFilter').value || 'All';
+            const subject = document.getElementById('subjectInput').value || 'N/A';
+            const teacher = document.getElementById('teacherInput').value || 'Faculty Name';
+            const designation = document.getElementById('designationInput').value || 'Assistant Professor';
+
+            document.getElementById('printMeta').innerText = `Course: ${course} | Batch: ${batch} | Subject: ${subject} | Date: ${new Date().toLocaleDateString()}`;
+            document.getElementById('printTeacherName').innerText = teacher;
+            document.getElementById('printDesignation').innerText = designation;
+        }
+
+        /* Export Short Attendance Data directly to Excel */
+        function exportShortAttendanceXLSX() {
+            const course = document.getElementById('attCourseFilter').value || 'All';
+            const batch = document.getElementById('attBatchFilter').value || 'All';
+            const statusFilter = document.getElementById('attStatusFilter').value;
+
+            const rollVal = document.getElementById('colRollFilter').value.toLowerCase();
+            const nameVal = document.getElementById('colNameFilter').value.toLowerCase();
+            const fatherVal = document.getElementById('colFatherFilter').value.toLowerCase();
+            const phoneVal = document.getElementById('colPhoneFilter').value.toLowerCase();
+
+            const fullClassList = rawStudentData.filter(r => {
+                const matchCourse = !course || course === 'All' || String(r.Course).trim() === course;
+                const matchBatch = !batch || batch === 'All' || String(r.Batch).trim() === batch;
+                return matchCourse && matchBatch;
+            });
+
+            const filteredAttendance = fullClassList.filter(r => {
+                const roll = String(r['Uni Roll'] || r['Studentid'] || '').toLowerCase();
+                const name = String(r['Student Name'] || '').toLowerCase();
+                const father = String(r['Father name'] || '').toLowerCase();
+                const phone = String(r['Student Phone Number'] || '').toLowerCase();
+
+                const isAbsent = absentMap[roll] === true;
+
+                let matchStatus = true;
+                if (statusFilter === 'present') matchStatus = !isAbsent;
+                if (statusFilter === 'absent') matchStatus = isAbsent;
+
+                const matchRoll = !rollVal || roll.includes(rollVal);
+                const matchName = !nameVal || name.includes(nameVal);
+                const matchFather = !fatherVal || father.includes(fatherVal);
+                const matchPhone = !phoneVal || phone.includes(phoneVal);
+
+                return matchStatus && matchRoll && matchName && matchFather && matchPhone;
+            });
+
+            if (filteredAttendance.length === 0) {
+                alert("No records available to export for the selected criteria.");
+                return;
+            }
+
+            const exportData = filteredAttendance.map((row, index) => {
+                const rollKey = String(row['Uni Roll'] || row['Studentid']).toLowerCase();
+                const isAbsent = absentMap[rollKey] === true;
+                return {
+                    "S.No": index + 1,
+                    "University Roll No": row['Uni Roll'] || '-',
+                    "Student Name": row['Student Name'] || '-',
+                    "Father's Name": row['Father name'] || '-',
+                    "Student Phone": row['Student Phone Number'] || '-',
+                    "Course": row['Course'] || '-',
+                    "Batch": row['Batch'] || '-',
+                    "Attendance Status": isAbsent ? "ABSENT" : "PRESENT"
+                };
+            });
+
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Short Attendance");
+
+            const safeCourse = course.replace(/[^a-zA-Z0-9]/g, "_");
+            const safeBatch = batch.replace(/[^a-zA-Z0-9]/g, "_");
+            XLSX.writeFile(wb, `${safeCourse}_${safeBatch}_Short_Attendance_Report.xlsx`);
+        }
+
+        /* -------------------------------------------------------------
+           PRINT CONTROLLER
+        ------------------------------------------------------------- */
+        function triggerPrintTarget(targetId) {
+            document.querySelectorAll('.print-area-target').forEach(el => el.classList.remove('print-area-target'));
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add('print-area-target');
+                setTimeout(() => { window.print(); }, 150);
+            }
+        }
+
+        window.onload = function() {
+            initializeDatabase();
+        };
+    </script>
+</body>
+</html>
