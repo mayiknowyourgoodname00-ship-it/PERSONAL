@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypePulse Pro - English Typing Mastery</title>
+    <style>
+        :root {
+            --bg-dark: #080b12;
+            --panel-bg: rgba(13, 18, 30, 0.85);
+            --cyan-glow: #00f0ff;
+            --green-glow: #00ff88;
+            --magenta-glow: #ff0055;
+            --gold-glow: #ffcc00;
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-mono: 'Consolas', 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: var(--font-family);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #app-container {
+            position: relative;
+            width: 1000px;
+            height: 700px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 60px rgba(0, 240, 255, 0.15);
+            background: #020408;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top HUD Dashboard */
+        .hud-header {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .hud-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .hud-val {
+            color: var(--cyan-glow);
+            font-size: 18px;
+            font-family: var(--font-mono);
+            margin-left: 8px;
+        }
+
+        /* Canvas Setup */
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Bottom Typing Input Field Display */
+        #typing-bar {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--cyan-glow);
+            border-radius: 30px;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
+            z-index: 10;
+        }
+
+        #typed-buffer {
+            font-family: var(--font-mono);
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: var(--green-glow);
+            min-height: 28px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 22px;
+            background-color: var(--cyan-glow);
+            margin-left: 4px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Modals & Screens */
+        .modal {
+            position: absolute;
+            inset: 0;
+            background: rgba(8, 11, 18, 0.92);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--cyan-glow), var(--green-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 15px;
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--cyan-glow), #0077ff);
+            color: #000;
+            font-weight: 800;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.7);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 80%;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .stat-box label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 1px;
+        }
+
+        .stat-box val {
+            display: block;
+            font-size: 26px;
+            font-weight: bold;
+            color: var(--cyan-glow);
+            font-family: var(--font-mono);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- HUD Dashboard -->
+        <div class="hud-header">
+            <div class="hud-card">Level <span id="hud-level" class="hud-val">1</span></div>
+            <div class="hud-card">WPM <span id="hud-wpm" class="hud-val">0</span></div>
+            <div class="hud-card">Accuracy <span id="hud-acc" class="hud-val">100%</span></div>
+            <div class="hud-card">Score <span id="hud-score" class="hud-val">0</span></div>
+            <div class="hud-card">Shield <span id="hud-shield" class="hud-val">100%</span></div>
+        </div>
+
+        <!-- Canvas Area -->
+        <canvas id="gameCanvas" width="1000" height="700"></canvas>
+
+        <!-- Dynamic Typing Buffer Line -->
+        <div id="typing-bar">
+            <span id="typed-buffer"></span><span class="cursor-blink"></span>
+        </div>
+
+        <!-- Start Modal -->
+        <div id="start-modal" class="modal">
+            <h1 class="title">TypePulse Pro</h1>
+            <p class="subtitle">
+                Master professional English typing speed and precision. Words float down the neural grid—type them accurately before they breach your shield defense.
+            </p>
+            <button class="btn" onclick="Game.start()">Start Practice</button>
+        </div>
+
+        <!-- Level Complete Modal -->
+        <div id="level-modal" class="modal hidden">
+            <h1 class="title" style="background: linear-gradient(135deg, var(--gold-glow), var(--green-glow)); -webkit-background-clip: text;">Level Cleared</h1>
+            <div class="stat-grid">
+                <div class="stat-box"><label>Avg WPM</label><val id="lvl-wpm">0</val></div>
+                <div class="stat-box"><label>Accuracy</label><val id="lvl-acc">100%</val></div>
+                <div class="stat-box"><label>Words Cleared</label><val id="lvl-words">0</val></div>
+            </div>
+            <button class="btn" onclick="Game.nextLevel()">Advance Level</button>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div id="gameover-modal" class="modal hidden">
+            <h1 class="title" style="background: linear-gradient(135deg, var(--magenta-glow), #ff5500); -webkit-background-clip: text;">Shield Breached</h1>
+            <div class="stat-grid">
+                <div class="stat-box"><label>Final WPM</label><val id="end-wpm">0</val></div>
+                <div class="stat-box"><label>Accuracy</label><val id="end-acc">0%</val></div>
+                <div class="stat-box"><label>Final Score</label><val id="end-score">0</val></div>
+            </div>
+            <button class="btn" onclick="Game.restart()">Retry Session</button>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * PROCEDURAL AUDIO SYNTHESIZER (Web Audio API)
+         */
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            },
+            playKeypress() {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.04);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.04);
+            },
+            playWordDestroyed() {
+                if (!this.ctx) return;
+                const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+                notes.forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + i * 0.04);
+                    gain.gain.setValueAtTime(0.08, this.ctx.currentTime + i * 0.04);
+                    gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + i * 0.04 + 0.12);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + i * 0.04);
+                    osc.stop(this.ctx.currentTime + i * 0.04 + 0.12);
+                });
+            },
+            playError() {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.15);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.15);
+            }
+        };
+
+        /**
+         * ENGLISH VOCABULARY DICTIONARIES BY LEVEL
+         */
+        const WORD_SETS = [
+            // Level 1: Common English Foundation
+            ["data", "code", "logic", "array", "input", "focus", "skill", "speed", "cloud", "pixel", "pulse", "cyber", "query", "index", "stack"],
+            // Level 2: Professional Vocabulary
+            ["system", "network", "matrix", "process", "storage", "quantum", "digital", "feature", "compile", "execute", "routine", "dynamic", "virtual"],
+            // Level 3: Advanced Business & Tech Terms
+            ["algorithm", "framework", "interface", "bandwidth", "encryption", "prototype", "developer", "structure", "parameter", "synthesis"],
+            // Level 4: Master Vocabulary
+            ["architecture", "synchronous", "optimization", "infrastructure", "cryptography", "functionality", "interoperability", "microservice"],
+            // Level 5: Elite Speed Challenge
+            ["multithreading", "decentralized", "containerization", "responsiveness", "telecommunication", "hyperdimensionality"]
+        ];
+
+        /**
+         * LEVEL CONFIGURATIONS
+         */
+        const LEVELS = [
+            { level: 1, targetScore: 600, speed: 1.0, spawnInterval: 140 },
+            { level: 2, targetScore: 1500, speed: 1.3, spawnInterval: 120 },
+            { level: 3, targetScore: 2800, speed: 1.6, spawnInterval: 100 },
+            { level: 4, targetScore: 4500, speed: 2.0, spawnInterval: 80 },
+            { level: 5, targetScore: 6800, speed: 2.4, spawnInterval: 65 }
+        ];
+
+        /**
+         * GAME ENGINE
+         */
+        const Game = {
+            canvas: null,
+            ctx: null,
+            currentLevelIdx: 0,
+            score: 0,
+            shield: 100,
+            isRunning: false,
+            frame: 0,
+            
+            // Stats Tracking
+            totalKeystrokes: 0,
+            correctKeystrokes: 0,
+            wordsCleared: 0,
+            startTime: null,
+
+            typedInput: "",
+            words: [],
+            particles: [],
+
+            init() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+
+                // Global Keydown Listener
+                window.addEventListener('keydown', e => this.handleTyping(e));
+            },
+
+            start() {
+                AudioFX.init();
+                document.getElementById('start-modal').classList.add('hidden');
+                this.currentLevelIdx = 0;
+                this.score = 0;
+                this.shield = 100;
+                this.totalKeystrokes = 0;
+                this.correctKeystrokes = 0;
+                this.wordsCleared = 0;
+                this.startTime = Date.now();
+                this.setupLevel();
+                this.isRunning = true;
+                this.loop();
+            },
+
+            nextLevel() {
+                document.getElementById('level-modal').classList.add('hidden');
+                this.currentLevelIdx++;
+                this.setupLevel();
+                this.isRunning = true;
+                this.loop();
+            },
+
+            restart() {
+                document.getElementById('gameover-modal').classList.add('hidden');
+                this.start();
+            },
+
+            setupLevel() {
+                this.words = [];
+                this.typedInput = "";
+                this.updateTypedDisplay();
+            },
+
+            handleTyping(e) {
+                if (!this.isRunning) return;
+
+                if (e.key === 'Backspace') {
+                    this.typedInput = this.typedInput.slice(0, -1);
+                    AudioFX.playKeypress();
+                    this.updateTypedDisplay();
+                    return;
+                }
+
+                if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+                    const char = e.key.toLowerCase();
+                    this.totalKeystrokes++;
+                    this.typedInput += char;
+                    AudioFX.playKeypress();
+
+                    // Check if current buffer matches any active falling word
+                    let matchedIdx = this.words.findIndex(w => w.text === this.typedInput);
+
+                    if (matchedIdx !== -1) {
+                        // Word typed correctly!
+                        const matchedWord = this.words[matchedIdx];
+                        this.correctKeystrokes += matchedWord.text.length;
+                        this.wordsCleared++;
+                        this.score += matchedWord.text.length * 20;
+
+                        // Create Explosion FX
+                        this.createExplosion(matchedWord.x, matchedWord.y, '#00ff88');
+                        AudioFX.playWordDestroyed();
+
+                        // Remove Word
+                        this.words.splice(matchedIdx, 1);
+                        this.typedInput = "";
+
+                        // Check Level Completion
+                        if (this.score >= LEVELS[this.currentLevelIdx].targetScore) {
+                            this.levelCleared();
+                        }
+                    } else {
+                        // Check if typed buffer is a valid prefix of at least one active word
+                        const isPrefix = this.words.some(w => w.text.startsWith(this.typedInput));
+                        if (!isPrefix) {
+                            AudioFX.playError();
+                        } else {
+                            this.correctKeystrokes++;
+                        }
+                    }
+
+                    this.updateTypedDisplay();
+                }
+            },
+
+            updateTypedDisplay() {
+                document.getElementById('typed-buffer').innerText = this.typedInput;
+            },
+
+            spawnWord() {
+                const config = LEVELS[this.currentLevelIdx];
+                const wordList = WORD_SETS[Math.min(this.currentLevelIdx, WORD_SETS.length - 1)];
+                const text = wordList[Math.floor(Math.random() * wordList.length)];
+
+                // Prevent overlap by finding free X coordinate
+                const x = 80 + Math.random() * (this.canvas.width - 200);
+                this.words.push({
+                    text: text,
+                    x: x,
+                    y: -20,
+                    speed: config.speed + (Math.random() * 0.4)
+                });
+            },
+
+            createExplosion(x, y, color) {
+                for (let i = 0; i < 15; i++) {
+                    this.particles.push({
+                        x: x, y: y,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        alpha: 1, color: color
+                    });
+                }
+            },
+
+            update() {
+                const config = LEVELS[this.currentLevelIdx];
+                this.frame++;
+
+                if (this.frame % config.spawnInterval === 0) {
+                    this.spawnWord();
+                }
+
+                // Update Falling Words
+                for (let i = this.words.length - 1; i >= 0; i--) {
+                    let w = this.words[i];
+                    w.y += w.speed;
+
+                    // Word reached bottom shield line
+                    if (w.y > this.canvas.height - 90) {
+                        this.shield -= 20;
+                        this.createExplosion(w.x, w.y, '#ff0055');
+                        AudioFX.playError();
+                        this.words.splice(i, 1);
+
+                        if (this.shield <= 0) {
+                            this.gameOver();
+                            return;
+                        }
+                    }
+                }
+
+                // Update Particles
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    let p = this.particles[i];
+                    p.x += p.vx; p.y += p.vy; p.alpha -= 0.03;
+                    if (p.alpha <= 0) this.particles.splice(i, 1);
+                }
+
+                this.updateHUD();
+            },
+
+            calculateStats() {
+                const timeMinutes = Math.max((Date.now() - this.startTime) / 60000, 0.01);
+                const wpm = Math.round((this.correctKeystrokes / 5) / timeMinutes);
+                const accuracy = this.totalKeystrokes > 0 
+                    ? Math.round((this.correctKeystrokes / this.totalKeystrokes) * 100) 
+                    : 100;
+                return { wpm, accuracy };
+            },
+
+            updateHUD() {
+                const stats = this.calculateStats();
+                document.getElementById('hud-level').innerText = LEVELS[this.currentLevelIdx].level;
+                document.getElementById('hud-wpm').innerText = stats.wpm;
+                document.getElementById('hud-acc').innerText = `${stats.accuracy}%`;
+                document.getElementById('hud-score').innerText = this.score;
+                document.getElementById('hud-shield').innerText = `${Math.max(0, this.shield)}%`;
+            },
+
+            draw() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Draw Laser Shield Line at bottom
+                this.ctx.strokeStyle = '#ff0055';
+                this.ctx.lineWidth = 2;
+                this.ctx.shadowBlur = 12;
+                this.ctx.shadowColor = '#ff0055';
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, this.canvas.height - 80);
+                this.ctx.lineTo(this.canvas.width, this.canvas.height - 80);
+                this.ctx.stroke();
+
+                // Draw Falling Words
+                this.words.forEach(w => {
+                    this.ctx.save();
+                    this.ctx.font = '20px Consolas, monospace';
+                    this.ctx.fontWeight = 'bold';
+
+                    // Highlight matching prefix if typed
+                    if (this.typedInput && w.text.startsWith(this.typedInput)) {
+                        const matchedPart = this.typedInput;
+                        const remainingPart = w.text.slice(matchedPart.length);
+
+                        this.ctx.shadowBlur = 15;
+                        this.ctx.shadowColor = '#00ff88';
+
+                        // Green highlight for typed portion
+                        this.ctx.fillStyle = '#00ff88';
+                        this.ctx.fillText(matchedPart, w.x, w.y);
+
+                        // White for remaining portion
+                        const offset = this.ctx.measureText(matchedPart).width;
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.fillText(remainingPart, w.x + offset, w.y);
+                    } else {
+                        this.ctx.shadowBlur = 10;
+                        this.ctx.shadowColor = '#00f0ff';
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.fillText(w.text, w.x, w.y);
+                    }
+                    this.ctx.restore();
+                });
+
+                // Draw Particles
+                this.particles.forEach(p => {
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.alpha;
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    this.ctx.restore();
+                });
+            },
+
+            levelCleared() {
+                this.isRunning = false;
+                const stats = this.calculateStats();
+                document.getElementById('lvl-wpm').innerText = stats.wpm;
+                document.getElementById('lvl-acc').innerText = `${stats.accuracy}%`;
+                document.getElementById('lvl-words').innerText = this.wordsCleared;
+                document.getElementById('level-modal').classList.remove('hidden');
+            },
+
+            gameOver() {
+                this.isRunning = false;
+                const stats = this.calculateStats();
+                document.getElementById('end-wpm').innerText = stats.wpm;
+                document.getElementById('end-acc').innerText = `${stats.accuracy}%`;
+                document.getElementById('end-score').innerText = this.score;
+                document.getElementById('gameover-modal').classList.remove('hidden');
+            },
+
+            loop() {
+                if (!this.isRunning) return;
+                this.update();
+                this.draw();
+                requestAnimationFrame(() => this.loop());
+            }
+        };
+
+        window.onload = () => Game.init();
+    </script>
+</body>
+</html>

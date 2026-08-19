@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberPulse Velocity</title>
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --primary-glow: #00f0ff;
+            --secondary-glow: #ff0055;
+            --accent-glow: #ffe600;
+            --panel-bg: rgba(15, 23, 42, 0.75);
+            --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: var(--font-family);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: #000;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* UI Overlays */
+        .hud {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .hud-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .hud-val {
+            color: var(--primary-glow);
+            font-size: 18px;
+            margin-left: 6px;
+        }
+
+        /* Modals & Screens */
+        .modal {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            transition: opacity 0.3s ease;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00f0ff, #0077ff);
+            color: #000;
+            font-weight: 800;
+            font-size: 16px;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 230, 0, 0.2);
+            border: 1px solid var(--accent-glow);
+            color: var(--accent-glow);
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- HUD Overlay -->
+        <div class="hud">
+            <div class="hud-card">Level <span id="hud-level" class="hud-val">1</span></div>
+            <div class="hud-card">Score <span id="hud-score" class="hud-val">0</span> / <span id="hud-target">1000</span></div>
+            <div class="hud-card">Shield <span id="hud-shield" class="hud-val">100%</span></div>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="modal">
+            <div class="title">CyberPulse</div>
+            <div class="subtitle">Navigate through high-velocity cyber corridors. Dodge laser barriers and harvest energy cores to unlock next-tier clearance.</div>
+            <button class="btn" onclick="Game.start()">Initialize Flight</button>
+        </div>
+
+        <!-- Level Complete Screen -->
+        <div id="level-screen" class="modal hidden">
+            <div class="level-badge" id="level-cleared-badge">Level 1 Complete</div>
+            <div class="title">Clearance Granted</div>
+            <div class="subtitle" id="level-desc">Sector speed boosted. Prepare for increased barrier density.</div>
+            <button class="btn" onclick="Game.nextLevel()">Next Sector</button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="modal hidden">
+            <div class="title" style="background: linear-gradient(135deg, #ff0055, #ff5500); -webkit-background-clip: text;">System Failure</div>
+            <div class="subtitle" id="gameover-stats">Hull integrity compromised. Final Score: 0</div>
+            <button class="btn" style="background: linear-gradient(135deg, #ff0055, #ff5500); box-shadow: 0 0 20px rgba(ff, 0, 85, 0.4);" onclick="Game.restart()">Reboot Core</button>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * PROCEDURAL AUDIO SYNTHESIZER (Web Audio API)
+         */
+        const Sound = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playLaser() {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.15);
+            },
+            playPickup() {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
+                osc.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.08); // E5
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.2);
+            },
+            playExplosion() {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(20, this.ctx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.3);
+            }
+        };
+
+        /**
+         * LEVEL CONFIGURATIONS
+         */
+        const LEVEL_CONFIGS = [
+            { level: 1, name: "Sector 1: Cyber Corridor", targetScore: 1000, speed: 4, obstacleFreq: 100, itemFreq: 180, theme: '#00f0ff' },
+            { level: 2, name: "Sector 2: Laser Grid", targetScore: 2500, speed: 5.5, obstacleFreq: 80, itemFreq: 160, theme: '#00ffaa' },
+            { level: 3, name: "Sector 3: Quantum Drift", targetScore: 4500, speed: 7, obstacleFreq: 65, itemFreq: 140, theme: '#ffe600' },
+            { level: 4, name: "Sector 4: Overclock Void", targetScore: 7000, speed: 8.5, obstacleFreq: 50, itemFreq: 120, theme: '#ff0055' },
+            { level: 5, name: "Sector 5: Core Nexus", targetScore: 10000, speed: 10, obstacleFreq: 40, itemFreq: 100, theme: '#b000ff' }
+        ];
+
+        /**
+         * GAME ENGINE
+         */
+        const Game = {
+            canvas: null,
+            ctx: null,
+            currentLevelIdx: 0,
+            score: 0,
+            shield: 100,
+            isRunning: false,
+            frame: 0,
+            keys: {},
+            touchX: null,
+            
+            // Entities
+            player: null,
+            obstacles: [],
+            items: [],
+            particles: [],
+
+            init() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+
+                // Input Listeners
+                window.addEventListener('keydown', e => this.keys[e.key] = true);
+                window.addEventListener('keyup', e => this.keys[e.key] = false);
+
+                // Touch handling
+                this.canvas.addEventListener('touchmove', e => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.touchX = e.touches[0].clientX - rect.left;
+                });
+                this.canvas.addEventListener('touchend', () => this.touchX = null);
+
+                this.resetPlayer();
+            },
+
+            resetPlayer() {
+                this.player = {
+                    x: this.canvas.width / 2,
+                    y: this.canvas.height - 70,
+                    width: 36,
+                    height: 48,
+                    speed: 7
+                };
+            },
+
+            start() {
+                Sound.init();
+                document.getElementById('start-screen').classList.add('hidden');
+                this.currentLevelIdx = 0;
+                this.score = 0;
+                this.shield = 100;
+                this.resetPlayer();
+                this.isRunning = true;
+                this.loop();
+            },
+
+            nextLevel() {
+                document.getElementById('level-screen').classList.add('hidden');
+                this.currentLevelIdx++;
+                this.resetPlayer();
+                this.obstacles = [];
+                this.items = [];
+                this.isRunning = true;
+                this.loop();
+            },
+
+            restart() {
+                document.getElementById('gameover-screen').classList.add('hidden');
+                this.start();
+            },
+
+            spawnEntities() {
+                const config = LEVEL_CONFIGS[this.currentLevelIdx];
+
+                // Spawn Obstacles
+                if (this.frame % config.obstacleFreq === 0) {
+                    const width = Math.random() * 60 + 40;
+                    this.obstacles.push({
+                        x: Math.random() * (this.canvas.width - width),
+                        y: -30,
+                        width: width,
+                        height: 20,
+                        speed: config.speed + Math.random() * 1.5,
+                        color: config.theme
+                    });
+                }
+
+                // Spawn Energy Cores (Collectibles)
+                if (this.frame % config.itemFreq === 0) {
+                    this.items.push({
+                        x: Math.random() * (this.canvas.width - 30) + 15,
+                        y: -20,
+                        radius: 12,
+                        speed: config.speed * 0.8
+                    });
+                }
+            },
+
+            createExplosion(x, y, color) {
+                for (let i = 0; i < 15; i++) {
+                    this.particles.push({
+                        x: x,
+                        y: y,
+                        vx: (Math.random() - 0.5) * 8,
+                        vy: (Math.random() - 0.5) * 8,
+                        radius: Math.random() * 3 + 1,
+                        alpha: 1,
+                        color: color
+                    });
+                }
+            },
+
+            update() {
+                const config = LEVEL_CONFIGS[this.currentLevelIdx];
+                this.frame++;
+
+                // Player Movement Controls
+                if ((this.keys['ArrowLeft'] || this.keys['a']) && this.player.x > 20) {
+                    this.player.x -= this.player.speed;
+                }
+                if ((this.keys['ArrowRight'] || this.keys['d']) && this.player.x < this.canvas.width - 20) {
+                    this.player.x += this.player.speed;
+                }
+                if (this.touchX !== null) {
+                    this.player.x += (this.touchX - this.player.x) * 0.15;
+                }
+
+                // Spawn background particles (Starfield)
+                if (this.frame % 3 === 0) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: 0,
+                        vx: 0,
+                        vy: config.speed * 1.2,
+                        radius: Math.random() * 1.5,
+                        alpha: 0.6,
+                        color: '#ffffff'
+                    });
+                }
+
+                this.spawnEntities();
+
+                // Update Obstacles
+                for (let i = this.obstacles.length - 1; i >= 0; i--) {
+                    let obs = this.obstacles[i];
+                    obs.y += obs.speed;
+
+                    // Collision Detection with Player
+                    if (
+                        this.player.x - this.player.width/2 < obs.x + obs.width &&
+                        this.player.x + this.player.width/2 > obs.x &&
+                        this.player.y - this.player.height/2 < obs.y + obs.height &&
+                        this.player.y + this.player.height/2 > obs.y
+                    ) {
+                        this.shield -= 25;
+                        this.createExplosion(this.player.x, this.player.y, '#ff0055');
+                        Sound.playExplosion();
+                        this.obstacles.splice(i, 1);
+
+                        if (this.shield <= 0) {
+                            this.gameOver();
+                            return;
+                        }
+                        continue;
+                    }
+
+                    // Remove offscreen obstacles & add score
+                    if (obs.y > this.canvas.height + 30) {
+                        this.obstacles.splice(i, 1);
+                        this.score += 50;
+                    }
+                }
+
+                // Update Energy Items
+                for (let i = this.items.length - 1; i >= 0; i--) {
+                    let item = this.items[i];
+                    item.y += item.speed;
+
+                    // Collision Detection
+                    let dx = this.player.x - item.x;
+                    let dy = this.player.y - item.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < item.radius + this.player.width / 2) {
+                        this.score += 150;
+                        this.shield = Math.min(100, this.shield + 10);
+                        this.createExplosion(item.x, item.y, '#ffe600');
+                        Sound.playPickup();
+                        this.items.splice(i, 1);
+                        continue;
+                    }
+
+                    if (item.y > this.canvas.height + 20) {
+                        this.items.splice(i, 1);
+                    }
+                }
+
+                // Update Particles
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    let p = this.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= 0.02;
+                    if (p.alpha <= 0 || p.y > this.canvas.height) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+
+                // Check Level Progression
+                if (this.score >= config.targetScore) {
+                    this.levelCleared();
+                }
+
+                this.updateHUD();
+            },
+
+            draw() {
+                const config = LEVEL_CONFIGS[this.currentLevelIdx];
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Grid background effect
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+                this.ctx.lineWidth = 1;
+                for (let x = 0; x < this.canvas.width; x += 40) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height);
+                    this.ctx.stroke();
+                }
+
+                // Draw Particles
+                this.particles.forEach(p => {
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.alpha;
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    this.ctx.restore();
+                });
+
+                // Draw Obstacles (Laser Barriers)
+                this.obstacles.forEach(obs => {
+                    this.ctx.save();
+                    this.ctx.shadowBlur = 15;
+                    this.ctx.shadowColor = obs.color;
+                    this.ctx.fillStyle = obs.color;
+                    this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    this.ctx.restore();
+                });
+
+                // Draw Energy Cores
+                this.items.forEach(item => {
+                    this.ctx.save();
+                    this.ctx.shadowBlur = 20;
+                    this.ctx.shadowColor = '#ffe600';
+                    this.ctx.fillStyle = '#ffe600';
+                    this.ctx.beginPath();
+                    this.ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    this.ctx.restore();
+                });
+
+                // Draw Player Ship (Futuristic Triangle/Jet)
+                this.ctx.save();
+                this.ctx.translate(this.player.x, this.player.y);
+                this.ctx.shadowBlur = 20;
+                this.ctx.shadowColor = config.theme;
+                
+                // Ship Body
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, -this.player.height / 2);
+                this.ctx.lineTo(-this.player.width / 2, this.player.height / 2);
+                this.ctx.lineTo(0, this.player.height / 3);
+                this.ctx.lineTo(this.player.width / 2, this.player.height / 2);
+                this.ctx.closePath();
+                this.ctx.fill();
+
+                // Thruster Glow
+                this.ctx.fillStyle = config.theme;
+                this.ctx.beginPath();
+                this.ctx.arc(0, this.player.height / 2, 6, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                this.ctx.restore();
+            },
+
+            updateHUD() {
+                const config = LEVEL_CONFIGS[this.currentLevelIdx];
+                document.getElementById('hud-level').innerText = config.level;
+                document.getElementById('hud-score').innerText = this.score;
+                document.getElementById('hud-target').innerText = config.targetScore;
+                document.getElementById('hud-shield').innerText = `${Math.max(0, this.shield)}%`;
+            },
+
+            levelCleared() {
+                this.isRunning = false;
+                const current = LEVEL_CONFIGS[this.currentLevelIdx];
+                
+                if (this.currentLevelIdx < LEVEL_CONFIGS.length - 1) {
+                    const next = LEVEL_CONFIGS[this.currentLevelIdx + 1];
+                    document.getElementById('level-cleared-badge').innerText = `${current.name} Cleared`;
+                    document.getElementById('level-desc').innerText = `Next Up: ${next.name}. Speed multiplier increased.`;
+                    document.getElementById('level-screen').classList.remove('hidden');
+                } else {
+                    document.getElementById('level-cleared-badge').innerText = `Campaign Completed!`;
+                    document.getElementById('level-desc').innerText = `All cyber sectors liberated! Final Score: ${this.score}`;
+                    document.getElementById('level-screen').classList.remove('hidden');
+                }
+            },
+
+            gameOver() {
+                this.isRunning = false;
+                document.getElementById('gameover-stats').innerText = `Hull breach at ${LEVEL_CONFIGS[this.currentLevelIdx].name}. Final Score: ${this.score}`;
+                document.getElementById('gameover-screen').classList.remove('hidden');
+            },
+
+            loop() {
+                if (!this.isRunning) return;
+                this.update();
+                this.draw();
+                requestAnimationFrame(() => this.loop());
+            }
+        };
+
+        // Initialize on Load
+        window.onload = () => Game.init();
+    </script>
+</body>
+</html>
