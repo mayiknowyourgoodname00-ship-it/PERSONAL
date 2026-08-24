@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Cat's Cradle — Neon Laser Strings</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; overflow: hidden;
+    background: #000; width: 100%; height: 100%;
+  }
+  #status {
+    position: fixed; top: 12px; left: 12px; z-index: 10;
+    color: #0ff; font-family: 'Courier New', monospace; font-size: 13px;
+    background: rgba(0,0,0,0.55); padding: 8px 14px; border-radius: 8px;
+    border: 1px solid rgba(0,255,255,0.3);
+    text-shadow: 0 0 6px #0ff;
+    letter-spacing: 0.5px;
+  }
+  canvas { display: block; }
+  #startBtn {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 20; padding: 16px 32px; font-family: 'Courier New', monospace;
+    font-size: 16px; letter-spacing: 1px; color: #0ff; background: #001018;
+    border: 1px solid #0ff; border-radius: 8px; cursor: pointer;
+    box-shadow: 0 0 18px rgba(0,255,255,0.5);
+  }
+  #startBtn:hover { background: #002028; }
+</style>
+</head>
+<body>
+<div id="status">Click below to enable your camera</div>
+<button id="startBtn">Enable Camera</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+
+<script>
+/* ---------------------------------------------------------
+   Cat's Cradle — Neon Laser Strings
+   p5.js canvas + MediaPipe Hands tracking, dual-hand fingertip
+   laser beams with elastic color/thickness, glow, and a
+   particle burst whenever paired fingertips touch.
+--------------------------------------------------------- */
+
+const FINGERTIPS = [4, 8, 12, 16, 20]; // thumb, index, middle, ring, pinky
+const HAND_CONNECTIONS = [
+  [0,1],[1,2],[2,3],[3,4],
+  [0,5],[5,6],[6,7],[7,8],
+  [5,9],[9,10],[10,11],[11,12],
+  [9,13],[13,14],[14,15],[15,16],
+  [13,17],[17,18],[18,19],[19,20],
+  [0,17]
+];
+
+let capture, handsModel, camera;
+let latestResults = null;
+let particles = [];
+let touchCooldown = [0, 0, 0, 0, 0]; // one per fingertip pair
+let statusEl, startBtn;
+let pulseT = 0;
+let cameraStarted = false;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  pixelDensity(1);
+  statusEl = document.getElementById('status');
+  startBtn = document.getElementById('startBtn');
+  startBtn.addEventListener('click', startCamera);
+}
+
+function startCamera() {
+  if (cameraStarted) return;
+  cameraStarted = true;
+  startBtn.style.display = 'none';
+  statusEl.innerText = 'Requesting camera access…';
+
+  capture = createCapture(
+    { video: { width: 320, height: 240 }, audio: false },
+    () => { statusEl.innerText = 'Camera live — show both hands'; }
+  );
+  capture.size(320, 240);
+  capture.hide();
+
+  handsModel = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+  });
+  handsModel.setOptions({
+    maxNumHands: 2,
+    modelComplexity: 0,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
+  handsModel.onResults((r) => { latestResults = r; });
+
+  camera = new Camera(capture.elt, {
+    onFrame: async () => { await handsModel.send({ image: capture.elt }); },
+    width: 320,
+    height: 240
+  });
+  camera.start().catch((err) => {
+    statusEl.innerText = 'Camera permission denied — check your browser\'s site settings (camera) and reload';
+    startBtn.style.display = 'block';
+    cameraStarted = false;
+    console.error(err);
+  });
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function draw() {
+  background(0);
+  pulseT += 0.05;
+
+  if (!cameraStarted) {
+    updateParticles();
+    return;
+  }
+
+  // --- mirrored dark video backdrop ---
+  push();
+  translate(width, 0);
+  scale(-1, 1);
+  tint(255, 60);
+  if (capture && capture.loadedmetadata) image(capture, 0, 0, width, height);
+  noTint();
+  pop();
+
+  noStroke();
+  fill(5, 5, 15, 140);
+  rect(0, 0, width, height);
+
+  let count = touchCooldown.length;
+  for (let i = 0; i < count; i++) if (touchCooldown[i] > 0) touchCooldown[i]--;
+
+  if (latestResults && latestResults.multiHandLandmarks && latestResults.multiHandLandmarks.length) {
+    const hands = latestResults.multiHandLandmarks;
+
+    push();
+    translate(width, 0);
+    scale(-1, 1);
+
+    for (let h = 0; h < hands.length; h++) drawHandSkeleton(hands[h], h);
+
+    if (hands.length === 2) drawCradleStrings(hands[0], hands[1]);
+
+    pop();
+  } else {
+    statusEl.innerText = 'Searching for hands…';
+  }
+
+  updateParticles();
+}
+
+function drawHandSkeleton(lm, handIndex) {
+  const pts = lm.map(p => ({ x: p.x * width, y: p.y * height }));
+  const baseHue = handIndex === 0 ? [0, 255, 255] : [255, 0, 220]; // cyan vs magenta
+
+  drawingContext.save();
+  drawingContext.shadowBlur = 8;
+  drawingContext.shadowColor = `rgba(${baseHue[0]},${baseHue[1]},${baseHue[2]},0.9)`;
+  stroke(baseHue[0], baseHue[1], baseHue[2], 160);
+  strokeWeight(1.4);
+  for (const [a, b] of HAND_CONNECTIONS) {
+    line(pts[a].x, pts[a].y, pts[b].x, pts[b].y);
+  }
+
+  noStroke();
+  for (let i = 0; i < pts.length; i++) {
+    const isTip = FINGERTIPS.includes(i);
+    const r = isTip ? 7 : 4;
+    drawingContext.shadowBlur = isTip ? 16 : 8;
+    fill(baseHue[0], baseHue[1], baseHue[2], isTip ? 220 : 150);
+    circle(pts[i].x, pts[i].y, r);
+  }
+  drawingContext.restore();
+}
+
+function drawCradleStrings(handA, handB) {
+  const minDist = 40;
+  const maxDist = Math.hypot(width, height) * 0.45;
+  const touchThreshold = 34;
+
+  for (let i = 0; i < FINGERTIPS.length; i++) {
+    const idx = FINGERTIPS[i];
+    const a = { x: handA[idx].x * width, y: handA[idx].y * height };
+    const b = { x: handB[idx].x * width, y: handB[idx].y * height };
+    const d = dist(a.x, a.y, b.x, b.y);
+    const t = constrain(map(d, minDist, maxDist, 0, 1), 0, 1);
+
+    // color: hot magenta/white when close -> yellow mid -> cyan when stretched far
+    let col;
+    if (t < 0.5) {
+      col = lerpColor(color(255, 60, 255), color(255, 230, 60), t * 2);
+    } else {
+      col = lerpColor(color(255, 230, 60), color(60, 240, 255), (t - 0.5) * 2);
+    }
+    const weight = lerp(6, 1.2, t); // closer = thicker "slack" beam, taut when stretched
+    const jitter = sin(pulseT * 3 + i) * lerp(1.5, 0.2, t);
+
+    drawLaserBeam(a.x, a.y + jitter, b.x, b.y - jitter, col, weight);
+
+    if (d < touchThreshold && touchCooldown[i] <= 0) {
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      spawnBurst(mx, my, col);
+      touchCooldown[i] = 22;
+    }
+  }
+}
+
+function drawLaserBeam(x1, y1, x2, y2, col, weight) {
+  drawingContext.save();
+  drawingContext.globalCompositeOperation = 'lighter';
+
+  // outer glow
+  drawingContext.shadowBlur = 18;
+  drawingContext.shadowColor = `rgba(${red(col)},${green(col)},${blue(col)},0.9)`;
+  stroke(red(col), green(col), blue(col), 120);
+  strokeWeight(weight * 1.6);
+  line(x1, y1, x2, y2);
+
+  // bright hot core
+  drawingContext.shadowBlur = 6;
+  stroke(255, 255, 255, 230);
+  strokeWeight(Math.max(0.8, weight * 0.35));
+  line(x1, y1, x2, y2);
+
+  drawingContext.restore();
+}
+
+function spawnBurst(x, y, col) {
+  const n = 14;
+  for (let i = 0; i < n; i++) {
+    const a = random(TWO_PI);
+    const speed = random(1.5, 6.5);
+    particles.push({
+      x, y,
+      vx: cos(a) * speed,
+      vy: sin(a) * speed,
+      life: random(20, 34),
+      maxLife: 34,
+      size: random(2, 5),
+      col
+    });
+  }
+}
+
+function updateParticles() {
+  if (!particles.length) return;
+  drawingContext.save();
+  drawingContext.globalCompositeOperation = 'lighter';
+  drawingContext.shadowBlur = 10;
+  noStroke();
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vx *= 0.94;
+    p.vy *= 0.94;
+    p.life--;
+
+    const alpha = constrain(map(p.life, 0, p.maxLife, 0, 255), 0, 255);
+    drawingContext.shadowColor = `rgba(${red(p.col)},${green(p.col)},${blue(p.col)},1)`;
+    fill(red(p.col), green(p.col), blue(p.col), alpha);
+    circle(p.x, p.y, p.size * 1.8);
+
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+  drawingContext.restore();
+}
+</script>
+</body>
+</html>
