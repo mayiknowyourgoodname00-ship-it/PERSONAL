@@ -14,10 +14,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- QR Code Generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Cropper.js for Professional Image Cropping -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
     <style>
         .active-tab { background-color: #1e3a8a; color: white; }
         .drop-zone { border: 2px dashed #cbd5e1; }
         .drop-zone.dragover { border-color: #1e3a8a; background-color: #eff6ff; }
+        /* Font preview styling for Punjabi text output */
+        .anmol-font-preview {
+            font-family: 'Gurmukhi MN', 'Gurmukhi Sangam MN', 'Mukta', sans-serif;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
@@ -86,6 +94,7 @@
                 <div>
                     <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Media Tools</h2>
                     <ul class="space-y-1 text-sm font-medium">
+                        <li><button onclick="switchTab('photo-crop-compress', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Photo Crop & Compress</button></li>
                         <li><button onclick="switchTab('img-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Image Tools & Compressor</button></li>
                         <li><button onclick="switchTab('media-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Audio & Video Tools</button></li>
                     </ul>
@@ -93,6 +102,7 @@
                 <div>
                     <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Utilities</h2>
                     <ul class="space-y-1 text-sm font-medium">
+                        <li><button onclick="switchTab('punjabi-translation', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">English to Punjabi (Anmol Lipi)</button></li>
                         <li><button onclick="switchTab('generators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Generators (QR, Pass)</button></li>
                         <li><button onclick="switchTab('calculators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Calculators (Age, BMI)</button></li>
                         <li><button onclick="switchTab('text-speech', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Speech & Text Tools</button></li>
@@ -206,6 +216,60 @@
                 </div>
             </div>
 
+            <!-- NEW SECTION: PROFESSIONAL PHOTO CROP & COMPRESSOR -->
+            <div id="photo-crop-compress" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Professional Photo Crop & Compressor</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Controls Sidebar -->
+                    <div class="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-base border-b pb-2">1. Select Photo</h3>
+                        <input type="file" id="cropperInput" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-900 file:text-white hover:file:bg-blue-950">
+
+                        <h3 class="font-bold text-slate-800 text-base border-b pb-2 pt-2">2. Aspect Ratio & Controls</h3>
+                        <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+                            <button onclick="setCropperAspect(NaN)" class="p-2 border rounded bg-white hover:bg-blue-50">Free Form</button>
+                            <button onclick="setCropperAspect(1)" class="p-2 border rounded bg-white hover:bg-blue-50">1:1 Square</button>
+                            <button onclick="setCropperAspect(4/3)" class="p-2 border rounded bg-white hover:bg-blue-50">4:3 Standard</button>
+                            <button onclick="setCropperAspect(16/9)" class="p-2 border rounded bg-white hover:bg-blue-50">16:9 Widescreen</button>
+                            <button onclick="setCropperAspect(3.5/4.5)" class="col-span-2 p-2 border rounded bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100">Passport Photo (3.5 x 4.5)</button>
+                        </div>
+
+                        <div class="flex gap-2 pt-1">
+                            <button onclick="rotateCropper(-90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs hover:bg-slate-900">Rotate Left</button>
+                            <button onclick="rotateCropper(90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs hover:bg-slate-900">Rotate Right</button>
+                        </div>
+
+                        <h3 class="font-bold text-slate-800 text-base border-b pb-2 pt-2">3. Compression & Export</h3>
+                        <div>
+                            <label class="text-xs font-semibold flex justify-between">Target Quality: <span id="cropQualityVal" class="text-blue-900 font-bold">85%</span></label>
+                            <input type="range" id="cropQuality" min="10" max="100" value="85" class="w-full accent-blue-900" oninput="document.getElementById('cropQualityVal').innerText = this.value + '%'">
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold">Format Output</label>
+                            <select id="cropFormat" class="w-full p-2 border rounded text-xs font-medium bg-white">
+                                <option value="image/jpeg">JPEG / JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <button onclick="processCroppedImage()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-lg shadow hover:bg-emerald-700 transition text-sm">
+                            Crop & Compress Photo
+                        </button>
+                    </div>
+
+                    <!-- Cropper Canvas Workspace -->
+                    <div class="lg:col-span-2 border rounded-xl p-4 bg-slate-900 flex flex-col items-center justify-center min-h-[420px] max-h-[550px] relative overflow-hidden">
+                        <div class="w-full h-full flex items-center justify-center" id="cropperContainer">
+                            <span class="text-slate-400 text-sm">Upload a photo to launch interactive crop canvas</span>
+                        </div>
+                        <div id="cropOutputResult" class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur border p-3 rounded-lg shadow-lg flex justify-between items-center hidden">
+                            <div class="text-xs font-medium text-slate-700" id="cropMetrics"></div>
+                            <div id="cropDownloadBtn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- SECTION 4: IMAGE TOOLS & COMPRESSOR -->
             <div id="img-tools" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Image Compressor & Format Converter</h2>
@@ -257,6 +321,37 @@
                         <input type="file" id="audioInput" accept="audio/*" class="w-full text-sm">
                         <button onclick="convertAudio()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Convert to WAV Audio</button>
                         <div id="audioResult"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: ENGLISH TO PUNJABI (ANMOL LIPI) -->
+            <div id="punjabi-translation" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-2 text-blue-950">English to Punjabi (Anmol Lipi Script Converter)</h2>
+                <p class="text-xs text-slate-500 mb-4">Type or paste English/Phonetic text to map into authentic Punjabi Gurmukhi & Anmol Lipi font keyboard layout instantly.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- English / Phonetic Input -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">English / Romanized Input</label>
+                        <textarea id="englishInputText" rows="10" placeholder="Type here (e.g. Sat Sri Akal, Amritsar Law College...)" class="w-full p-3 border rounded-lg text-sm font-sans focus:ring-2 focus:ring-blue-900" oninput="convertEnglishToPunjabi()"></textarea>
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span id="enCharCount">Characters: 0</span>
+                            <button onclick="document.getElementById('englishInputText').value=''; convertEnglishToPunjabi();" class="text-red-600 hover:underline">Clear Input</button>
+                        </div>
+                    </div>
+
+                    <!-- Punjabi Anmol Lipi Output -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-blue-900">Punjabi (Anmol Lipi Output)</label>
+                        <textarea id="punjabiOutputText" rows="10" readonly placeholder="ਪੰਜਾਬੀ / ਅਨਮੋਲ ਲਿਪੀ ਅਨੁਵਾਦ..." class="w-full p-3 border rounded-lg text-lg font-medium bg-slate-50 text-slate-900 focus:ring-2 focus:ring-amber-400 anmol-font-preview"></textarea>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-semibold text-emerald-700" id="punjabiStatus">Real-time mapped</span>
+                            <div class="flex gap-2">
+                                <button onclick="copyPunjabiText()" class="bg-blue-900 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-950">Copy Text</button>
+                                <button onclick="downloadPunjabiText()" class="bg-amber-500 text-slate-950 font-bold text-xs px-3 py-1.5 rounded hover:bg-amber-600">Download Text</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -464,6 +559,130 @@
                 const defaultBtn = document.querySelector(`button[onclick*="'${tabId}'"]`);
                 if (defaultBtn) defaultBtn.classList.add('active-tab');
             }
+        }
+
+        // ==========================================
+        // 1. ANMOL LIPI / ENGLISH TO PUNJABI ENGINE
+        // ==========================================
+        const anmolKeyMap = {
+            'a': 'ੳ', 'A': 'ਅ', 'b': 'ਬ', 'B': 'ਭ', 'c': 'ਚ', 'C': 'ਛ',
+            'd': 'ਦ', 'D': 'ਧ', 'e': 'ੲ', 'E': 'ਏ', 'f': 'ਫ', 'F': 'ਫ਼',
+            'g': 'ਗ', 'G': 'ਘ', 'h': 'ਹ', 'H': '੍ਹ', 'i': 'ਿ', 'I': 'ਈ',
+            'j': 'ਜ', 'J': 'ਝ', 'k': 'ਕ', 'K': 'ਖ', 'l': 'ਲ', 'L': 'ਲ਼',
+            'm': 'ਮ', 'M': 'ੰ', 'n': 'ਨ', 'N': 'ਣ', 'o': 'ੋ', 'O': 'ਓ',
+            'p': 'ਪ', 'P': 'ਫ', 'q': 'ਤ', 'Q': 'ਥ', 'r': 'ਰ', 'R': '੍ਰ',
+            's': 'ਸ', 'S': 'ਸ਼', 't': 'ਟ', 'T': 'ਠ', 'u': 'ੁ', 'U': 'ੂ',
+            'v': 'ਵ', 'V': 'ੜ', 'w': 'ਾ', 'W': 'ਾਂ', 'x': 'ਣ', 'X': 'ਯ',
+            'y': 'ੇ', 'Y': 'ੈ', 'z': 'ਜ਼', 'Z': 'ਗ਼',
+            '1': '੧', '2': '੨', '3': '੩', '4': '੪', '5': '੫',
+            '6': '੬', '7': '੭', '8': '੮', '9': '੯', '0': '੦',
+            '[': 'ੑ', ']': 'ੴ', ';': 'ੵ', '\'': 'ੱ', '`': 'ੰ'
+        };
+
+        const commonWordTransliterations = {
+            "sat": "ਸਤਿ", "sri": "ਸ੍ਰੀ", "akal": "ਅਕਾਲ",
+            "amritsar": "ਅੰਮ੍ਰਿਤਸਰ", "law": "ਲੌ", "college": "ਕਾਲਜ",
+            "punjab": "ਪੰਜਾਬ", "namaste": "ਨਮਸਤੇ", "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ"
+        };
+
+        function convertEnglishToPunjabi() {
+            const input = document.getElementById('englishInputText').value;
+            document.getElementById('enCharCount').innerText = `Characters: ${input.length}`;
+            
+            if(!input.trim()) {
+                document.getElementById('punjabiOutputText').value = '';
+                return;
+            }
+
+            let words = input.split(/(\s+)/);
+            let convertedStr = words.map(word => {
+                let lowerWord = word.toLowerCase().trim();
+                if (commonWordTransliterations[lowerWord]) {
+                    return commonWordTransliterations[lowerWord];
+                }
+                return word.split('').map(ch => anmolKeyMap[ch] || ch).join('');
+            }).join('');
+
+            document.getElementById('punjabiOutputText').value = convertedStr;
+        }
+
+        function copyPunjabiText() {
+            const txt = document.getElementById('punjabiOutputText').value;
+            if(!txt) return alert('No Punjabi text to copy!');
+            navigator.clipboard.writeText(txt);
+            alert('Punjabi (Anmol Lipi) text copied to clipboard!');
+        }
+
+        function downloadPunjabiText() {
+            const txt = document.getElementById('punjabiOutputText').value;
+            if(!txt) return alert('No content to download!');
+            const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+            downloadBlob(blob, 'Punjabi_AnmolLipi_Text.txt', document.body);
+        }
+
+        // ==========================================
+        // 2. PROFESSIONAL CROPPER & COMPRESSOR ENGINE
+        // ==========================================
+        let activeCropper = null;
+
+        document.getElementById('cropperInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const container = document.getElementById('cropperContainer');
+                container.innerHTML = `<img id="cropTargetImage" src="${evt.target.result}" class="max-h-[480px] object-contain">`;
+                
+                const img = document.getElementById('cropTargetImage');
+                if (activeCropper) activeCropper.destroy();
+
+                activeCropper = new Cropper(img, {
+                    aspectRatio: NaN,
+                    viewMode: 1,
+                    background: false,
+                    autoCropArea: 0.9,
+                    responsive: true
+                });
+
+                document.getElementById('cropOutputResult').classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function setCropperAspect(ratio) {
+            if (!activeCropper) return alert('Please upload an image first!');
+            activeCropper.setAspectRatio(ratio);
+        }
+
+        function rotateCropper(degree) {
+            if (!activeCropper) return alert('Please upload an image first!');
+            activeCropper.rotate(degree);
+        }
+
+        function processCroppedImage() {
+            if (!activeCropper) return alert('Please select an image to crop!');
+
+            const canvas = activeCropper.getCroppedCanvas();
+            const quality = parseFloat(document.getElementById('cropQuality').value) / 100;
+            const format = document.getElementById('cropFormat').value;
+            const ext = format.split('/')[1];
+
+            canvas.toBlob((blob) => {
+                const sizeKb = (blob.size / 1024).toFixed(1);
+                const metrics = document.getElementById('cropMetrics');
+                metrics.innerHTML = `<strong>Dimensions:</strong> ${canvas.width} x ${canvas.height}px | <strong>Compressed Size:</strong> ${sizeKb} KB`;
+
+                const downloadBtnArea = document.getElementById('cropDownloadBtn');
+                const downloadUrl = URL.createObjectURL(blob);
+                downloadBtnArea.innerHTML = `
+                    <a href="${downloadUrl}" download="cropped_compressed.${ext}" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
+                        Download Image
+                    </a>
+                `;
+
+                document.getElementById('cropOutputResult').classList.remove('hidden');
+            }, format, quality);
         }
 
         // PDF CONVERSION CENTER LOGIC
