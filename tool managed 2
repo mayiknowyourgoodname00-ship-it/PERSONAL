@@ -19,39 +19,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <style>
-        .active-tab { background-color: #1e3a8a; color: white; }
+        .active-tab { background-color: #1e3a8a !important; color: white !important; font-weight: 600; }
         .drop-zone { border: 2px dashed #cbd5e1; }
         .drop-zone.dragover { border-color: #1e3a8a; background-color: #eff6ff; }
-        /* Font preview styling for Punjabi text output */
         .anmol-font-preview {
             font-family: 'Gurmukhi MN', 'Gurmukhi Sangam MN', 'Mukta', sans-serif;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col">
 
     <!-- Top Real-Time Date & Time Bar -->
-    <div class="bg-slate-900 text-slate-300 text-xs py-1 px-4 border-b border-slate-800">
+    <div class="bg-slate-950 text-slate-200 text-xs py-1.5 px-4 border-b border-slate-800">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <span class="font-medium tracking-wide">Official Digital Portal</span>
-            <div id="liveDateTime" class="font-semibold text-amber-400">Loading date and time...</div>
+            <span class="font-semibold tracking-wide text-slate-300">Official Digital Portal</span>
+            <div id="liveDateTime" class="font-bold text-amber-400">Loading date and time...</div>
         </div>
     </div>
 
     <!-- Main Professional Header -->
-    <header class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white shadow-xl border-b-4 border-amber-500">
+    <header class="bg-gradient-to-r from-blue-950 via-indigo-950 to-slate-900 text-white shadow-xl border-b-4 border-amber-500">
         <div class="max-w-7xl mx-auto px-4 py-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <!-- Branding Section -->
                 <div class="flex items-center gap-4 text-center md:text-left">
                     <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
-                        <img src="https://media.licdn.com/dms/image/v2/C560BAQFHQUfkyDp2JA/company-logo_200_200/company-logo_200_200/0/1630641734650?e=2147483647&v=beta&t=wZD06s4NGLwLBKcNo9H2P6IybuLIXhZDYVJxiQwsYA0" class="w-12 h-12 md:w-14 md:h-14 object-contain">   
-                        </svg>
+                        <img src="https://media.licdn.com/dms/image/v2/C560BAQFHQUfkyDp2JA/company-logo_200_200/company-logo_200_200/0/1630641734650?e=2147483647&v=beta&t=wZD06s4NGLwLBKcNo9H2P6IybuLIXhZDYVJxiQwsYA0" class="w-12 h-12 md:w-14 md:h-14 object-contain" alt="Logo">   
                     </div>
-                    <div><!--logo -->
-                          </div>
-                <div>
-
+                    <div>
                         <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase text-white drop-shadow-md">
                             Amritsar Law College
                         </h1>
@@ -63,16 +57,14 @@
                         </p>
                     </div>
                 </div>
-
-                <!-- Search Bar -->
                 <div class="w-full md:w-auto">
-                    <input type="text" id="toolSearch" placeholder="Search 30+ utilities..." class="px-4 py-2.5 rounded-lg text-slate-900 bg-white shadow-inner focus:ring-2 focus:ring-amber-400 w-full md:w-72 text-sm border-0">
+                    <input type="text" id="toolSearch" placeholder="Search utilities..." class="px-4 py-2.5 rounded-lg text-slate-900 bg-white shadow-inner focus:ring-2 focus:ring-amber-400 w-full md:w-72 text-sm border-0 font-medium">
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Scrolling Announcement Bar (Right to Left) -->
+    <!-- Scrolling Announcement Bar -->
     <div class="bg-amber-500 text-slate-950 font-bold text-xs md:text-sm py-2 overflow-hidden shadow-inner border-b border-amber-600">
         <marquee behavior="scroll" direction="left" scrollamount="6" class="whitespace-nowrap">
             Managed by Admin Office ALC &nbsp;&bull;&nbsp; Welcome to the Official Amritsar Law College Utility & Conversion Suite &nbsp;&bull;&nbsp; All processing is performed securely on your client browser.
@@ -82,283 +74,371 @@
     <!-- Main Content Workspace -->
     <div class="max-w-7xl mx-auto px-4 py-6 flex-grow flex flex-col md:flex-row gap-6 w-full">
         <!-- Sidebar Navigation -->
-        <aside class="w-full md:w-64 bg-white rounded-xl shadow-sm border border-slate-200 p-4 shrink-0 h-fit">
+        <aside class="w-full md:w-64 bg-white rounded-xl shadow-md border border-slate-300 p-4 shrink-0 h-fit">
             <div class="space-y-6">
                 <div>
-                    <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">PDF Tools</h2>
-                    <ul class="space-y-1 text-sm font-medium" id="pdfToolsList">
-                        <li><button onclick="switchTab('pdf-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">PDF Converters</button></li>
-                        <li><button onclick="switchTab('edit-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Edit & Manipulate</button></li>
-                        <li><button onclick="switchTab('security-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Security & Protection</button></li>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Academic Portal</h2>
+                    <ul class="space-y-1 text-sm font-medium">
+                        <li><button onclick="switchTab('attendance-eligibility', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Attendance Eligibility</button></li>
                     </ul>
                 </div>
                 <div>
-                    <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Media Tools</h2>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">PDF Tools</h2>
                     <ul class="space-y-1 text-sm font-medium">
-                        <li><button onclick="switchTab('photo-crop-compress', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Photo Crop & Compress</button></li>
-                        <li><button onclick="switchTab('img-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Image Tools & Compressor</button></li>
-                        <li><button onclick="switchTab('media-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Audio & Video Tools</button></li>
+                        <li><button onclick="switchTab('pdf-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">PDF Converters</button></li>
+                        <li><button onclick="switchTab('edit-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Edit & Manipulate</button></li>
+                        <li><button onclick="switchTab('security-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Security & Protection</button></li>
                     </ul>
                 </div>
                 <div>
-                    <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Utilities</h2>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media Tools</h2>
                     <ul class="space-y-1 text-sm font-medium">
-                        <li><button onclick="switchTab('punjabi-translation', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">English to Punjabi (Anmol Lipi)</button></li>
-                        <li><button onclick="switchTab('generators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Generators (QR, Pass)</button></li>
-                        <li><button onclick="switchTab('calculators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Calculators (Age, BMI)</button></li>
-                        <li><button onclick="switchTab('text-speech', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Speech & Text Tools</button></li>
-                        <li><button onclick="switchTab('dev-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition">Developer & Misc</button></li>
+                        <li><button onclick="switchTab('photo-crop-compress', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700 active-tab">Photo Crop & Compress</button></li>
+                        <li><button onclick="switchTab('img-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Image Tools & Compressor</button></li>
+                        <li><button onclick="switchTab('media-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Audio & Video Tools</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Utilities</h2>
+                    <ul class="space-y-1 text-sm font-medium">
+                        <li><button onclick="switchTab('punjabi-translation', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">English to Punjabi (Anmol Lipi)</button></li>
+                        <li><button onclick="switchTab('generators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Generators (QR, Pass)</button></li>
+                        <li><button onclick="switchTab('calculators', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Calculators (Age, BMI)</button></li>
+                        <li><button onclick="switchTab('text-speech', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Speech & Text Tools</button></li>
+                        <li><button onclick="switchTab('dev-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Developer & Misc</button></li>
                     </ul>
                 </div>
             </div>
         </aside>
 
         <!-- Tool Panels Workspace -->
-        <main class="flex-grow bg-white rounded-xl shadow-sm border border-slate-200 p-6 min-h-[600px]">
+        <main class="flex-grow bg-white rounded-xl shadow-md border border-slate-300 p-6 min-h-[600px]">
+
+            <!-- STUDENT ATTENDANCE PERCENTAGE ELIGIBILITY -->
+            <div id="attendance-eligibility" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-2 text-blue-950">Student Attendance Percentage & Professional Eligibility</h2>
+                <p class="text-xs text-slate-600 mb-6">Calculate student attendance ratios against university guidelines and Bar Council of India (BCI) semester exam eligibility norms (minimum 75%).</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="lg:col-span-1 bg-slate-50 p-5 rounded-xl border border-slate-300 space-y-4">
+                        <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Student Particulars</h3>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Student Full Name</label>
+                            <input type="text" id="attStudentName" placeholder="e.g. Amanpreet Singh" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm bg-white font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Enrollment / Roll No.</label>
+                            <input type="text" id="attRollNo" placeholder="e.g. ALC/2026/045" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm bg-white font-medium">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Total Classes Held</label>
+                                <input type="number" id="attTotalClasses" min="1" placeholder="120" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm bg-white font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Classes Attended</label>
+                                <input type="number" id="attPresentClasses" min="0" placeholder="95" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm bg-white font-medium">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Minimum Criteria Requirement</label>
+                            <select id="attMinCriteria" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm bg-white font-semibold text-slate-800">
+                                <option value="75">75% (Standard University / BCI Norm)</option>
+                                <option value="80">80% (Strict Compliance)</option>
+                                <option value="70">70% (Relaxed Concession)</option>
+                            </select>
+                        </div>
+                        <button onclick="calculateAttendanceRecord()" class="w-full bg-blue-900 hover:bg-blue-950 text-white font-bold py-2.5 rounded-lg shadow transition text-sm">
+                            Compute Eligibility Status
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-2 flex flex-col justify-between bg-gradient-to-br from-slate-900 to-blue-950 text-white p-6 rounded-xl border border-slate-800 shadow-xl">
+                        <div>
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
+                                <h3 class="font-bold text-amber-400 uppercase tracking-widest text-xs">Evaluation Report</h3>
+                                <span id="attEvalTimestamp" class="text-xs text-slate-400">Ready for calculation</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                                <div class="bg-white/10 p-4 rounded-lg backdrop-blur-sm border border-white/10">
+                                    <span class="block text-xs text-slate-300 font-semibold uppercase">Attendance Rate</span>
+                                    <span id="resAttendancePct" class="text-3xl font-extrabold text-white mt-1 block">-- %</span>
+                                </div>
+                                <div class="bg-white/10 p-4 rounded-lg backdrop-blur-sm border border-white/10">
+                                    <span class="block text-xs text-slate-300 font-semibold uppercase">Professional Status</span>
+                                    <span id="resEligibilityStatus" class="text-lg font-bold text-slate-400 mt-1 block">Pending</span>
+                                </div>
+                                <div class="col-span-2 md:col-span-1 bg-white/10 p-4 rounded-lg backdrop-blur-sm border border-white/10">
+                                    <span class="block text-xs text-slate-300 font-semibold uppercase">Shortfall / Buffer</span>
+                                    <span id="resShortfallBuffer" class="text-sm font-bold text-slate-200 mt-1 block">--</span>
+                                </div>
+                            </div>
+
+                            <div id="resDetailedNote" class="text-xs text-slate-300 leading-relaxed bg-black/20 p-3 rounded-lg border border-white/5">
+                                Please fill in the student records on the left panel to generate a professional percentage eligibility analysis.
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-800 flex flex-wrap gap-3 justify-end">
+                            <button onclick="addAttendanceToTable()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs transition shadow">
+                                Add to Master Ledger Sheet
+                            </button>
+                            <button onclick="exportAttendanceSheet()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg text-xs transition shadow">
+                                Export Ledger to Excel (.xlsx)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-300 rounded-xl p-4 overflow-x-auto">
+                    <h3 class="font-bold text-slate-900 text-sm mb-3 uppercase tracking-wider flex justify-between items-center">
+                        <span>Master Attendance Ledger & Eligible Candidates Record</span>
+                        <button onclick="clearAttendanceLedger()" class="text-xs text-red-700 hover:underline font-semibold">Clear Ledger</button>
+                    </h3>
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-200 text-slate-700 uppercase">
+                                <th class="p-2.5 border border-slate-300">Roll No.</th>
+                                <th class="p-2.5 border border-slate-300">Student Name</th>
+                                <th class="p-2.5 border border-slate-300 text-center">Total Held</th>
+                                <th class="p-2.5 border border-slate-300 text-center">Attended</th>
+                                <th class="p-2.5 border border-slate-300 text-center">Percentage</th>
+                                <th class="p-2.5 border border-slate-300 text-center">Eligibility Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceLedgerBody">
+                            <tr>
+                                <td colspan="6" class="p-4 text-center text-slate-500 font-medium">No student attendance records added to ledger yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             
-            <!-- SECTION 1: PDF CONVERTERS (IMPROVED) -->
-            <div id="pdf-converters" class="tab-content">
+            <!-- PDF CONVERTERS -->
+            <div id="pdf-converters" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">PDF Conversion Center</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div class="p-4 border rounded-lg cursor-pointer hover:border-blue-600 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('pdf-to-jpg')">
+                    <div class="p-4 border border-slate-300 rounded-lg cursor-pointer hover:border-blue-700 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('pdf-to-jpg')">
                         <h3 class="font-bold text-lg text-slate-900">PDF to JPG</h3>
-                        <p class="text-xs text-slate-500">Extract pages as standard images client-side.</p>
+                        <p class="text-xs text-slate-600">Extract pages as standard images client-side.</p>
                     </div>
-                    <div class="p-4 border rounded-lg cursor-pointer hover:border-blue-600 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('jpg-to-pdf')">
+                    <div class="p-4 border border-slate-300 rounded-lg cursor-pointer hover:border-blue-700 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('jpg-to-pdf')">
                         <h3 class="font-bold text-lg text-slate-900">JPG / Images to PDF</h3>
-                        <p class="text-xs text-slate-500">Compile image files into a PDF document.</p>
+                        <p class="text-xs text-slate-600">Compile image files into a PDF document.</p>
                     </div>
-                    <div class="p-4 border rounded-lg cursor-pointer hover:border-blue-600 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('excel-to-pdf')">
+                    <div class="p-4 border border-slate-300 rounded-lg cursor-pointer hover:border-blue-700 bg-slate-50 hover:bg-blue-50 transition" onclick="setPdfConvertMode('excel-to-pdf')">
                         <h3 class="font-bold text-lg text-slate-900">Excel to PDF</h3>
-                        <p class="text-xs text-slate-500">Render spreadsheets directly into PDF tables.</p>
+                        <p class="text-xs text-slate-600">Render spreadsheets directly into PDF tables.</p>
                     </div>
-                    
-                    <!-- Improved PDF to Word / Excel / PPT -->
-                    <div class="p-4 border border-blue-200 rounded-lg bg-blue-50/50 shadow-sm">
-                        <h3 class="font-bold text-blue-950">PDF to Word / Excel / PPT</h3>
-                        <p class="text-xs text-slate-600 mt-1">Extract text blocks into structured editable formats (.docx, .xlsx, .txt).</p>
+                    <div class="p-4 border border-blue-300 rounded-lg bg-blue-50/70 shadow-sm">
+                        <h3 class="font-bold text-blue-950">PDF to Word / Excel</h3>
+                        <p class="text-xs text-slate-700 mt-1">Extract text blocks into structured editable formats (.docx, .xlsx, .txt).</p>
                         <div class="mt-3 flex gap-2">
                             <button onclick="setPdfConvertMode('pdf-to-word')" class="text-xs bg-blue-900 text-white px-2.5 py-1.5 rounded font-medium hover:bg-blue-950">To Word</button>
                             <button onclick="setPdfConvertMode('pdf-to-excel-data')" class="text-xs bg-emerald-700 text-white px-2.5 py-1.5 rounded font-medium hover:bg-emerald-800">To Excel</button>
                         </div>
                     </div>
-
-                    <!-- Improved Word / PPT to PDF -->
-                    <div class="p-4 border border-indigo-200 rounded-lg bg-indigo-50/50 shadow-sm">
+                    <div class="p-4 border border-indigo-300 rounded-lg bg-indigo-50/70 shadow-sm">
                         <h3 class="font-bold text-indigo-950">Word / PPT to PDF</h3>
-                        <p class="text-xs text-slate-600 mt-1">Convert text documents or presentations smoothly into formatted PDF layout.</p>
+                        <p class="text-xs text-slate-700 mt-1">Convert text documents or presentations smoothly into formatted PDF layout.</p>
                         <button onclick="setPdfConvertMode('doc-to-pdf')" class="mt-3 text-xs bg-indigo-900 text-white px-3 py-1.5 rounded font-medium hover:bg-indigo-950">Convert to PDF</button>
                     </div>
                 </div>
 
-                <!-- Dynamic Converter Workspace with Professional Download Tray -->
                 <div class="p-6 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 text-center" id="pdfConverterZone">
-                    <h3 class="font-semibold text-slate-700 mb-2" id="pdfConverterTitle">Select a Conversion Tool Above</h3>
+                    <h3 class="font-semibold text-slate-800 mb-2" id="pdfConverterTitle">Select a Conversion Tool Above</h3>
                     <input type="file" id="pdfConvertInput" class="hidden" multiple>
                     <button onclick="document.getElementById('pdfConvertInput').click()" class="bg-blue-900 text-white px-5 py-2.5 rounded-lg shadow hover:bg-blue-950 transition font-medium text-sm">Choose File(s)</button>
-                    
-                    <!-- Professional Output and Download Tray -->
                     <div id="pdfConvertOutput" class="mt-6 flex flex-col gap-3 items-center justify-center"></div>
                 </div>
             </div>
 
-           <!-- SECTION 2: EDIT & MANIPULATE PDF -->
+            <!-- EDIT & MANIPULATE PDF -->
             <div id="edit-pdf" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Edit & Manipulate PDF</h2>
                 <div class="flex gap-4 mb-4">
-                    <input type="file" id="pdfEditInput" accept="application/pdf" class="block text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-900 hover:file:bg-blue-100">
+                    <input type="file" id="pdfEditInput" accept="application/pdf" class="block text-sm text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-900 hover:file:bg-blue-100">
                 </div>
-                
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-1 space-y-4 bg-slate-50 p-4 rounded-lg border">
-                        <h3 class="font-bold border-b pb-2">Page Operations</h3>
-                        <button onclick="rotatePdfPages()" class="w-full bg-slate-900 text-white py-2 rounded hover:bg-slate-800 text-sm">Rotate All Pages (90°)</button>
-                        
-                        <h3 class="font-bold border-b pb-2 pt-2">Add Content Overlay</h3>
+                    <div class="md:col-span-1 space-y-4 bg-slate-50 p-4 rounded-lg border border-slate-300">
+                        <h3 class="font-bold border-b border-slate-300 pb-2 text-slate-900">Page Operations</h3>
+                        <button onclick="rotatePdfPages()" class="w-full bg-slate-900 text-white py-2 rounded hover:bg-slate-800 text-sm font-medium">Rotate All Pages (90°)</button>
+                        <h3 class="font-bold border-b border-slate-300 pb-2 pt-2 text-slate-900">Add Content Overlay</h3>
                         <div>
-                            <label class="block text-xs font-semibold mb-1">Add Custom Text</label>
-                            <input type="text" id="pdfOverlayText" placeholder="Enter text..." class="w-full p-2 border rounded text-sm mb-2">
-                            <button onclick="addTextToPdf()" class="w-full bg-blue-900 text-white py-1.5 rounded text-sm hover:bg-blue-950">Stamp Text onto Pages</button>
+                            <label class="block text-xs font-bold mb-1 text-slate-700">Add Custom Text</label>
+                            <input type="text" id="pdfOverlayText" placeholder="Enter text..." class="w-full p-2 border border-slate-300 rounded text-sm mb-2 bg-white">
+                            <button onclick="addTextToPdf()" class="w-full bg-blue-900 text-white py-1.5 rounded text-sm font-medium hover:bg-blue-950">Stamp Text onto Pages</button>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold mb-1">Add Stamp Image</label>
-                            <input type="file" id="pdfOverlayImg" accept="image/*" class="text-xs mb-2">
-                            <button onclick="addImageToPdf()" class="w-full bg-blue-900 text-white py-1.5 rounded text-sm hover:bg-blue-950">Stamp Image onto PDF</button>
+                            <label class="block text-xs font-bold mb-1 text-slate-700">Add Stamp Image</label>
+                            <input type="file" id="pdfOverlayImg" accept="image/*" class="text-xs mb-2 text-slate-700">
+                            <button onclick="addImageToPdf()" class="w-full bg-blue-900 text-white py-1.5 rounded text-sm font-medium hover:bg-blue-950">Stamp Image onto PDF</button>
                         </div>
                     </div>
-
-                    <div class="md:col-span-2 border rounded-lg p-4 bg-white min-h-[300px] flex flex-col items-center justify-center" id="pdfPreviewCanvas">
-                        <span class="text-slate-400 text-sm">Upload a PDF to preview and apply manipulations</span>
+                    <div class="md:col-span-2 border border-slate-300 rounded-lg p-4 bg-white min-h-[300px] flex flex-col items-center justify-center shadow-inner" id="pdfPreviewCanvas">
+                        <span class="text-slate-500 text-sm font-medium">Upload a PDF to preview and apply manipulations</span>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 3: SECURITY & WATERMARK -->
+            <!-- SECURITY & WATERMARK -->
             <div id="security-pdf" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Security, Protection & Page Formatting</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
-                        <h3 class="font-bold text-lg">Protect / Add Password</h3>
-                        <input type="file" id="pdfProtectInput" accept="application/pdf" class="w-full text-sm">
-                        <input type="password" id="pdfUserPassword" placeholder="Set User Password" class="w-full p-2 border rounded text-sm">
-                        <button onclick="protectPdf()" class="w-full bg-blue-900 text-white py-2 rounded text-sm hover:bg-blue-950">Encrypt & Protect PDF</button>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg text-slate-900">Protect / Add Password</h3>
+                        <input type="file" id="pdfProtectInput" accept="application/pdf" class="w-full text-sm text-slate-700">
+                        <input type="password" id="pdfUserPassword" placeholder="Set User Password" class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
+                        <button onclick="protectPdf()" class="w-full bg-blue-900 text-white py-2 rounded text-sm font-medium hover:bg-blue-950">Encrypt & Protect PDF</button>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
-                        <h3 class="font-bold text-lg">Unlock PDF (Remove Restrictions)</h3>
-                        <input type="file" id="pdfUnlockInput" accept="application/pdf" class="w-full text-sm">
-                        <input type="password" id="pdfUnlockPassword" placeholder="Enter Password" class="w-full p-2 border rounded text-sm">
-                        <button onclick="unlockPdf()" class="w-full bg-emerald-600 text-white py-2 rounded text-sm hover:bg-emerald-700">Decrypt PDF</button>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg text-slate-900">Unlock PDF (Remove Restrictions)</h3>
+                        <input type="file" id="pdfUnlockInput" accept="application/pdf" class="w-full text-sm text-slate-700">
+                        <input type="password" id="pdfUnlockPassword" placeholder="Enter Password" class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
+                        <button onclick="unlockPdf()" class="w-full bg-emerald-700 text-white py-2 rounded text-sm font-medium hover:bg-emerald-800">Decrypt PDF</button>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
-                        <h3 class="font-bold text-lg">Add Page Numbers</h3>
-                        <input type="file" id="pdfPageNumInput" accept="application/pdf" class="w-full text-sm">
-                        <button onclick="addPageNumbers()" class="w-full bg-indigo-900 text-white py-2 rounded text-sm hover:bg-indigo-950">Add Page Numbers (Bottom-Right)</button>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg text-slate-900">Add Page Numbers</h3>
+                        <input type="file" id="pdfPageNumInput" accept="application/pdf" class="w-full text-sm text-slate-700">
+                        <button onclick="addPageNumbers()" class="w-full bg-indigo-900 text-white py-2 rounded text-sm font-medium hover:bg-indigo-950">Add Page Numbers (Bottom-Right)</button>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-3">
-                        <h3 class="font-bold text-lg">Add Watermark</h3>
-                        <input type="file" id="pdfWatermarkInput" accept="application/pdf" class="w-full text-sm">
-                        <input type="text" id="watermarkText" placeholder="Confidential, Draft, etc." class="w-full p-2 border rounded text-sm">
-                        <button onclick="addWatermark()" class="w-full bg-indigo-900 text-white py-2 rounded text-sm hover:bg-indigo-950">Apply Diagonal Watermark</button>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-3">
+                        <h3 class="font-bold text-lg text-slate-900">Add Watermark</h3>
+                        <input type="file" id="pdfWatermarkInput" accept="application/pdf" class="w-full text-sm text-slate-700">
+                        <input type="text" id="watermarkText" placeholder="Confidential, Draft, etc." class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
+                        <button onclick="addWatermark()" class="w-full bg-indigo-900 text-white py-2 rounded text-sm font-medium hover:bg-indigo-950">Apply Diagonal Watermark</button>
                     </div>
                 </div>
             </div>
 
-            <!-- NEW SECTION: PROFESSIONAL PHOTO CROP & COMPRESSOR -->
-            <div id="photo-crop-compress" class="tab-content hidden">
+            <!-- PHOTO CROP & COMPRESSOR (ENHANCED WITH PDF OUTPUT) -->
+            <div id="photo-crop-compress" class="tab-content">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Professional Photo Crop & Compressor</h2>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Controls Sidebar -->
-                    <div class="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
-                        <h3 class="font-bold text-slate-800 text-base border-b pb-2">1. Select Photo</h3>
-                        <input type="file" id="cropperInput" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-900 file:text-white hover:file:bg-blue-950">
+                    <div class="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-300 space-y-4">
+                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2">1. Select Photo</h3>
+                        <input type="file" id="cropperInput" accept="image/*" class="w-full text-xs text-slate-700 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-900 file:text-white hover:file:bg-blue-950">
 
-                        <h3 class="font-bold text-slate-800 text-base border-b pb-2 pt-2">2. Aspect Ratio & Controls</h3>
+                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2 pt-2">2. Aspect Ratio & Controls</h3>
                         <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-                            <button onclick="setCropperAspect(NaN)" class="p-2 border rounded bg-white hover:bg-blue-50">Free Form</button>
-                            <button onclick="setCropperAspect(1)" class="p-2 border rounded bg-white hover:bg-blue-50">1:1 Square</button>
-                            <button onclick="setCropperAspect(4/3)" class="p-2 border rounded bg-white hover:bg-blue-50">4:3 Standard</button>
-                            <button onclick="setCropperAspect(16/9)" class="p-2 border rounded bg-white hover:bg-blue-50">16:9 Widescreen</button>
-                            <button onclick="setCropperAspect(3.5/4.5)" class="col-span-2 p-2 border rounded bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100">Passport Photo (3.5 x 4.5)</button>
+                            <button onclick="setCropperAspect(NaN)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">Free Form</button>
+                            <button onclick="setCropperAspect(1)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">1:1 Square</button>
+                            <button onclick="setCropperAspect(4/3)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">4:3 Standard</button>
+                            <button onclick="setCropperAspect(16/9)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">16:9 Widescreen</button>
+                            <button onclick="setCropperAspect(3.5/4.5)" class="col-span-2 p-2 border border-amber-300 rounded bg-amber-50 text-amber-900 hover:bg-amber-100">Passport Photo (3.5 x 4.5)</button>
                         </div>
 
                         <div class="flex gap-2 pt-1">
-                            <button onclick="rotateCropper(-90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs hover:bg-slate-900">Rotate Left</button>
-                            <button onclick="rotateCropper(90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs hover:bg-slate-900">Rotate Right</button>
+                            <button onclick="rotateCropper(-90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs font-medium hover:bg-slate-900">Rotate Left</button>
+                            <button onclick="rotateCropper(90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs font-medium hover:bg-slate-900">Rotate Right</button>
                         </div>
 
-                        <h3 class="font-bold text-slate-800 text-base border-b pb-2 pt-2">3. Compression & Export</h3>
+                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2 pt-2">3. Compression & Format Output</h3>
                         <div>
-                            <label class="text-xs font-semibold flex justify-between">Target Quality: <span id="cropQualityVal" class="text-blue-900 font-bold">85%</span></label>
-                            <input type="range" id="cropQuality" min="10" max="100" value="85" class="w-full accent-blue-900" oninput="document.getElementById('cropQualityVal').innerText = this.value + '%'">
+                            <label class="text-xs font-bold flex justify-between text-slate-700">Target Quality: <span id="cropQualityVal" class="text-blue-900 font-bold">85%</span></label>
+                            <input type="range" id="cropQuality" min="1" max="100" value="85" class="w-full accent-blue-900" oninput="document.getElementById('cropQualityVal').innerText = this.value + '%'">
                         </div>
                         <div>
-                            <label class="text-xs font-semibold">Format Output</label>
-                            <select id="cropFormat" class="w-full p-2 border rounded text-xs font-medium bg-white">
-                                <option value="image/jpeg">JPEG / JPG</option>
-                                <option value="image/png">PNG</option>
-                                <option value="image/webp">WEBP</option>
+                            <label class="text-xs font-bold text-slate-700">Format Output Choice</label>
+                            <select id="cropFormat" class="w-full p-2 border border-slate-300 rounded text-xs font-semibold bg-white text-slate-800">
+                                <option value="image/jpeg">JPEG / JPG Image</option>
+                                <option value="image/png">PNG Image</option>
+                                <option value="image/webp">WEBP Image</option>
+                                <option value="application/pdf">PDF Document (.pdf)</option>
                             </select>
                         </div>
-                        <button onclick="processCroppedImage()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-lg shadow hover:bg-emerald-700 transition text-sm">
-                            Crop & Compress Photo
+                        <button onclick="processCroppedImage()" class="w-full bg-emerald-700 text-white font-bold py-2.5 rounded-lg shadow hover:bg-emerald-800 transition text-sm">
+                            Crop, Compress & Export
                         </button>
                     </div>
 
-                    <!-- Cropper Canvas Workspace -->
-                    <div class="lg:col-span-2 border rounded-xl p-4 bg-slate-900 flex flex-col items-center justify-center min-h-[420px] max-h-[550px] relative overflow-hidden">
+                    <div class="lg:col-span-2 border border-slate-300 rounded-xl p-4 bg-slate-950 flex flex-col items-center justify-center min-h-[420px] max-h-[550px] relative overflow-hidden">
                         <div class="w-full h-full flex items-center justify-center" id="cropperContainer">
-                            <span class="text-slate-400 text-sm">Upload a photo to launch interactive crop canvas</span>
+                            <span class="text-slate-400 text-sm font-medium">Upload a photo to launch interactive crop canvas</span>
                         </div>
-                        <div id="cropOutputResult" class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur border p-3 rounded-lg shadow-lg flex justify-between items-center hidden">
-                            <div class="text-xs font-medium text-slate-700" id="cropMetrics"></div>
+                        <div id="cropOutputResult" class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur border border-slate-300 p-3 rounded-lg shadow-lg flex justify-between items-center hidden">
+                            <div class="text-xs font-semibold text-slate-800" id="cropMetrics"></div>
                             <div id="cropDownloadBtn"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 4: IMAGE TOOLS & COMPRESSOR -->
+            <!-- IMAGE TOOLS & COMPRESSOR -->
             <div id="img-tools" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Image Compressor & Format Converter</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Image Compressor</h3>
-                        <input type="file" id="imgCompressInput" accept="image/*" class="w-full text-sm">
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Image Compressor</h3>
+                        <input type="file" id="imgCompressInput" accept="image/*" class="w-full text-sm text-slate-700">
                         <div>
-                            <label class="text-xs font-semibold">Quality Level: <span id="qualityVal">80</span>%</label>
-                            <input type="range" id="imgQuality" min="5" max="100" value="80" class="w-full" oninput="document.getElementById('qualityVal').innerText = this.value">
+                            <label class="text-xs font-bold text-slate-700">Quality Level: <span id="qualityVal">80</span>%</label>
+                            <input type="range" id="imgQuality" min="5" max="100" value="80" class="w-full accent-blue-900" oninput="document.getElementById('qualityVal').innerText = this.value">
                         </div>
-                        <button onclick="compressImage()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Compress Image</button>
-                        <div id="compressResult" class="text-xs space-y-1"></div>
+                        <button onclick="compressImage()" class="w-full bg-blue-900 text-white py-2 rounded font-medium hover:bg-blue-950 text-sm">Compress Image</button>
+                        <div id="compressResult" class="text-xs space-y-1 font-medium text-slate-700"></div>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">JPG / PNG / WEBP Converter</h3>
-                        <input type="file" id="imgConvertInput" accept="image/*" class="w-full text-sm">
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">JPG / PNG / WEBP Converter</h3>
+                        <input type="file" id="imgConvertInput" accept="image/*" class="w-full text-sm text-slate-700">
                         <div>
-                            <label class="text-xs font-semibold">Target Format</label>
-                            <select id="targetImgFormat" class="w-full p-2 border rounded text-sm">
+                            <label class="text-xs font-bold text-slate-700">Target Format</label>
+                            <select id="targetImgFormat" class="w-full p-2 border border-slate-300 rounded text-sm bg-white font-medium text-slate-800">
                                 <option value="image/jpeg">JPG / JPEG</option>
                                 <option value="image/png">PNG</option>
                                 <option value="image/webp">WEBP</option>
                             </select>
                         </div>
-                        <button onclick="convertImageFormat()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Convert Format</button>
+                        <button onclick="convertImageFormat()" class="w-full bg-emerald-700 text-white py-2 rounded font-medium hover:bg-emerald-800 text-sm">Convert Format</button>
                         <div id="convertResult" class="mt-2"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 5: AUDIO & VIDEO TOOLS -->
+            <!-- AUDIO & VIDEO TOOLS -->
             <div id="media-converters" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Audio & Video Tools</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Client-side Video Compressor</h3>
-                        <p class="text-xs text-slate-500">Re-encodes video canvas dimensions in-browser for quick file size reductions.</p>
-                        <input type="file" id="videoInput" accept="video/*" class="w-full text-sm">
-                        <button onclick="compressVideo()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Process & Downscale Video</button>
-                        <div id="videoProgress" class="text-xs font-semibold text-blue-900"></div>
-                        <video id="videoPreview" controls class="w-full hidden rounded border"></video>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Client-side Video Compressor</h3>
+                        <p class="text-xs text-slate-600">Re-encodes video canvas dimensions in-browser for quick file size reductions.</p>
+                        <input type="file" id="videoInput" accept="video/*" class="w-full text-sm text-slate-700">
+                        <button onclick="compressVideo()" class="w-full bg-blue-900 text-white py-2 rounded font-medium hover:bg-blue-950 text-sm">Process & Downscale Video</button>
+                        <div id="videoProgress" class="text-xs font-bold text-blue-900"></div>
+                        <video id="videoPreview" controls class="w-full hidden rounded border border-slate-300"></video>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Audio Format Converter</h3>
-                        <p class="text-xs text-slate-500">Convert audio files to WAV format directly via Web Audio API.</p>
-                        <input type="file" id="audioInput" accept="audio/*" class="w-full text-sm">
-                        <button onclick="convertAudio()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Convert to WAV Audio</button>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Audio Format Converter</h3>
+                        <p class="text-xs text-slate-600">Convert audio files to WAV format directly via Web Audio API.</p>
+                        <input type="file" id="audioInput" accept="audio/*" class="w-full text-sm text-slate-700">
+                        <button onclick="convertAudio()" class="w-full bg-emerald-700 text-white py-2 rounded font-medium hover:bg-emerald-800 text-sm">Convert to WAV Audio</button>
                         <div id="audioResult"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- NEW SECTION: ENGLISH TO PUNJABI (ANMOL LIPI) -->
+            <!-- ENGLISH TO PUNJABI (ANMOL LIPI) -->
             <div id="punjabi-translation" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-2 text-blue-950">English to Punjabi (Anmol Lipi Script Converter)</h2>
-                <p class="text-xs text-slate-500 mb-4">Type or paste English/Phonetic text to map into authentic Punjabi Gurmukhi & Anmol Lipi font keyboard layout instantly.</p>
-                
+                <p class="text-xs text-slate-600 mb-4">Type or paste English/Phonetic text to map into authentic Punjabi Gurmukhi & Anmol Lipi font keyboard layout instantly.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- English / Phonetic Input -->
                     <div class="space-y-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">English / Romanized Input</label>
-                        <textarea id="englishInputText" rows="10" placeholder="Type here (e.g. Sat Sri Akal, Amritsar Law College...)" class="w-full p-3 border rounded-lg text-sm font-sans focus:ring-2 focus:ring-blue-900" oninput="convertEnglishToPunjabi()"></textarea>
-                        <div class="flex justify-between items-center text-xs text-slate-500">
+                        <textarea id="englishInputText" rows="10" placeholder="Type here (e.g. Sat Sri Akal, Amritsar Law College...)" class="w-full p-3 border border-slate-300 rounded-lg text-sm font-sans focus:ring-2 focus:ring-blue-900 bg-white" oninput="convertEnglishToPunjabi()"></textarea>
+                        <div class="flex justify-between items-center text-xs text-slate-600 font-semibold">
                             <span id="enCharCount">Characters: 0</span>
-                            <button onclick="document.getElementById('englishInputText').value=''; convertEnglishToPunjabi();" class="text-red-600 hover:underline">Clear Input</button>
+                            <button onclick="document.getElementById('englishInputText').value=''; convertEnglishToPunjabi();" class="text-red-700 hover:underline">Clear Input</button>
                         </div>
                     </div>
-
-                    <!-- Punjabi Anmol Lipi Output -->
                     <div class="space-y-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-blue-900">Punjabi (Anmol Lipi Output)</label>
-                        <textarea id="punjabiOutputText" rows="10" readonly placeholder="ਪੰਜਾਬੀ / ਅਨਮੋਲ ਲਿਪੀ ਅਨੁਵਾਦ..." class="w-full p-3 border rounded-lg text-lg font-medium bg-slate-50 text-slate-900 focus:ring-2 focus:ring-amber-400 anmol-font-preview"></textarea>
+                        <textarea id="punjabiOutputText" rows="10" readonly placeholder="ਪੰਜਾਬੀ / ਅਨਮੋਲ ਲਿਪੀ ਅਨੁਵਾਦ..." class="w-full p-3 border border-slate-300 rounded-lg text-lg font-medium bg-slate-50 text-slate-900 focus:ring-2 focus:ring-amber-400 anmol-font-preview"></textarea>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs font-semibold text-emerald-700" id="punjabiStatus">Real-time mapped</span>
+                            <span class="text-xs font-bold text-emerald-700" id="punjabiStatus">Real-time mapped</span>
                             <div class="flex gap-2">
-                                <button onclick="copyPunjabiText()" class="bg-blue-900 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-950">Copy Text</button>
+                                <button onclick="copyPunjabiText()" class="bg-blue-900 text-white text-xs px-3 py-1.5 rounded font-medium hover:bg-blue-950">Copy Text</button>
                                 <button onclick="downloadPunjabiText()" class="bg-amber-500 text-slate-950 font-bold text-xs px-3 py-1.5 rounded hover:bg-amber-600">Download Text</button>
                             </div>
                         </div>
@@ -366,125 +446,119 @@
                 </div>
             </div>
 
-            <!-- SECTION 6: GENERATORS -->
+            <!-- GENERATORS -->
             <div id="generators" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Generators</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">QR Code Generator</h3>
-                        <input type="text" id="qrText" placeholder="Enter URL or Text" class="w-full p-2 border rounded text-sm">
-                        <button onclick="generateQRCode()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Generate QR</button>
-                        <div id="qrcode" class="flex justify-center p-4 bg-white rounded border"></div>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">QR Code Generator</h3>
+                        <input type="text" id="qrText" placeholder="Enter URL or Text" class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
+                        <button onclick="generateQRCode()" class="w-full bg-blue-900 text-white py-2 rounded font-medium hover:bg-blue-950 text-sm">Generate QR</button>
+                        <div id="qrcode" class="flex justify-center p-4 bg-white rounded border border-slate-300"></div>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Password Generator</h3>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Password Generator</h3>
                         <div class="flex items-center gap-2">
-                            <label class="text-xs font-semibold">Length:</label>
-                            <input type="number" id="passLength" value="16" min="6" max="64" class="w-20 p-1 border rounded text-sm">
+                            <label class="text-xs font-bold text-slate-700">Length:</label>
+                            <input type="number" id="passLength" value="16" min="6" max="64" class="w-20 p-1 border border-slate-300 rounded text-sm bg-white">
                         </div>
-                        <div class="space-y-1 text-xs font-semibold">
-                            <label class="block"><input type="checkbox" id="passSymbols" checked> Include Symbols (!@#$%^&*)</label>
-                            <label class="block"><input type="checkbox" id="passNumbers" checked> Include Numbers</label>
+                        <div class="space-y-1 text-xs font-semibold text-slate-700">
+                            <label class="block"><input type="checkbox" id="passSymbols" checked class="accent-blue-900"> Include Symbols (!@#$%^&*)</label>
+                            <label class="block"><input type="checkbox" id="passNumbers" checked class="accent-blue-900"> Include Numbers</label>
                         </div>
-                        <button onclick="generatePassword()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Generate Password</button>
-                        <input type="text" id="passResult" readonly class="w-full p-2 bg-white border rounded font-mono text-center text-sm">
+                        <button onclick="generatePassword()" class="w-full bg-emerald-700 text-white py-2 rounded font-medium hover:bg-emerald-800 text-sm">Generate Password</button>
+                        <input type="text" id="passResult" readonly class="w-full p-2 bg-white border border-slate-300 rounded font-mono text-center text-sm font-bold text-slate-800">
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 7: CALCULATORS -->
+            <!-- CALCULATORS -->
             <div id="calculators" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Calculators</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Age Calculator</h3>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Age Calculator</h3>
                         <div>
-                            <label class="block text-xs font-semibold mb-1">Date of Birth</label>
-                            <input type="date" id="dobInput" class="w-full p-2 border rounded text-sm">
+                            <label class="block text-xs font-bold mb-1 text-slate-700">Date of Birth</label>
+                            <input type="date" id="dobInput" class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
                         </div>
-                        <button onclick="calculateAge()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Calculate Age</button>
-                        <div id="ageResult" class="text-sm font-semibold text-slate-700"></div>
+                        <button onclick="calculateAge()" class="w-full bg-blue-900 text-white py-2 rounded font-medium hover:bg-blue-950 text-sm">Calculate Age</button>
+                        <div id="ageResult" class="text-sm font-bold text-slate-800"></div>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">BMI Calculator</h3>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">BMI Calculator</h3>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Height (cm)</label>
-                                <input type="number" id="bmiHeight" placeholder="175" class="w-full p-2 border rounded text-sm">
+                                <label class="block text-xs font-bold mb-1 text-slate-700">Height (cm)</label>
+                                <input type="number" id="bmiHeight" placeholder="175" class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Weight (kg)</label>
-                                <input type="number" id="bmiWeight" placeholder="70" class="w-full p-2 border rounded text-sm">
+                                <label class="block text-xs font-bold mb-1 text-slate-700">Weight (kg)</label>
+                                <input type="number" id="bmiWeight" placeholder="70" class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
                             </div>
                         </div>
-                        <button onclick="calculateBMI()" class="w-full bg-emerald-600 text-white py-2 rounded hover:bg-emerald-700">Calculate BMI</button>
-                        <div id="bmiResult" class="text-sm font-semibold text-slate-700"></div>
+                        <button onclick="calculateBMI()" class="w-full bg-emerald-700 text-white py-2 rounded font-medium hover:bg-emerald-800 text-sm">Calculate BMI</button>
+                        <div id="bmiResult" class="text-sm font-bold text-slate-800"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 8: SPEECH & TEXT -->
+            <!-- SPEECH & TEXT -->
             <div id="text-speech" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Speech & Text Tools</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Text to Speech</h3>
-                        <textarea id="ttsInput" rows="4" placeholder="Enter text to read aloud..." class="w-full p-2 border rounded text-sm"></textarea>
-                        <button onclick="speakText()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-950">Speak Text</button>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Text to Speech</h3>
+                        <textarea id="ttsInput" rows="4" placeholder="Enter text to read aloud..." class="w-full p-2 border border-slate-300 rounded text-sm bg-white"></textarea>
+                        <button onclick="speakText()" class="w-full bg-blue-900 text-white py-2 rounded font-medium hover:bg-blue-950 text-sm">Speak Text</button>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Speech to Text (Transcription)</h3>
-                        <button id="sttBtn" onclick="toggleSpeechRecognition()" class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">Start Recording</button>
-                        <textarea id="sttOutput" rows="4" placeholder="Dictated text will appear here..." class="w-full p-2 border rounded text-sm" readonly></textarea>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Speech to Text (Transcription)</h3>
+                        <button id="sttBtn" onclick="toggleSpeechRecognition()" class="w-full bg-red-700 text-white py-2 rounded font-medium hover:bg-red-800 text-sm">Start Recording</button>
+                        <textarea id="sttOutput" rows="4" placeholder="Dictated text will appear here..." class="w-full p-2 border border-slate-300 rounded text-sm bg-white" readonly></textarea>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 9: DEV & UTILITY TOOLS -->
+            <!-- DEV & UTILITY TOOLS -->
             <div id="dev-tools" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">Developer & General Utilities</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-2">
-                        <h3 class="font-bold text-lg">Word & Character Counter</h3>
-                        <textarea id="wordCounterInput" oninput="updateWordCount()" rows="4" placeholder="Type or paste text..." class="w-full p-2 border rounded text-sm"></textarea>
-                        <div class="flex justify-between text-xs font-semibold text-slate-600">
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-2">
+                        <h3 class="font-bold text-lg text-slate-900">Word & Character Counter</h3>
+                        <textarea id="wordCounterInput" oninput="updateWordCount()" rows="4" placeholder="Type or paste text..." class="w-full p-2 border border-slate-300 rounded text-sm bg-white"></textarea>
+                        <div class="flex justify-between text-xs font-bold text-slate-700">
                             <span id="cntWords">Words: 0</span>
                             <span id="cntChars">Characters: 0</span>
                         </div>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Color Picker & Converter</h3>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Color Picker & Converter</h3>
                         <div class="flex items-center gap-4">
-                            <input type="color" id="colorInput" value="#1e3a8a" class="w-16 h-12 p-1 rounded border cursor-pointer" oninput="updateColorValues(this.value)">
-                            <div class="space-y-1 text-xs font-mono">
+                            <input type="color" id="colorInput" value="#1e3a8a" class="w-16 h-12 p-1 rounded border border-slate-300 cursor-pointer bg-white" oninput="updateColorValues(this.value)">
+                            <div class="space-y-1 text-xs font-mono font-bold text-slate-800">
                                 <div>HEX: <span id="hexVal">#1e3a8a</span></div>
                                 <div>RGB: <span id="rgbVal">rgb(30, 58, 138)</span></div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-4">
-                        <h3 class="font-bold text-lg">Unit Converter (Length)</h3>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-4">
+                        <h3 class="font-bold text-lg text-slate-900">Unit Converter (Length)</h3>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="number" id="unitVal" value="1" oninput="convertUnits()" class="p-2 border rounded text-sm">
-                            <select id="unitFrom" onchange="convertUnits()" class="p-2 border rounded text-sm">
+                            <input type="number" id="unitVal" value="1" oninput="convertUnits()" class="p-2 border border-slate-300 rounded text-sm bg-white font-medium">
+                            <select id="unitFrom" onchange="convertUnits()" class="p-2 border border-slate-300 rounded text-sm bg-white font-medium text-slate-800">
                                 <option value="m">Meters (m)</option>
                                 <option value="km">Kilometers (km)</option>
                                 <option value="ft">Feet (ft)</option>
                                 <option value="mi">Miles (mi)</option>
                             </select>
                         </div>
-                        <div id="unitResult" class="text-sm font-semibold text-blue-900"></div>
+                        <div id="unitResult" class="text-sm font-bold text-blue-900"></div>
                     </div>
-
-                    <div class="p-4 border rounded-lg bg-slate-50 space-y-2">
-                        <h3 class="font-bold text-lg">JSON Formatter & Validator</h3>
-                        <textarea id="jsonInput" rows="3" placeholder="Paste unformatted JSON..." class="w-full p-2 border rounded text-sm font-mono"></textarea>
-                        <button onclick="formatJSON()" class="w-full bg-slate-900 text-white py-1.5 rounded text-sm hover:bg-slate-800">Format / Prettify</button>
+                    <div class="p-4 border border-slate-300 rounded-lg bg-slate-50 space-y-2">
+                        <h3 class="font-bold text-lg text-slate-900">JSON Formatter & Validator</h3>
+                        <textarea id="jsonInput" rows="3" placeholder="Paste unformatted JSON..." class="w-full p-2 border border-slate-300 rounded text-sm font-mono bg-white"></textarea>
+                        <button onclick="formatJSON()" class="w-full bg-slate-900 text-white py-1.5 rounded text-sm font-medium hover:bg-slate-800">Format / Prettify</button>
                     </div>
                 </div>
             </div>
@@ -496,24 +570,21 @@
     <footer class="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-950 text-slate-300 mt-12 border-t-4 border-amber-500">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6 border-b border-slate-800 pb-6">
-                <!-- Institution Column -->
                 <div>
                     <h3 class="text-lg font-bold text-white mb-2 uppercase tracking-wider">Amritsar Law College</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
                         Dedicated to providing quality legal education, legal aid programs, and comprehensive administrative services to empower students and faculty alike.
                     </p>
                 </div>
-                <!-- Admin Office Quick Links -->
                 <div>
                     <h3 class="text-sm font-bold text-amber-400 mb-2 uppercase tracking-wider">Admin Office ALC</h3>
-                    <ul class="text-xs space-y-1.5 text-slate-300">
+                    <ul class="text-xs space-y-1.5 text-slate-300 font-medium">
                         <li>&bull; Official Student Portal</li>
                         <li>&bull; Academic Calendar & Timetable</li>
                         <li>&bull; Administrative Document Services</li>
                         <li>&bull; Helpdesk & Support Services</li>
                     </ul>
                 </div>
-                <!-- Contact Info -->
                 <div>
                     <h3 class="text-sm font-bold text-amber-400 mb-2 uppercase tracking-wider">Contact & Location</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
@@ -524,30 +595,21 @@
                 </div>
             </div>
 
-            <!-- Copyright and Attribution -->
-            <div class="flex flex-col md:flex-row justify-between items-center text-xs text-slate-400 gap-2">
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs text-slate-400 gap-2 font-medium">
                 <p>&copy; <span id="footerYear">2026</span> Amritsar Law College. All Rights Reserved.</p>
-                <p class="font-semibold text-amber-400">Managed by Admin Office ALC</p>
+                <p class="font-bold text-amber-400">Managed by Admin Office ALC</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // PDF.js Worker Configuration
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        // REAL-TIME CLOCK (Day, Date, Month, Year, Time)
         function updateDateTime() {
             const now = new Date();
             const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit',
-                hour12: true 
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true 
             };
             document.getElementById('liveDateTime').innerText = now.toLocaleDateString('en-US', options);
             document.getElementById('footerYear').innerText = now.getFullYear();
@@ -555,14 +617,12 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        // SAFE TAB SWITCHING LOGIC
         function switchTab(tabId, targetBtn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             const activeTab = document.getElementById(tabId);
             if (activeTab) activeTab.classList.remove('hidden');
             
             document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active-tab'));
-            
             if (targetBtn) {
                 targetBtn.classList.add('active-tab');
             } else {
@@ -571,9 +631,98 @@
             }
         }
 
-        // ==========================================
-        // 1. ANMOL LIPI / ENGLISH TO PUNJABI ENGINE
-        // ==========================================
+        // ATTENDANCE ELIGIBILITY ENGINE
+        let attendanceLedgerData = [];
+
+        function calculateAttendanceRecord() {
+            const name = document.getElementById('attStudentName').value.trim();
+            const roll = document.getElementById('attRollNo').value.trim();
+            const total = parseInt(document.getElementById('attTotalClasses').value);
+            const present = parseInt(document.getElementById('attPresentClasses').value);
+            const minReq = parseFloat(document.getElementById('attMinCriteria').value);
+
+            if(!total || isNaN(present) || present < 0 || total <= 0 || present > total) {
+                alert('Please enter valid class numbers (Total classes must be > 0 and Attended cannot exceed Total).');
+                return null;
+            }
+
+            const pct = ((present / total) * 100).toFixed(2);
+            const isEligible = pct >= minReq;
+            
+            document.getElementById('resAttendancePct').innerText = `${pct}%`;
+            document.getElementById('attEvalTimestamp').innerText = `Evaluated: ${new Date().toLocaleTimeString()}`;
+            
+            const statusEl = document.getElementById('resEligibilityStatus');
+            const noteEl = document.getElementById('resDetailedNote');
+            const bufferEl = document.getElementById('resShortfallBuffer');
+
+            if (isEligible) {
+                statusEl.innerText = "ELIGIBLE (BCI Norms Met)";
+                statusEl.className = "text-lg font-bold text-emerald-400 mt-1 block";
+                bufferEl.innerText = `Surplus Buffer: +${(pct - minReq).toFixed(1)}%`;
+                noteEl.innerHTML = `<span class="text-emerald-300 font-bold">✔ Success:</span> ${name || 'Student'} (${roll || 'N/A'}) satisfies the mandatory academic attendance regulation threshold of ${minReq}%. Clear to sit for professional semester examinations.`;
+            } else {
+                statusEl.innerText = "DEFICIENT (Ineligible)";
+                statusEl.className = "text-lg font-bold text-rose-400 mt-1 block";
+                const neededClasses = Math.ceil((minReq * total - 100 * present) / (100 - minReq));
+                bufferEl.innerText = `Shortfall: ~${Math.max(0, neededClasses)} classes needed`;
+                noteEl.innerHTML = `<span class="text-rose-300 font-bold">⚠ Notice:</span> ${name || 'Student'} fails to meet the required ${minReq}% threshold. Needs approximately <strong class="text-white">${Math.max(0, neededClasses)}</strong> consecutive classes attended to bridge the deficit.`;
+            }
+
+            return { name: name || 'Unnamed Student', roll: roll || 'N/A', total, present, pct, status: isEligible ? 'Eligible' : 'Deficient' };
+        }
+
+        function addAttendanceToTable() {
+            const record = calculateAttendanceRecord();
+            if(!record) return;
+
+            attendanceLedgerData.push(record);
+            renderAttendanceLedger();
+            alert('Student record successfully registered into the Master Ledger!');
+        }
+
+        function renderAttendanceLedger() {
+            const tbody = document.getElementById('attendanceLedgerBody');
+            if(attendanceLedgerData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 font-medium">No student attendance records added to ledger yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = '';
+            attendanceLedgerData.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = index % 2 === 0 ? 'bg-white hover:bg-slate-100' : 'bg-slate-50 hover:bg-slate-100';
+                tr.innerHTML = `
+                    <td class="p-2.5 border border-slate-300 font-mono font-bold">${item.roll}</td>
+                    <td class="p-2.5 border border-slate-300 font-semibold">${item.name}</td>
+                    <td class="p-2.5 border border-slate-300 text-center">${item.total}</td>
+                    <td class="p-2.5 border border-slate-300 text-center">${item.present}</td>
+                    <td class="p-2.5 border border-slate-300 text-center font-bold text-blue-900">${item.pct}%</td>
+                    <td class="p-2.5 border border-slate-300 text-center font-bold ${item.status === 'Eligible' ? 'text-emerald-700' : 'text-rose-700'}">${item.status}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearAttendanceLedger() {
+            if(confirm('Are you sure you want to clear all ledger items?')) {
+                attendanceLedgerData = [];
+                renderAttendanceLedger();
+            }
+        }
+
+        function exportAttendanceSheet() {
+            if(attendanceLedgerData.length === 0) return alert('Ledger is empty! Add records before exporting.');
+            const worksheetData = [
+                ["Roll No", "Student Name", "Total Classes", "Attended Classes", "Attendance Percentage", "Eligibility Status"],
+                ...attendanceLedgerData.map(i => [i.roll, i.name, i.total, i.present, i.pct + '%', i.status])
+            ];
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(worksheetData);
+            XLSX.utils.book_append_sheet(wb, ws, "Attendance Ledger");
+            XLSX.writeFile(wb, "ALC_Student_Attendance_Eligibility_Ledger.xlsx");
+        }
+
+        // ANMOL LIPI MAP
         const anmolKeyMap = {
             'a': 'ੳ', 'A': 'ਅ', 'b': 'ਬ', 'B': 'ਭ', 'c': 'ਚ', 'C': 'ਛ',
             'd': 'ਦ', 'D': 'ਧ', 'e': 'ੲ', 'E': 'ਏ', 'f': 'ਫ', 'F': 'ਫ਼',
@@ -598,12 +747,10 @@
         function convertEnglishToPunjabi() {
             const input = document.getElementById('englishInputText').value;
             document.getElementById('enCharCount').innerText = `Characters: ${input.length}`;
-            
             if(!input.trim()) {
                 document.getElementById('punjabiOutputText').value = '';
                 return;
             }
-
             let words = input.split(/(\s+)/);
             let convertedStr = words.map(word => {
                 let lowerWord = word.toLowerCase().trim();
@@ -612,7 +759,6 @@
                 }
                 return word.split('').map(ch => anmolKeyMap[ch] || ch).join('');
             }).join('');
-
             document.getElementById('punjabiOutputText').value = convertedStr;
         }
 
@@ -627,14 +773,11 @@
             const txt = document.getElementById('punjabiOutputText').value;
             if(!txt) return alert('No content to download!');
             const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
-            downloadBlob(blob, 'Punjabi_AnmolLipi_Text.txt', document.body);
+            downloadBlob(blob, 'Punjabi_AnmolLipi_Text.txt');
         }
 
-        // ==========================================
-        // 2. PROFESSIONAL CROPPER & COMPRESSOR ENGINE
-        // ==========================================
+        // CROPPER & COMPRESSOR ENGINE (WITH PDF SUPPORT)
         let activeCropper = null;
-
         document.getElementById('cropperInput').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -670,29 +813,57 @@
             activeCropper.rotate(degree);
         }
 
-        function processCroppedImage() {
+        async function processCroppedImage() {
             if (!activeCropper) return alert('Please select an image to crop!');
 
             const canvas = activeCropper.getCroppedCanvas();
             const quality = parseFloat(document.getElementById('cropQuality').value) / 100;
             const format = document.getElementById('cropFormat').value;
-            const ext = format.split('/')[1];
+            const metrics = document.getElementById('cropMetrics');
+            const downloadBtnArea = document.getElementById('cropDownloadBtn');
 
-            canvas.toBlob((blob) => {
-                const sizeKb = (blob.size / 1024).toFixed(1);
-                const metrics = document.getElementById('cropMetrics');
-                metrics.innerHTML = `<strong>Dimensions:</strong> ${canvas.width} x ${canvas.height}px | <strong>Compressed Size:</strong> ${sizeKb} KB`;
+            if (format === 'application/pdf') {
+                // PDF Export Mode via pdf-lib
+                canvas.toBlob(async (blob) => {
+                    const arrayBuffer = await blob.arrayBuffer();
+                    const pdfDoc = await PDFLib.PDFDocument.create();
+                    const page = pdfDoc.addPage([canvas.width, canvas.height]);
+                    const embeddedImage = await pdfDoc.embedJpg(arrayBuffer);
+                    page.drawImage(embeddedImage, {
+                        x: 0,
+                        y: 0,
+                        width: canvas.width,
+                        height: canvas.height,
+                    });
+                    const pdfBytes = await pdfDoc.save();
+                    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+                    const sizeKb = (pdfBlob.size / 1024).toFixed(1);
 
-                const downloadBtnArea = document.getElementById('cropDownloadBtn');
-                const downloadUrl = URL.createObjectURL(blob);
-                downloadBtnArea.innerHTML = `
-                    <a href="${downloadUrl}" download="cropped_compressed.${ext}" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
-                        Download Image
-                    </a>
-                `;
+                    metrics.innerHTML = `<strong>Dimensions:</strong> ${canvas.width} x ${canvas.height}px | <strong>Format:</strong> PDF | <strong>Size:</strong> ${sizeKb} KB`;
+                    const downloadUrl = URL.createObjectURL(pdfBlob);
+                    downloadBtnArea.innerHTML = `
+                        <a href="${downloadUrl}" download="cropped_compressed.pdf" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
+                            Download PDF (.pdf)
+                        </a>
+                    `;
+                    document.getElementById('cropOutputResult').classList.remove('hidden');
+                }, 'image/jpeg', quality);
+            } else {
+                // Standard Image Export (JPEG, PNG, WEBP)
+                const ext = format.split('/')[1];
+                canvas.toBlob((blob) => {
+                    const sizeKb = (blob.size / 1024).toFixed(1);
+                    metrics.innerHTML = `<strong>Dimensions:</strong> ${canvas.width} x ${canvas.height}px | <strong>Size:</strong> ${sizeKb} KB`;
 
-                document.getElementById('cropOutputResult').classList.remove('hidden');
-            }, format, quality);
+                    const downloadUrl = URL.createObjectURL(blob);
+                    downloadBtnArea.innerHTML = `
+                        <a href="${downloadUrl}" download="cropped_compressed.${ext}" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
+                            Download Image (${ext.toUpperCase()})
+                        </a>
+                    `;
+                    document.getElementById('cropOutputResult').classList.remove('hidden');
+                }, format, quality);
+            }
         }
 
         // PDF CONVERSION CENTER LOGIC
@@ -703,8 +874,9 @@
                 'pdf-to-jpg': 'PDF to JPG Image Extractor',
                 'jpg-to-pdf': 'JPG / PNG Images to PDF Converter',
                 'excel-to-pdf': 'Excel Spreadsheet to PDF Converter',
-                'pdf-to-txt': 'Extract Structural Text from PDF/Doc',
-                'doc-to-pdf': 'Document / Presentation to PDF Builder'
+                'pdf-to-word': 'PDF to Word (.docx / .txt) Text Conversion',
+                'pdf-to-excel-data': 'PDF to Excel (.xlsx Table Export)',
+                'doc-to-pdf': 'Word / Presentation Document to PDF Builder'
             };
             document.getElementById('pdfConverterTitle').innerText = titleMap[mode] || 'File Converter';
             document.getElementById('pdfConvertOutput').innerHTML = '';
@@ -714,57 +886,105 @@
             const files = e.target.files;
             if(!files.length) return;
             const output = document.getElementById('pdfConvertOutput');
-            output.innerHTML = '<span class="text-blue-900 text-sm font-semibold">Processing file(s)...</span>';
+            output.innerHTML = '<span class="text-blue-900 text-sm font-bold animate-pulse">Processing file(s) securely in-browser...</span>';
 
-            if (activeConvertMode === 'pdf-to-jpg') {
-                output.innerHTML = '';
-                const file = files[0];
-                const arrayBuffer = await file.arrayBuffer();
-                const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
-                
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const viewport = page.getViewport({scale: 1.5});
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    await page.render({canvasContext: ctx, viewport: viewport}).promise;
+            try {
+                if (activeConvertMode === 'pdf-to-jpg') {
+                    output.innerHTML = '';
+                    const file = files[0];
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
                     
-                    const imgUrl = canvas.toDataURL('image/jpeg');
-                    const a = document.createElement('a');
-                    a.href = imgUrl;
-                    a.download = `page_${i}.jpg`;
-                    a.className = "bg-blue-900 text-white px-3 py-1 rounded text-xs hover:bg-blue-950 inline-block m-1";
-                    a.innerText = `Download Page ${i} (JPG)`;
-                    output.appendChild(a);
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const viewport = page.getViewport({scale: 1.5});
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        await page.render({canvasContext: ctx, viewport: viewport}).promise;
+                        
+                        const imgUrl = canvas.toDataURL('image/jpeg');
+                        const a = document.createElement('a');
+                        a.href = imgUrl;
+                        a.download = `page_${i}.jpg`;
+                        a.className = "bg-blue-900 text-white px-3 py-1.5 rounded text-xs hover:bg-blue-950 inline-block m-1 font-semibold shadow";
+                        a.innerText = `Download Page ${i} (JPG)`;
+                        output.appendChild(a);
+                    }
+                } else if (activeConvertMode === 'jpg-to-pdf') {
+                    const pdfDoc = await PDFLib.PDFDocument.create();
+                    for (let file of files) {
+                        const bytes = await file.arrayBuffer();
+                        let image = file.type.includes('png') ? await pdfDoc.embedPng(bytes) : await pdfDoc.embedJpg(bytes);
+                        const page = pdfDoc.addPage([image.width, image.height]);
+                        page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+                    }
+                    const pdfBytes = await pdfDoc.save();
+                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), 'converted_images.pdf', output);
+                } else if (activeConvertMode === 'excel-to-pdf') {
+                    const file = files[0];
+                    const data = await file.arrayBuffer();
+                    const workbook = XLSX.read(data);
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const csvText = XLSX.utils.sheet_to_csv(firstSheet);
+                    
+                    const pdfDoc = await PDFLib.PDFDocument.create();
+                    const page = pdfDoc.addPage();
+                    page.drawText(csvText.substring(0, 1800), { x: 30, y: page.getHeight() - 50, size: 9 });
+                    const pdfBytes = await pdfDoc.save();
+                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), 'excel_converted.pdf', output);
+                } else if (activeConvertMode === 'pdf-to-word') {
+                    const file = files[0];
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+                    let fullText = "";
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        fullText += `--- Page ${i} ---\n` + pageText + "\n\n";
+                    }
+                    const blob = new Blob([fullText], {type: 'text/plain;charset=utf-8'});
+                    renderDownloadLink(blob, 'extracted_document.txt', output, 'Download Extracted Word/Text File (.txt)');
+                } else if (activeConvertMode === 'pdf-to-excel-data') {
+                    const file = files[0];
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+                    let csvContent = "Page,Extracted Content\n";
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ').replace(/,/g, ' ');
+                        csvContent += `${i},"${pageText}"\n`;
+                    }
+                    const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8'});
+                    renderDownloadLink(blob, 'extracted_table_data.csv', output, 'Download Extracted Excel Data (.csv)');
+                } else if (activeConvertMode === 'doc-to-pdf') {
+                    const file = files[0];
+                    const textContent = await file.text();
+                    const pdfDoc = await PDFLib.PDFDocument.create();
+                    const page = pdfDoc.addPage();
+                    page.drawText(textContent.substring(0, 1500) || "Amritsar Law College Document Conversion", { x: 40, y: page.getHeight() - 60, size: 11 });
+                    const pdfBytes = await pdfDoc.save();
+                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), 'document_converted.pdf', output);
                 }
-            } else if (activeConvertMode === 'jpg-to-pdf') {
-                const pdfDoc = await PDFLib.PDFDocument.create();
-                for (let file of files) {
-                    const bytes = await file.arrayBuffer();
-                    let image = file.type.includes('png') ? await pdfDoc.embedPng(bytes) : await pdfDoc.embedJpg(bytes);
-                    const page = pdfDoc.addPage([image.width, image.height]);
-                    page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
-                }
-                const pdfBytes = await pdfDoc.save();
-                downloadBlob(new Blob([pdfBytes], {type: 'application/pdf'}), 'converted_images.pdf', output);
-            } else if (activeConvertMode === 'excel-to-pdf') {
-                const file = files[0];
-                const data = await file.arrayBuffer();
-                const workbook = XLSX.read(data);
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                const csvText = XLSX.utils.sheet_to_csv(firstSheet);
-                
-                const pdfDoc = await PDFLib.PDFDocument.create();
-                const page = pdfDoc.addPage();
-                page.drawText(csvText.substring(0, 2000), { x: 20, y: page.getHeight() - 40, size: 10 });
-                const pdfBytes = await pdfDoc.save();
-                downloadBlob(new Blob([pdfBytes], {type: 'application/pdf'}), 'excel_converted.pdf', output);
-            } else {
-                output.innerHTML = '<span class="text-emerald-600 text-sm font-semibold">Processing complete! Output file generated.</span>';
+            } catch (err) {
+                console.error(err);
+                output.innerHTML = `<span class="text-red-700 text-xs font-bold">Conversion Error: Please verify the uploaded file format.</span>`;
             }
         });
+
+        function renderDownloadLink(blob, filename, container, label = 'Download Converted File') {
+            container.innerHTML = '';
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.className = "bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-lg shadow-lg text-sm transition inline-flex items-center gap-2 mt-2";
+            a.innerHTML = `<span>📥</span> ${label}`;
+            container.appendChild(a);
+        }
 
         // PDF MANIPULATION
         let currentPdfBytes = null;
@@ -772,7 +992,7 @@
             const file = e.target.files[0];
             if(file) {
                 currentPdfBytes = await file.arrayBuffer();
-                document.getElementById('pdfPreviewCanvas').innerHTML = `<span class="text-emerald-600 font-semibold text-sm">PDF Ready: ${file.name} Loaded!</span>`;
+                document.getElementById('pdfPreviewCanvas').innerHTML = `<span class="text-emerald-700 font-bold text-sm">PDF Ready: ${file.name} Loaded!</span>`;
             }
         });
 
@@ -838,11 +1058,7 @@
             const pdfDoc = await PDFLib.PDFDocument.load(bytes);
             const pages = pdfDoc.getPages();
             pages.forEach((p, idx) => {
-                p.drawText(`Page ${idx + 1} of ${pages.length}`, {
-                    x: p.getWidth() - 100,
-                    y: 20,
-                    size: 10
-                });
+                p.drawText(`Page ${idx + 1} of ${pages.length}`, { x: p.getWidth() - 100, y: 20, size: 10 });
             });
             triggerPdfDownload(await pdfDoc.save(), 'numbered.pdf');
         }
@@ -855,13 +1071,7 @@
             const pdfDoc = await PDFLib.PDFDocument.load(bytes);
             const pages = pdfDoc.getPages();
             pages.forEach(p => {
-                p.drawText(text, {
-                    x: p.getWidth() / 4,
-                    y: p.getHeight() / 2,
-                    size: 48,
-                    opacity: 0.3,
-                    rotate: PDFLib.degrees(45)
-                });
+                p.drawText(text, { x: p.getWidth() / 4, y: p.getHeight() / 2, size: 48, opacity: 0.3, rotate: PDFLib.degrees(45) });
             });
             triggerPdfDownload(await pdfDoc.save(), 'watermarked.pdf');
         }
@@ -889,7 +1099,7 @@
                         a.href = URL.createObjectURL(blob);
                         a.download = `compressed_${file.name}`;
                         a.innerText = 'Download Compressed Image';
-                        a.className = 'text-blue-900 underline font-bold';
+                        a.className = 'text-blue-900 underline font-bold mt-1 inline-block';
                         res.appendChild(a);
                     }, 'image/jpeg', quality);
                 }
@@ -918,7 +1128,7 @@
                     a.href = dataUrl;
                     a.download = `converted.${ext}`;
                     a.innerText = `Download ${ext.toUpperCase()}`;
-                    a.className = 'bg-emerald-600 text-white px-3 py-1 rounded text-xs inline-block mt-2';
+                    a.className = 'bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-semibold inline-block mt-2';
                     const res = document.getElementById('convertResult');
                     res.innerHTML = '';
                     res.appendChild(a);
@@ -944,7 +1154,7 @@
             const file = document.getElementById('audioInput').files[0];
             if(!file) return alert('Select Audio file');
             const res = document.getElementById('audioResult');
-            res.innerHTML = '<span class="text-xs text-blue-900 font-semibold">Decoding audio stream...</span>';
+            res.innerHTML = '<span class="text-xs text-blue-900 font-bold">Decoding audio stream...</span>';
             
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -953,7 +1163,7 @@
                 a.href = URL.createObjectURL(blob);
                 a.download = 'converted.wav';
                 a.innerText = 'Download Processed WAV Audio';
-                a.className = 'text-xs text-emerald-600 font-bold underline mt-2 block';
+                a.className = 'text-xs text-emerald-700 font-bold underline mt-2 block';
                 res.innerHTML = '';
                 res.appendChild(a);
             }
@@ -1036,11 +1246,11 @@
             if(btn.innerText.includes('Start')) {
                 recognition.start();
                 btn.innerText = 'Stop Recording';
-                btn.className = btn.className.replace('bg-red-600', 'bg-slate-800');
+                btn.className = btn.className.replace('bg-red-700', 'bg-slate-800');
             } else {
                 recognition.stop();
                 btn.innerText = 'Start Recording';
-                btn.className = btn.className.replace('bg-slate-800', 'bg-red-600');
+                btn.className = btn.className.replace('bg-slate-800', 'bg-red-700');
             }
         }
 
@@ -1083,20 +1293,18 @@
             }
         }
 
-        // GENERAL UTILS
         function triggerPdfDownload(bytes, filename) {
             const blob = new Blob([bytes], { type: 'application/pdf' });
-            downloadBlob(blob, filename, document.body);
+            downloadBlob(blob, filename);
         }
 
-        function downloadBlob(blob, filename, container) {
+        function downloadBlob(blob, filename) {
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = filename;
             a.click();
         }
 
-        // SEARCH BAR FILTERING
         document.getElementById('toolSearch').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             document.querySelectorAll('.tool-btn').forEach(btn => {
@@ -1105,8 +1313,8 @@
             });
         });
 
-        // Initialize default view
-        switchTab('pdf-converters');
+        // Initialize default tab to Photo Crop & Compress
+        switchTab('photo-crop-compress');
         convertUnits();
     </script>
 </body>
