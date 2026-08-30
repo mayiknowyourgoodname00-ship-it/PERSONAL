@@ -1,0 +1,3423 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrative Governance & Academic Resource Portal | Amritsar Law College (ALC)</title>
+    
+    <!-- Typography & Icon Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy-dark: #050d1a;
+            --navy-primary: #0b1c36;
+            --navy-surface: #102647;
+            --navy-light: #1c3d6e;
+            --gold-primary: #d4af37;
+            --gold-light: #f5e7b2;
+            --gold-hover: #b89028;
+            --gold-glow: rgba(212, 175, 55, 0.35);
+            --bg-light: #f4f6fa;
+            --card-bg: #ffffff;
+            --text-dark: #0a1120;
+            --text-muted: #475569;
+            --text-light: #f1f5f9;
+            --border-color: #e2e8f0;
+            --border-gold: rgba(212, 175, 55, 0.4);
+            --shadow-sm: 0 2px 5px rgba(0,0,0,0.06);
+            --shadow-md: 0 10px 25px -5px rgba(11, 28, 54, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --shadow-bold: 0 20px 35px -10px rgba(7, 19, 38, 0.35);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- STATUTORY EMERGENCY & HELPLINE BAR --- */
+        .statutory-bar {
+            background-color: var(--navy-dark);
+            color: #ffffff;
+            padding: 7px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            border-bottom: 2px solid var(--gold-primary);
+            position: relative;
+            z-index: 1002;
+        }
+
+        .statutory-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .statutory-badge {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .statutory-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .statutory-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .statutory-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        /* --- STICKY HEADER & NAVIGATION --- */
+        header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background: var(--card-bg);
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .brand-title h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--navy-primary);
+            font-size: 1.45rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-title p {
+            color: var(--gold-hover);
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 18px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--navy-primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 6px 0;
+        }
+
+        nav a:hover {
+            color: var(--gold-hover);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--gold-primary);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn-portal-access {
+            background: var(--navy-primary);
+            color: var(--gold-primary) !important;
+            padding: 8px 18px !important;
+            border-radius: 6px;
+            border: 1px solid var(--gold-primary);
+            box-shadow: 0 2px 8px rgba(11, 28, 54, 0.2);
+        }
+
+        .btn-portal-access:hover {
+            background: var(--gold-primary);
+            color: var(--navy-dark) !important;
+            box-shadow: 0 0 12px var(--gold-glow);
+        }
+
+        /* --- HORIZONTAL TICKER BAR --- */
+        .ticker-wrap {
+            width: 100%;
+            background: linear-gradient(90deg, var(--navy-dark), var(--navy-primary));
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 999;
+        }
+
+        .ticker-label {
+            background: var(--gold-primary);
+            color: var(--navy-dark);
+            padding: 9px 18px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            z-index: 2;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .ticker-move {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: ticker 36s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 2rem;
+            font-size: 0.86rem;
+            color: #ffffff;
+        }
+
+        .ticker-item i {
+            color: var(--gold-primary);
+            margin-right: 8px;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* --- HERO BANNER --- */
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1.7fr 1.3fr;
+            gap: 30px;
+            padding: 45px 5%;
+            background: linear-gradient(135deg, rgba(5, 13, 26, 0.95), rgba(11, 28, 54, 0.92)), 
+                        url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1600&q=80') center/cover;
+            color: #ffffff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-badges-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold-primary);
+            border: 1px solid var(--gold-primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .hero-content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.35rem;
+            color: var(--gold-primary);
+            margin-bottom: 15px;
+            line-height: 1.25;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+            max-width: 680px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--gold-primary);
+            color: var(--navy-dark);
+            padding: 12px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #ffffff;
+            color: var(--navy-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* --- VERTICAL SCROLL BOX --- */
+        .vertical-scroll-box {
+            background: rgba(11, 28, 54, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 0;
+            height: 330px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow-bold);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vertical-scroll-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.12rem;
+            color: var(--gold-primary);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 16px 20px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--navy-dark);
+            z-index: 10;
+        }
+
+        .vertical-content-wrapper {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .vertical-content {
+            display: flex;
+            flex-direction: column;
+            animation: scrollUpText 16s linear infinite;
+        }
+
+        .vertical-content:hover {
+            animation-play-state: paused;
+        }
+
+        .notice-item {
+            padding: 14px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .notice-tag {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-right: 6px;
+        }
+
+        .tag-red { background: #e63946; color: #ffffff; }
+        .tag-gold { background: var(--gold-primary); color: var(--navy-dark); }
+        .tag-blue { background: #0284c7; color: #ffffff; }
+
+        @keyframes scrollUpText {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+
+        /* --- STATS COUNTER BAR --- */
+        .stats-bar {
+            background: var(--navy-primary);
+            padding: 26px 5%;
+            color: #ffffff;
+            border-bottom: 3px solid var(--gold-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.9rem;
+            color: var(--gold-primary);
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .stat-card p {
+            font-size: 0.80rem;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 600;
+        }
+
+        /* --- BASE SECTION STRUCTURE --- */
+        .section {
+            padding: 65px 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--navy-primary);
+            font-size: 2.15rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--gold-primary);
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-top: 10px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- ACADEMIC PROGRAMMES CARDS --- */
+        .programmes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .programme-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 26px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .programme-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--navy-primary);
+            transition: var(--transition);
+        }
+
+        .programme-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-bold);
+            border-color: var(--gold-primary);
+        }
+
+        .programme-card:hover::before {
+            background: var(--gold-primary);
+        }
+
+        .programme-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .programme-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: var(--navy-primary);
+            margin-bottom: 8px;
+        }
+
+        .programme-meta {
+            list-style: none;
+            margin: 14px 0 20px 0;
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .programme-meta li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .programme-meta i {
+            color: var(--gold-hover);
+        }
+
+        /* --- OFFICIALS DIRECTORY --- */
+        .officials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 28px;
+        }
+
+        .official-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .official-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-bold);
+            border-color: var(--gold-primary);
+        }
+
+        .passport-photo-wrapper {
+            background: linear-gradient(180deg, #dbe4ee 0%, #cbd5e1 100%);
+            padding: 32px 0 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-bottom: 2px solid var(--gold-primary);
+        }
+
+        .passport-frame {
+            width: 140px;
+            height: 175px;
+            border-radius: 6px;
+            border: 4px solid #ffffff;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.18);
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .passport-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.5s ease;
+        }
+
+        .official-card:hover .passport-frame img {
+            transform: scale(1.06);
+        }
+
+        .official-id-badge {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy-dark);
+            color: var(--gold-primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--gold-primary);
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 5;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+            letter-spacing: 0.5px;
+        }
+
+        .official-info {
+            padding: 22px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .official-info h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--navy-primary);
+            font-size: 1.22rem;
+            margin-bottom: 3px;
+            font-weight: 700;
+        }
+
+        .official-role {
+            color: var(--gold-hover);
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .official-desc {
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .official-meta {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.79rem;
+            color: var(--navy-primary);
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .official-meta p {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .official-meta i {
+            color: var(--gold-hover);
+            width: 14px;
+        }
+
+        /* --- DOWNLOADS & PRINT HUB --- */
+        .downloads-section {
+            background: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-container {
+            max-width: 520px;
+            margin: 0 auto 25px auto;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 16px 12px 45px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            font-size: 0.92rem;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-container input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .doc-filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .doc-filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-dark);
+            font-size: 0.84rem;
+        }
+
+        .doc-filter-btn:hover, .doc-filter-btn.active {
+            background: var(--navy-primary);
+            color: var(--gold-primary);
+            border-color: var(--navy-primary);
+        }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 22px;
+        }
+
+        .pdf-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-bold);
+            border-color: var(--gold-primary);
+        }
+
+        .pdf-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .pdf-icon {
+            font-size: 1.8rem;
+            color: #e63946;
+            background: #fde8e8;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pdf-title-box h4 {
+            color: var(--navy-primary);
+            font-size: 0.98rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .pdf-tag {
+            display: inline-block;
+            font-size: 0.70rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .pdf-tag.student { background: #e0f2fe; color: #0369a1; }
+        .pdf-tag.faculty { background: #fef3c7; color: #b45309; }
+        .pdf-tag.exam { background: #dcfce7; color: #15803d; }
+        .pdf-tag.general { background: #f3e8ff; color: #7e22ce; }
+
+        .pdf-desc {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .pdf-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pdf-meta {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .pdf-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-download {
+            background: var(--navy-primary);
+            color: var(--gold-primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
+            border: 1px solid var(--navy-primary);
+        }
+
+        .btn-download:hover {
+            background: var(--gold-primary);
+            color: var(--navy-dark);
+            border-color: var(--gold-primary);
+        }
+
+        .btn-print {
+            background: #ffffff;
+            color: var(--navy-primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .btn-print:hover {
+            background: var(--navy-primary);
+            color: #ffffff;
+            border-color: var(--navy-primary);
+            transform: translateY(-1px);
+        }
+
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 40px;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        /* --- 20-COLUMN CENTRAL DIRECTORY --- */
+        .directory-section {
+            background-color: #060e19;
+            color: #ffffff;
+            padding: 70px 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .directory-section .section-title h2 { color: #ffffff; }
+        .directory-section .section-title p { color: #cbd5e1; }
+
+        .directory-search-box {
+            max-width: 480px;
+            margin: 0 auto 25px auto;
+            position: relative;
+        }
+
+        .directory-search-box input {
+            width: 100%;
+            padding: 11px 16px 11px 42px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 0.90rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .directory-search-box input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+
+        .directory-search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.07);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--gold-primary);
+            color: var(--navy-dark);
+            border-color: var(--gold-primary);
+        }
+
+        .columns-directory {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .directory-column {
+            border-radius: 12px;
+            padding: 22px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-top: 5px solid transparent;
+            display: flex;
+            flex-direction: column;
+            background: #0d1b2a;
+        }
+
+        .directory-column:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 14px;
+        }
+
+        .column-header i {
+            font-size: 1.25rem;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .column-header h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            color: #ffffff;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .column-header small {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .link-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .link-card-item {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 11px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .link-card-item:hover {
+            transform: translateX(4px);
+        }
+
+        .link-details h4 {
+            color: #ffffff;
+            font-size: 0.86rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .link-details p {
+            color: #94a3b8;
+            font-size: 0.74rem;
+            line-height: 1.35;
+        }
+
+        /* PALETTES */
+        .col-theme-cyan {
+            background: linear-gradient(145deg, #0b2238, #061320);
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            border-top: 5px solid #38bdf8;
+        }
+        .col-theme-cyan .column-header i { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        .col-theme-cyan .link-card-item:hover { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; }
+        .col-theme-cyan .link-action { color: #38bdf8; }
+
+        .col-theme-emerald {
+            background: linear-gradient(145deg, #08291b, #04140d);
+            border: 1px solid rgba(52, 211, 153, 0.18);
+            border-top: 5px solid #34d399;
+        }
+        .col-theme-emerald .column-header i { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+        .col-theme-emerald .link-card-item:hover { background: rgba(52, 211, 153, 0.15); border-color: #34d399; }
+        .col-theme-emerald .link-action { color: #34d399; }
+
+        .col-theme-amber {
+            background: linear-gradient(145deg, #2a1a08, #170e04);
+            border: 1px solid rgba(251, 191, 36, 0.18);
+            border-top: 5px solid #fbbf24;
+        }
+        .col-theme-amber .column-header i { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .col-theme-amber .link-card-item:hover { background: rgba(251, 191, 36, 0.15); border-color: #fbbf24; }
+        .col-theme-amber .link-action { color: #fbbf24; }
+
+        .col-theme-purple {
+            background: linear-gradient(145deg, #240e33, #13071c);
+            border: 1px solid rgba(192, 132, 252, 0.18);
+            border-top: 5px solid #c084fc;
+        }
+        .col-theme-purple .column-header i { background: rgba(192, 132, 252, 0.15); color: #c084fc; }
+        .col-theme-purple .link-card-item:hover { background: rgba(192, 132, 252, 0.15); border-color: #c084fc; }
+        .col-theme-purple .link-action { color: #c084fc; }
+
+        .col-theme-ruby {
+            background: linear-gradient(145deg, #330d14, #1c060a);
+            border: 1px solid rgba(248, 113, 113, 0.18);
+            border-top: 5px solid #f87171;
+        }
+        .col-theme-ruby .column-header i { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+        .col-theme-ruby .link-card-item:hover { background: rgba(248, 113, 113, 0.15); border-color: #f87171; }
+        .col-theme-ruby .link-action { color: #f87171; }
+
+        .col-theme-teal {
+            background: linear-gradient(145deg, #072728, #031414);
+            border: 1px solid rgba(45, 212, 191, 0.18);
+            border-top: 5px solid #2dd4bf;
+        }
+        .col-theme-teal .column-header i { background: rgba(45, 212, 191, 0.15); color: #2dd4bf; }
+        .col-theme-teal .link-card-item:hover { background: rgba(45, 212, 191, 0.15); border-color: #2dd4bf; }
+        .col-theme-teal .link-action { color: #2dd4bf; }
+
+        .col-theme-indigo {
+            background: linear-gradient(145deg, #15193b, #0a0c1f);
+            border: 1px solid rgba(129, 140, 248, 0.18);
+            border-top: 5px solid #818cf8;
+        }
+        .col-theme-indigo .column-header i { background: rgba(129, 140, 248, 0.15); color: #818cf8; }
+        .col-theme-indigo .link-card-item:hover { background: rgba(129, 140, 248, 0.15); border-color: #818cf8; }
+        .col-theme-indigo .link-action { color: #818cf8; }
+
+        .col-theme-coral {
+            background: linear-gradient(145deg, #33170a, #1c0a04);
+            border: 1px solid rgba(251, 146, 60, 0.18);
+            border-top: 5px solid #fb923c;
+        }
+        .col-theme-coral .column-header i { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
+        .col-theme-coral .link-card-item:hover { background: rgba(251, 146, 60, 0.15); border-color: #fb923c; }
+        .col-theme-coral .link-action { color: #fb923c; }
+
+        .col-theme-rose {
+            background: linear-gradient(145deg, #310f22, #1a0711);
+            border: 1px solid rgba(244, 114, 182, 0.18);
+            border-top: 5px solid #f472b6;
+        }
+        .col-theme-rose .column-header i { background: rgba(244, 114, 182, 0.15); color: #f472b6; }
+        .col-theme-rose .link-card-item:hover { background: rgba(244, 114, 182, 0.15); border-color: #f472b6; }
+        .col-theme-rose .link-action { color: #f472b6; }
+
+        .col-theme-slate {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-top: 5px solid #94a3b8;
+        }
+        .col-theme-slate .column-header i { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+        .col-theme-slate .link-card-item:hover { background: rgba(148, 163, 184, 0.15); border-color: #94a3b8; }
+        .col-theme-slate .link-action { color: #94a3b8; }
+
+        /* --- STATUTORY COMMITTEES & CELLS --- */
+        .committees-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .committee-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .committee-box:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .committee-box i {
+            font-size: 1.5rem;
+            color: var(--gold-hover);
+            margin-bottom: 12px;
+        }
+
+        .committee-box h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--navy-primary);
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .committee-box p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* --- CAMPUS GALLERY --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            height: 220px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(5, 13, 26, 0.95));
+            padding: 15px;
+            color: #ffffff;
+        }
+
+        .gallery-overlay h4 {
+            font-size: 0.95rem;
+            color: var(--gold-primary);
+        }
+
+        /* --- CONTACT FORM --- */
+        .inquiry-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .inquiry-info h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--navy-primary);
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .inquiry-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .contact-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-detail-item i {
+            background: var(--bg-light);
+            color: var(--gold-hover);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            border: 1px solid var(--gold-primary);
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--navy-primary);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.88rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: linear-gradient(180deg, var(--navy-primary), var(--navy-dark));
+            color: #ffffff;
+            padding: 60px 5% 20px;
+            border-top: 4px solid var(--gold-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-primary);
+            font-size: 1.22rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 35px;
+            height: 2px;
+            background-color: var(--gold-primary);
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.86rem;
+            color: #cbd5e1;
+            line-height: 1.8;
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-col a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--gold-primary);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .social-icons a {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.08);
+            color: var(--gold-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .social-icons a:hover {
+            background: var(--gold-primary);
+            color: var(--navy-dark);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 22px;
+            font-size: 0.80rem;
+            color: #94a3b8;
+        }
+
+        /* --- FLOATING BACK TO TOP BUTTON --- */
+        .btn-scroll-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 46px;
+            height: 46px;
+            background: var(--navy-primary);
+            color: var(--gold-primary);
+            border: 2px solid var(--gold-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: var(--transition);
+            opacity: 0.85;
+        }
+
+        .btn-scroll-top:hover {
+            opacity: 1;
+            transform: translateY(-4px);
+            background: var(--gold-primary);
+            color: var(--navy-dark);
+        }
+
+        /* --- PROFILE MODAL DIALOG --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 580px;
+            width: 90%;
+            position: relative;
+            border-top: 5px solid var(--gold-primary);
+            box-shadow: var(--shadow-bold);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--gold-hover);
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .hero-container { grid-template-columns: 1fr; }
+            .inquiry-container { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; }
+            .statutory-bar { flex-direction: column; gap: 8px; text-align: center; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .pdf-footer { flex-direction: column; align-items: flex-start; }
+            .pdf-actions { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. STATUTORY BAR (Top Contact & Helpline) -->
+    <div class="statutory-bar">
+        <div class="statutory-info">
+            <span class="statutory-badge"><i class="fa-solid fa-shield-halved"></i> BCI Approved</span>
+            <span><i class="fa-solid fa-phone"></i> Desk: +91 0183-5069527</span>
+            <span><i class="fa-solid fa-envelope"></i> principalalc@acetedu.in</span>
+            <span><i class="fa-solid fa-location-dot"></i> GT Road, Amritsar, Punjab</span>
+        </div>
+        <div class="statutory-links">
+            <a href="https://alcamritsar.ac.in" target="_blank"><i class="fa-solid fa-globe"></i> ALC Portal</a> | 
+            <a href="https://agcamritsar.in" target="_blank"><i class="fa-solid fa-building-columns"></i> AGC Group</a> |
+            <span style="color: var(--gold-primary); font-weight:700;"><i class="fa-solid fa-phone-volume"></i> Toll Free Anti-Ragging: 1800-180-5522</span>
+        </div>
+    </div>
+
+    <!-- 2. STICKY HEADER -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="brand-box">
+                <div class="brand-logo">
+                  <img src="https://media.licdn.com/dms/image/v2/C560BAQFHQUfkyDp2JA/company-logo_200_200/company-logo_200_200/0/1630641734650?e=2147483647&v=beta&t=wZD06s4NGLwLBKcNo9H2P6IybuLIXhZDYVJxiQwsYA0" style="width: 55px; height: 55px; object-fit: contain;" alt="Amritsar Law College Logo">
+              </div>
+                <div class="brand-title">
+                    <h1>Amritsar Law College</h1>
+                    <p>Administrative Governance & Directory Portal</p>
+                </div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#about">Governance</a></li>
+                    <li><a href="#programmes">Courses</a></li>
+                    <li><a href="#officials">Directory</a></li>
+                    <li><a href="#pdf-downloads">Downloads & Print</a></li>
+                    <li><a href="#directory-hub">Central Links (20+)</a></li>
+                    <li><a href="#committees">Committees</a></li>
+                    <li><a href="#campus">Campus</a></li>
+                    <li><a href="#contact" class="btn-portal-access">Help Desk</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 3. HORIZONTAL TICKER BAR -->
+    <div class="ticker-wrap">
+        <div class="ticker-label"><i class="fa-solid fa-bullhorn"></i> Official Updates</div>
+        <div class="ticker-move">
+            <div class="ticker-item"><i class="fa-solid fa-circle-check"></i> Post-Matric Scholarship Applications for 2026 Session Open - Desk 03.</div>
+            <div class="ticker-item"><i class="fa-solid fa-circle-check"></i> Bar Council of India (BCI) Statutory Compliance Audit Successfully Completed.</div>
+            <div class="ticker-item"><i class="fa-solid fa-circle-check"></i> Admissions Desk open for 5-Year BA LLB (Hons) & 3-Year LLB Programs.</div>
+            <div class="ticker-item"><i class="fa-solid fa-circle-check"></i> National Moot Court Competition 2026 Registration Portal Live.</div>
+            <div class="ticker-item"><i class="fa-solid fa-circle-check"></i> Administrative Office Hours: 9:00 AM - 5:00 PM (Mon-Fri).</div>
+        </div>
+    </div>
+
+    <!-- 4. HERO SECTION WITH SCROLLING BOARD -->
+    <section class="hero-container" id="about">
+        <div class="hero-content">
+            <div class="hero-badges-row">
+                <div class="hero-tag"><i class="fa-solid fa-shield-halved"></i> Statutory Governance</div>
+                <div class="hero-tag"><i class="fa-solid fa-landmark"></i> Affiliated to GNDU</div>
+                <div class="hero-tag"><i class="fa-solid fa-gavel"></i> Bar Council of India</div>
+            </div>
+            <h2>Institutional Excellence & Centralized Governance</h2>
+            <p>Welcome to the Administrative Governance and Resource Gateway of Amritsar Law College (ALC). We maintain administrative transparency, student welfare, BCI statutory compliance, university affiliations, and seamless access to external legal and academic portals under the Amritsar Group of Colleges (AGC).</p>
+            <div class="hero-actions">
+                <a href="#directory-hub" class="btn-primary"><i class="fa-solid fa-diagram-project"></i> Central Link Hub (20+ Portals)</a>
+                <a href="#pdf-downloads" class="btn-outline"><i class="fa-solid fa-print"></i> Download / Print Forms</a>
+                <a href="#officials" class="btn-outline"><i class="fa-solid fa-address-book"></i> Key Officials</a>
+            </div>
+        </div>
+
+        <!-- Vertical Scrolling Board -->
+        <div class="vertical-scroll-box" id="noticeboard">
+            <h3><span><i class="fa-solid fa-bell"></i> Circulars & Logs</span> <small style="font-size:0.72rem; color:#cbd5e1;">Live Auto-Scroll</small></h3>
+            <div class="vertical-content-wrapper">
+                <div class="vertical-content">
+                    <div class="notice-item">
+                        <span class="notice-tag tag-gold">Scholarship</span>
+                        Original document verification required at Desk 03 for state scholarship grants.
+                    </div>
+                    <div class="notice-item">
+                        <span class="notice-tag tag-red">BCI Notice</span>
+                        BCI Regulatory Compliance & Academic Schedule Guidelines updated.
+                    </div>
+                    <div class="notice-item">
+                        <span class="notice-tag tag-blue">GNDU Exam</span>
+                        End-semester examination fee portal link activated.
+                    </div>
+                    <div class="notice-item">
+                        <span class="notice-tag tag-gold">E-Library</span>
+                        SCC Online & e-Journal login credentials renewed for all scholars.
+                    </div>
+                    <!-- Duplicate loop for smooth transition -->
+                    <div class="notice-item">
+                        <span class="notice-tag tag-gold">Scholarship</span>
+                        Original document verification required at Desk 03 for state scholarship grants.
+                    </div>
+                    <div class="notice-item">
+                        <span class="notice-tag tag-red">BCI Notice</span>
+                        BCI Regulatory Compliance & Academic Schedule Guidelines updated.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. STATS METRICS BAR -->
+    <div class="stats-bar">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>100%</h3>
+                <p>BCI Compliance</p>
+            </div>
+            <div class="stat-card">
+                <h3>GNDU</h3>
+                <p>Affiliated College</p>
+            </div>
+            <div class="stat-card">
+                <h3>20+</h3>
+                <p>Categorized Portals</p>
+            </div>
+            <div class="stat-card">
+                <h3>1200+</h3>
+                <p>Legal Scholars</p>
+            </div>
+            <div class="stat-card">
+                <h3>24/7</h3>
+                <p>Digital Desk Portal</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. ACADEMIC PROGRAMMES & DEGREE PATHWAYS (NEW) -->
+    <section class="section" id="programmes">
+        <div class="section-title">
+            <h2>Academic Programmes & Degrees</h2>
+            <p>Comprehensive legal education curricula approved by the Bar Council of India (BCI) and affiliated with Guru Nanak Dev University (GNDU).</p>
+        </div>
+
+        <div class="programmes-grid">
+            <div class="programme-card">
+                <div>
+                    <span class="programme-badge">Integrated Undergraduate</span>
+                    <h3>B.A. LL.B (5-Year Hons)</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">A comprehensive 5-year dual-degree curriculum combining humanities and professional law studies with extensive moot court exposure.</p>
+                    <ul class="programme-meta">
+                        <li><i class="fa-solid fa-clock"></i> Duration: 5 Years (10 Semesters)</li>
+                        <li><i class="fa-solid fa-user-graduate"></i> Eligibility: 10+2 with min 45% marks</li>
+                        <li><i class="fa-solid fa-stamp"></i> Affiliation: GNDU & Approved by BCI</li>
+                    </ul>
+                </div>
+                <a href="https://alcamritsar.ac.in/admission-officer.php" target="_blank" class="btn-primary" style="justify-content: center;">
+                    <i class="fa-solid fa-paper-plane"></i> Apply for BA LL.B
+                </a>
+            </div>
+
+            <div class="programme-card">
+                <div>
+                    <span class="programme-badge" style="background:#fef3c7; color:#92400e;">Graduate Professional</span>
+                    <h3>LL.B (3-Year Professional)</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Rigorous legal curriculum designed for graduates aspiring for judicial services, corporate advisory, and litigation advocacy.</p>
+                    <ul class="programme-meta">
+                        <li><i class="fa-solid fa-clock"></i> Duration: 3 Years (6 Semesters)</li>
+                        <li><i class="fa-solid fa-user-graduate"></i> Eligibility: Graduation in any discipline</li>
+                        <li><i class="fa-solid fa-stamp"></i> Affiliation: GNDU & Approved by BCI</li>
+                    </ul>
+                </div>
+                <a href="https://alcamritsar.ac.in/admission-officer.php" target="_blank" class="btn-primary" style="justify-content: center;">
+                    <i class="fa-solid fa-paper-plane"></i> Apply for 3-Yr LL.B
+                </a>
+            </div>
+
+            <div class="programme-card">
+                <div>
+                    <span class="programme-badge" style="background:#f3e8ff; color:#6b21a8;">Post-Graduate Research</span>
+                    <h3>LL.M (Master of Laws)</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Specialized Master's programme emphasizing Constitutional Jurisprudence, Corporate Law, and Criminal Justice Administration.</p>
+                    <ul class="programme-meta">
+                        <li><i class="fa-solid fa-clock"></i> Duration: 2 Years / 1 Year Modular</li>
+                        <li><i class="fa-solid fa-user-graduate"></i> Eligibility: LL.B Degree with min 50%</li>
+                        <li><i class="fa-solid fa-stamp"></i> Research: Dissertation & Seminar Credits</li>
+                    </ul>
+                </div>
+                <a href="https://alcamritsar.ac.in/admission-officer.php" target="_blank" class="btn-primary" style="justify-content: center;">
+                    <i class="fa-solid fa-paper-plane"></i> Apply for LL.M
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. OFFICIALS DIRECTORY -->
+    <section class="section" style="background-color: #ffffff;" id="officials">
+        <div class="section-title">
+            <h2>Administrative Directory</h2>
+            <p>Key personnel managing institutional governance, university affairs, student welfare, and legal compliance.</p>
+        </div>
+
+        <div class="officials-grid">
+            <div class="official-card">
+                <div class="passport-photo-wrapper">
+                    <span class="official-id-badge">Leadership</span>
+                    <div class="passport-frame">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" alt="Dr. Avon Kumar Vaid">
+                    </div>
+                </div>
+                <div class="official-info">
+                    <div>
+                        <h3>Dr. Avon Kumar Vaid</h3>
+                        <div class="official-role">Principal (ALC)</div>
+                        <p class="official-desc">Oversees institutional policies, faculty governance, and BCI statutory alignment.</p>
+                        <div class="official-meta">
+                            <p><i class="fa-solid fa-envelope"></i> principalalc@acetedu.in</p>
+                            <p><i class="fa-solid fa-phone"></i> 0183-5069527</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width:100%; justify-content:center;" onclick="showDetails('Dr. Avon Kumar Vaid', 'Principal', 'principalalc@acetedu.in', '0183-5069527', 'Head of Institution overseeing overall academic quality, legal education standardizations, and Bar Council of India audits.')">
+                        <i class="fa-solid fa-user-check"></i> View Full Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="official-card">
+                <div class="passport-photo-wrapper">
+                    <span class="official-id-badge">Administration</span>
+                    <div class="passport-frame">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="Mr. H.S. Sarkaria">
+                    </div>
+                </div>
+                <div class="official-info">
+                    <div>
+                        <h3>Mr. H.S. Sarkaria</h3>
+                        <div class="official-role">Deputy Registrar</div>
+                        <p class="official-desc">Manages institutional records, GNDU university affairs, and library governance.</p>
+                        <div class="official-meta">
+                            <p><i class="fa-solid fa-envelope"></i> sarkaria1976@yahoo.co.uk</p>
+                            <p><i class="fa-solid fa-phone"></i> 0183-5010424</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width:100%; justify-content:center;" onclick="showDetails('Mr. H.S. Sarkaria', 'Deputy Registrar & Head Library', 'sarkaria1976@yahoo.co.uk', '0183-5010424', 'Directs administrative record filing, university affiliation liaisons, student registration, and library resources.')">
+                        <i class="fa-solid fa-user-check"></i> View Full Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="official-card">
+                <div class="passport-photo-wrapper">
+                    <span class="official-id-badge">Incharge</span>
+                    <div class="passport-frame">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80" alt="S. Ranjit Singh">
+                    </div>
+                </div>
+                <div class="official-info">
+                    <div>
+                        <h3>S. Ranjit Singh</h3>
+                        <div class="official-role">Senior Admin Superintendent</div>
+                        <p class="official-desc">Directs administrative workflows, transcripts, and daily student desk support.</p>
+                        <div class="official-meta">
+                            <p><i class="fa-solid fa-envelope"></i> adminoffice@acetedu.in</p>
+                            <p><i class="fa-solid fa-building"></i> Desk 01 (Main Admin)</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width:100%; justify-content:center;" onclick="showDetails('S. Ranjit Singh', 'Senior Admin Superintendent', 'adminoffice@acetedu.in', 'Office Desk 01', 'Handles routine operations, transcript requests, student NOC issuing, and administrative support.')">
+                        <i class="fa-solid fa-user-check"></i> View Full Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="official-card">
+                <div class="passport-photo-wrapper">
+                    <span class="official-id-badge">Faculty</span>
+                    <div class="passport-frame">
+                        <img src="https://alcamritsar.ac.in/alc-faculty/udaybir-singh.JPEG" alt="Ms. Manpreet Kaur Lehal">
+                    </div>
+                </div>
+                <div class="official-info">
+                    <div>
+                        <h3>Ms. Manpreet Kaur Lehal</h3>
+                        <div class="official-role">Assistant Professor</div>
+                        <p class="official-desc">Academic coordinator leading legal curricula and moot court activities.</p>
+                        <div class="official-meta">
+                            <p><i class="fa-solid fa-envelope"></i> manpreet.law@acetedu.in</p>
+                            <p><i class="fa-solid fa-gavel"></i> Dept. of Law</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width:100%; justify-content:center;" onclick="showDetails('Ms. Manpreet Kaur Lehal', 'Assistant Professor in Law', 'manpreet.law@acetedu.in', 'Dept of Law', 'Coordinates legal education delivery, academic scheduling, moot court competitions, and student mentoring.')">
+                        <i class="fa-solid fa-user-check"></i> View Full Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="official-card">
+                <div class="passport-photo-wrapper">
+                    <span class="official-id-badge">Scholarships</span>
+                    <div class="passport-frame">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="S. Swarn Singh">
+                    </div>
+                </div>
+                <div class="official-info">
+                    <div>
+                        <h3>S. Swarn Singh</h3>
+                        <div class="official-role">Scholarship Incharge</div>
+                        <p class="official-desc">Facilitates state and central government scholarship grants and student financial aid.</p>
+                        <div class="official-meta">
+                            <p><i class="fa-solid fa-envelope"></i> scholarships@acetedu.in</p>
+                            <p><i class="fa-solid fa-id-card"></i> Desk 03 (Scholarship)</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width:100%; justify-content:center;" onclick="showDetails('S. Swarn Singh', 'Scholarship & Accounts Incharge', 'scholarships@acetedu.in', 'Desk 03', 'Manages Post-Matric schemes, state portal verifications, fee reimbursements, and financial aid disbursements.')">
+                        <i class="fa-solid fa-user-check"></i> View Full Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Adv. Amit Sharma Card with Direct Google Drive Embed URL -->
+            <div class="official-card">
+                <div class="passport-photo-wrapper">
+                    <span class="official-id-badge">Legal Cell</span>
+                    <div class="passport-frame">
+                        <img src="https://lh3.googleusercontent.com/d/1bIdZ41dO7j9TU_wEKgJTOZTc8-CciPL3" alt="Adv. Amit Sharma" referrerpolicy="no-referrer">
+                    </div>
+                </div>
+                <div class="official-info">
+                    <div>
+                        <h3>Adv. Amit Sharma</h3>
+                        <div class="official-role">Legal Advisor</div>
+                        <p class="official-desc">Provides legal counsel, BCI regulatory oversight, and grievance committee leadership.</p>
+                        <div class="official-meta">
+                            <p><i class="fa-solid fa-envelope"></i> legal@acetedu.in</p>
+                            <p><i class="fa-solid fa-scale-balanced"></i> Legal Cell Office</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width:100%; justify-content:center;" onclick="showDetails('Adv. Amit Sharma', 'Legal Advisor & Governance Incharge', 'legal@acetedu.in', 'Legal Cell', 'Manages legal affairs, compliance audits, BCI regulatory documentation, and student grievance resolutions.')">
+                        <i class="fa-solid fa-user-check"></i> View Full Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. DOWNLOADS & PRINT HUB -->
+    <section class="section downloads-section" id="pdf-downloads">
+        <div class="section-title">
+            <h2>Document & Form Downloads / Print Center</h2>
+            <p>Access official academic, administrative, and examination PDF forms. You can directly <strong>Download</strong> or <strong>Print</strong> any form instantly.</p>
+        </div>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="pdfSearchInput" placeholder="Search forms by title, keyword or department..." onkeyup="filterPdfs()">
+        </div>
+
+        <div class="doc-filter-container">
+            <button class="doc-filter-btn active" data-filter="all" onclick="setDocCategoryFilter('all', event)">All Documents</button>
+            <button class="doc-filter-btn" data-filter="student" onclick="setDocCategoryFilter('student', event)">Student Forms</button>
+            <button class="doc-filter-btn" data-filter="faculty" onclick="setDocCategoryFilter('faculty', event)">Faculty Resources</button>
+            <button class="doc-filter-btn" data-filter="exam" onclick="setDocCategoryFilter('exam', event)">Examination & Fees</button>
+            <button class="doc-filter-btn" data-filter="general" onclick="setDocCategoryFilter('general', event)">Affidavits & General</button>
+        </div>
+
+        <div class="pdf-grid" id="pdfGrid">
+            <!-- Document 1: Admission Form -->
+            <div class="pdf-card" data-category="student">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>BA LLB / LLB Admission Form</h4>
+                            <span class="pdf-tag student">Student</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Official registration and application form for 5-Year BA LLB and 3-Year LLB course enrollment.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 1.2 MB</span>
+                    <div class="pdf-actions">
+                        <a href="documents/admission-form.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('documents/admission-form.pdf', 'BA LLB Admission Form')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document 2: Post-Matric Scholarship Form -->
+            <div class="pdf-card" data-category="student">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>Post-Matric Scholarship Form</h4>
+                            <span class="pdf-tag student">Student</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Verification checklist and affidavit format for Punjab state SC/BC scholarship applications.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 850 KB</span>
+                    <div class="pdf-actions">
+                        <a href="https://alcamritsar.ac.in/syllabus/BALLB-2020.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('https://alcamritsar.ac.in/syllabus/BALLB-2020.pdf', 'Post-Matric Scholarship Form')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document 3: Re-evaluation Form -->
+            <div class="pdf-card" data-category="exam">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>GNDU Examination Re-evaluation Form</h4>
+                            <span class="pdf-tag exam">Examination</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Standard university application format for answer-script re-checking and re-evaluation requests.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 540 KB</span>
+                    <div class="pdf-actions">
+                        <a href="documents/gndu-reevaluation.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('documents/gndu-reevaluation.pdf', 'GNDU Examination Re-evaluation Form')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document 4: Faculty Leave Form -->
+            <div class="pdf-card" data-category="faculty">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>Faculty Leave & Academic Requisition</h4>
+                            <span class="pdf-tag faculty">Faculty</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Duty leave application and academic seminar approval form for teaching staff.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 420 KB</span>
+                    <div class="pdf-actions">
+                        <a href="documents/faculty-leave-form.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('documents/faculty-leave-form.pdf', 'Faculty Leave Requisition Form')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document 5: BCI Guidelines -->
+            <div class="pdf-card" data-category="faculty">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>BCI Academic Curriculum Guidelines</h4>
+                            <span class="pdf-tag faculty">Faculty</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Bar Council of India compliance requirements and syllabus distribution format for law subjects.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 2.1 MB</span>
+                    <div class="pdf-actions">
+                        <a href="documents/bci-guidelines.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('documents/bci-guidelines.pdf', 'BCI Academic Curriculum Guidelines')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document 6: NOC Request Form -->
+            <div class="pdf-card" data-category="student">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>No Objection Certificate (NOC) Request</h4>
+                            <span class="pdf-tag student">Student</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Application format for issuing clearance certificates, internships, and academic character verification.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 310 KB</span>
+                    <div class="pdf-actions">
+                        <a href="documents/noc-request.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('documents/noc-request.pdf', 'NOC Request Form')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document 7: Anti-Ragging Affidavit -->
+            <div class="pdf-card" data-category="general">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-file-shield"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>Anti-Ragging Undertaking & Affidavit</h4>
+                            <span class="pdf-tag general">General</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Mandatory statutory student and parent anti-ragging declaration affidavit prescribed by UGC/BCI.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 480 KB</span>
+                    <div class="pdf-actions">
+                        <a href="documents/anti-ragging-affidavit.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('documents/anti-ragging-affidavit.pdf', 'Anti-Ragging Affidavit')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document 8: Bonafide Certificate Request -->
+            <div class="pdf-card" data-category="student">
+                <div>
+                    <div class="pdf-header">
+                        <div class="pdf-icon"><i class="fa-solid fa-stamp"></i></div>
+                        <div class="pdf-title-box">
+                            <h4>Bonafide & Character Certificate Request</h4>
+                            <span class="pdf-tag student">Student</span>
+                        </div>
+                    </div>
+                    <p class="pdf-desc">Official requisition form for issuing college bonafide certificate for passport, bus pass, or bank loans.</p>
+                </div>
+                <div class="pdf-footer">
+                    <span class="pdf-meta"><i class="fa-solid fa-hard-drive"></i> PDF • 340 KB</span>
+                    <div class="pdf-actions">
+                        <a href="documents/bonafide-request.pdf" download class="btn-download" title="Download Form">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                        <button class="btn-print" onclick="printDocument('documents/bonafide-request.pdf', 'Bonafide Certificate Form')" title="Print Form">
+                            <i class="fa-solid fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-results" id="noResultsMsg">
+                <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                <p>No matching documents found.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. CENTRAL EXTERNAL LINKS DIRECTORY (20 PROFESSIONAL COLUMNS) -->
+    <section class="directory-section" id="directory-hub">
+        <div class="section-title">
+            <h2>Central Link Directory & Resources</h2>
+            <p>A categorized digital repository connecting students, legal researchers, and faculty directly to 20+ specialized governmental, judicial, and academic portals across India.</p>
+        </div>
+
+        <div class="directory-search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="directorySearchInput" placeholder="Filter through 20+ portal directories..." onkeyup="filterDirectoryLinks()">
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterLinks('all', event)">All Portals (20)</button>
+            <button class="filter-btn" onclick="filterLinks('college', event)">College & AGC</button>
+            <button class="filter-btn" onclick="filterLinks('gov', event)">Regulators & Govt</button>
+            <button class="filter-btn" onclick="filterLinks('judiciary', event)">Courts & Judiciary</button>
+            <button class="filter-btn" onclick="filterLinks('acts', event)">Acts & Legislation</button>
+            <button class="filter-btn" onclick="filterLinks('research', event)">Legal Research</button>
+            <button class="filter-btn" onclick="filterLinks('scholarship', event)">Scholarships</button>
+            <button class="filter-btn" onclick="filterLinks('bar', event)">Bar Council & Exams</button>
+            <button class="filter-btn" onclick="filterLinks('tribunals', event)">Tribunals & Rights</button>
+            <button class="filter-btn" onclick="filterLinks('corporate', event)">Corporate & IPR</button>
+            <button class="filter-btn" onclick="filterLinks('cyber', event)">Cyber Law & Tech</button>
+            <button class="filter-btn" onclick="filterLinks('legalaid', event)">Legal Aid & ADR</button>
+        </div>
+
+        <div class="columns-directory" id="directoryGrid">
+            
+            <!-- Column 1: ALC & AGC Portals -->
+            <div class="directory-column col-theme-cyan" data-category="college">
+                <div class="column-header">
+                    <i class="fa-solid fa-university"></i>
+                    <div>
+                        <h3>ALC & AGC Portals</h3>
+                        <small>Institutional Gateway</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://alcamritsar.ac.in" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>ALC Official Portal</h4>
+                                <p>Main college website & academics</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://alcamritsar.ac.in/admission-officer.php" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>ALC Admissions Desk</h4>
+                                <p>Application forms & counselor contacts</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://agcamritsar.in" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>AGC Group Main Portal</h4>
+                                <p>Amritsar Group of Colleges hub</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://alcamritsar.ac.in/committe%20members.php" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Grievance Committee</h4>
+                                <p>Statutory committee directories</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Apex Regulators & Statutory Councils -->
+            <div class="directory-column col-theme-emerald" data-category="gov">
+                <div class="column-header">
+                    <i class="fa-solid fa-landmark"></i>
+                    <div>
+                        <h3>Apex Regulators</h3>
+                        <small>Statutory Authorities</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="http://www.barcouncilofindia.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Bar Council of India</h4>
+                                <p>National legal education regulator</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.ugc.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>UGC Official Portal</h4>
+                                <p>Higher education grants & standards</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://lawmin.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Ministry of Law & Justice</h4>
+                                <p>Union legal affairs & policies</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://higheredupunjab.com/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Higher Education Punjab</h4>
+                                <p>State education ministry desk</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Affiliating University (GNDU Amritsar) -->
+            <div class="directory-column col-theme-amber" data-category="gov">
+                <div class="column-header">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div>
+                        <h3>GNDU Amritsar</h3>
+                        <small>Affiliating University</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="http://gndu.ac.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>GNDU Main Portal</h4>
+                                <p>University academic notices & events</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://gndu.ac.in/datesheet.aspx" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>GNDU Date Sheets</h4>
+                                <p>Semester exam timetable schedules</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://gndu.ac.in/results.aspx" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>GNDU Results Portal</h4>
+                                <p>Semester marks & gazette publication</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://gnduexam.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>GNDU Examination Portal</h4>
+                                <p>Roll numbers & re-evaluation forms</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Supreme Court & National Judicial Portals -->
+            <div class="directory-column col-theme-teal" data-category="judiciary">
+                <div class="column-header">
+                    <i class="fa-solid fa-gavel"></i>
+                    <div>
+                        <h3>Supreme Court & NJDG</h3>
+                        <small>Apex Judiciary</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://main.sci.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Supreme Court of India</h4>
+                                <p>Official cause lists & case status</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://digiscr.sci.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>e-SCR Digital Judgments</h4>
+                                <p>Official Supreme Court Reports hub</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://njdg.ecourts.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>NJDG Case Statistics</h4>
+                                <p>National Judicial Data Grid dashboard</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://services.ecourts.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>e-Courts Services</h4>
+                                <p>CNR search & online case tracking</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 5: High Courts & Subordinate Judiciary -->
+            <div class="directory-column col-theme-indigo" data-category="judiciary">
+                <div class="column-header">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <div>
+                        <h3>State & District Courts</h3>
+                        <small>Jurisdictional Benches</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://highcourtchd.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Punjab & Haryana High Court</h4>
+                                <p>Chandigarh HC daily orders & lists</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://districts.ecourts.gov.in/amritsar" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Amritsar District Court</h4>
+                                <p>District & Sessions Court filings</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://delhihighcourt.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Delhi High Court Portal</h4>
+                                <p>Precedent search & e-filing desks</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://judis.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>JUDIS Case Judgments</h4>
+                                <p>Archival High Court judgment database</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 6: Bare Acts, Statutes & Legislative Gazettes -->
+            <div class="directory-column col-theme-slate" data-category="acts">
+                <div class="column-header">
+                    <i class="fa-solid fa-scroll"></i>
+                    <div>
+                        <h3>Statutes & Gazettes</h3>
+                        <small>Primary Legislation</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://www.indiacode.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>India Code Digital Acts</h4>
+                                <p>Full repository of Central & State Acts</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://egazette.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>e-Gazette of India</h4>
+                                <p>Official notifications & statutory orders</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://legislative.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Legislative Department</h4>
+                                <p>Bill drafting & statutory amendments</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://sansad.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Parliament of India</h4>
+                                <p>Lok Sabha & Rajya Sabha proceedings</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 7: National Legal Research & Case Law Engines -->
+            <div class="directory-column col-theme-purple" data-category="research">
+                <div class="column-header">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <div>
+                        <h3>Case Law Engines</h3>
+                        <small>Legal Databases</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://www.scconline.com/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>SCC Online</h4>
+                                <p>Supreme Court & High Court case law</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://indiankanoon.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Indian Kanoon</h4>
+                                <p>Free Indian legal intelligence search</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.manupatrafast.com/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Manupatra Legal Hub</h4>
+                                <p>Comprehensive analytics & case citations</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.livelaw.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>LiveLaw Portal</h4>
+                                <p>Real-time court reports & legal commentary</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 8: Open Access Law Journals & Repositories -->
+            <div class="directory-column col-theme-cyan" data-category="research">
+                <div class="column-header">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <div>
+                        <h3>E-Journals & Theses</h3>
+                        <small>Open Access Repositories</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://shodhganga.inflibnet.ac.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Shodhganga Theses Hub</h4>
+                                <p>Indian doctoral dissertations repository</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://doaj.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>DOAJ Law Journals</h4>
+                                <p>Directory of Open Access Legal Journals</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ndl.iitkgp.ac.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>National Digital Library</h4>
+                                <p>IIT Kharagpur academic digital collection</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.ssrn.com/index.cfm/en/lsn/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>SSRN Legal Network</h4>
+                                <p>Global legal research & preprints</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 9: Scholarship & Financial Aid Schemes -->
+            <div class="directory-column col-theme-emerald" data-category="scholarship">
+                <div class="column-header">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <div>
+                        <h3>Scholarship Portals</h3>
+                        <small>State & Central Aid</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://scholarships.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>National Scholarship (NSP)</h4>
+                                <p>Central Govt pre & post matric portal</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://scholarships.punjab.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Dr. Ambedkar Scholarship</h4>
+                                <p>Punjab Post-Matric SC/BC scholarship desk</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.vidyasaarathi.co.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Vidyasaarathi Portal</h4>
+                                <p>Corporate CSR merit-cum-means grants</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.education.gov.in/scholarships" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Ministry of Education Aid</h4>
+                                <p>Higher education financial schemes</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 10: Bar Council Enrollment & Advocate Licensing -->
+            <div class="directory-column col-theme-ruby" data-category="bar">
+                <div class="column-header">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <div>
+                        <h3>Bar Councils & AIBE</h3>
+                        <small>Advocate Licensing</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://bcph.org.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>BCPH Punjab & Haryana</h4>
+                                <p>State advocate enrollment & verification</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://allindiabarexamination.com/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>AIBE Examination Portal</h4>
+                                <p>Certificate of Practice (COP) registration</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://scbaindia.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Supreme Court Bar (SCBA)</h4>
+                                <p>Apex court bar association circulars</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.barcouncilofindia.org/about/advocates-welfare/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Advocate Welfare Fund</h4>
+                                <p>BCI social security & welfare schemes</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 11: Law Entrance & Competitive Examinations -->
+            <div class="directory-column col-theme-coral" data-category="bar">
+                <div class="column-header">
+                    <i class="fa-solid fa-pen-nib"></i>
+                    <div>
+                        <h3>Entrance & Judicial Exams</h3>
+                        <small>Competitive Testing</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://consortiumofnlus.ac.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>CLAT Consortium Hub</h4>
+                                <p>National Law Universities entrance portal</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://nludelhi.ac.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>AILET (NLU Delhi)</h4>
+                                <p>All India Law Entrance Test notifications</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ppsc.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Punjab Judicial Services (PPSC)</h4>
+                                <p>Civil Judge (Junior Division) recruitments</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://upsc.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>UPSC Law Optional Hub</h4>
+                                <p>Civil Services Examination law syllabus</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 12: Legal Aid, Lok Adalat & Free Counsel -->
+            <div class="directory-column col-theme-rose" data-category="legalaid">
+                <div class="column-header">
+                    <i class="fa-solid fa-hands-holding-child"></i>
+                    <div>
+                        <h3>Legal Aid & Lok Adalat</h3>
+                        <small>Access to Justice</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://nalsa.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>NALSA National Authority</h4>
+                                <p>Free legal aid services and schemes</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://pulsa.punjab.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>PULSA Punjab</h4>
+                                <p>Punjab State Legal Services network</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://nalsa.gov.in/lok-adalat" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>National Lok Adalat</h4>
+                                <p>Dispute settlement & compromise desks</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.tele-law.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Tele-Law & Pro Bono India</h4>
+                                <p>Nyaya Bandhu volunteer advocate network</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 13: Human Rights, Women & Child Commissions -->
+            <div class="directory-column col-theme-amber" data-category="tribunals">
+                <div class="column-header">
+                    <i class="fa-solid fa-shield-heart"></i>
+                    <div>
+                        <h3>Human Rights & Commissions</h3>
+                        <small>Protection Bodies</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://nhrc.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>NHRC Human Rights India</h4>
+                                <p>Human rights complaint filing portal</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ncw.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>National Commission for Women</h4>
+                                <p>Women legal cell & complaint registration</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ncpcr.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>NCPCR Child Rights</h4>
+                                <p>Protection of child rights & POCSO cell</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://pshrc.punjab.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>PSHRC Punjab</h4>
+                                <p>State human rights commission circulars</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 14: Specialized Tribunals & Appellate Boards -->
+            <div class="directory-column col-theme-teal" data-category="tribunals">
+                <div class="column-header">
+                    <i class="fa-solid fa-scale-unbalanced-flip"></i>
+                    <div>
+                        <h3>Specialized Tribunals</h3>
+                        <small>Statutory Benches</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://greentribunal.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>National Green Tribunal (NGT)</h4>
+                                <p>Environmental jurisprudence & filings</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://nclat.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>NCLAT Appellate Tribunal</h4>
+                                <p>Company law, IBC & competition appeals</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://cgat.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Central Administrative (CAT)</h4>
+                                <p>Civil services dispute adjudications</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://aftdelhi.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Armed Forces Tribunal (AFT)</h4>
+                                <p>Military law & court martial appeals</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 15: Intellectual Property Rights & Patent Offices -->
+            <div class="directory-column col-theme-indigo" data-category="corporate">
+                <div class="column-header">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <div>
+                        <h3>IPR & Patents</h3>
+                        <small>Intellectual Property</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://ipindia.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>IP India (CGPDTM)</h4>
+                                <p>Patents, Designs & Trademarks Office</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://copyright.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Copyright Office of India</h4>
+                                <p>Literary, musical & software copyrights</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.wipo.int/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>WIPO Global Portal</h4>
+                                <p>World Intellectual Property Organization</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ipindiaservices.gov.in/tmrpublicsearch/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Trademark Public Search</h4>
+                                <p>National trademark register query engine</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 16: Corporate Governance & Competition Law -->
+            <div class="directory-column col-theme-slate" data-category="corporate">
+                <div class="column-header">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                    <div>
+                        <h3>Corporate & Commerce</h3>
+                        <small>Mercantile Jurisprudence</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://www.mca.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>MCA21 Corporate Portal</h4>
+                                <p>Ministry of Corporate Affairs filings</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cci.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Competition Commission (CCI)</h4>
+                                <p>Antitrust, mergers & fair trade watchdog</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ibbi.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Insolvency & Bankruptcy (IBBI)</h4>
+                                <p>IBC regulations & liquidator directories</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.sebi.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>SEBI Securities Regulator</h4>
+                                <p>Capital markets regulations & orders</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 17: Cyber Law, e-Governance & Cyber Crime Desk -->
+            <div class="directory-column col-theme-purple" data-category="cyber">
+                <div class="column-header">
+                    <i class="fa-solid fa-shield-virus"></i>
+                    <div>
+                        <h3>Cyber Law & Cyber Crime</h3>
+                        <small>Digital Jurisprudence</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://cybercrime.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>National Cyber Crime Portal</h4>
+                                <p>Helpline 1930 & incident reporting desk</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cert-in.org.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>CERT-In Security Advisory</h4>
+                                <p>National cyber emergency response team</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.meity.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>MeitY IT Ministry</h4>
+                                <p>IT Act, DPDP Act & digital governance</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cyberswachhtakendra.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Cyber Swachhta Kendra</h4>
+                                <p>Botnet cleaning & malware protection</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 18: Police, Forensic & Criminal Justice System -->
+            <div class="directory-column col-theme-ruby" data-category="gov">
+                <div class="column-header">
+                    <i class="fa-solid fa-fingerprint"></i>
+                    <div>
+                        <h3>Forensics & Criminal Justice</h3>
+                        <small>Investigation Science</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://ncrb.gov.in/en/cctns" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>CCTNS Network (NCRB)</h4>
+                                <p>Crime & Criminal Tracking Network</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://dfs.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Forensic Science (DFSS)</h4>
+                                <p>Directorate of Forensic Science Services</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://punjabpolice.gov.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Punjab Police Official</h4>
+                                <p>Saanjh portal & citizen service desks</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://bprd.nic.in/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>BPR&D Police Research</h4>
+                                <p>Correctional administration & research</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 19: International Law & Treaty Repositories -->
+            <div class="directory-column col-theme-cyan" data-category="research">
+                <div class="column-header">
+                    <i class="fa-solid fa-earth-americas"></i>
+                    <div>
+                        <h3>International Law</h3>
+                        <small>Global Treaties & Benches</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://treaties.un.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>UN Treaty Collection (UNTC)</h4>
+                                <p>Multilateral treaties & conventions hub</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.icj-cij.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>International Court (ICJ)</h4>
+                                <p>The Hague Principal Judicial Organ</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.icc-cpi.int/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>International Criminal Court</h4>
+                                <p>Rome Statute & international crimes bench</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.aalco.int/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>AALCO Organization</h4>
+                                <p>Asian-African Legal Consultative forum</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 20: Moot Court, Clinical Education & Bar Contests -->
+            <div class="directory-column col-theme-coral" data-category="college">
+                <div class="column-header">
+                    <i class="fa-solid fa-people-robbery"></i>
+                    <div>
+                        <h3>Moot Court Competitions</h3>
+                        <small>Advocacy Simulation</small>
+                    </div>
+                </div>
+                <ul class="link-list">
+                    <li>
+                        <a href="https://www.barcouncilofindia.org/about/moot-court-competition/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>BCI National Moot Hub</h4>
+                                <p>Official national moot schedules & rules</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.ilsa.org/about-jessup/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Philip C. Jessup Moot</h4>
+                                <p>World's largest law moot competition</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.vismoot.org/" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>Willem C. Vis Moot</h4>
+                                <p>International commercial arbitration contest</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://alcamritsar.ac.in" target="_blank" class="link-card-item">
+                            <div class="link-details">
+                                <h4>ALC Moot Court Society</h4>
+                                <p>Internal trial simulations & memorial drafting</p>
+                            </div>
+                            <span class="link-action"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 10. STATUTORY COMMITTEES & CELLS (NEW) -->
+    <section class="section" id="committees">
+        <div class="section-title">
+            <h2>Statutory Committees & Grievance Cells</h2>
+            <p>Dedicated institutional bodies ensuring zero tolerance towards ragging, gender equality, student welfare, and academic integrity.</p>
+        </div>
+
+        <div class="committees-grid">
+            <div class="committee-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>Anti-Ragging Squad</h4>
+                <p>24x7 surveillance and prompt disciplinary investigation ensuring a safe campus atmosphere.</p>
+            </div>
+            <div class="committee-box">
+                <i class="fa-solid fa-person-dress"></i>
+                <h4>Internal Complaints (ICC)</h4>
+                <p>Statutory committee addressing gender sensitization and POSH compliance for women scholars.</p>
+            </div>
+            <div class="committee-box">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <h4>Legal Aid Clinic</h4>
+                <p>Free community legal assistance, Lok Adalat camps, and student clinical law practice.</p>
+            </div>
+            <div class="committee-box">
+                <i class="fa-solid fa-award"></i>
+                <h4>IQAC Governance Cell</h4>
+                <p>Internal Quality Assurance Cell monitoring curriculum delivery and NAAC/BCI benchmarks.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. CAMPUS FACILITIES -->
+    <section class="section" style="background-color: #ffffff;" id="campus">
+        <div class="section-title">
+            <h2>Administrative & Academic Infrastructure</h2>
+            <p>Modern infrastructure supporting legal research, practical court simulations, and governance.</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=600&q=80" alt="Main Building">
+                <div class="gallery-overlay">
+                    <h4>Main Administrative Block</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=600&q=80" alt="Law Library">
+                <div class="gallery-overlay">
+                    <h4>Central Law Library & E-Desk</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" alt="Moot Court">
+                <div class="gallery-overlay">
+                    <h4>Moot Court Simulation Hall</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Admin Desk">
+                <div class="gallery-overlay">
+                    <h4>Student Service Helpdesk</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. INQUIRY DESK -->
+    <section class="section" style="background-color: var(--bg-light);" id="contact">
+        <div class="inquiry-container">
+            <div class="inquiry-info">
+                <h3>Admin Inquiry Desk</h3>
+                <p>Need administrative assistance regarding document verification, transcripts, or scholarships? Submit your query directly to our desk officers.</p>
+                
+                <div class="contact-detail-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <strong style="color: var(--navy-primary);">Office Address</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">12th Mile Stone, GT Road, Amritsar, Punjab 143115</p>
+                    </div>
+                </div>
+
+                <div class="contact-detail-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <strong style="color: var(--navy-primary);">Direct Contact Desk</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">0183-5069527 / 0183-5010424</p>
+                    </div>
+                </div>
+
+                <div class="contact-detail-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <strong style="color: var(--navy-primary);">Email Communication</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">principalalc@acetedu.in</p>
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="handleInquiry(event)">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" class="form-control" placeholder="e.g. Rahul Sharma" required>
+                </div>
+                <div class="form-group">
+                    <label for="emailAddr">Email Address</label>
+                    <input type="email" id="emailAddr" class="form-control" placeholder="e.g. name@domain.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="deskSelect">Inquiry Department / Desk</label>
+                    <select id="deskSelect" class="form-control" required>
+                        <option value="">-- Select Desk --</option>
+                        <option value="transcript">Desk 01: Transcripts & Records</option>
+                        <option value="scholarship">Desk 03: Post-Matric Scholarship Cell</option>
+                        <option value="legal">Legal Cell & BCI Advisory</option>
+                        <option value="principal">Principal's Governance Office</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="msgBody">Message / Inquiry Details</label>
+                    <textarea id="msgBody" class="form-control" rows="4" placeholder="Briefly describe your administrative requirement..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Official Inquiry
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 13. PROFILE MODAL -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modalName" style="color: var(--navy-primary); font-family: 'Cinzel', serif;">Official Profile</h3>
+            <p id="modalRole" style="color: var(--gold-hover); font-weight: 700; font-size: 0.9rem; margin-bottom: 12px; text-transform: uppercase;"></p>
+            <p id="modalDesc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px; line-height: 1.6;"></p>
+            <div style="background: var(--bg-light); border-radius: 8px; padding: 14px; font-size: 0.85rem; border: 1px solid var(--border-color);">
+                <p style="margin-bottom: 6px;"><strong>Email Contact:</strong> <span id="modalEmail" style="color: var(--navy-primary);"></span></p>
+                <p><strong>Assigned Office Desk:</strong> <span id="modalContact" style="color: var(--navy-primary);"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14. FLOATING BACK TO TOP BUTTON -->
+    <button class="btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- 15. FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>Amritsar Law College</h3>
+                <p>Affiliated with Guru Nanak Dev University (GNDU) & Approved by the Bar Council of India (BCI).</p>
+                <p style="margin-top: 10px;">Managed under the aegis of Amritsar Group of Colleges (AGC).</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h3>Quick Navigation</h3>
+                <ul>
+                    <li><a href="#about">About Governance</a></li>
+                    <li><a href="#programmes">Law Degree Programmes</a></li>
+                    <li><a href="#officials">Officials Directory</a></li>
+                    <li><a href="#pdf-downloads">Downloads & Print Hub</a></li>
+                    <li><a href="#directory-hub">Central Links (20+ Portals)</a></li>
+                    <li><a href="#committees">Statutory Cells</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Important Portals</h3>
+                <ul>
+                    <li><a href="https://alcamritsar.ac.in" target="_blank">ALC Main Portal</a></li>
+                    <li><a href="https://alcamritsar.ac.in/admission-officer.php" target="_blank">Admissions Cell</a></li>
+                    <li><a href="http://www.barcouncilofindia.org/" target="_blank">Bar Council of India</a></li>
+                    <li><a href="https://scholarships.punjab.gov.in/" target="_blank">Punjab Scholarship Portal</a></li>
+                    <li><a href="https://agcamritsar.in" target="_blank">AGC Group Portal</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Contact Information</h3>
+                <p><i class="fa-solid fa-location-dot" style="color: var(--gold-primary);"></i> 12th Mile Stone, GT Road, Amritsar, Punjab 143115</p>
+                <p><i class="fa-solid fa-phone" style="color: var(--gold-primary);"></i> 0183-5069527</p>
+                <p><i class="fa-solid fa-envelope" style="color: var(--gold-primary);"></i> principalalc@acetedu.in</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2026 Amritsar Law College (ALC) | Administrative Governance Portal | All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- 16. JAVASCRIPT LOGIC -->
+    <script>
+        // Modal Handlers
+        function showDetails(name, role, email, contact, desc) {
+            document.getElementById('modalName').innerText = name;
+            document.getElementById('modalRole').innerText = role;
+            document.getElementById('modalEmail').innerText = email;
+            document.getElementById('modalContact').innerText = contact;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('infoModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Print Document Function
+        function printDocument(docUrl, formTitle) {
+            const printWin = window.open(docUrl, '_blank');
+            if (printWin) {
+                printWin.focus();
+                printWin.onload = function() {
+                    try {
+                        printWin.print();
+                    } catch (e) {
+                        console.log("Printing dialog triggered by browser viewer.");
+                    }
+                };
+            } else {
+                window.print();
+            }
+        }
+
+        // Directory Links Filter Logic
+        let currentCategory = 'all';
+
+        function filterLinks(category, evt) {
+            currentCategory = category;
+            const buttons = document.querySelectorAll('.directory-section .filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (evt && evt.target) {
+                evt.target.classList.add('active');
+            }
+
+            filterDirectoryLinks();
+        }
+
+        function filterDirectoryLinks() {
+            const searchVal = document.getElementById('directorySearchInput').value.toLowerCase().trim();
+            const columns = document.querySelectorAll('.directory-column');
+
+            columns.forEach(col => {
+                const category = col.getAttribute('data-category');
+                const colText = col.textContent.toLowerCase();
+
+                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+                const matchesSearch = (searchVal === '' || colText.includes(searchVal));
+
+                if (matchesCategory && matchesSearch) {
+                    col.style.display = 'flex';
+                } else {
+                    col.style.display = 'none';
+                }
+            });
+        }
+
+        // PDF Downloads Filter Logic
+        let currentDocCategory = 'all';
+
+        function setDocCategoryFilter(category, evt) {
+            currentDocCategory = category;
+            
+            const buttons = document.querySelectorAll('.doc-filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (evt && evt.target) {
+                evt.target.classList.add('active');
+            }
+
+            filterPdfs();
+        }
+
+        function filterPdfs() {
+            const searchInput = document.getElementById('pdfSearchInput').value.toLowerCase().trim();
+            const pdfCards = document.querySelectorAll('.pdf-card');
+            const noResultsMsg = document.getElementById('noResultsMsg');
+            let visibleCount = 0;
+
+            pdfCards.forEach(card => {
+                const title = card.querySelector('h4').textContent.toLowerCase();
+                const desc = card.querySelector('.pdf-desc').textContent.toLowerCase();
+                const cardCategory = card.getAttribute('data-category');
+
+                const matchesCategory = (currentDocCategory === 'all' || cardCategory === currentDocCategory);
+                const matchesSearch = (title.includes(searchInput) || desc.includes(searchInput));
+
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResultsMsg.style.display = 'block';
+            } else {
+                noResultsMsg.style.display = 'none';
+            }
+        }
+
+        // Form Handling
+        function handleInquiry(event) {
+            event.preventDefault();
+            const name = document.getElementById('fullName').value;
+            alert(`Thank you, ${name}! Your inquiry has been logged in the administrative dispatch system. An officer will respond shortly.`);
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
+```
