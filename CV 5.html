@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udaybir Singh - Executive Administrative & Technical Portfolio</title>
+    <style>
+        :root {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --card-bg: #ffffff;
+            --accent-primary: #1e3a8a;
+            --accent-secondary: #0284c7;
+            --accent-accent: #d97706;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.75;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fixed Background Video Flow Animation for Entire Portfolio */
+        .global-video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -99;
+            object-fit: cover;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        /* Subtle Fade In Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade {
+            animation: fadeInUp 0.7s ease-out forwards;
+        }
+
+        /* Top Executive Hero Banner - Darkened for Ultimate Text Clarity & Zero Fog */
+        .executive-banner {
+            position: relative;
+            color: #ffffff;
+            padding: 7rem 2rem 6rem;
+            border-bottom: 5px solid var(--accent-accent);
+            overflow: hidden;
+            background-color: #0b1329; /* Solid deep base ensuring zero fogginess */
+        }
+
+        .banner-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+            opacity: 0.25;
+        }
+
+        /* Deep contrasting gradient overlay to completely eliminate foggy look and make white text pop */
+        .banner-overlay-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(7, 11, 20, 0.96), rgba(15, 23, 42, 0.94), rgba(30, 58, 138, 0.90));
+            z-index: 2;
+        }
+
+        .header-container {
+            max-width: 1350px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3.5rem;
+            position: relative;
+            z-index: 3;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            background: rgba(217, 119, 6, 0.3);
+            color: #fef08a;
+            border: 1px solid rgba(252, 211, 77, 0.6);
+            padding: 0.45rem 1.3rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 0 20px rgba(217, 119, 6, 0.5);
+        }
+
+        /* Ultra-Crisp Highlighting Glow for Header Wording */
+        .header-left h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.4rem;
+            color: #ffffff;
+            text-shadow: 0 0 30px rgba(56, 189, 248, 0.6), 0 2px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .header-left h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #e0f2fe;
+            margin-bottom: 1.8rem;
+            text-shadow: 0 0 20px rgba(186, 230, 253, 0.7), 0 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .executive-contacts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+            color: #f8fafc;
+            font-weight: 500;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        }
+
+        .executive-contacts div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .executive-contacts div:hover {
+            color: #fcd34d;
+        }
+
+        /* Magnified, Professionally Proportioned Profile Photo Frame with Radiant Glow */
+        .profile-frame {
+            position: relative;
+            width: 290px;
+            height: 290px;
+            border-radius: 50%;
+            padding: 7px;
+            background: linear-gradient(135deg, var(--accent-accent), #38bdf8, #9333ea, #059669);
+            background-size: 300% 300%;
+            animation: borderGlowFlow 7s ease infinite;
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.6), 0 20px 40px rgba(0,0,0,0.6);
+            transition: transform 0.4s ease;
+            flex-shrink: 0;
+            z-index: 3;
+        }
+
+        @keyframes borderGlowFlow {
+            0% { background-position: 0% 50%; box-shadow: 0 0 30px rgba(217, 119, 6, 0.7), 0 20px 40px rgba(0,0,0,0.5); }
+            50% { background-position: 100% 50%; box-shadow: 0 0 60px rgba(56, 189, 248, 0.9), 0 20px 40px rgba(0,0,0,0.5); }
+            100% { background-position: 0% 50%; box-shadow: 0 0 30px rgba(217, 119, 6, 0.7), 0 20px 40px rgba(0,0,0,0.5); }
+        }
+
+        .profile-frame:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #ffffff;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        /* Main Structural Layout */
+        .main-wrapper {
+            max-width: 1350px;
+            margin: 3.5rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .column-main, .column-side {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* High-Legibility Solid/Glass Cards over Animated Background */
+        section {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
+            padding: 2.8rem;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+            --glow-color: rgba(30, 58, 138, 0.08);
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        section:hover::before {
+            opacity: 1;
+        }
+
+        section > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border-color: #94a3b8;
+        }
+
+        section.card-blue { --glow-color: rgba(2, 132, 199, 0.16); }
+        section.card-amber { --glow-color: rgba(217, 119, 6, 0.16); }
+        section.card-purple { --glow-color: rgba(126, 34, 206, 0.16); }
+        section.card-emerald { --glow-color: rgba(5, 150, 105, 0.16); }
+
+        h3.section-title {
+            color: var(--accent-primary);
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.7rem;
+            border-bottom: 2px solid var(--bg-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h3.section-title::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 20px;
+            background: var(--accent-accent);
+            border-radius: 2px;
+        }
+
+        .executive-summary {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+            text-align: justify;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+            margin-top: 1.8rem;
+        }
+
+        .metric-card {
+            background: var(--bg-primary);
+            padding: 1.2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: var(--accent-primary);
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(30, 58, 138, 0.1);
+        }
+
+        .metric-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2.2rem;
+            border-left: 2px solid #cbd5e1;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-accent);
+            box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.15);
+        }
+
+        .timeline-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .timeline-company {
+            font-weight: 600;
+            color: var(--accent-secondary);
+            font-size: 0.95rem;
+            margin: 0.2rem 0 0.5rem 0;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: var(--bg-primary);
+            padding: 0.25rem 0.8rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-details {
+            list-style-type: none;
+        }
+
+        .timeline-details li {
+            position: relative;
+            padding-left: 1.3rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            text-align: justify;
+        }
+
+        .timeline-details li::before {
+            content: '▪';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+        }
+
+        .skill-category {
+            margin-bottom: 1.8rem;
+        }
+
+        .skill-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-cat-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tags-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .pro-tag {
+            background: var(--bg-primary);
+            color: var(--text-muted);
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+            cursor: default;
+        }
+
+        .pro-tag:hover {
+            background: var(--accent-primary);
+            color: #ffffff;
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+        }
+
+        .project-card {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 1.8rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-secondary);
+            background: #ffffff;
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.1);
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-primary);
+            color: #ffffff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-link:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.1rem;
+            font-size: 0.9rem;
+        }
+
+        .info-cell {
+            background: var(--bg-primary);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .info-cell:hover {
+            border-color: var(--accent-secondary);
+            background: #ffffff;
+        }
+
+        .info-cell span {
+            display: block;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+        }
+
+        .info-cell strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .declaration-box {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed var(--border-color);
+            font-style: italic;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        footer {
+            background-color: #0b1329;
+            color: #94a3b8;
+            text-align: center;
+            padding: 3rem;
+            margin-top: 5rem;
+            border-top: 4px solid var(--accent-accent);
+            font-size: 0.88rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 1024px) {
+            .header-container {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+            .executive-contacts {
+                justify-content: center;
+            }
+            .main-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .header-left h1 {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Global Moving Video Background -->
+    <video autoplay muted loop playsinline class="global-video-bg">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-and-numbers-31950-large.mp4" type="video/mp4">
+    </video>
+
+    <!-- Executive Header Banner with Clear, High-Contrast Wording & Radiant Photo -->
+    <header class="executive-banner">
+        <video autoplay muted loop playsinline class="banner-video-bg">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-and-numbers-31950-large.mp4" type="video/mp4">
+        </video>
+        <div class="banner-overlay-gradient"></div>
+
+        <div class="header-container">
+            <div class="header-left animate-fade">
+                <span class="badge-pill">Executive Profile • Institutional & Corporate Grade</span>
+                <h1>Udaybir Singh</h1>
+                <h2>Administrative Professional & BCA Technology Candidate</h2>
+                <div class="executive-contacts">
+                    <div>📍 Vill Nawan Kot, Near Jandiala Guru, Amritsar, Punjab - 143115[cite: 1]</div>
+                    <div>📞 +91 7986549848[cite: 1]</div>
+                    <div>✉️ udaybirsinghjammu@gmail.com[cite: 1]</div>
+                </div>
+            </div>
+            <div class="profile-frame animate-fade">
+                <img src="https://media.licdn.com/dms/image/v2/D4E03AQHsFaL79dktog/profile-displayphoto-scale_200_200/B4EZkP52RYIIAY-/0/1756908447506?e=2147483647&v=beta&t=YIFmGX7MuaF5V1DdoJHC942omkEgYe8xjySgwM66GgA" alt="Udaybir Singh" class="profile-img">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Structural Layout -->
+    <div class="main-wrapper">
+        
+        <!-- LEFT MAIN COLUMN -->
+        <div class="column-main">
+            
+            <!-- Professional Summary & Executive Metrics -->
+            <section class="animate-fade card-blue">
+                <h3 class="section-title">Executive Summary & Value Proposition</h3>
+                <p class="executive-summary">
+                    Highly accomplished and detail-oriented administrative professional backed by a comprehensive technical foundation in Computer Applications (BCA). Proven track record in orchestrating high-stakes institutional workflows, compliance governance (BCI & University Admission portals)[cite: 1], and academic examination management under premier authorities like GNDU[cite: 1]. Blends enterprise-level administrative rigor with custom software logic and corporate digital design execution.
+                </p>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-number">100%</div>
+                        <div class="metric-label">Compliance Rate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">GNDU</div>
+                        <div class="metric-label">Coordination Standard</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">BCA</div>
+                        <div class="metric-label">Technical Track</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Professional Experience -->
+            <section class="animate-fade card-amber">
+                <h3 class="section-title">Professional Experience</h3>
+                
+                <div class="timeline-item">
+                    <div class="timeline-title">Clerk & Administrative Coordinator</div>
+                    <div class="timeline-company">Amritsar Law College, Amritsar[cite: 1]</div>
+                    <span class="timeline-date">May 2024 – Present[cite: 1]</span>
+                    <ul class="timeline-details">
+                        <li>Direct high-security university examinations under Guru Nanak Dev University (GNDU), meticulously executing layout seating plans, secure invigilation rosters, and error-free attendance audits[cite: 1].</li>
+                        <li>Act as the primary institutional liaison with GNDU authorities for operational calendars, confidential evaluation papers, and statutory compliance frameworks[cite: 1].</li>
+                        <li>Execute high-accountability handling of official portals including the Bar Council of India (BCI) Portal and university admissions portals, safeguarding zero-tolerance regulatory compliance[cite: 1].</li>
+                        <li>Architect systematic digital and physical archive systems for official correspondence, student registries, and confidential regulatory files[cite: 1].</li>
+                        <li>Leverage creative technical skills to produce and edit high-impact promotional multimedia and institutional branding artifacts utilizing Canva and professional editing software[cite: 1].</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-title">Industrial Operations Trainee</div>
+                    <div class="timeline-company">Hotel Comfort Inn Alstonia, Amritsar[cite: 1]</div>
+                    <span class="timeline-date">Sep 2023 – May 2024[cite: 1]</span>
+                    <ul class="timeline-details">
+                        <li>Executed exhaustive cross-departmental operations training, refining corporate standard client service matrices and workflow efficiencies[cite: 1].</li>
+                        <li>Facilitated inter-departmental communications and maintained premium hospitality compliance standards under corporate constraints[cite: 1].</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- BCA University-Level Technical Projects with Action Links -->
+            <section class="animate-fade card-purple">
+                <h3 class="section-title">BCA University-Level Projects Portfolio</h3>
+                
+                <div class="project-card">
+                    <div class="project-title">1. Automated Examination Seating & Attendance Architecture</div>
+                    <p class="project-desc">Designed and deployed an automated management utility engineered to handle large-scale student roll number allotments against strict room occupancy constraints, minimizing human error in examination halls.</p>
+                    <div class="tags-flex">
+                        <span class="pro-tag">MS Access</span>
+                        <span class="pro-tag">SQL Databases</span>
+                        <span class="pro-tag">Python / Java Logic</span>
+                        <span class="pro-tag">Algorithmic Layouts</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://your-live-demo-site.com/seating-system" target="_blank" class="btn-link">🚀 View Live Application</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-title">2. Secure University Admission & Portal Verification Prototype</div>
+                    <p class="project-desc">Built a secure administrative intake portal prototype designed to run multi-tier validation checks on applicant form criteria, simulate secure document uploading, and organize administrative decision dashboards.</p>
+                    <div class="tags-flex">
+                        <span class="pro-tag">HTML5 / CSS3</span>
+                        <span class="pro-tag">JavaScript Validation</span>
+                        <span class="pro-tag">PHP & MySQL Backend</span>
+                        <span class="pro-tag">RBAC Security</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://your-live-demo-site.com/admission-portal" target="_blank" class="btn-link">🚀 View Live Application</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-title">3. Enterprise Institutional Registry & Digital Archive System</div>
+                    <p class="project-desc">Engineered an advanced cataloging structure to transition bulky physical record logs into secure, high-speed searchable digital database registries equipped with quick retrieval macro parameters.</p>
+                    <div class="tags-flex">
+                        <span class="pro-tag">Advanced Excel Automation</span>
+                        <span class="pro-tag">VBA Macros</span>
+                        <span class="pro-tag">Python (Pandas)</span>
+                        <span class="pro-tag">Security Indexing</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://your-live-demo-site.com/archive-system" target="_blank" class="btn-link">🚀 View Live Application</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- RIGHT SIDEBAR COLUMN -->
+        <div class="column-side">
+            
+            <!-- Skills & Technical Competencies Matrix -->
+            <section class="animate-fade card-emerald">
+                <h3 class="section-title">Core Competencies</h3>
+                
+                <div class="skill-category">
+                    <div class="skill-cat-title">🏛️ Administrative & Governance</div>
+                    <div class="tags-flex">
+                        <span class="pro-tag">GNDU Exam Operations</span>
+                        <span class="pro-tag">BCI Portal Governance</span>
+                        <span class="pro-tag">University Coordination</span>
+                        <span class="pro-tag">Regulatory Compliance</span>
+                        <span class="pro-tag">Records Archiving</span>
+                        <span class="pro-tag">Confidential Files Audit</span>
+                    </div>
+                </div>
+
+                <div class="skill-category" style="margin-top: 1.8rem;">
+                    <div class="skill-cat-title">💻 Computer & IT Systems</div>
+                    <div class="tags-flex">
+                        <span class="pro-tag">MS Office Enterprise Suite</span>
+                        <span class="pro-tag">Advanced Data Processing</span>
+                        <span class="pro-tag">OS Deployment & Maintenance</span>
+                        <span class="pro-tag">Basic Network Routing</span>
+                        <span class="pro-tag">Hardware Diagnostics</span>
+                        <span class="pro-tag">Database Management</span>
+                    </div>
+                </div>
+
+                <div class="skill-category" style="margin-top: 1.8rem;">
+                    <div class="skill-cat-title">🎨 Digital Media & Design</div>
+                    <div class="tags-flex">
+                        <span class="pro-tag">Canva Pro Suite</span>
+                        <span class="pro-tag">Video Editing & Production</span>
+                        <span class="pro-tag">Corporate Branding Assets</span>
+                        <span class="pro-tag">Institutional Marketing</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Extended Professional Credentials & Certifications -->
+            <section class="animate-fade card-blue">
+                <h3 class="section-title">Credentials & Certifications</h3>
+                
+                <div class="timeline-item" style="margin-bottom: 1.5rem;">
+                    <div class="timeline-title" style="font-size: 1rem;">Institutional Governance & Compliance Certification</div>
+                    <div class="timeline-company">Internal Academic Board</div>
+                    <span class="timeline-date">2024</span>
+                    <ul class="timeline-details">
+                        <li>Certified expertise in handling statutory university portals and student credential verification frameworks.</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 0;">
+                    <div class="timeline-title" style="font-size: 1rem;">Advanced IT Support & System Maintenance</div>
+                    <div class="timeline-company">Technical Training Wing</div>
+                    <span class="timeline-date">2023</span>
+                    <ul class="timeline-details">
+                        <li>Specialized training in rapid system error resolution, automated database logging, and secure data storage solutions.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Education Pathway -->
+            <section class="animate-fade card-amber">
+                <h3 class="section-title">Academic Qualifications</h3>
+                
+                <div class="timeline-item" style="margin-bottom: 1.5rem;">
+                    <div class="timeline-title" style="font-size: 1rem;">Bachelor of Computer Applications (BCA)</div>
+                    <div class="timeline-company">GNDU, Amritsar[cite: 1]</div>
+                    <span class="timeline-date">Pursuing (Expected 2024)[cite: 1]</span>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 1.5rem;">
+                    <div class="timeline-title" style="font-size: 1rem;">Advanced Diploma in Computer IT (ADCIT)</div>
+                    <div class="timeline-company">Authorized Institute[cite: 1]</div>
+                    <span class="timeline-date">2022 – 2024[cite: 1]</span>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 1.5rem;">
+                    <div class="timeline-title" style="font-size: 1rem;">Diploma in Food Production</div>
+                    <div class="timeline-company">ITI Ranjit Avenue, Amritsar[cite: 1]</div>
+                    <span class="timeline-date">2023[cite: 1]</span>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 1.5rem;">
+                    <div class="timeline-title" style="font-size: 1rem;">12th Standard (PSEB)</div>
+                    <div class="timeline-company">Punjab School Education Board[cite: 1]</div>
+                    <span class="timeline-date">2022[cite: 1]</span>
+                </div>
+
+                <div class="timeline-item" style="margin-bottom: 0;">
+                    <div class="timeline-title" style="font-size: 1rem;">10th Standard (CBSE)</div>
+                    <div class="timeline-company">Central Board of Secondary Education[cite: 1]</div>
+                    <span class="timeline-date">2020[cite: 1]</span>
+                </div>
+            </section>
+
+            <!-- Personal Dossier & Declaration -->
+            <section class="animate-fade card-purple">
+                <h3 class="section-title">Personal Profile</h3>
+                <div class="info-grid">
+                    <div class="info-cell">
+                        <span>Father's Name</span>
+                        <strong>S. Amolak Singh[cite: 1]</strong>
+                    </div>
+                    <div class="info-cell">
+                        <span>Date of Birth</span>
+                        <strong>27/03/2003[cite: 1]</strong>
+                    </div>
+                    <div class="info-cell">
+                        <span>Gender</span>
+                        <strong>Male[cite: 1]</strong>
+                    </div>
+                    <div class="info-cell">
+                        <span>Nationality</span>
+                        <strong>Indian[cite: 1]</strong>
+                    </div>
+                    <div class="info-cell">
+                        <span>Marital Status</span>
+                        <strong>Unmarried[cite: 1]</strong>
+                    </div>
+                    <div class="info-cell">
+                        <span>Languages</span>
+                        <strong>Punjabi, English, Hindi[cite: 1]</strong>
+                    </div>
+                </div>
+
+                <div class="declaration-box">
+                    "I hereby declare that all the information furnished above is true, correct, and complete to the best of my knowledge and belief."[cite: 1]
+                    <br><br>
+                    <strong>— Udaybir Singh</strong>[cite: 1]
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+
+    <!-- Formal Footer -->
+    <footer>
+        <p>&copy; 2026 Udaybir Singh • Built for High-Authority Corporate, MNC, & Institutional Governance Applications.</p>
+    </footer>
+
+    <!-- Interactive Mouse-Tracking Multi-Color Glow Script -->
+    <script>
+        document.querySelectorAll('section').forEach(section => {
+            section.addEventListener('mousemove', e => {
+                const rect = section.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                section.style.setProperty('--mouse-x', `${x}px`);
+                section.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+
+</body>
+</html>
