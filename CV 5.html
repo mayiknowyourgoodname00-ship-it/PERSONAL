@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Udaybir Singh - Executive Administrative & Technical Portfolio</title>
+    
+    <!-- Preload profile image to force instant loading and prevent delay -->
+    <link rel="preload" as="image" href="https://lh3.googleusercontent.com/d/1krr7zipLsV8spz9xIEW82ZKTdc68HKXt">
+
     <style>
         :root {
             --bg-primary: #f1f5f9;
@@ -70,7 +74,7 @@
             padding: 7rem 2rem 6rem;
             border-bottom: 5px solid var(--accent-accent);
             overflow: hidden;
-            background-color: #0b1329; /* Solid deep base ensuring zero fogginess */
+            background-color: #0b1329;
         }
 
         .banner-video-bg {
@@ -84,7 +88,6 @@
             opacity: 0.25;
         }
 
-        /* Deep contrasting gradient overlay to completely eliminate foggy look and make white text pop */
         .banner-overlay-gradient {
             position: absolute;
             top: 0;
@@ -125,7 +128,6 @@
             box-shadow: 0 0 20px rgba(217, 119, 6, 0.5);
         }
 
-        /* Ultra-Crisp Highlighting Glow for Header Wording */
         .header-left h1 {
             font-size: 3.8rem;
             font-weight: 800;
@@ -153,18 +155,20 @@
             text-shadow: 0 1px 4px rgba(0,0,0,0.8);
         }
 
-        .executive-contacts div {
+        .executive-contacts div, .executive-contacts a {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: #f8fafc;
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .executive-contacts div:hover {
+        .executive-contacts div:hover, .executive-contacts a:hover {
             color: #fcd34d;
         }
 
-        /* Magnified, Professionally Proportioned Profile Photo Frame with Radiant Glow */
+        /* Profile Photo Frame with Immediate Render Protection */
         .profile-frame {
             position: relative;
             width: 290px;
@@ -178,6 +182,7 @@
             transition: transform 0.4s ease;
             flex-shrink: 0;
             z-index: 3;
+            background-color: #1e293b; /* Fallback background color while image fetches */
         }
 
         @keyframes borderGlowFlow {
@@ -217,7 +222,6 @@
             gap: 2.5rem;
         }
 
-        /* High-Legibility Solid/Glass Cards over Animated Background */
         section {
             background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(12px);
@@ -599,14 +603,17 @@
                 <h1>Udaybir Singh</h1>
                 <h2>Administrative Professional & BCA Technology Candidate</h2>
                 <div class="executive-contacts">
-                    <div>📍 Vill Nawan Kot, Near Jandiala Guru, Amritsar, Punjab - 143115[cite: 1]</div>
-                    <div>📞 +91 7986549848[cite: 1]</div>
-                    <div>✉️ udaybirsinghjammu@gmail.com[cite: 1]</div>
+                    <div>📍 Vill Nawan Kot, Near Jandiala Guru, Amritsar, Punjab - 143115</div>
+                    <div>📞 +91 7986549848</div>
+                    <div>✉️ udaybirsinghjammu@gmail.com</div>
+                    <!-- Added LinkedIn & GitHub Links -->
+                    <a href="https://www.linkedin.com/in/your-linkedin-username" target="_blank">💼 LinkedIn</a>
+                    <a href="https://github.com/your-github-username" target="_blank">💻 GitHub</a>
                 </div>
             </div>
             <div class="profile-frame animate-fade">
-                <img src="https://lh3.googleusercontent.com/d/1krr7zipLsV8spz9xIEW82ZKTdc68HKXt" alt="Udaybir Singh" class="profile-img">
-            </div
+                <img src="https://lh3.googleusercontent.com/d/1krr7zipLsV8spz9xIEW82ZKTdc68HKXt" alt="Udaybir Singh" class="profile-img" width="290" height="290" fetchpriority="high">
+            </div>
         </div>
     </header>
 
@@ -620,7 +627,7 @@
             <section class="animate-fade card-blue">
                 <h3 class="section-title">Executive Summary & Value Proposition</h3>
                 <p class="executive-summary">
-                    Highly accomplished and detail-oriented administrative professional backed by a comprehensive technical foundation in Computer Applications (BCA). Proven track record in orchestrating high-stakes institutional workflows, compliance governance (BCI & University Admission portals)[cite: 1], and academic examination management under premier authorities like GNDU[cite: 1]. Blends enterprise-level administrative rigor with custom software logic and corporate digital design execution.
+                    Highly accomplished and detail-oriented administrative professional backed by a comprehensive technical foundation in Computer Applications (BCA). Proven track record in orchestrating high-stakes institutional workflows, compliance governance (BCI & University Admission portals), and academic examination management under premier authorities like GNDU. Blends enterprise-level administrative rigor with custom software logic and corporate digital design execution.
                 </p>
                 <div class="metrics-grid">
                     <div class="metric-card">
@@ -644,24 +651,24 @@
                 
                 <div class="timeline-item">
                     <div class="timeline-title">Clerk & Administrative Coordinator</div>
-                    <div class="timeline-company">Amritsar Law College, Amritsar[cite: 1]</div>
-                    <span class="timeline-date">May 2024 – Present[cite: 1]</span>
+                    <div class="timeline-company">Amritsar Law College, Amritsar</div>
+                    <span class="timeline-date">May 2024 – Present</span>
                     <ul class="timeline-details">
-                        <li>Direct high-security university examinations under Guru Nanak Dev University (GNDU), meticulously executing layout seating plans, secure invigilation rosters, and error-free attendance audits[cite: 1].</li>
-                        <li>Act as the primary institutional liaison with GNDU authorities for operational calendars, confidential evaluation papers, and statutory compliance frameworks[cite: 1].</li>
-                        <li>Execute high-accountability handling of official portals including the Bar Council of India (BCI) Portal and university admissions portals, safeguarding zero-tolerance regulatory compliance[cite: 1].</li>
-                        <li>Architect systematic digital and physical archive systems for official correspondence, student registries, and confidential regulatory files[cite: 1].</li>
-                        <li>Leverage creative technical skills to produce and edit high-impact promotional multimedia and institutional branding artifacts utilizing Canva and professional editing software[cite: 1].</li>
+                        <li>Direct high-security university examinations under Guru Nanak Dev University (GNDU), meticulously executing layout seating plans, secure invigilation rosters, and error-free attendance audits.</li>
+                        <li>Act as the primary institutional liaison with GNDU authorities for operational calendars, confidential evaluation papers, and statutory compliance frameworks.</li>
+                        <li>Execute high-accountability handling of official portals including the Bar Council of India (BCI) Portal and university admissions portals, safeguarding zero-tolerance regulatory compliance.</li>
+                        <li>Architect systematic digital and physical archive systems for official correspondence, student registries, and confidential regulatory files.</li>
+                        <li>Leverage creative technical skills to produce and edit high-impact promotional multimedia and institutional branding artifacts utilizing Canva and professional editing software.</li>
                     </ul>
                 </div>
 
                 <div class="timeline-item">
                     <div class="timeline-title">Industrial Operations Trainee</div>
-                    <div class="timeline-company">Hotel Comfort Inn Alstonia, Amritsar[cite: 1]</div>
-                    <span class="timeline-date">Sep 2023 – May 2024[cite: 1]</span>
+                    <div class="timeline-company">Hotel Comfort Inn Alstonia, Amritsar</div>
+                    <span class="timeline-date">Sep 2023 – May 2024</span>
                     <ul class="timeline-details">
-                        <li>Executed exhaustive cross-departmental operations training, refining corporate standard client service matrices and workflow efficiencies[cite: 1].</li>
-                        <li>Facilitated inter-departmental communications and maintained premium hospitality compliance standards under corporate constraints[cite: 1].</li>
+                        <li>Executed exhaustive cross-departmental operations training, refining corporate standard client service matrices and workflow efficiencies.</li>
+                        <li>Facilitated inter-departmental communications and maintained premium hospitality compliance standards under corporate constraints.</li>
                     </ul>
                 </div>
             </section>
@@ -786,32 +793,32 @@
                 
                 <div class="timeline-item" style="margin-bottom: 1.5rem;">
                     <div class="timeline-title" style="font-size: 1rem;">Bachelor of Computer Applications (BCA)</div>
-                    <div class="timeline-company">GNDU, Amritsar[cite: 1]</div>
-                    <span class="timeline-date">Pursuing (Expected 2024)[cite: 1]</span>
+                    <div class="timeline-company">GNDU, Amritsar</div>
+                    <span class="timeline-date">Pursuing (Expected 2024)</span>
                 </div>
 
                 <div class="timeline-item" style="margin-bottom: 1.5rem;">
                     <div class="timeline-title" style="font-size: 1rem;">Advanced Diploma in Computer IT (ADCIT)</div>
-                    <div class="timeline-company">Authorized Institute[cite: 1]</div>
-                    <span class="timeline-date">2022 – 2024[cite: 1]</span>
+                    <div class="timeline-company">Authorized Institute</div>
+                    <span class="timeline-date">2022 – 2024</span>
                 </div>
 
                 <div class="timeline-item" style="margin-bottom: 1.5rem;">
                     <div class="timeline-title" style="font-size: 1rem;">Diploma in Food Production</div>
-                    <div class="timeline-company">ITI Ranjit Avenue, Amritsar[cite: 1]</div>
-                    <span class="timeline-date">2023[cite: 1]</span>
+                    <div class="timeline-company">ITI Ranjit Avenue, Amritsar</div>
+                    <span class="timeline-date">2023</span>
                 </div>
 
                 <div class="timeline-item" style="margin-bottom: 1.5rem;">
                     <div class="timeline-title" style="font-size: 1rem;">12th Standard (PSEB)</div>
-                    <div class="timeline-company">Punjab School Education Board[cite: 1]</div>
-                    <span class="timeline-date">2022[cite: 1]</span>
+                    <div class="timeline-company">Punjab School Education Board</div>
+                    <span class="timeline-date">2022</span>
                 </div>
 
                 <div class="timeline-item" style="margin-bottom: 0;">
                     <div class="timeline-title" style="font-size: 1rem;">10th Standard (CBSE)</div>
-                    <div class="timeline-company">Central Board of Secondary Education[cite: 1]</div>
-                    <span class="timeline-date">2020[cite: 1]</span>
+                    <div class="timeline-company">Central Board of Secondary Education</div>
+                    <span class="timeline-date">2020</span>
                 </div>
             </section>
 
@@ -821,34 +828,34 @@
                 <div class="info-grid">
                     <div class="info-cell">
                         <span>Father's Name</span>
-                        <strong>S. Amolak Singh[cite: 1]</strong>
+                        <strong>S. Amolak Singh</strong>
                     </div>
                     <div class="info-cell">
                         <span>Date of Birth</span>
-                        <strong>27/03/2003[cite: 1]</strong>
+                        <strong>27/03/2003</strong>
                     </div>
                     <div class="info-cell">
                         <span>Gender</span>
-                        <strong>Male[cite: 1]</strong>
+                        <strong>Male</strong>
                     </div>
                     <div class="info-cell">
                         <span>Nationality</span>
-                        <strong>Indian[cite: 1]</strong>
+                        <strong>Indian</strong>
                     </div>
                     <div class="info-cell">
                         <span>Marital Status</span>
-                        <strong>Unmarried[cite: 1]</strong>
+                        <strong>Unmarried</strong>
                     </div>
                     <div class="info-cell">
                         <span>Languages</span>
-                        <strong>Punjabi, English, Hindi[cite: 1]</strong>
+                        <strong>Punjabi, English, Hindi</strong>
                     </div>
                 </div>
 
                 <div class="declaration-box">
-                    "I hereby declare that all the information furnished above is true, correct, and complete to the best of my knowledge and belief."[cite: 1]
+                    "I hereby declare that all the information furnished above is true, correct, and complete to the best of my knowledge and belief."
                     <br><br>
-                    <strong>— Udaybir Singh</strong>[cite: 1]
+                    <strong>— Udaybir Singh</strong>
                 </div>
             </section>
 
