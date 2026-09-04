@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amritsar Law College - OmniTool Suite</title>
+    <title>Amritsar Law College - Digital Utility Suite</title>
     <!-- Tailwind CSS for UI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- PDF.js for rendering PDFs in browser -->
@@ -83,19 +83,19 @@
                     </ul>
                 </div>
                 <div>
-                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">PDF Tools</h2>
-                    <ul class="space-y-1 text-sm font-medium">
-                        <li><button onclick="switchTab('pdf-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">PDF Converters</button></li>
-                        <li><button onclick="switchTab('edit-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Edit & Manipulate</button></li>
-                        <li><button onclick="switchTab('security-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Security & Protection</button></li>
-                    </ul>
-                </div>
-                <div>
                     <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media Tools</h2>
                     <ul class="space-y-1 text-sm font-medium">
                         <li><button onclick="switchTab('photo-crop-compress', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700 active-tab">Photo Crop & Compress</button></li>
                         <li><button onclick="switchTab('img-tools', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Image Tools & Compressor</button></li>
                         <li><button onclick="switchTab('media-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Audio & Video Tools</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">PDF Tools</h2>
+                    <ul class="space-y-1 text-sm font-medium">
+                        <li><button onclick="switchTab('pdf-converters', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">PDF Converters</button></li>
+                        <li><button onclick="switchTab('edit-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Edit & Manipulate</button></li>
+                        <li><button onclick="switchTab('security-pdf', this)" class="tool-btn w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition text-slate-700">Security & Protection</button></li>
                     </ul>
                 </div>
                 <div>
@@ -215,7 +215,60 @@
                     </table>
                 </div>
             </div>
-            
+
+            <!-- PHOTO CROP & COMPRESSOR (ADVANCED PROFESSIONAL & NUMERIC FORMAT DOWNLOAD) -->
+            <div id="photo-crop-compress" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-blue-950">Professional Photo Crop & Compressor</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-300 space-y-4">
+                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2">1. Select Photo</h3>
+                        <input type="file" id="cropperInput" accept="image/*" class="w-full text-xs text-slate-700 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-900 file:text-white hover:file:bg-blue-950">
+
+                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2 pt-2">2. Aspect Ratio & Controls</h3>
+                        <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+                            <button onclick="setCropperAspect(NaN)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">Free Form</button>
+                            <button onclick="setCropperAspect(1)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">1:1 Square</button>
+                            <button onclick="setCropperAspect(4/3)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">4:3 Standard</button>
+                            <button onclick="setCropperAspect(16/9)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">16:9 Widescreen</button>
+                            <button onclick="setCropperAspect(3.5/4.5)" class="col-span-2 p-2 border border-amber-300 rounded bg-amber-50 text-amber-900 hover:bg-amber-100">Passport Photo (3.5 x 4.5)</button>
+                        </div>
+
+                        <div class="flex gap-2 pt-1">
+                            <button onclick="rotateCropper(-90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs font-medium hover:bg-slate-900">Rotate Left (-90°)</button>
+                            <button onclick="rotateCropper(90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs font-medium hover:bg-slate-900">Rotate Right (+90°)</button>
+                        </div>
+
+                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2 pt-2">3. Compression & Format Output</h3>
+                        <div>
+                            <label class="text-xs font-bold flex justify-between text-slate-700">Target Quality: <span id="cropQualityVal" class="text-blue-900 font-bold">85%</span></label>
+                            <input type="range" id="cropQuality" min="1" max="100" value="85" class="w-full accent-blue-900" oninput="document.getElementById('cropQualityVal').innerText = this.value + '%'">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-700">Format Output Choice</label>
+                            <select id="cropFormat" class="w-full p-2 border border-slate-300 rounded text-xs font-semibold bg-white text-slate-800">
+                                <option value="image/jpeg">JPEG / JPG Image</option>
+                                <option value="image/png">PNG Image</option>
+                                <option value="image/webp">WEBP Image</option>
+                                <option value="application/pdf">PDF Document (.pdf)</option>
+                            </select>
+                        </div>
+                        <button onclick="processCroppedImage()" class="w-full bg-emerald-700 text-white font-bold py-2.5 rounded-lg shadow hover:bg-emerald-800 transition text-sm">
+                            Crop, Compress & Export
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-2 border border-slate-300 rounded-xl p-4 bg-slate-950 flex flex-col items-center justify-center min-h-[420px] max-h-[550px] relative overflow-hidden">
+                        <div class="w-full h-full flex items-center justify-center" id="cropperContainer">
+                            <span class="text-slate-400 text-sm font-medium">Upload a photo to launch interactive crop canvas</span>
+                        </div>
+                        <div id="cropOutputResult" class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur border border-slate-300 p-3 rounded-lg shadow-lg flex justify-between items-center hidden">
+                            <div class="text-xs font-semibold text-slate-800" id="cropMetrics"></div>
+                            <div id="cropDownloadBtn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- PDF CONVERTERS -->
             <div id="pdf-converters" class="tab-content hidden">
                 <h2 class="text-2xl font-bold mb-4 text-blue-950">PDF Conversion Center</h2>
@@ -309,59 +362,6 @@
                         <input type="file" id="pdfWatermarkInput" accept="application/pdf" class="w-full text-sm text-slate-700">
                         <input type="text" id="watermarkText" placeholder="Confidential, Draft, etc." class="w-full p-2 border border-slate-300 rounded text-sm bg-white">
                         <button onclick="addWatermark()" class="w-full bg-indigo-900 text-white py-2 rounded text-sm font-medium hover:bg-indigo-950">Apply Diagonal Watermark</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PHOTO CROP & COMPRESSOR (ENHANCED WITH PDF OUTPUT) -->
-            <div id="photo-crop-compress" class="tab-content">
-                <h2 class="text-2xl font-bold mb-4 text-blue-950">Professional Photo Crop & Compressor</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-300 space-y-4">
-                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2">1. Select Photo</h3>
-                        <input type="file" id="cropperInput" accept="image/*" class="w-full text-xs text-slate-700 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-900 file:text-white hover:file:bg-blue-950">
-
-                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2 pt-2">2. Aspect Ratio & Controls</h3>
-                        <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
-                            <button onclick="setCropperAspect(NaN)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">Free Form</button>
-                            <button onclick="setCropperAspect(1)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">1:1 Square</button>
-                            <button onclick="setCropperAspect(4/3)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">4:3 Standard</button>
-                            <button onclick="setCropperAspect(16/9)" class="p-2 border border-slate-300 rounded bg-white hover:bg-blue-50 text-slate-700">16:9 Widescreen</button>
-                            <button onclick="setCropperAspect(3.5/4.5)" class="col-span-2 p-2 border border-amber-300 rounded bg-amber-50 text-amber-900 hover:bg-amber-100">Passport Photo (3.5 x 4.5)</button>
-                        </div>
-
-                        <div class="flex gap-2 pt-1">
-                            <button onclick="rotateCropper(-90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs font-medium hover:bg-slate-900">Rotate Left</button>
-                            <button onclick="rotateCropper(90)" class="w-1/2 bg-slate-800 text-white py-1.5 rounded text-xs font-medium hover:bg-slate-900">Rotate Right</button>
-                        </div>
-
-                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-300 pb-2 pt-2">3. Compression & Format Output</h3>
-                        <div>
-                            <label class="text-xs font-bold flex justify-between text-slate-700">Target Quality: <span id="cropQualityVal" class="text-blue-900 font-bold">85%</span></label>
-                            <input type="range" id="cropQuality" min="1" max="100" value="85" class="w-full accent-blue-900" oninput="document.getElementById('cropQualityVal').innerText = this.value + '%'">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-slate-700">Format Output Choice</label>
-                            <select id="cropFormat" class="w-full p-2 border border-slate-300 rounded text-xs font-semibold bg-white text-slate-800">
-                                <option value="image/jpeg">JPEG / JPG Image</option>
-                                <option value="image/png">PNG Image</option>
-                                <option value="image/webp">WEBP Image</option>
-                                <option value="application/pdf">PDF Document (.pdf)</option>
-                            </select>
-                        </div>
-                        <button onclick="processCroppedImage()" class="w-full bg-emerald-700 text-white font-bold py-2.5 rounded-lg shadow hover:bg-emerald-800 transition text-sm">
-                            Crop, Compress & Export
-                        </button>
-                    </div>
-
-                    <div class="lg:col-span-2 border border-slate-300 rounded-xl p-4 bg-slate-950 flex flex-col items-center justify-center min-h-[420px] max-h-[550px] relative overflow-hidden">
-                        <div class="w-full h-full flex items-center justify-center" id="cropperContainer">
-                            <span class="text-slate-400 text-sm font-medium">Upload a photo to launch interactive crop canvas</span>
-                        </div>
-                        <div id="cropOutputResult" class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur border border-slate-300 p-3 rounded-lg shadow-lg flex justify-between items-center hidden">
-                            <div class="text-xs font-semibold text-slate-800" id="cropMetrics"></div>
-                            <div id="cropDownloadBtn"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -605,6 +605,19 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
+        // UNIVERSAL NUMERIC FILENAME GENERATOR
+        function getNumericFilename(extension) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const randomCode = Math.floor(1000 + Math.random() * 9000);
+            return `${year}${month}${day}_${hours}${minutes}${seconds}_${randomCode}.${extension}`;
+        }
+
         function updateDateTime() {
             const now = new Date();
             const options = { 
@@ -719,7 +732,7 @@
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(worksheetData);
             XLSX.utils.book_append_sheet(wb, ws, "Attendance Ledger");
-            XLSX.writeFile(wb, "ALC_Student_Attendance_Eligibility_Ledger.xlsx");
+            XLSX.writeFile(wb, getNumericFilename('xlsx'));
         }
 
         // ANMOL LIPI MAP
@@ -773,10 +786,10 @@
             const txt = document.getElementById('punjabiOutputText').value;
             if(!txt) return alert('No content to download!');
             const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
-            downloadBlob(blob, 'Punjabi_AnmolLipi_Text.txt');
+            downloadBlob(blob, getNumericFilename('txt'));
         }
 
-        // CROPPER & COMPRESSOR ENGINE (WITH PDF SUPPORT)
+        // CROPPER & COMPRESSOR ENGINE (WITH NUMERIC FILENAME EXPORT)
         let activeCropper = null;
         document.getElementById('cropperInput').addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -823,7 +836,6 @@
             const downloadBtnArea = document.getElementById('cropDownloadBtn');
 
             if (format === 'application/pdf') {
-                // PDF Export Mode via pdf-lib
                 canvas.toBlob(async (blob) => {
                     const arrayBuffer = await blob.arrayBuffer();
                     const pdfDoc = await PDFLib.PDFDocument.create();
@@ -841,24 +853,25 @@
 
                     metrics.innerHTML = `<strong>Dimensions:</strong> ${canvas.width} x ${canvas.height}px | <strong>Format:</strong> PDF | <strong>Size:</strong> ${sizeKb} KB`;
                     const downloadUrl = URL.createObjectURL(pdfBlob);
+                    const numericName = getNumericFilename('pdf');
                     downloadBtnArea.innerHTML = `
-                        <a href="${downloadUrl}" download="cropped_compressed.pdf" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
-                            Download PDF (.pdf)
+                        <a href="${downloadUrl}" download="${numericName}" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
+                            Download (${numericName})
                         </a>
                     `;
                     document.getElementById('cropOutputResult').classList.remove('hidden');
                 }, 'image/jpeg', quality);
             } else {
-                // Standard Image Export (JPEG, PNG, WEBP)
                 const ext = format.split('/')[1];
                 canvas.toBlob((blob) => {
                     const sizeKb = (blob.size / 1024).toFixed(1);
                     metrics.innerHTML = `<strong>Dimensions:</strong> ${canvas.width} x ${canvas.height}px | <strong>Size:</strong> ${sizeKb} KB`;
 
                     const downloadUrl = URL.createObjectURL(blob);
+                    const numericName = getNumericFilename(ext);
                     downloadBtnArea.innerHTML = `
-                        <a href="${downloadUrl}" download="cropped_compressed.${ext}" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
-                            Download Image (${ext.toUpperCase()})
+                        <a href="${downloadUrl}" download="${numericName}" class="bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs px-4 py-2 rounded shadow">
+                            Download (${numericName})
                         </a>
                     `;
                     document.getElementById('cropOutputResult').classList.remove('hidden');
@@ -907,7 +920,7 @@
                         const imgUrl = canvas.toDataURL('image/jpeg');
                         const a = document.createElement('a');
                         a.href = imgUrl;
-                        a.download = `page_${i}.jpg`;
+                        a.download = getNumericFilename('jpg');
                         a.className = "bg-blue-900 text-white px-3 py-1.5 rounded text-xs hover:bg-blue-950 inline-block m-1 font-semibold shadow";
                         a.innerText = `Download Page ${i} (JPG)`;
                         output.appendChild(a);
@@ -921,7 +934,7 @@
                         page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
                     }
                     const pdfBytes = await pdfDoc.save();
-                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), 'converted_images.pdf', output);
+                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), getNumericFilename('pdf'), output);
                 } else if (activeConvertMode === 'excel-to-pdf') {
                     const file = files[0];
                     const data = await file.arrayBuffer();
@@ -933,7 +946,7 @@
                     const page = pdfDoc.addPage();
                     page.drawText(csvText.substring(0, 1800), { x: 30, y: page.getHeight() - 50, size: 9 });
                     const pdfBytes = await pdfDoc.save();
-                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), 'excel_converted.pdf', output);
+                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), getNumericFilename('pdf'), output);
                 } else if (activeConvertMode === 'pdf-to-word') {
                     const file = files[0];
                     const arrayBuffer = await file.arrayBuffer();
@@ -946,7 +959,7 @@
                         fullText += `--- Page ${i} ---\n` + pageText + "\n\n";
                     }
                     const blob = new Blob([fullText], {type: 'text/plain;charset=utf-8'});
-                    renderDownloadLink(blob, 'extracted_document.txt', output, 'Download Extracted Word/Text File (.txt)');
+                    renderDownloadLink(blob, getNumericFilename('txt'), output, 'Download Extracted File');
                 } else if (activeConvertMode === 'pdf-to-excel-data') {
                     const file = files[0];
                     const arrayBuffer = await file.arrayBuffer();
@@ -959,7 +972,7 @@
                         csvContent += `${i},"${pageText}"\n`;
                     }
                     const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8'});
-                    renderDownloadLink(blob, 'extracted_table_data.csv', output, 'Download Extracted Excel Data (.csv)');
+                    renderDownloadLink(blob, getNumericFilename('csv'), output, 'Download Extracted Data');
                 } else if (activeConvertMode === 'doc-to-pdf') {
                     const file = files[0];
                     const textContent = await file.text();
@@ -967,7 +980,7 @@
                     const page = pdfDoc.addPage();
                     page.drawText(textContent.substring(0, 1500) || "Amritsar Law College Document Conversion", { x: 40, y: page.getHeight() - 60, size: 11 });
                     const pdfBytes = await pdfDoc.save();
-                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), 'document_converted.pdf', output);
+                    renderDownloadLink(new Blob([pdfBytes], {type: 'application/pdf'}), getNumericFilename('pdf'), output);
                 }
             } catch (err) {
                 console.error(err);
@@ -975,14 +988,14 @@
             }
         });
 
-        function renderDownloadLink(blob, filename, container, label = 'Download Converted File') {
+        function renderDownloadLink(blob, filename, container, label = 'Download File') {
             container.innerHTML = '';
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = filename;
             a.className = "bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-lg shadow-lg text-sm transition inline-flex items-center gap-2 mt-2";
-            a.innerHTML = `<span>📥</span> ${label}`;
+            a.innerHTML = `<span>📥</span> ${label} (${filename})`;
             container.appendChild(a);
         }
 
@@ -1003,7 +1016,7 @@
             pages.forEach(p => p.setRotation(PDFLib.degrees(p.getRotation().angle + 90)));
             currentPdfBytes = await pdfDoc.save();
             alert('All pages rotated by 90 degrees.');
-            triggerPdfDownload(currentPdfBytes, 'rotated.pdf');
+            triggerPdfDownload(currentPdfBytes, getNumericFilename('pdf'));
         }
 
         async function addTextToPdf() {
@@ -1014,7 +1027,7 @@
             const pages = pdfDoc.getPages();
             pages.forEach(p => p.drawText(text, { x: 50, y: 50, size: 24, color: PDFLib.rgb(0.9, 0.1, 0.1) }));
             currentPdfBytes = await pdfDoc.save();
-            triggerPdfDownload(currentPdfBytes, 'stamped_text.pdf');
+            triggerPdfDownload(currentPdfBytes, getNumericFilename('pdf'));
         }
 
         async function addImageToPdf() {
@@ -1027,7 +1040,7 @@
             const pages = pdfDoc.getPages();
             pages[0].drawImage(image, { x: 50, y: 50, width: 100, height: 100 });
             currentPdfBytes = await pdfDoc.save();
-            triggerPdfDownload(currentPdfBytes, 'stamped_image.pdf');
+            triggerPdfDownload(currentPdfBytes, getNumericFilename('pdf'));
         }
 
         // PDF SECURITY & WATERMARK
@@ -1039,7 +1052,7 @@
             const pdfDoc = await PDFLib.PDFDocument.load(bytes);
             const pdfBytes = await pdfDoc.save();
             alert(`Password encryption setting registered for target output.`);
-            triggerPdfDownload(pdfBytes, 'protected.pdf');
+            triggerPdfDownload(pdfBytes, getNumericFilename('pdf'));
         }
 
         async function unlockPdf() {
@@ -1048,7 +1061,7 @@
             const bytes = await file.arrayBuffer();
             const pdfDoc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
             const pdfBytes = await pdfDoc.save();
-            triggerPdfDownload(pdfBytes, 'unlocked.pdf');
+            triggerPdfDownload(pdfBytes, getNumericFilename('pdf'));
         }
 
         async function addPageNumbers() {
@@ -1060,7 +1073,7 @@
             pages.forEach((p, idx) => {
                 p.drawText(`Page ${idx + 1} of ${pages.length}`, { x: p.getWidth() - 100, y: 20, size: 10 });
             });
-            triggerPdfDownload(await pdfDoc.save(), 'numbered.pdf');
+            triggerPdfDownload(await pdfDoc.save(), getNumericFilename('pdf'));
         }
 
         async function addWatermark() {
@@ -1073,7 +1086,7 @@
             pages.forEach(p => {
                 p.drawText(text, { x: p.getWidth() / 4, y: p.getHeight() / 2, size: 48, opacity: 0.3, rotate: PDFLib.degrees(45) });
             });
-            triggerPdfDownload(await pdfDoc.save(), 'watermarked.pdf');
+            triggerPdfDownload(await pdfDoc.save(), getNumericFilename('pdf'));
         }
 
         // IMAGE PROCESSING
@@ -1097,8 +1110,9 @@
                         res.innerHTML = `Original: ${(file.size/1024).toFixed(1)}KB | Compressed: ${(blob.size/1024).toFixed(1)}KB<br>`;
                         const a = document.createElement('a');
                         a.href = URL.createObjectURL(blob);
-                        a.download = `compressed_${file.name}`;
-                        a.innerText = 'Download Compressed Image';
+                        const fileName = getNumericFilename('jpg');
+                        a.download = fileName;
+                        a.innerText = `Download (${fileName})`;
                         a.className = 'text-blue-900 underline font-bold mt-1 inline-block';
                         res.appendChild(a);
                     }, 'image/jpeg', quality);
@@ -1126,8 +1140,9 @@
                     const dataUrl = canvas.toDataURL(format);
                     const a = document.createElement('a');
                     a.href = dataUrl;
-                    a.download = `converted.${ext}`;
-                    a.innerText = `Download ${ext.toUpperCase()}`;
+                    const fileName = getNumericFilename(ext);
+                    a.download = fileName;
+                    a.innerText = `Download (${fileName})`;
                     a.className = 'bg-emerald-700 text-white px-3 py-1.5 rounded text-xs font-semibold inline-block mt-2';
                     const res = document.getElementById('convertResult');
                     res.innerHTML = '';
@@ -1161,8 +1176,9 @@
                 const blob = new Blob([e.target.result], { type: 'audio/wav' });
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(blob);
-                a.download = 'converted.wav';
-                a.innerText = 'Download Processed WAV Audio';
+                const fileName = getNumericFilename('wav');
+                a.download = fileName;
+                a.innerText = `Download (${fileName})`;
                 a.className = 'text-xs text-emerald-700 font-bold underline mt-2 block';
                 res.innerHTML = '';
                 res.appendChild(a);
@@ -1313,7 +1329,7 @@
             });
         });
 
-        // Initialize default tab to Photo Crop & Compress
+        // Default tab set to Photo Crop & Compress
         switchTab('photo-crop-compress');
         convertUnits();
     </script>
