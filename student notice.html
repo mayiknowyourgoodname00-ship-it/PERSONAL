@@ -292,7 +292,7 @@
                     <input type="text" id="refSuffix" class="form-control" value="-263">
                 </div>
                 
-                <!-- Notice Date with Pin Protection for Backdates -->
+                <!-- Notice Date -->
                 <div class="col-md-2">
                     <label class="form-label fw-bold text-danger"><i class="fa-solid fa-calendar-day me-1"></i> Notice Date</label>
                     <input type="date" id="noticeDate" class="form-control border-danger fw-bold" onchange="validateNoticeDate(this)">
@@ -732,6 +732,20 @@
             }
         }
 
+        // Helper to get normalized value from row matching key variants
+        function getRowVal(normalizedRow, rawRow, possibleKeys) {
+            for (let k of possibleKeys) {
+                let keyNorm = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (normalizedRow[keyNorm] !== undefined && normalizedRow[keyNorm] !== null && String(normalizedRow[keyNorm]).trim() !== "") {
+                    return String(normalizedRow[keyNorm]).trim();
+                }
+                if (rawRow[k] !== undefined && rawRow[k] !== null && String(rawRow[k]).trim() !== "") {
+                    return String(rawRow[k]).trim();
+                }
+            }
+            return null;
+        }
+
         function processExcel() {
             const fileInput = document.getElementById('excelFile');
             const threshold = parseFloat(document.getElementById('threshold').value) || 75;
@@ -748,7 +762,7 @@
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
                 const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
                 if (jsonData.length === 0) {
                     alert("Uploaded Excel file is empty!");
@@ -759,18 +773,38 @@
                 shortageStudents = [];
 
                 jsonData.forEach((row, index) => {
-                    const rollNo = row['University Roll No'] || row['Roll No'] || row['RollNo'] || 'N/A';
-                    const name = row['Student Name'] || row['Name'] || 'N/A';
-                    const fatherName = row["Father's Name"] || row['Father Name'] || row['Father'] || 'N/A';
-                    const course = row['Course / Semester'] || row['Course'] || row['Class'] || 'N/A';
-                    const total = parseFloat(row['Total Classes'] || row['Total']) || 0;
-                    const attended = parseFloat(row['Attended Classes'] || row['Attended']) || 0;
+                    // Build normalized key-value map for robust field matching
+                    let normRow = {};
+                    Object.keys(row).forEach(k => {
+                        let cleanK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+                        normRow[cleanK] = row[k];
+                    });
+
+                    // Comprehensive column keys lookup
+                    const rollNo = getRowVal(normRow, row, ['University Roll No', 'Roll No', 'RollNo', 'Roll_No', 'Uni Roll No', 'Reg No', 'Registration No']) || 'N/A';
+                    const name = getRowVal(normRow, row, ['Student Name', 'Name', 'Student_Name', 'Candidate Name', 'Student']) || 'N/A';
                     
-                    let percentage = row['Attendance Percentage'] || row['Percentage'];
-                    if (percentage === undefined || percentage === null) {
-                        percentage = total > 0 ? ((attended / total) * 100).toFixed(2) : 0;
+                    // Comprehensive Father Name Detection
+                    const fatherName = getRowVal(normRow, row, [
+                        "Father's Name", "Fathers Name", "Father Name", "Father_Name", 
+                        "Father", "F_Name", "S/O", "D/O", "Fathers_Name", "Guardian Name"
+                    ]) || 'N/A';
+
+                    const course = getRowVal(normRow, row, ['Course / Semester', 'Course', 'Semester', 'Class', 'Branch', 'Stream']) || 'N/A';
+                    
+                    const totalVal = getRowVal(normRow, row, ['Total Classes', 'Total', 'Total_Classes', 'Max Classes', 'Total Lectures']) || '0';
+                    const total = parseFloat(totalVal) || 0;
+
+                    const attendedVal = getRowVal(normRow, row, ['Attended Classes', 'Attended', 'Attended_Classes', 'Present', 'Attended Lectures']) || '0';
+                    const attended = parseFloat(attendedVal) || 0;
+
+                    let percentageVal = getRowVal(normRow, row, ['Attendance Percentage', 'Percentage', 'Pct', '%', 'Att %']);
+                    let percentage = 0;
+
+                    if (percentageVal !== null) {
+                        percentage = parseFloat(String(percentageVal).replace('%', '')).toFixed(2);
                     } else {
-                        percentage = parseFloat(percentage).toFixed(2);
+                        percentage = total > 0 ? ((attended / total) * 100).toFixed(2) : 0;
                     }
 
                     const stObj = { id: index, rollNo, name, fatherName, course, total, attended, percentage, selected: true };
@@ -800,7 +834,7 @@
                     </td>
                     <td class="text-center"><strong>${st.rollNo}</strong></td>
                     <td>${st.name}</td>
-                    <td>${st.fatherName}</td>
+                    <td><strong class="${st.fatherName === 'N/A' ? 'text-danger' : 'text-primary'}">${st.fatherName}</strong></td>
                     <td>${st.course}</td>
                     <td class="text-center">${st.attended} / ${st.total}</td>
                     <td class="text-center text-danger fw-bold">${st.percentage}%</td>
