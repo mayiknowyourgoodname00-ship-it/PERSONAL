@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short Attendance System - Amritsar Law College</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- SheetJS for Excel Reading and Writing -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- jsPDF & html2canvas for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --alc-primary: #1a365d;
+            --alc-gold: #c59b27;
+            --alc-bg: #f8fafc;
+        }
+
+        body {
+            background-color: var(--alc-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2d3748;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, #0d233a, #1a365d);
+            color: white;
+            padding: 1.2rem 0 0.5rem 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-bottom: 4px solid var(--alc-gold);
+            overflow: hidden;
+        }
+
+        /* Marquee / Scrolling Ticker Style */
+        .scrolling-ticker-wrapper {
+            background: rgba(0, 0, 0, 0.25);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: 10px;
+            padding: 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .scrolling-ticker-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 18s linear infinite;
+            font-size: 0.9rem;
+            letter-spacing: 0.8px;
+            color: #fef08a;
+            font-weight: 600;
+        }
+
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        .card-custom {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: #ffffff;
+            margin-bottom: 1.5rem;
+        }
+
+        .control-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--alc-primary);
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Certificate Box Frame */
+        #certificateContainer {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+        }
+
+        .certificate-box {
+            width: 800px;
+            height: 1080px;
+            padding: 40px;
+            background: #fff;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+            position: relative;
+            color: #000;
+            border: 12px double #1a365d;
+            outline: 2px solid #c59b27;
+            outline-offset: -7px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .watermark-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+            object-fit: contain;
+        }
+
+        .cert-content-wrapper {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cert-header-img {
+            max-width: 100%;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .fallback-header {
+            text-align: center;
+            border-bottom: 2px solid #1a365d;
+            padding-bottom: 10px;
+        }
+
+        .fallback-header h2 {
+            font-weight: bold;
+            color: #1a365d;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .cert-title {
+            text-align: center;
+            font-weight: bold;
+            text-decoration: underline;
+            text-transform: uppercase;
+            margin: 20px 0;
+        }
+
+        .cert-body {
+            line-height: 1.85;
+            color: #111;
+        }
+
+        .cert-footer-container {
+            margin-top: 20px;
+            padding-bottom: 5px;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            text-align: center;
+        }
+
+        .sign-column {
+            width: 31%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            min-height: 120px;
+        }
+
+        .sign-img {
+            object-fit: contain;
+            display: block;
+        }
+
+        .stamp-img {
+            position: absolute;
+            bottom: -15px;
+            right: 0px;
+            opacity: 0.85;
+            z-index: 3;
+            object-fit: contain;
+        }
+
+        .sign-title {
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .sign-sub {
+            margin: 0;
+            color: #222;
+        }
+
+        .admin-inquiry-footer {
+            text-align: center;
+            font-size: 13px;
+            font-style: italic;
+            font-weight: 600;
+            color: #334155;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 8px;
+            margin-top: 12px;
+        }
+
+        .slider-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        #previewModalBody .certificate-box {
+            transform: scale(0.82);
+            transform-origin: top center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <header class="header-banner mb-4">
+        <div class="container text-center">
+            <h2 class="fw-bold"><i class="fa-solid fa-graduation-cap me-2"></i>AMRITSAR LAW COLLEGE, AMRITSAR</h2>
+            <p class="mb-0 lead fs-6">Official Shortage Notice Generator & Attendance Control System</p>
+        </div>
+        
+        <!-- Scrolling Text Managed by Admin Office -->
+        <div class="scrolling-ticker-wrapper">
+            <div class="scrolling-ticker-text">
+                <i class="fa-solid fa-building-columns me-2"></i>Managed by Admin Office | Amritsar Law College Attendance Control Portal
+            </div>
+        </div>
+    </header>
+
+    <div class="container pb-5">
+        
+        <!-- Step 1: Excel Import & Bulk Options -->
+        <div class="card card-custom p-4">
+            <div class="control-section-title"><i class="fa-solid fa-file-excel text-success me-2"></i>1. Import Excel Records & Export Options</div>
+            <div class="row g-3 align-items-center mb-2">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Select Student Excel File (.xlsx, .xls)</label>
+                    <input type="file" id="excelFile" class="form-control" accept=".xlsx, .xls">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold"><i class="fa-solid fa-percent text-warning me-1"></i> Min Attendance (%)</label>
+                    <input type="number" id="threshold" class="form-control" value="75" min="0" max="100">
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <button id="processBtn" class="btn btn-primary me-2 flex-grow-1" onclick="processExcel()">
+                        <i class="fa-solid fa-gear me-1"></i> Process Data
+                    </button>
+                    <button id="downloadPdfBtn" class="btn btn-danger me-2 flex-grow-1" onclick="generatePDFs()" disabled>
+                        <i class="fa-solid fa-file-pdf me-1"></i> Build Selected PDFs
+                    </button>
+                    <button id="exportExcelBtn" class="btn btn-success flex-grow-1" onclick="exportSelectedExcel()" disabled>
+                        <i class="fa-solid fa-file-excel me-1"></i> Export Selected Excel
+                    </button>
+                </div>
+            </div>
+            <small class="text-muted">
+                * Expected Columns: <strong>Roll No, Student Name, Father Name, Course / Semester, Total Classes, Attended Classes</strong>
+            </small>
+        </div>
+
+        <!-- Step 2: Notice Reference & Dynamic Date Settings -->
+        <div class="card card-custom p-4">
+            <div class="control-section-title"><i class="fa-solid fa-sliders text-primary me-2"></i>2. Notice Reference & Academic Session Options</div>
+            
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Ref No Prefix</label>
+                    <input type="text" id="refPrefix" class="form-control" value="ALC/PDR/2026/03/">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Start Ref Counter</label>
+                    <input type="number" id="refCounter" class="form-control" value="108">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Ref Suffix</label>
+                    <input type="text" id="refSuffix" class="form-control" value="-263">
+                </div>
+                
+                <!-- Notice Date with Pin Protection for Backdates -->
+                <div class="col-md-2">
+                    <label class="form-label fw-bold text-danger"><i class="fa-solid fa-calendar-day me-1"></i> Notice Date</label>
+                    <input type="date" id="noticeDate" class="form-control border-danger fw-bold" onchange="validateNoticeDate(this)">
+                </div>
+
+                <!-- Academic Session Single-Select Dropdown -->
+                <div class="col-md-3">
+                    <label class="form-label fw-bold text-primary"><i class="fa-solid fa-square-check me-1"></i> Academic Session</label>
+                    <select id="sessionDropdown" class="form-select border-primary fw-semibold" onchange="toggleCustomSession(this.value); updValues();">
+                        <option value="BA LLB 1ST SEM (2026-2031)">BA LLB 1ST SEM (2026-2031)</option>
+                        <option value="BA LLB 3RD SEM (2025-2030)">BA LLB 3RD SEM (2025-2030)</option>
+                        <option value="BA LLB 5TH SEM (2024-2029)">BA LLB 5TH SEM (2024-2029)</option>
+                        <option value="BA LLB 7TH SEM (2023-2028)">BA LLB 7TH SEM (2023-2028)</option>
+                        <option value="BA LLB 9TH SEM (2022-2027)">BA LLB 9TH SEM (2022-2027)</option>
+                        <option value="LLB 1ST SEM (2026-2029)" selected>LLB 1ST SEM (2026-2029)</option>
+                        <option value="CUSTOM">-- Custom Session Input --</option>
+                    </select>
+                    <input type="text" id="customSessionInput" class="form-control mt-2" placeholder="Enter custom session..." style="display: none;" oninput="updValues()">
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <!-- Fixed Fields -->
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Semester Duration <span class="badge bg-secondary ms-1">Fixed</span></label>
+                    <input type="text" id="semesterMonths" class="form-control bg-light" value="August 2026 - December 2026" disabled readonly>
+                </div>
+                
+                <!-- Dynamic Coordinator Selection -->
+                <div class="col-md-3">
+                    <label class="form-label fw-bold text-primary"><i class="fa-solid fa-user-tie me-1"></i> Coordinator Name</label>
+                    <select id="coordinatorSelect" class="form-select border-primary fw-semibold" onchange="updateCoordinatorMobile(); updValues();">
+                        <option value="Dr. Kiranpreet Kaur">Dr. Kiranpreet Kaur</option>
+                        <option value="Dr. Shefali">Dr. Shefali</option>
+                        <option value="Dr. Shivani Arora">Dr. Shivani Arora</option>
+                        <option value="Mr. Amit Kumar">Mr. Amit Kumar</option>
+                        <option value="Mr. Surinder Singh">Mr. Surinder Singh</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold text-primary"><i class="fa-solid fa-phone me-1"></i> Coordinator Mobile</label>
+                    <input type="text" id="coordinatorMobile" class="form-control border-primary fw-semibold" value="9814852477" oninput="updValues()">
+                </div>
+
+                <!-- Fixed Principal Name -->
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Principal Name <span class="badge bg-secondary ms-1">Fixed</span></label>
+                    <input type="text" id="principalName" class="form-control bg-light" value="Dr. Avon Kumar Vaid" disabled readonly>
+                </div>
+            </div>
+
+            <!-- Admin Office Disclaimer Customization Section -->
+            <div class="p-3 bg-light rounded border">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label class="form-label fw-bold text-dark mb-0">
+                        <i class="fa-solid fa-circle-info me-1 text-info"></i> Admin Office Inquiry Disclaimer Text
+                    </label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="showAdminDisclaimer" checked onchange="updValues()">
+                        <label class="form-check-input-label fw-bold text-primary" for="showAdminDisclaimer">Show Disclaimer on Letter</label>
+                    </div>
+                </div>
+                <input type="text" id="adminDisclaimerText" class="form-control mt-2" value="Managed by Admin Office. If any inquiry, please contact the Admin Office." oninput="updValues()">
+            </div>
+        </div>
+
+        <!-- Step 3: Color Contrast & Multi-Color Wording Options -->
+        <div class="card card-custom p-4">
+            <div class="control-section-title"><i class="fa-solid fa-palette text-warning me-2"></i>3. Color Contrast & Wording Formatting Options</div>
+            
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Border & Accent Color</label>
+                    <input type="color" id="colorPrimary" class="form-control form-control-color w-100" value="#1a365d" onchange="updValues()">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Notice Title Color</label>
+                    <input type="color" id="colorTitle" class="form-control form-control-color w-100" value="#b91c1c" onchange="updValues()">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Student Details Color</label>
+                    <input type="color" id="colorStudent" class="form-control form-control-color w-100" value="#1e40af" onchange="updValues()">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Warning/Alert Highlight Color</label>
+                    <input type="color" id="colorHighlight" class="form-control form-control-color w-100" value="#991b1b" onchange="updValues()">
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Body Text Alignment</label>
+                    <select id="textAlign" class="form-select" onchange="updValues()">
+                        <option value="justify" selected>Justify (Standard)</option>
+                        <option value="left">Left Align</option>
+                        <option value="center">Center Align</option>
+                        <option value="right">Right Align</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <div class="slider-box">
+                        <label class="form-label fw-bold small">Paragraph Tab/Indent: <span id="v_textTab">30</span>px</label>
+                        <input type="range" class="form-range" id="textTab" min="0" max="80" value="30" oninput="updValues()">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="slider-box">
+                        <label class="form-label fw-bold small">Header Title Size: <span id="v_fsHeader">24</span>px</label>
+                        <input type="range" class="form-range" id="fsHeader" min="16" max="36" value="24" oninput="updValues()">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="slider-box">
+                        <label class="form-label fw-bold small">Notice Title Size: <span id="v_fsTitle">20</span>px</label>
+                        <input type="range" class="form-range" id="fsTitle" min="16" max="32" value="20" oninput="updValues()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="slider-box">
+                        <label class="form-label fw-bold small">Body Text Font Size: <span id="v_fsBody">17</span>px</label>
+                        <input type="range" class="form-range" id="fsBody" min="12" max="24" value="17" oninput="updValues()">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="slider-box">
+                        <label class="form-label fw-bold small">Footer Label Size: <span id="v_fsFooter">14</span>px</label>
+                        <input type="range" class="form-range" id="fsFooter" min="10" max="20" value="14" oninput="updValues()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Images & Background Watermark Uploads -->
+        <div class="card card-custom p-4">
+            <div class="control-section-title"><i class="fa-solid fa-image text-info me-2"></i>4. Upload & Position Images, Signatures & Stamps</div>
+            
+            <div class="row g-4">
+                <!-- Watermark -->
+                <div class="col-12 border-bottom pb-3">
+                    <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-shield-halved me-1"></i> Background Watermark Logo (Center)</h6>
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <input type="file" class="form-control" accept="image/*" onchange="readImg(this, 'bgLogo')">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row g-2 small">
+                                <div class="col-md-3">Width: <span id="v_wSize">350</span>px <input type="range" class="form-range" id="wSize" min="100" max="650" value="350" oninput="updValues()"></div>
+                                <div class="col-md-3">Opacity: <span id="v_wOpacity">0.12</span> <input type="range" class="form-range" id="wOpacity" min="0.02" max="0.5" step="0.01" value="0.12" oninput="updValues()"></div>
+                                <div class="col-md-3">Top: <span id="v_wTop">0</span>px <input type="range" class="form-range" id="wTop" min="-200" max="200" value="0" oninput="updValues()"></div>
+                                <div class="col-md-3">Left: <span id="v_wLeft">0</span>px <input type="range" class="form-range" id="wLeft" min="-200" max="200" value="0" oninput="updValues()"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Header Image -->
+                <div class="col-md-6 border-end">
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-heading me-1"></i> Header Image</h6>
+                    <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'headerImg')">
+                    <div class="row g-2 small">
+                        <div class="col-md-4">Width: <span id="v_hSize">700</span>px <input type="range" class="form-range" id="hSize" min="200" max="720" value="700" oninput="updValues()"></div>
+                        <div class="col-md-2">Top: <span id="v_hTop">0</span>px <input type="range" class="form-range" id="hTop" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_hBot">0</span>px <input type="range" class="form-range" id="hBot" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Left: <span id="v_hLeft">0</span>px <input type="range" class="form-range" id="hLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Right: <span id="v_hRight">0</span>px <input type="range" class="form-range" id="hRight" min="-50" max="100" value="0" oninput="updValues()"></div>
+                    </div>
+                </div>
+
+                <!-- Coordinator Signature -->
+                <div class="col-md-6">
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-signature me-1"></i> Class Coordinator Signature</h6>
+                    <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'coordSig')">
+                    <div class="row g-2 small">
+                        <div class="col-md-4">Width: <span id="v_cSize">140</span>px <input type="range" class="form-range" id="cSize" min="50" max="250" value="140" oninput="updValues()"></div>
+                        <div class="col-md-2">Top: <span id="v_cTop">0</span>px <input type="range" class="form-range" id="cTop" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_cBot">0</span>px <input type="range" class="form-range" id="cBot" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Left: <span id="v_cLeft">0</span>px <input type="range" class="form-range" id="cLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Right: <span id="v_cRight">0</span>px <input type="range" class="form-range" id="cRight" min="-50" max="100" value="0" oninput="updValues()"></div>
+                    </div>
+                </div>
+
+                <!-- Academic In-Charge Signature -->
+                <div class="col-md-4 border-end">
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-user-check me-1"></i> Academic In-Charge Signature</h6>
+                    <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'acadSig')">
+                    <div class="row g-2 small">
+                        <div class="col-md-4">Width: <span id="v_aSize">140</span>px <input type="range" class="form-range" id="aSize" min="50" max="250" value="140" oninput="updValues()"></div>
+                        <div class="col-md-2">Top: <span id="v_aTop">0</span>px <input type="range" class="form-range" id="aTop" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_aBot">0</span>px <input type="range" class="form-range" id="aBot" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Left: <span id="v_aLeft">0</span>px <input type="range" class="form-range" id="aLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Right: <span id="v_aRight">0</span>px <input type="range" class="form-range" id="aRight" min="-50" max="100" value="0" oninput="updValues()"></div>
+                    </div>
+                </div>
+
+                <!-- Principal Signature -->
+                <div class="col-md-4 border-end">
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-pen-nib me-1"></i> Principal Signature</h6>
+                    <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'pSig')">
+                    <div class="row g-2 small">
+                        <div class="col-md-4">Width: <span id="v_pSize">140</span>px <input type="range" class="form-range" id="pSize" min="50" max="250" value="140" oninput="updValues()"></div>
+                        <div class="col-md-2">Top: <span id="v_pTop">0</span>px <input type="range" class="form-range" id="pTop" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_pBot">0</span>px <input type="range" class="form-range" id="pBot" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Left: <span id="v_pLeft">0</span>px <input type="range" class="form-range" id="pLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Right: <span id="v_pRight">0</span>px <input type="range" class="form-range" id="pRight" min="-50" max="100" value="0" oninput="updValues()"></div>
+                    </div>
+                </div>
+
+                <!-- Principal Official Stamp -->
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-stamp me-1"></i> Principal Stamp (Bottom Positioned)</h6>
+                    <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'stamp')">
+                    <div class="row g-2 small">
+                        <div class="col-md-4">Width: <span id="v_sSize">90</span>px <input type="range" class="form-range" id="sSize" min="30" max="200" value="90" oninput="updValues()"></div>
+                        <div class="col-md-2">Top: <span id="v_sTop">0</span>px <input type="range" class="form-range" id="sTop" min="-100" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_sBot">0</span>px <input type="range" class="form-range" id="sBot" min="-100" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Left: <span id="v_sLeft">0</span>px <input type="range" class="form-range" id="sLeft" min="-100" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Right: <span id="v_sRight">0</span>px <input type="range" class="form-range" id="sRight" min="-100" max="100" value="0" oninput="updValues()"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Summary Bar -->
+        <div class="row mb-4" id="statsContainer" style="display: none;">
+            <div class="col-md-4">
+                <div class="card card-custom p-3 text-center border-start border-primary border-4">
+                    <h6 class="text-muted mb-1">Total Uploaded Records</h6>
+                    <h3 id="statTotal" class="fw-bold mb-0">0</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom p-3 text-center border-start border-danger border-4">
+                    <h6 class="text-muted mb-1">Shortage Flagged (<span id="threshVal">75</span>%)</h6>
+                    <h3 id="statShortage" class="text-danger fw-bold mb-0">0</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom p-3 text-center border-start border-success border-4">
+                    <h6 class="text-muted mb-1">Sufficient Attendance</h6>
+                    <h3 id="statOk" class="text-success fw-bold mb-0">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="card card-custom p-4" id="tableContainer" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-list-check me-2"></i>Student Records & Download Actions</h5>
+                <span class="badge bg-danger p-2 fs-6" id="recordCount">0 Records</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle" id="studentTable">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th style="width: 40px;"><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" checked></th>
+                            <th>Roll No</th>
+                            <th>Student Name</th>
+                            <th>Father Name</th>
+                            <th>Course / Semester</th>
+                            <th>Attended / Total</th>
+                            <th>Percentage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Live Preview Modal -->
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-eye me-2"></i>Single Notice Certificate Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body overflow-auto" id="previewModalBody" style="max-height: 80vh; background-color: #e2e8f0;"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="downloadSinglePDF(activePreviewIndex)">
+                        <i class="fa-solid fa-download me-1"></i> Download This PDF
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Off-Screen Render Container -->
+    <div id="certificateContainer"></div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let parsedStudents = [];
+        let shortageStudents = [];
+        let activePreviewIndex = 0;
+        let lastValidDate = "";
+
+        const SECURITY_PIN = "123456";
+
+        const coordinatorContacts = {
+            "Dr. Kiranpreet Kaur": "9814852477",
+            "Dr. Shefali": "9478179947",
+            "Dr. Shivani Arora": "9888654421",
+            "Mr. Amit Kumar": "9814852477",
+            "Mr. Surinder Singh": "9814852477"
+        };
+
+        const imgStore = {
+            bgLogo: null,
+            headerImg: null,
+            coordSig: null,
+            acadSig: null,
+            pSig: null,
+            stamp: null
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const todayStr = getTodayISO();
+            const dateInput = document.getElementById('noticeDate');
+            dateInput.value = todayStr;
+            lastValidDate = todayStr;
+
+            updateCoordinatorMobile();
+        });
+
+        function getTodayISO() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function validateNoticeDate(inputEl) {
+            const selectedVal = inputEl.value;
+            if (!selectedVal) return;
+
+            const todayStr = getTodayISO();
+
+            if (selectedVal < todayStr) {
+                const userPin = prompt("⚠️ Security Alert: Backdating requires authorization!\nPlease enter the PIN (e.g. 123456):");
+                
+                if (userPin === SECURITY_PIN) {
+                    alert("✅ Access Granted: Backdate approved.");
+                    lastValidDate = selectedVal;
+                    updValues();
+                } else {
+                    alert("❌ Incorrect PIN! Resetting to current date.");
+                    inputEl.value = lastValidDate || todayStr;
+                }
+            } else {
+                lastValidDate = selectedVal;
+                updValues();
+            }
+        }
+
+        function formatFormattedDate(isoDateStr) {
+            if (!isoDateStr) return "";
+            const parts = isoDateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return isoDateStr;
+        }
+
+        function updateCoordinatorMobile() {
+            const selectedName = document.getElementById('coordinatorSelect').value;
+            const mobileInput = document.getElementById('coordinatorMobile');
+            
+            if (coordinatorContacts[selectedName]) {
+                mobileInput.value = coordinatorContacts[selectedName];
+            }
+        }
+
+        function toggleCustomSession(val) {
+            const customInput = document.getElementById('customSessionInput');
+            if (val === 'CUSTOM') {
+                customInput.style.display = 'block';
+            } else {
+                customInput.style.display = 'none';
+            }
+        }
+
+        function getSelectedSession() {
+            const dropVal = document.getElementById('sessionDropdown').value;
+            if (dropVal === 'CUSTOM') {
+                return document.getElementById('customSessionInput').value || 'BALLB / LLB Session';
+            }
+            return dropVal;
+        }
+
+        function readImg(input, key) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imgStore[key] = e.target.result;
+                    refreshPreviewIfOpen();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function updValues() {
+            const keys = [
+                'textTab','fsHeader','fsTitle','fsBody','fsFooter',
+                'wSize','wOpacity','wTop','wLeft',
+                'hSize','hTop','hBot','hLeft','hRight',
+                'cSize','cTop','cBot','cLeft','cRight',
+                'aSize','aTop','aBot','aLeft','aRight',
+                'pSize','pTop','pBot','pLeft','pRight',
+                'sSize','sTop','sBot','sLeft','sRight'
+            ];
+
+            keys.forEach(k => {
+                const el = document.getElementById(k);
+                const disp = document.getElementById(`v_${k}`);
+                if (el && disp) disp.innerText = el.value;
+            });
+
+            refreshPreviewIfOpen();
+        }
+
+        function refreshPreviewIfOpen() {
+            const modalEl = document.getElementById('previewModal');
+            if (modalEl && modalEl.classList.contains('show') && shortageStudents.length > 0) {
+                document.getElementById('previewModalBody').innerHTML = buildCertificateHtml(shortageStudents[activePreviewIndex], activePreviewIndex);
+            }
+        }
+
+        function processExcel() {
+            const fileInput = document.getElementById('excelFile');
+            const threshold = parseFloat(document.getElementById('threshold').value) || 75;
+
+            if (!fileInput.files.length) {
+                alert("Please select an Excel file first!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                if (jsonData.length === 0) {
+                    alert("Uploaded Excel file is empty!");
+                    return;
+                }
+
+                parsedStudents = [];
+                shortageStudents = [];
+
+                jsonData.forEach((row, index) => {
+                    const rollNo = row['University Roll No'] || row['Roll No'] || row['RollNo'] || 'N/A';
+                    const name = row['Student Name'] || row['Name'] || 'N/A';
+                    const fatherName = row["Father's Name"] || row['Father Name'] || row['Father'] || 'N/A';
+                    const course = row['Course / Semester'] || row['Course'] || row['Class'] || 'N/A';
+                    const total = parseFloat(row['Total Classes'] || row['Total']) || 0;
+                    const attended = parseFloat(row['Attended Classes'] || row['Attended']) || 0;
+                    
+                    let percentage = row['Attendance Percentage'] || row['Percentage'];
+                    if (percentage === undefined || percentage === null) {
+                        percentage = total > 0 ? ((attended / total) * 100).toFixed(2) : 0;
+                    } else {
+                        percentage = parseFloat(percentage).toFixed(2);
+                    }
+
+                    const stObj = { id: index, rollNo, name, fatherName, course, total, attended, percentage, selected: true };
+                    parsedStudents.push(stObj);
+
+                    if (parseFloat(percentage) < threshold) {
+                        shortageStudents.push(stObj);
+                    }
+                });
+
+                renderTable(threshold);
+                updateStats(threshold);
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        function renderTable(threshold) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            shortageStudents.forEach((st, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="text-center">
+                        <input type="checkbox" class="student-checkbox" data-index="${idx}" ${st.selected ? 'checked' : ''} onchange="updateSelection(${idx}, this.checked)">
+                    </td>
+                    <td class="text-center"><strong>${st.rollNo}</strong></td>
+                    <td>${st.name}</td>
+                    <td>${st.fatherName}</td>
+                    <td>${st.course}</td>
+                    <td class="text-center">${st.attended} / ${st.total}</td>
+                    <td class="text-center text-danger fw-bold">${st.percentage}%</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="viewSingleNotice(${idx})">
+                            <i class="fa-solid fa-eye me-1"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="downloadSinglePDF(${idx})">
+                            <i class="fa-solid fa-file-pdf me-1"></i> Single PDF
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('tableContainer').style.display = 'block';
+            document.getElementById('recordCount').innerText = `${shortageStudents.length} Shortage Students`;
+            document.getElementById('downloadPdfBtn').disabled = shortageStudents.length === 0;
+            document.getElementById('exportExcelBtn').disabled = shortageStudents.length === 0;
+        }
+
+        function toggleSelectAll(masterHtml) {
+            const checkboxes = document.querySelectorAll('.student-checkbox');
+            checkboxes.forEach((cb, idx) => {
+                cb.checked = masterHtml.checked;
+                shortageStudents[idx].selected = masterHtml.checked;
+            });
+        }
+
+        function updateSelection(idx, isChecked) {
+            shortageStudents[idx].selected = isChecked;
+        }
+
+        function updateStats(threshold) {
+            document.getElementById('statTotal').innerText = parsedStudents.length;
+            document.getElementById('statShortage').innerText = shortageStudents.length;
+            document.getElementById('statOk').innerText = parsedStudents.length - shortageStudents.length;
+            document.getElementById('threshVal').innerText = threshold;
+            document.getElementById('statsContainer').style.display = 'flex';
+        }
+
+        function buildCertificateHtml(st, index) {
+            const refPrefix = document.getElementById('refPrefix').value;
+            let startCounter = parseInt(document.getElementById('refCounter').value) || 108;
+            const refSuffix = document.getElementById('refSuffix').value;
+            
+            const rawDate = document.getElementById('noticeDate').value;
+            const noticeDate = formatFormattedDate(rawDate);
+
+            const selectedSession = getSelectedSession();
+            const semesterMonths = document.getElementById('semesterMonths').value;
+            const coordinatorName = document.getElementById('coordinatorSelect').value;
+            const coordinatorMobile = document.getElementById('coordinatorMobile').value;
+            const principalName = document.getElementById('principalName').value;
+            const minReqPercent = document.getElementById('threshold').value;
+
+            // Admin Disclaimer Settings
+            const showAdminDisclaimer = document.getElementById('showAdminDisclaimer').checked;
+            const adminDisclaimerText = document.getElementById('adminDisclaimerText').value;
+
+            // Colors
+            const colorPrimary = document.getElementById('colorPrimary').value;
+            const colorTitle = document.getElementById('colorTitle').value;
+            const colorStudent = document.getElementById('colorStudent').value;
+            const colorHighlight = document.getElementById('colorHighlight').value;
+
+            // Formatting
+            const textAlign = document.getElementById('textAlign').value;
+            const textTab = document.getElementById('textTab').value;
+
+            // Font Sizes
+            const fsHeader = document.getElementById('fsHeader').value;
+            const fsTitle = document.getElementById('fsTitle').value;
+            const fsBody = document.getElementById('fsBody').value;
+            const fsFooter = document.getElementById('fsFooter').value;
+
+            // Image Dimensions
+            const hCss = `width:${document.getElementById('hSize').value}px; margin-top:${document.getElementById('hTop').value}px; margin-bottom:${document.getElementById('hBot').value}px; margin-left:${document.getElementById('hLeft').value}px; margin-right:${document.getElementById('hRight').value}px;`;
+            const cCss = `width:${document.getElementById('cSize').value}px; margin-top:${document.getElementById('cTop').value}px; margin-bottom:${document.getElementById('cBot').value}px; margin-left:${document.getElementById('cLeft').value}px; margin-right:${document.getElementById('cRight').value}px;`;
+            const aCss = `width:${document.getElementById('aSize').value}px; margin-top:${document.getElementById('aTop').value}px; margin-bottom:${document.getElementById('aBot').value}px; margin-left:${document.getElementById('aLeft').value}px; margin-right:${document.getElementById('aRight').value}px;`;
+            const pCss = `width:${document.getElementById('pSize').value}px; margin-top:${document.getElementById('pTop').value}px; margin-bottom:${document.getElementById('pBot').value}px; margin-left:${document.getElementById('pLeft').value}px; margin-right:${document.getElementById('pRight').value}px;`;
+            const sCss = `width:${document.getElementById('sSize').value}px; margin-top:${document.getElementById('sTop').value}px; margin-bottom:${document.getElementById('sBot').value}px; margin-left:${document.getElementById('sLeft').value}px; margin-right:${document.getElementById('sRight').value}px;`;
+            const wCss = `width:${document.getElementById('wSize').value}px; opacity:${document.getElementById('wOpacity').value}; margin-top:${document.getElementById('wTop').value}px; margin-left:${document.getElementById('wLeft').value}px;`;
+
+            const currentRefNo = `${refPrefix}${startCounter + index}${refSuffix}`;
+
+            const headerHtml = imgStore.headerImg ? 
+                `<img src="${imgStore.headerImg}" class="cert-header-img" style="${hCss}">` : 
+                `<div class="fallback-header" style="${hCss}; border-bottom-color: ${colorPrimary};">
+                    <h2 style="font-size: ${fsHeader}px; color: ${colorPrimary};">Amritsar Law College, Amritsar</h2>
+                    <small>Affiliated to Guru Nanak Dev University, Amritsar, & Approved by Bar Council of India, New Delhi.</small><br>
+                    <small>12 KM Stone, Amritsar Jalandhar G.T. Road, Amritsar - 143001.</small>
+                 </div>`;
+
+            const bgLogoHtml = imgStore.bgLogo ? `<img src="${imgStore.bgLogo}" class="watermark-logo" style="${wCss}">` : '';
+            const coordSigHtml = imgStore.coordSig ? `<img src="${imgStore.coordSig}" class="sign-img" style="${cCss}">` : '';
+            const acadSigHtml = imgStore.acadSig ? `<img src="${imgStore.acadSig}" class="sign-img" style="${aCss}">` : '';
+            const pSigHtml = imgStore.pSig ? `<img src="${imgStore.pSig}" class="sign-img" style="${pCss}">` : '';
+            const stampHtml = imgStore.stamp ? `<img src="${imgStore.stamp}" class="stamp-img" style="${sCss}">` : '';
+
+            const adminDisclaimerHtml = showAdminDisclaimer ? 
+                `<div class="admin-inquiry-footer">* ${adminDisclaimerText} *</div>` : '';
+
+            return `
+                <div class="certificate-box" style="border-color: ${colorPrimary}; outline-color: #c59b27;">
+                    ${bgLogoHtml}
+                    <div class="cert-content-wrapper">
+                        <div>
+                            ${headerHtml}
+
+                            <div class="d-flex justify-content-between mt-3 mb-3" style="font-size: ${parseInt(fsBody) - 1}px;">
+                                <div><strong>Ref No.</strong> <span style="color: ${colorPrimary}; font-weight: bold;">${currentRefNo}</span></div>
+                                <div><strong>Date:</strong> <span style="color: ${colorPrimary}; font-weight: bold;">${noticeDate}</span></div>
+                            </div>
+
+                            <div class="cert-title" style="font-size: ${fsTitle}px; color: ${colorTitle};">Notice Regarding Shortage of Attendance</div>
+
+                            <div class="cert-body" style="font-size: ${fsBody}px; text-align: ${textAlign};">
+                                <p class="mb-3" style="text-indent: ${textTab}px;">
+                                    This is to bring to your notice that <strong style="color: ${colorStudent}; font-size: 1.05em;">Mr/ Ms. ${st.name.toUpperCase()}</strong> son/daughter of <strong style="color: ${colorStudent};">${st.fatherName.toUpperCase()}</strong> of class <strong style="color: ${colorPrimary};">${st.course} - ${selectedSession}</strong>, University Roll No. <strong style="color: ${colorStudent};">${st.rollNo}</strong> is found to be irregular in attending regular academic lectures.
+                                </p>
+
+                                <p class="mb-3" style="text-indent: ${textTab}px;">
+                                    Therefore, s/he is falling short of the mandatory minimum <strong style="color: ${colorHighlight}; background-color: #fee2e2; padding: 0 4px; border-radius: 3px;">${minReqPercent}%</strong> attendance required to appear in the end semester examination as prescribed by <strong style="color: ${colorPrimary};">Guru Nanak Dev University, Amritsar</strong> and <strong style="color: ${colorPrimary};">Bar Council of India, New Delhi</strong>.
+                                </p>
+
+                                <p class="mb-4" style="text-indent: ${textTab}px;">
+                                    So, in order to fulfill this statutory requirement, s/he is strictly advised to remain present in all upcoming regular lectures for the remaining period of current semester <strong style="color: #047857;">(${semesterMonths})</strong>.
+                                </p>
+
+                                <p class="mt-3 mb-2" style="text-indent: 0px;">Feel free to contact the undersigned for any query.</p>
+                            </div>
+                        </div>
+
+                        <div class="cert-footer-container">
+                            <div class="footer-grid">
+                                <div class="sign-column">
+                                    ${coordSigHtml}
+                                    <p class="sign-title" style="font-size: ${fsFooter}px; color: ${colorPrimary};">Class Coordinator</p>
+                                    <p class="sign-title" style="font-size: ${parseInt(fsFooter) - 1}px;">${coordinatorName}</p>
+                                    <p class="sign-sub" style="font-size: ${parseInt(fsFooter) - 2}px; color: #475569;">Mob: ${coordinatorMobile}</p>
+                                </div>
+
+                                <div class="sign-column">
+                                    ${acadSigHtml}
+                                    <p class="sign-title" style="font-size: ${fsFooter}px; color: ${colorPrimary};">Academic In-Charge</p>
+                                    <p class="sign-sub" style="font-size: ${parseInt(fsFooter) - 2}px; color: #475569;">Amritsar Law College</p>
+                                </div>
+
+                                <div class="sign-column">
+                                    ${stampHtml}
+                                    ${pSigHtml}
+                                    <p class="sign-title" style="font-size: ${fsFooter}px; color: ${colorPrimary};">Principal</p>
+                                    <p class="sign-title" style="font-size: ${parseInt(fsFooter) - 1}px;">${principalName}</p>
+                                    <p class="sign-sub" style="font-size: ${parseInt(fsFooter) - 2}px; color: #475569;">Amritsar Law College</p>
+                                </div>
+                            </div>
+
+                            ${adminDisclaimerHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function viewSingleNotice(index) {
+            activePreviewIndex = index;
+            const st = shortageStudents[index];
+            document.getElementById('previewModalBody').innerHTML = buildCertificateHtml(st, index);
+
+            const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+            modal.show();
+        }
+
+        async function downloadSinglePDF(index) {
+            const st = shortageStudents[index];
+            const certContainer = document.getElementById('certificateContainer');
+
+            certContainer.innerHTML = buildCertificateHtml(st, index);
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+
+            const certElement = certContainer.querySelector('.certificate-box');
+            const canvas = await html2canvas(certElement, { scale: 2 });
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+            const imgWidth = 210;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+            pdf.save(`Notice_${st.rollNo}_${st.name.replace(/\s+/g, '_')}.pdf`);
+
+            certContainer.innerHTML = '';
+        }
+
+        async function generatePDFs() {
+            const selectedStudents = shortageStudents.filter(st => st.selected);
+
+            if (selectedStudents.length === 0) {
+                alert("Please select at least one student checkbox!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const certContainer = document.getElementById('certificateContainer');
+
+            const btn = document.getElementById('downloadPdfBtn');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-1"></i> Building PDFs...`;
+            btn.disabled = true;
+
+            for (let i = 0; i < selectedStudents.length; i++) {
+                const st = selectedStudents[i];
+
+                certContainer.innerHTML = buildCertificateHtml(st, i);
+
+                const certElement = certContainer.querySelector('.certificate-box');
+                const canvas = await html2canvas(certElement, { scale: 2 });
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+                const imgWidth = 210;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                if (i > 0) pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+            }
+
+            pdf.save(`Shortage_Notices_ALC_${new Date().toISOString().slice(0, 10)}.pdf`);
+
+            certContainer.innerHTML = '';
+            btn.innerHTML = `<i class="fa-solid fa-file-pdf me-1"></i> Build Selected PDFs`;
+            btn.disabled = false;
+        }
+
+        function exportSelectedExcel() {
+            const selectedStudents = shortageStudents.filter(st => st.selected);
+
+            if (selectedStudents.length === 0) {
+                alert("No students selected for Excel export!");
+                return;
+            }
+
+            const refPrefix = document.getElementById('refPrefix').value;
+            let startCounter = parseInt(document.getElementById('refCounter').value) || 108;
+            const refSuffix = document.getElementById('refSuffix').value;
+            const rawDate = document.getElementById('noticeDate').value;
+            const noticeDate = formatFormattedDate(rawDate);
+            const selectedSession = getSelectedSession();
+
+            const exportData = selectedStudents.map((st, idx) => ({
+                "Dispatch Ref No": `${refPrefix}${startCounter + idx}${refSuffix}`,
+                "Notice Date": noticeDate,
+                "Academic Session": selectedSession,
+                "University Roll No": st.rollNo,
+                "Student Name": st.name,
+                "Father Name": st.fatherName,
+                "Course / Semester": st.course,
+                "Attended Classes": st.attended,
+                "Total Classes": st.total,
+                "Attendance Percentage": `${st.percentage}%`,
+                "Status": "Shortage Flagged"
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Generated Notices");
+
+            XLSX.writeFile(workbook, `Selected_Shortage_Notices_ALC_${new Date().toISOString().slice(0, 10)}.xlsx`);
+        }
+    </script>
+</body>
+</html>
