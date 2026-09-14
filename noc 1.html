@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amritsar Law College - Certificate Studio Pro (A4 Optimized)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Exact A4 Print Page Setup */
+        @page {
+            size: A4 portrait;
+            margin: 0mm;
+        }
+
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print { 
+                display: none !important; 
+            }
+            .cert-page {
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                max-height: 297mm !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+            }
+        }
+        
+        /* Interactive Screen Display for Standard A4 Page */
+        .cert-page {
+            width: 210mm;
+            height: 297mm;
+            max-height: 297mm;
+            padding: 20mm 20mm 18mm 20mm;
+            margin: 0 auto;
+            background: #ffffff;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            page-break-after: always;
+            page-break-inside: avoid;
+        }
+
+        .official-stamp-badge {
+            border: 3px double #881337;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #881337;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 2px;
+            opacity: 0.88;
+            background-color: rgba(254, 242, 242, 0.4);
+            margin: auto;
+            font-size: 8px;
+            line-height: 1.1;
+        }
+        
+        /* Website Top Header Banner */
+        .site-marquee-wrapper {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            border-top: 2px solid #d97706;
+            border-bottom: 2px solid #d97706;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        .site-marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: scroll-right-to-left 14s linear infinite;
+        }
+
+        @keyframes scroll-right-to-left {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 min-h-screen text-slate-800">
+
+    <!-- WEBSITE SCROLL BANNER -->
+    <div class="site-marquee-wrapper no-print py-2">
+        <div id="topSiteMarquee" class="site-marquee-content font-bold text-sm tracking-widest text-amber-400 uppercase">
+            ✦ MANAGED BY ADMIN OFFICE ✦ AMRITSAR LAW COLLEGE ✦ OFFICIAL CERTIFICATE GENERATION SYSTEM ✦ MANAGED BY ADMIN OFFICE ✦
+        </div>
+    </div>
+
+    <!-- Dashboard Controls Panel -->
+    <div class="no-print max-w-7xl mx-auto my-6 p-6 bg-white rounded-xl shadow-2xl border border-slate-200">
+        <div class="flex justify-between items-center border-b pb-4 mb-5">
+            <div>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Amritsar Law College Studio</h1>
+                <p class="text-xs font-medium text-slate-500 mt-0.5">Strict Full-Page Single A4 Sheet Layout | Direct Print & PDF Export</p>
+            </div>
+            <span class="text-xs bg-amber-100 text-amber-900 font-bold px-3 py-1.5 rounded-full border border-amber-300 shadow-sm">Standard A4 Format (210mm × 297mm)</span>
+        </div>
+        
+        <!-- 1. General & Typography Controls -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Dispatch Base Ref</label>
+                <input type="text" id="dispatchPrefix" value="ALC/PDR/2026/08/" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-amber-500" oninput="generateCertificates()">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Starting Serial No.</label>
+                <input type="number" id="dispatchStart" value="162" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-amber-500" oninput="generateCertificates()">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Editable Place</label>
+                <input type="text" id="placeText" value="Amritsar" class="w-full p-2 border rounded text-sm font-semibold focus:ring-2 focus:ring-amber-500" oninput="generateCertificates()">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Editable Issue Date</label>
+                <input type="text" id="issueDateDisplay" value="20/08/2026" class="w-full p-2 border rounded text-sm font-semibold focus:ring-2 focus:ring-amber-500" oninput="generateCertificates()">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Font Style</label>
+                <select id="fontFamilySelect" class="w-full p-2 border rounded text-sm bg-white font-semibold" onchange="generateCertificates()">
+                    <option value="'Cinzel', serif" selected>Cinzel (Royal Institutional)</option>
+                    <option value="'Times New Roman', Times, serif">Times New Roman (Classic)</option>
+                    <option value="'EB Garamond', serif">EB Garamond (Academic)</option>
+                    <option value="'Playfair Display', serif">Playfair Display (Elegant)</option>
+                    <option value="'Merriweather', serif">Merriweather (Book)</option>
+                    <option value="'Georgia', serif">Georgia (Clean Serif)</option>
+                    <option value="'Montserrat', sans-serif">Montserrat (Sans-Serif)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 2. Header & Banner Controls -->
+        <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-6">
+            <h2 class="text-xs font-bold uppercase text-amber-900 mb-2">Header Customization</h2>
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Header Mode</label>
+                    <select id="headerMode" class="w-full p-2 border rounded text-sm bg-white" onchange="generateCertificates()">
+                        <option value="default" selected>Default Text Header</option>
+                        <option value="custom">Custom Banner Image</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Title Size: <span id="headerSizeVal">32</span>px</label>
+                    <input type="range" id="headerSizePx" min="18" max="44" value="32" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Gap Below: <span id="headVal">16</span>px</label>
+                    <input type="range" id="headGap" min="0" max="60" value="16" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Header Move X: <span id="headXVal">0</span>px</label>
+                    <input type="range" id="headX" min="-100" max="100" value="0" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Header Move Y: <span id="headYVal">0</span>px</label>
+                    <input type="range" id="headY" min="-60" max="60" value="0" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Upload Banner Image</label>
+                    <input type="file" id="customHeaderFile" accept="image/*" class="w-full text-xs p-1 bg-white border rounded" onchange="handleHeaderUpload(event)">
+                </div>
+            </div>
+            
+            <div class="mt-3 pt-3 border-t border-amber-200/80 grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-amber-900 mb-1">Website Top Scrolling Banner Text</label>
+                    <input type="text" id="scrollText" value="MANAGED BY ADMIN OFFICE" class="w-full p-2 border rounded text-sm font-bold text-slate-800" oninput="updateSiteBanner()">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-amber-900 mb-1">Scroll Speed (Seconds)</label>
+                    <input type="number" id="scrollSpeed" value="14" min="4" max="40" class="w-full p-2 border rounded text-sm font-bold text-slate-800" oninput="updateSiteBanner()">
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Body Wording Adjustments -->
+        <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200 mb-6">
+            <h2 class="text-xs font-bold uppercase text-indigo-900 mb-2">Body Wording Controls</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">First Line Tab Indent</label>
+                    <select id="indentToggle" class="w-full p-2 border rounded text-sm bg-white font-semibold" onchange="generateCertificates()">
+                        <option value="tab" selected>Show Tab Indent (2.5em)</option>
+                        <option value="none">No Tab Indent (Flush Left)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Text Size: <span id="bodyFontSizeVal">17</span>px</label>
+                    <input type="range" id="bodyFontSizePx" min="12" max="24" value="17" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Line Height: <span id="bodyLineHeightVal">1.6</span></label>
+                    <input type="range" id="bodyLineHeight" min="1.0" max="2.4" step="0.05" value="1.6" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Wording Move X: <span id="bodyXVal">0</span>px</label>
+                    <input type="range" id="bodyX" min="-100" max="100" value="0" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Wording Move Y: <span id="bodyYVal">0</span>px</label>
+                    <input type="range" id="bodyY" min="-80" max="80" value="0" class="w-full" oninput="generateCertificates()">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Certificate Template Text</label>
+                <textarea id="globalWordingText" rows="3" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-indigo-500" oninput="generateCertificates()">This is to certify that {prefix} {name} working as an {designation} at Amritsar Law College, Amritsar, is hereby permitted to participate in the seminar/program on "{subject}", scheduled to be held on {event_date}. The Institution has no objection to {pronoun_possessive} participation in the above-mentioned seminar. {pronoun_possessive_cap} participation is considered beneficial for {pronoun_possessive} academic and professional development and for enhancing {pronoun_possessive} domain knowledge. This NOC is issued at {pronoun_possessive} request for participation in the said event.</textarea>
+            </div>
+        </div>
+
+        <!-- 4. Signatory & Stamp Controls -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                <h2 class="text-xs font-bold uppercase text-emerald-900 mb-2">Principal Signatory Position</h2>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Principal Designation Text</label>
+                        <input type="text" id="principalText" value="Principal, Amritsar Law College, Amritsar" class="w-full p-2 border rounded text-sm focus:ring-2 focus:ring-emerald-500" oninput="generateCertificates()">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Principal Move X: <span id="principalXVal">0</span>px</label>
+                            <input type="range" id="principalX" min="-180" max="180" value="0" class="w-full" oninput="generateCertificates()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Principal Move Y: <span id="principalYVal">0</span>px</label>
+                            <input type="range" id="principalY" min="-500" max="100" value="0" class="w-full" oninput="generateCertificates()">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Upload Signature</label>
+                            <input type="file" id="customSigFile" accept="image/*" class="w-full text-xs p-1 bg-white border rounded" onchange="handleSigUpload(event)">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sig Height: <span id="sigHeightVal">55</span>px</label>
+                            <input type="range" id="sigHeightPx" min="20" max="120" value="55" class="w-full" oninput="generateCertificates()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                <h2 class="text-xs font-bold uppercase text-amber-900 mb-2">Place & Date Position</h2>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Place & Date Move X: <span id="placeXVal">0</span>px</label>
+                        <input type="range" id="placeX" min="-100" max="180" value="0" class="w-full" oninput="generateCertificates()">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Place & Date Move Y: <span id="placeYVal">0</span>px</label>
+                        <input type="range" id="placeY" min="-500" max="100" value="0" class="w-full" oninput="generateCertificates()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Stamp / Seal Control -->
+        <div class="mb-6 bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <h2 class="text-xs font-bold uppercase text-purple-900 mb-3">Custom Seal / Stamp Controls</h2>
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Stamp Type</label>
+                    <select id="stampToggle" class="w-full p-2 border rounded text-sm bg-white" onchange="generateCertificates()">
+                        <option value="seal">Default Graphic Seal</option>
+                        <option value="custom" selected>Custom Image Stamp</option>
+                        <option value="none">No Stamp</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Upload Stamp PNG</label>
+                    <input type="file" id="customStampFile" accept="image/*" class="w-full text-xs p-1 bg-white border rounded" onchange="handleStampUpload(event)">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Size: <span id="stampSizeVal">85</span>px</label>
+                    <input type="range" id="stampSizePx" min="30" max="180" value="85" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Stamp Move Y: <span id="stampYVal">0</span>px</label>
+                    <input type="range" id="stampY" min="-120" max="120" value="0" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Stamp Move X: <span id="stampXVal">0</span>px</label>
+                    <input type="range" id="stampX" min="-180" max="180" value="0" class="w-full" oninput="generateCertificates()">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Rotate: <span id="stampRotateVal">-5</span>°</label>
+                    <input type="range" id="stampRotate" min="-180" max="180" value="-5" class="w-full" oninput="generateCertificates()">
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Faculty Roster Table -->
+        <div class="flex justify-between items-center mb-3">
+            <div class="flex items-center gap-3">
+                <h2 class="text-base font-bold text-slate-800">Faculty Roster</h2>
+                <span class="text-xs text-slate-500">(Checkboxes select entries for A4 PDF export)</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="toggleAllCheckboxes(true)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded font-semibold">Select All</button>
+                <button onclick="toggleAllCheckboxes(false)" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded font-semibold">Deselect All</button>
+                <button onclick="addRow()" class="bg-amber-600 text-white px-3 py-1 rounded hover:bg-amber-700 text-xs font-bold">+ Add Faculty</button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto mb-6 border rounded-lg shadow-sm">
+            <table class="w-full text-left border-collapse bg-white">
+                <thead>
+                    <tr class="bg-slate-100 text-xs text-slate-700 uppercase border-b">
+                        <th class="p-2.5 border text-center">Tick</th>
+                        <th class="p-2.5 border">Prefix</th>
+                        <th class="p-2.5 border">Teacher Name</th>
+                        <th class="p-2.5 border">Gender</th>
+                        <th class="p-2.5 border">Designation</th>
+                        <th class="p-2.5 border">Subject / Specialization</th>
+                        <th class="p-2.5 border">Event Date</th>
+                        <th class="p-2.5 border text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="facultyTableBody">
+                    <tr class="border-b text-sm">
+                        <td class="p-2.5 border text-center">
+                            <input type="checkbox" class="faculty-select-chk w-4 h-4 text-amber-600 rounded cursor-pointer" checked onchange="generateCertificates()">
+                        </td>
+                        <td class="p-2 border"><input type="text" value="Mr." class="prefix-input w-16 p-1 border rounded" oninput="generateCertificates()"></td>
+                        <td class="p-2 border"><input type="text" value="Amit Kumar" class="name-input w-full p-1 border rounded font-semibold" oninput="generateCertificates()"></td>
+                        <td class="p-2 border">
+                            <select class="gender-input w-20 p-1 border rounded" onchange="autoPrefix(this)">
+                                <option value="male" selected>Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </td>
+                        <td class="p-2 border"><input type="text" value="Assistant Professor" class="desig-input w-full p-1 border rounded" oninput="generateCertificates()"></td>
+                        <td class="p-2 border"><input type="text" value="Law of Torts & Cyber Laws" class="subject-input w-full p-1 border rounded" oninput="generateCertificates()"></td>
+                        <td class="p-2 border"><input type="text" value="October 8-9, 2026" class="edate-input w-28 p-1 border rounded" oninput="generateCertificates()"></td>
+                        <td class="p-2 border text-center">
+                            <button onclick="removeRow(this)" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Full Page Export Actions - Download option removed -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t">
+            <div class="text-xs text-slate-500">
+                Selected Ticked Teachers: <span id="selectedCount" class="font-bold text-slate-800">1</span> / <span id="totalCount">1</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="generateCertificates()" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 font-semibold text-xs transition">Update Preview</button>
+                <button onclick="window.print()" class="bg-slate-700 text-white px-4 py-2 rounded hover:bg-slate-800 font-semibold text-xs transition">Print Direct A4</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Preview Container displaying Single-Page A4 Layouts -->
+    <div id="certificateContainer" class="flex flex-col gap-10 pb-16 items-center"></div>
+
+    <script>
+        let uploadedHeaderData = null;
+        let uploadedStampData = null;
+        let uploadedSigData = null;
+
+        function updateSiteBanner() {
+            const scrollTextVal = document.getElementById('scrollText').value.trim();
+            const scrollSpeedVal = document.getElementById('scrollSpeed').value;
+            const marqueeContent = document.getElementById('topSiteMarquee');
+            marqueeContent.style.animationDuration = `${scrollSpeedVal}s`;
+            marqueeContent.innerHTML = `✦ ${scrollTextVal} ✦ AMRITSAR LAW COLLEGE ✦ OFFICIAL CERTIFICATE GENERATION SYSTEM ✦ ${scrollTextVal} ✦`;
+        }
+
+        function toggleAllCheckboxes(status) {
+            document.querySelectorAll('.faculty-select-chk').forEach(chk => chk.checked = status);
+            generateCertificates();
+        }
+
+        function autoPrefix(selectElem) {
+            const row = selectElem.closest('tr');
+            const prefixInput = row.querySelector('.prefix-input');
+            prefixInput.value = selectElem.value === 'male' ? 'Mr.' : 'Ms.';
+            generateCertificates();
+        }
+
+        function handleHeaderUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedHeaderData = e.target.result;
+                    document.getElementById('headerMode').value = 'custom';
+                    generateCertificates();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleStampUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedStampData = e.target.result;
+                    document.getElementById('stampToggle').value = 'custom';
+                    generateCertificates();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleSigUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedSigData = e.target.result;
+                    generateCertificates();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addRow() {
+            const tbody = document.getElementById('facultyTableBody');
+            const tr = document.createElement('tr');
+            tr.className = 'border-b text-sm';
+            tr.innerHTML = `
+                <td class="p-2.5 border text-center">
+                    <input type="checkbox" class="faculty-select-chk w-4 h-4 text-amber-600 rounded cursor-pointer" checked onchange="generateCertificates()">
+                </td>
+                <td class="p-2 border"><input type="text" value="Mr." class="prefix-input w-16 p-1 border rounded" oninput="generateCertificates()"></td>
+                <td class="p-2 border"><input type="text" value="New Faculty" class="name-input w-full p-1 border rounded font-semibold" oninput="generateCertificates()"></td>
+                <td class="p-2 border">
+                    <select class="gender-input w-20 p-1 border rounded" onchange="autoPrefix(this)">
+                        <option value="male" selected>Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </td>
+                <td class="p-2 border"><input type="text" value="Assistant Professor" class="desig-input w-full p-1 border rounded" oninput="generateCertificates()"></td>
+                <td class="p-2 border"><input type="text" value="Legal Studies" class="subject-input w-full p-1 border rounded" oninput="generateCertificates()"></td>
+                <td class="p-2 border"><input type="text" value="October 8-9, 2026" class="edate-input w-28 p-1 border rounded" oninput="generateCertificates()"></td>
+                <td class="p-2 border text-center">
+                    <button onclick="removeRow(this)" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            generateCertificates();
+        }
+
+        function removeRow(btn) {
+            btn.closest('tr').remove();
+            generateCertificates();
+        }
+
+        function generateCertificates() {
+            const container = document.getElementById('certificateContainer');
+            container.innerHTML = '';
+
+            const dispatchPrefix = document.getElementById('dispatchPrefix').value;
+            let dispatchNum = parseInt(document.getElementById('dispatchStart').value) || 100;
+            
+            const editablePlace = document.getElementById('placeText').value.trim();
+            const editableDate = document.getElementById('issueDateDisplay').value.trim();
+            const selectedFont = document.getElementById('fontFamilySelect').value;
+
+            // Header Adjustments
+            const headerMode = document.getElementById('headerMode').value;
+            const headerSizePx = document.getElementById('headerSizePx').value;
+            const headGap = document.getElementById('headGap').value;
+            const headX = document.getElementById('headX').value;
+            const headY = document.getElementById('headY').value;
+
+            // Wording Adjustments
+            const indentChoice = document.getElementById('indentToggle').value;
+            const bodyFontSizePx = document.getElementById('bodyFontSizePx').value;
+            const bodyLineHeight = document.getElementById('bodyLineHeight').value;
+            const bodyX = document.getElementById('bodyX').value;
+            const bodyY = document.getElementById('bodyY').value;
+
+            // Principal Adjustments
+            const principalText = document.getElementById('principalText').value.trim();
+            const principalX = document.getElementById('principalX').value;
+            const principalY = document.getElementById('principalY').value;
+            const sigHeightPx = document.getElementById('sigHeightPx').value;
+
+            // Place & Date Adjustments
+            const placeX = document.getElementById('placeX').value;
+            const placeY = document.getElementById('placeY').value;
+
+            // Stamp Controls
+            const stampChoice = document.getElementById('stampToggle').value;
+            const stampSizePx = document.getElementById('stampSizePx').value;
+            const stampX = document.getElementById('stampX').value;
+            const stampY = document.getElementById('stampY').value;
+            const stampRotate = document.getElementById('stampRotate').value;
+
+            // Update UI Numerical Displays
+            document.getElementById('headerSizeVal').innerText = headerSizePx;
+            document.getElementById('headVal').innerText = headGap;
+            document.getElementById('headXVal').innerText = headX;
+            document.getElementById('headYVal').innerText = headY;
+
+            document.getElementById('bodyFontSizeVal').innerText = bodyFontSizePx;
+            document.getElementById('bodyLineHeightVal').innerText = bodyLineHeight;
+            document.getElementById('bodyXVal').innerText = bodyX;
+            document.getElementById('bodyYVal').innerText = bodyY;
+
+            document.getElementById('principalXVal').innerText = principalX;
+            document.getElementById('principalYVal').innerText = principalY;
+            document.getElementById('sigHeightVal').innerText = sigHeightPx;
+
+            document.getElementById('placeXVal').innerText = placeX;
+            document.getElementById('placeYVal').innerText = placeY;
+
+            document.getElementById('stampSizeVal').innerText = stampSizePx;
+            document.getElementById('stampXVal').innerText = stampX;
+            document.getElementById('stampYVal').innerText = stampY;
+            document.getElementById('stampRotateVal').innerText = stampRotate;
+
+            const rows = document.querySelectorAll('#facultyTableBody tr');
+            let selectedCounter = 0;
+            document.getElementById('totalCount').innerText = rows.length;
+
+            rows.forEach((row, index) => {
+                const isChecked = row.querySelector('.faculty-select-chk').checked;
+                if (!isChecked) return;
+                
+                selectedCounter++;
+
+                const prefix = row.querySelector('.prefix-input').value.trim();
+                const name = row.querySelector('.name-input').value.trim();
+                const gender = row.querySelector('.gender-input').value;
+                const desig = row.querySelector('.desig-input').value.trim();
+                const subject = row.querySelector('.subject-input').value.trim();
+                const eventDate = row.querySelector('.edate-input').value.trim();
+
+                const isMale = gender === 'male';
+                const pPossessiveLower = isMale ? 'his' : 'her';
+                const pPossessiveCap = isMale ? 'His' : 'Her';
+                const pSubject = isMale ? 'he' : 'she';
+
+                const currentDispatch = `${dispatchPrefix}${dispatchNum + index}`;
+
+                // Process Body Template Wording
+                let template = document.getElementById('globalWordingText').value;
+                template = template
+                    .replace(/{prefix}/g, prefix)
+                    .replace(/{name}/g, name)
+                    .replace(/{designation}/g, desig)
+                    .replace(/{subject}/g, subject)
+                    .replace(/{event_date}/g, eventDate)
+                    .replace(/{pronoun_possessive}/g, pPossessiveLower)
+                    .replace(/{pronoun_possessive_cap}/g, pPossessiveCap)
+                    .replace(/{pronoun_subject}/g, pSubject);
+
+                const paragraphs = template.split('\n').filter(p => p.trim() !== '');
+                const indentStyle = (indentChoice === 'tab') ? 'text-indent: 2.5em;' : 'text-indent: 0;';
+
+                const bodyHTML = paragraphs.map(p => 
+                    `<p class="cert-body-p text-justify mb-3" style="${indentStyle}">${p}</p>`
+                ).join('');
+
+                // Letterhead Header Block
+                let headerHTML = '';
+                const headTransformStyle = `transform: translate(${headX}px, ${headY}px); margin-bottom: ${headGap}px;`;
+                
+                if (headerMode === 'custom' && uploadedHeaderData) {
+                    headerHTML = `<div class="cert-head-block text-center" style="${headTransformStyle}">
+                        <img src="${uploadedHeaderData}" class="w-full max-h-36 object-contain mx-auto" alt="Header Banner">
+                    </div>`;
+                } else {
+                    headerHTML = `
+                    <div class="cert-head-block text-center pb-3 border-b-2 border-slate-900" style="${headTransformStyle}">
+                        <h1 class="font-extrabold uppercase tracking-wide text-center" 
+                            style="font-size: ${headerSizePx}px; line-height: 1.15; color: #881337; font-family: 'Cinzel', serif;">
+                            Amritsar Law College
+                        </h1>
+                        <p class="text-xs font-semibold text-slate-800 tracking-wide mt-2 uppercase text-center">
+                            Affiliated to Guru Nanak Dev University, Amritsar & Approved by Bar Council of India
+                        </p>
+                        <p class="text-[11px] text-slate-600 mt-0.5 text-center">
+                            12 KM Stone, Amritsar-Jalandhar G.T. Road, Amritsar - 143001 | Email: principalalc@acetedu.in
+                        </p>
+                    </div>`;
+                }
+
+                // Render Stamp
+                let stampHTML = '';
+                if (stampChoice === 'seal') {
+                    stampHTML = `
+                        <div class="official-stamp-badge" style="width:${stampSizePx}px; height:${stampSizePx}px;">
+                            Amritsar Law College<br>★<br>OFFICIAL SEAL
+                        </div>`;
+                } else if (stampChoice === 'custom' && uploadedStampData) {
+                    stampHTML = `<img src="${uploadedStampData}" class="object-contain opacity-90 m-0 p-0 block" style="width:${stampSizePx}px; height:${stampSizePx}px;" alt="Stamp">`;
+                }
+
+                // Render Signature
+                let sigHTML = uploadedSigData 
+                    ? `<img src="${uploadedSigData}" class="object-contain mx-auto m-0 p-0 block" style="height:${sigHeightPx}px;" alt="Signature">`
+                    : `<div class="flex items-center justify-center italic text-slate-400 mx-auto border-b border-dashed border-slate-300 mb-1" style="height:${sigHeightPx}px; width: 140px;">[ Signature ]</div>`;
+
+                // Single Page Structure
+                const certHTML = `
+                    <div class="cert-page page-break" id="cert-page-${index}" style="font-family: ${selectedFont};">
+                        
+                        <!-- Top/Middle Section -->
+                        <div>
+                            ${headerHTML}
+
+                            <!-- Ref No & Date Row -->
+                            <div class="flex justify-between text-base font-semibold my-5 text-slate-900">
+                                <div>Ref No. <span class="font-normal">${currentDispatch}</span></div>
+                                <div>Date: <span class="font-normal">${editableDate}</span></div>
+                            </div>
+
+                            <!-- Title -->
+                            <div class="text-center my-6">
+                                <h2 class="text-2xl font-bold uppercase tracking-wider text-slate-900 underline decoration-2 underline-offset-8">To Whomsoever It May Concern</h2>
+                            </div>
+
+                            <!-- Wording Block -->
+                            <div class="px-2 my-6 text-slate-900" style="font-size: ${bodyFontSizePx}px; line-height: ${bodyLineHeight}; transform: translate(${bodyX}px, ${bodyY}px);">
+                                ${bodyHTML}
+                            </div>
+                        </div>
+
+                        <!-- Footer Section Positioned Cleanly at Bottom of Single Page -->
+                        <div class="pb-2">
+                            <div class="flex justify-between items-end w-full">
+                                
+                                <!-- Place & Date -->
+                                <div class="text-base text-slate-900 pb-1 text-left min-w-[200px]" 
+                                     style="transform: translate(${placeX}px, ${placeY}px); transition: transform 0.1s ease;">
+                                    <p class="m-0 p-0 leading-tight font-bold">Place: <span class="font-normal">${editablePlace}</span></p>
+                                    <p class="m-0 p-0 leading-tight mt-1 font-bold">Date: <span class="font-normal">${editableDate}</span></p>
+                                </div>
+
+                                <!-- Principal Signatory & Stamp Block -->
+                                <div class="text-center flex flex-col items-center p-0 m-0 relative min-w-[280px]"
+                                     style="transform: translate(${principalX}px, ${principalY}px); transition: transform 0.1s ease;">
+                                    
+                                    <div class="sig-container m-0 p-0 leading-none">
+                                        ${sigHTML}
+                                    </div>
+                                    
+                                    <div class="principal-text-container m-0 p-0 leading-none mt-1">
+                                        <p class="whitespace-nowrap text-base font-bold text-slate-900 m-0 p-0">${principalText}</p>
+                                    </div>
+
+                                    <div class="stamp-container m-0 p-0 leading-none flex justify-center items-center" 
+                                         style="transform: translate(${stampX}px, ${stampY}px) rotate(${stampRotate}deg); transform-origin: center;">
+                                        ${stampHTML}
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', certHTML);
+            });
+
+            document.getElementById('selectedCount').innerText = selectedCounter;
+        }
+
+        window.onload = function() {
+            updateSiteBanner();
+            generateCertificates();
+        };
+    </script>
+</body>
+</html>
