@@ -318,7 +318,7 @@
                 <!-- Fixed Fields -->
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Semester Duration <span class="badge bg-secondary ms-1">Fixed</span></label>
-                    <input type="text" id="semesterMonths" class="form-control bg-light" value="August 2026 - December 2026" disabled readonly>
+                    <input type="text" id="semesterMonths" class="form-control bg-light" value="July 2026 - December 2026" disabled readonly>
                 </div>
                 
                 <!-- Dynamic Coordinator Selection -->
@@ -330,6 +330,11 @@
                         <option value="Dr. Shivani Arora">Dr. Shivani Arora</option>
                         <option value="Mr. Amit Kumar">Mr. Amit Kumar</option>
                         <option value="Mr. Surinder Singh">Mr. Surinder Singh</option>
+                        <option value="Ms. Anant Meera">Ms. Anant Meera</option>
+                        <option value="Ms. Mehak">Ms. Mehak</option>
+                        <option value="Ms. Harmanjot Kaur">Ms. Harmanjot Kaur</option>
+                        <option value="Ms. Ankita Joshi">Ms. Ankita Joshi</option>
+                        <option value="Ms. Rajmeet Kaur">Ms. Rajmeet Kaur</option>
                     </select>
                 </div>
 
@@ -341,7 +346,7 @@
                 <!-- Fixed Principal Name -->
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Principal Name <span class="badge bg-secondary ms-1">Fixed</span></label>
-                    <input type="text" id="principalName" class="form-control bg-light" value="Dr. Avon Kumar Vaid" disabled readonly>
+                    <input type="text" id="principalName" class="form-control bg-light" value="." disabled readonly>
                 </div>
             </div>
 
@@ -395,8 +400,8 @@
                 </div>
                 <div class="col-md-3">
                     <div class="slider-box">
-                        <label class="form-label fw-bold small">Paragraph Tab/Indent: <span id="v_textTab">30</span>px</label>
-                        <input type="range" class="form-range" id="textTab" min="0" max="80" value="30" oninput="updValues()">
+                        <label class="form-label fw-bold small">Paragraph Tab/Indent: <span id="v_textTab">69</span>px</label>
+                        <input type="range" class="form-range" id="textTab" min="0" max="80" value="69" oninput="updValues()">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -416,14 +421,14 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="slider-box">
-                        <label class="form-label fw-bold small">Body Text Font Size: <span id="v_fsBody">17</span>px</label>
-                        <input type="range" class="form-range" id="fsBody" min="12" max="24" value="17" oninput="updValues()">
+                        <label class="form-label fw-bold small">Body Text Font Size: <span id="v_fsBody">21</span>px</label>
+                        <input type="range" class="form-range" id="fsBody" min="12" max="24" value="21" oninput="updValues()">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="slider-box">
-                        <label class="form-label fw-bold small">Footer Label Size: <span id="v_fsFooter">14</span>px</label>
-                        <input type="range" class="form-range" id="fsFooter" min="10" max="20" value="14" oninput="updValues()">
+                        <label class="form-label fw-bold small">Footer Label Size: <span id="v_fsFooter">17</span>px</label>
+                        <input type="range" class="form-range" id="fsFooter" min="10" max="20" value="17" oninput="updValues()">
                     </div>
                 </div>
             </div>
@@ -443,7 +448,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="row g-2 small">
-                                <div class="col-md-3">Width: <span id="v_wSize">350</span>px <input type="range" class="form-range" id="wSize" min="100" max="650" value="350" oninput="updValues()"></div>
+                                <div class="col-md-3">Width: <span id="v_wSize">415</span>px <input type="range" class="form-range" id="wSize" min="100" max="650" value="415" oninput="updValues()"></div>
                                 <div class="col-md-3">Opacity: <span id="v_wOpacity">0.12</span> <input type="range" class="form-range" id="wOpacity" min="0.02" max="0.5" step="0.01" value="0.12" oninput="updValues()"></div>
                                 <div class="col-md-3">Top: <span id="v_wTop">0</span>px <input type="range" class="form-range" id="wTop" min="-200" max="200" value="0" oninput="updValues()"></div>
                                 <div class="col-md-3">Left: <span id="v_wLeft">0</span>px <input type="range" class="form-range" id="wLeft" min="-200" max="200" value="0" oninput="updValues()"></div>
@@ -457,7 +462,7 @@
                     <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-heading me-1"></i> Header Image</h6>
                     <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'headerImg')">
                     <div class="row g-2 small">
-                        <div class="col-md-4">Width: <span id="v_hSize">700</span>px <input type="range" class="form-range" id="hSize" min="200" max="720" value="700" oninput="updValues()"></div>
+                        <div class="col-md-4">Width: <span id="v_hSize">700</span>px <input type="range" class="form-range" id="hSize" min="200" max="800" value="700" oninput="updValues()"></div>
                         <div class="col-md-2">Top: <span id="v_hTop">0</span>px <input type="range" class="form-range" id="hTop" min="-50" max="100" value="0" oninput="updValues()"></div>
                         <div class="col-md-2">Bot: <span id="v_hBot">0</span>px <input type="range" class="form-range" id="hBot" min="-50" max="100" value="0" oninput="updValues()"></div>
                         <div class="col-md-2">Left: <span id="v_hLeft">0</span>px <input type="range" class="form-range" id="hLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
@@ -470,9 +475,9 @@
                     <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-signature me-1"></i> Class Coordinator Signature</h6>
                     <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'coordSig')">
                     <div class="row g-2 small">
-                        <div class="col-md-4">Width: <span id="v_cSize">140</span>px <input type="range" class="form-range" id="cSize" min="50" max="250" value="140" oninput="updValues()"></div>
+                        <div class="col-md-4">Width: <span id="v_cSize">127</span>px <input type="range" class="form-range" id="cSize" min="50" max="250" value="127" oninput="updValues()"></div>
                         <div class="col-md-2">Top: <span id="v_cTop">0</span>px <input type="range" class="form-range" id="cTop" min="-50" max="100" value="0" oninput="updValues()"></div>
-                        <div class="col-md-2">Bot: <span id="v_cBot">0</span>px <input type="range" class="form-range" id="cBot" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_cBot">-13</span>px <input type="range" class="form-range" id="cBot" min="-50" max="100" value="-13" oninput="updValues()"></div>
                         <div class="col-md-2">Left: <span id="v_cLeft">0</span>px <input type="range" class="form-range" id="cLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
                         <div class="col-md-2">Right: <span id="v_cRight">0</span>px <input type="range" class="form-range" id="cRight" min="-50" max="100" value="0" oninput="updValues()"></div>
                     </div>
@@ -483,11 +488,11 @@
                     <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-user-check me-1"></i> Academic In-Charge Signature</h6>
                     <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'acadSig')">
                     <div class="row g-2 small">
-                        <div class="col-md-4">Width: <span id="v_aSize">140</span>px <input type="range" class="form-range" id="aSize" min="50" max="250" value="140" oninput="updValues()"></div>
+                        <div class="col-md-4">Width: <span id="v_aSize">166</span>px <input type="range" class="form-range" id="aSize" min="50" max="250" value="166" oninput="updValues()"></div>
                         <div class="col-md-2">Top: <span id="v_aTop">0</span>px <input type="range" class="form-range" id="aTop" min="-50" max="100" value="0" oninput="updValues()"></div>
-                        <div class="col-md-2">Bot: <span id="v_aBot">0</span>px <input type="range" class="form-range" id="aBot" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_aBot">-24</span>px <input type="range" class="form-range" id="aBot" min="-50" max="100" value="-24" oninput="updValues()"></div>
                         <div class="col-md-2">Left: <span id="v_aLeft">0</span>px <input type="range" class="form-range" id="aLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
-                        <div class="col-md-2">Right: <span id="v_aRight">0</span>px <input type="range" class="form-range" id="aRight" min="-50" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Right: <span id="v_aRight">-25</span>px <input type="range" class="form-range" id="aRight" min="-50" max="100" value="-25" oninput="updValues()"></div>
                     </div>
                 </div>
 
@@ -496,7 +501,7 @@
                     <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-pen-nib me-1"></i> Principal Signature</h6>
                     <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'pSig')">
                     <div class="row g-2 small">
-                        <div class="col-md-4">Width: <span id="v_pSize">140</span>px <input type="range" class="form-range" id="pSize" min="50" max="250" value="140" oninput="updValues()"></div>
+                        <div class="col-md-4">Width: <span id="v_pSize">94</span>px <input type="range" class="form-range" id="pSize" min="50" max="250" value="94" oninput="updValues()"></div>
                         <div class="col-md-2">Top: <span id="v_pTop">0</span>px <input type="range" class="form-range" id="pTop" min="-50" max="100" value="0" oninput="updValues()"></div>
                         <div class="col-md-2">Bot: <span id="v_pBot">0</span>px <input type="range" class="form-range" id="pBot" min="-50" max="100" value="0" oninput="updValues()"></div>
                         <div class="col-md-2">Left: <span id="v_pLeft">0</span>px <input type="range" class="form-range" id="pLeft" min="-50" max="100" value="0" oninput="updValues()"></div>
@@ -509,11 +514,11 @@
                     <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-stamp me-1"></i> Principal Stamp (Bottom Positioned)</h6>
                     <input type="file" class="form-control mb-2" accept="image/*" onchange="readImg(this, 'stamp')">
                     <div class="row g-2 small">
-                        <div class="col-md-4">Width: <span id="v_sSize">90</span>px <input type="range" class="form-range" id="sSize" min="30" max="200" value="90" oninput="updValues()"></div>
+                        <div class="col-md-4">Width: <span id="v_sSize">167</span>px <input type="range" class="form-range" id="sSize" min="30" max="200" value="167" oninput="updValues()"></div>
                         <div class="col-md-2">Top: <span id="v_sTop">0</span>px <input type="range" class="form-range" id="sTop" min="-100" max="100" value="0" oninput="updValues()"></div>
-                        <div class="col-md-2">Bot: <span id="v_sBot">0</span>px <input type="range" class="form-range" id="sBot" min="-100" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Bot: <span id="v_sBot">-5</span>px <input type="range" class="form-range" id="sBot" min="-100" max="100" value="-5" oninput="updValues()"></div>
                         <div class="col-md-2">Left: <span id="v_sLeft">0</span>px <input type="range" class="form-range" id="sLeft" min="-100" max="100" value="0" oninput="updValues()"></div>
-                        <div class="col-md-2">Right: <span id="v_sRight">0</span>px <input type="range" class="form-range" id="sRight" min="-100" max="100" value="0" oninput="updValues()"></div>
+                        <div class="col-md-2">Right: <span id="v_sRight">-12</span>px <input type="range" class="form-range" id="sRight" min="-100" max="100" value="-12" oninput="updValues()"></div>
                     </div>
                 </div>
 
@@ -606,8 +611,13 @@
             "Dr. Kiranpreet Kaur": "9814852477",
             "Dr. Shefali": "9478179947",
             "Dr. Shivani Arora": "9888654421",
-            "Mr. Amit Kumar": "9814852477",
-            "Mr. Surinder Singh": "9814852477"
+            "Mr. Amit Kumar": "9592870342",
+            "Mr. Surinder Singh": "9814747811",
+            "Ms. Anant Meera": "7814488253",
+            "Ms. Mehak": "8557086062",
+            "Ms. Harmanjot Kaur": "9877644300",
+            "Ms. Ankita Joshi": "8725011001",
+            "Ms. Rajmeet Kaur": "9646885910"
         };
 
         const imgStore = {
@@ -790,7 +800,7 @@
                         "Father", "F_Name", "S/O", "D/O", "Fathers_Name", "Guardian Name"
                     ]) || 'N/A';
 
-                    const course = getRowVal(normRow, row, ['Course / Semester', 'Course', 'Semester', 'Class', 'Branch', 'Stream']) || 'N/A';
+                    const course = getRowVal(normRow, row, ['Course / Semester', 'Course', 'Semester', 'Class', 'Branch', 'Stream']) || '';
                     
                     const totalVal = getRowVal(normRow, row, ['Total Classes', 'Total', 'Total_Classes', 'Max Classes', 'Total Lectures']) || '0';
                     const total = parseFloat(totalVal) || 0;
@@ -954,7 +964,7 @@
 
                             <div class="cert-body" style="font-size: ${fsBody}px; text-align: ${textAlign};">
                                 <p class="mb-3" style="text-indent: ${textTab}px;">
-                                    This is to bring to your notice that <strong style="color: ${colorStudent}; font-size: 1.05em;">Mr/ Ms. ${st.name.toUpperCase()}</strong> son/daughter of <strong style="color: ${colorStudent};">${st.fatherName.toUpperCase()}</strong> of class <strong style="color: ${colorPrimary};">${st.course} - ${selectedSession}</strong>, University Roll No. <strong style="color: ${colorStudent};">${st.rollNo}</strong> is found to be irregular in attending regular academic lectures.
+                                    This is to bring to your notice that <strong style="color: ${colorStudent}; font-size: 1.05em;">Mr/ Ms. ${st.name.toUpperCase()}</strong> son/daughter of <strong style="color: ${colorStudent};">Mr. ${st.fatherName.toUpperCase()}</strong> of class <strong style="color: ${colorPrimary};">${st.course} - ${selectedSession}</strong>, University Roll No. <strong style="color: ${colorStudent};">${st.rollNo}</strong> is found to be irregular in attending regular academic lectures.
                                 </p>
 
                                 <p class="mb-3" style="text-indent: ${textTab}px;">
@@ -989,7 +999,7 @@
                                     ${pSigHtml}
                                     <p class="sign-title" style="font-size: ${fsFooter}px; color: ${colorPrimary};">Principal</p>
                                     <p class="sign-title" style="font-size: ${parseInt(fsFooter) - 1}px;">${principalName}</p>
-                                    <p class="sign-sub" style="font-size: ${parseInt(fsFooter) - 2}px; color: #475569;">Amritsar Law College</p>
+                                    <p class="sign-sub" style="font-size: ${parseInt(fsFooter) - 2}px; color: #475569;">.</p>
                                 </div>
                             </div>
 
