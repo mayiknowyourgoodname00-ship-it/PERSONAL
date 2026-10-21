@@ -1,1184 +1,1978 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BE SECURE | Cameras, Hardware & Integrated E-Commerce</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Be Secure Security Solutions | CCTV Installation & IT Services in Jandiala</title>
 
-    <style>
-        :root {
-            --brand-navy: #0B3052;
-            --brand-orange: #F26522;
-            --brand-red: #D91C1C;
-            --brand-yellow: #FFCC00;
-            --bg-light: #F8FAFC;
-            --text-heading: #0F172A;
-            --text-muted: #64748B;
-        }
+  <meta name="description" content="Be Secure Security Solutions by Er. Supreet Singh — CCTV camera installation, DVR/NVR setup, networking, computer hardware, printer & laptop repair services in Jandiala, Gehri Mandi and nearby areas. Call +91-7986712685.">
+  <meta name="keywords" content="CCTV camera installation Jandiala, security camera service, CCTV dealer Jandiala, computer hardware, networking services, printer repair, laptop desktop, DVR NVR setup, Be Secure Security Solutions, Supreet Singh">
+  <meta name="author" content="Er. Supreet Singh - Be Secure Security Solutions">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0b2b73">
+  <meta name="geo.region" content="IN-PB">
+  <meta name="geo.placename" content="Jandiala, Punjab">
 
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-heading);
-            background-color: #FFFFFF;
-            overflow-x: hidden;
-        }
+  <link rel="canonical" href="https://besecuresolutions.in/">
 
-        h1, h2, h3, h4, h5, h6, .font-heading {
-            font-family: 'Poppins', sans-serif;
-        }
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Be Secure Security Solutions">
+  <meta property="og:title" content="Be Secure Security Solutions | CCTV & IT Services in Jandiala">
+  <meta property="og:description" content="Professional CCTV installation, security systems, networking and computer services in Jandiala. Expert support by Er. Supreet Singh.">
+  <meta property="og:image" content="https://lh3.googleusercontent.com/d/1yoQb3YNSsOleAUzmqugI8H4oSQX2a5gm">
+  <meta property="og:url" content="https://besecuresolutions.in/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Be Secure Security Solutions | CCTV & IT Services in Jandiala">
+  <meta name="twitter:description" content="CCTV installation, networking, computer & printer services in Jandiala by Er. Supreet Singh.">
+  <meta name="twitter:image" content="https://lh3.googleusercontent.com/d/1yoQb3YNSsOleAUzmqugI8H4oSQX2a5gm">
 
-        /* Top Gurmukhi Header Bar */
-        .gurbani-bar {
-            background-color: #FFF8E7;
-            text-align: center;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #4A3B00;
-            padding: 6px 0;
-            border-bottom: 1px solid #FFE082;
-        }
+  <link rel="icon" href="https://lh3.googleusercontent.com/d/1yoQb3YNSsOleAUzmqugI8H4oSQX2a5gm">
+  <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1yoQb3YNSsOleAUzmqugI8H4oSQX2a5gm">
 
-        /* Top Bar with Real Time IST Clock */
-        .top-bar {
-            background-color: var(--brand-navy);
-            color: #CBD5E1;
-            font-size: 0.85rem;
-            padding: 8px 0;
-        }
-        .top-bar a { color: #FFFFFF; text-decoration: none; }
-        .live-clock-badge {
-            background: rgba(255, 204, 0, 0.15);
-            color: var(--brand-yellow);
-            border: 1px solid rgba(255, 204, 0, 0.4);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-        /* Navigation */
-        .navbar {
-            background: #FFFFFF;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            padding: 12px 0;
-        }
-        .brand-name {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--brand-navy);
-            letter-spacing: -0.5px;
-        }
-        .brand-tagline {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--brand-orange);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: block;
-        }
-        .nav-link {
-            font-weight: 600;
-            color: var(--brand-navy);
-            padding: 8px 16px !important;
-        }
-        .nav-link:hover { color: var(--brand-orange); }
+  <!-- Preload first hero image to avoid flash on load -->
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1920&q=80">
 
-        /* SCROLLING ANNOUNCEMENT TICKER */
-        .ticker-bar {
-            background-color: var(--brand-orange);
-            color: #FFFFFF;
-            overflow: hidden;
-            white-space: nowrap;
-            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-        }
-        .ticker-label {
-            background: #B01212;
-            color: #FFFFFF;
-            font-weight: 800;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            padding: 8px 16px;
-            z-index: 10;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.2);
-            flex-shrink: 0;
-        }
-        .ticker-content-wrapper {
-            overflow: hidden;
-            width: 100%;
-        }
-        .ticker-move {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: ticker 32s linear infinite;
-        }
-        .ticker-move:hover {
-            animation-play-state: paused;
-        }
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.88rem;
-            font-weight: 600;
-            margin-right: 40px;
-        }
-        .ticker-item i {
-            color: var(--brand-yellow);
-            margin-right: 8px;
-        }
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
+  <!-- Structured Data: Local Business -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Be Secure Security Solutions",
+    "image": "https://lh3.googleusercontent.com/d/1yoQb3YNSsOleAUzmqugI8H4oSQX2a5gm",
+    "description": "CCTV camera installation, security systems, networking, computer hardware, printer and laptop services in Jandiala, Punjab.",
+    "url": "https://besecuresolutions.in/",
+    "telephone": "+917986712685",
+    "priceRange": "₹₹",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "V.P.O. Gehri Mandi, Near Railway Station",
+      "addressLocality": "Jandiala",
+      "addressRegion": "Punjab",
+      "addressCountry": "IN"
+    },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "09:00",
+      "closes": "19:00"
+    }],
+    "founder": {
+      "@type": "Person",
+      "name": "Er. Supreet Singh",
+      "jobTitle": "Technical Expert"
+    },
+    "areaServed": ["Jandiala", "Gehri Mandi", "Amritsar", "Jalandhar", "Kapurthala", "Beas", "Baba Bakala Sahib", "Tarn Taran"]
+  }
+  </script>
 
-        .btn-brand {
-            background-color: var(--brand-red);
-            color: #FFF;
-            font-weight: 700;
-            padding: 10px 22px;
-            border-radius: 8px;
-            border: none;
-            transition: all 0.25s ease;
-        }
-        .btn-brand:hover {
-            background-color: #B01212;
-            color: #FFF;
-            transform: translateY(-2px);
-        }
+  <!-- Structured Data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can I view my cameras on my smartphone when I'm away?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes. We configure remote mobile viewing on your smartphone so you can watch live footage from anywhere with an internet connection."}
+      },
+      {
+        "@type": "Question",
+        "name": "Do your cameras work at night?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes, all our CCTV models feature built-in Infrared (IR) or Full-Color Night Vision for clear recordings in complete darkness."}
+      },
+      {
+        "@type": "Question",
+        "name": "How long is camera footage recorded and saved?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Recording duration depends on the hard disk capacity installed. Typical setups store 15 to 30 days of continuous footage before overwriting."}
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer on-site maintenance and visits?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes, we conduct site visits in Jandiala and neighbouring areas for inspection, installation and post-installation repair services."}
+      }
+    ]
+  }
+  </script>
 
-        /* Cart Floating Badge */
-        .cart-btn-wrapper { position: relative; }
-        .cart-badge-count {
-            position: absolute;
-            top: -6px;
-            right: -8px;
-            background-color: var(--brand-red);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 800;
-            border-radius: 50%;
-            padding: 2px 7px;
-        }
+  <style>
+    :root {
+      --primary: #0b2b73;
+      --primary-dark: #07183e;
+      --secondary: #ed1c24;
+      --secondary-dark: #c81017;
+      --dark: #111827;
+      --light: #f7f9fc;
+      --muted: #64748b;
+      --white: #ffffff;
+      --border: #e5e7eb;
+      --gold: #ffd21f;
+      --shadow: 0 12px 35px rgba(15, 23, 42, 0.09);
+      --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
 
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, rgba(11, 48, 82, 0.95) 0%, rgba(15, 23, 42, 0.92) 100%), 
-                        url('https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-            padding: 80px 0 70px;
-            color: #FFFFFF;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--brand-yellow);
-            color: #000;
-            padding: 6px 18px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 900;
-            line-height: 1.15;
-            margin-bottom: 16px;
-        }
-        .hero-title span { color: #FF4D4D; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body { font-family: "Inter", sans-serif; color: var(--dark); background: var(--white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; }
 
-        /* Section Headings */
-        .section-tag {
-            color: var(--brand-orange);
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            display: block;
-            margin-bottom: 6px;
-        }
+    .container { width: min(1140px, 92%); margin: auto; }
 
-        /* Product Cards */
-        .product-card {
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-            border-color: var(--brand-orange);
-        }
-        .product-img-box {
-            position: relative;
-            height: 200px;
-            overflow: hidden;
-            background-color: #F1F5F9;
-        }
-        .product-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-        .product-card:hover .product-img-box img { transform: scale(1.08); }
-        .product-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: var(--brand-navy);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-            z-index: 2;
-        }
-        .discount-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--brand-red);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 800;
-            padding: 4px 8px;
-            border-radius: 6px;
-            z-index: 2;
-        }
-        .original-price {
-            text-decoration: line-through;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-right: 6px;
-        }
-        .product-price {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--brand-navy);
-        }
+    /* Accessibility */
+    .skip-link {
+      position: absolute; left: -9999px; top: 0; z-index: 3000;
+      background: var(--secondary); color: var(--white);
+      padding: 12px 18px; border-radius: 0 0 8px 0; font-weight: 700;
+    }
+    .skip-link:focus { left: 0; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 3px; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
 
-        /* Service Cards */
-        .service-card {
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-        .service-card:hover {
-            border-color: var(--brand-orange);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-        }
-        .service-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(242, 101, 34, 0.1);
-            color: var(--brand-orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 16px;
-        }
+    /* Scroll progress bar */
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--secondary), var(--gold));
+      z-index: 2500; transition: width 0.08s linear;
+    }
 
-        /* Drawer & Modals */
-        .cart-item-img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .payment-option-card {
-            border: 2px solid #E2E8F0;
-            border-radius: 12px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .payment-option-card:hover, .payment-option-card.selected {
-            border-color: var(--brand-orange);
-            background-color: #FFF8F5;
-        }
+    /* Topbar */
+    .topbar { background: var(--primary); color: var(--white); font-size: 14px; padding: 9px 0; }
+    .topbar-content { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .topbar span { display: inline-flex; align-items: center; gap: 7px; }
+    .topbar a:hover { color: var(--gold); }
 
-        /* Floating WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            width: 60px;
-            height: 60px;
-            background-color: #25D366;
-            color: #FFF;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-            z-index: 1000;
-            text-decoration: none;
-        }
-    </style>
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background: var(--white); border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.25s ease;
+    }
+    header.scrolled { box-shadow: 0 6px 22px rgba(15, 23, 42, 0.12); }
+    .navbar { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .brand img { width: 66px; height: 60px; object-fit: contain; }
+    .brand-name { font-family: "Poppins", sans-serif; color: var(--primary); font-size: 30px; font-weight: 800; line-height: 1.1; }
+    .brand-name small { display: block; color: var(--secondary); font-family: "Inter", sans-serif; font-size: 10.5px; letter-spacing: 0.7px; margin-top: 4px; }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 17px;
+      list-style: none; font-size: 13.5px; font-weight: 600;
+    }
+    .nav-links a { transition: color 0.2s ease; position: relative; padding: 4px 0; }
+    .nav-links a:not(.nav-button)::after {
+      content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 0;
+      background: var(--secondary); transition: width 0.25s ease;
+    }
+    .nav-links a:not(.nav-button):hover::after,
+    .nav-links a:not(.nav-button).active::after { width: 100%; }
+    .nav-links a:hover, .nav-links a.active { color: var(--secondary); }
+    .nav-button {
+      background: var(--secondary); color: var(--white) !important;
+      padding: 11px 18px; border-radius: 6px; font-weight: 700; white-space: nowrap;
+    }
+    .nav-button:hover { background: var(--secondary-dark); }
+    .menu-button {
+      display: none; border: 0; background: transparent; color: var(--primary);
+      font-size: 28px; cursor: pointer; line-height: 1; padding: 6px 10px; border-radius: 6px;
+    }
+    .menu-button:hover { background: var(--light); }
+
+    /* HERO SLIDER */
+    .hero { position: relative; color: var(--white); padding: 120px 0 130px; overflow: hidden; }
+    .hero-slider-bg { position: absolute; inset: 0; z-index: 1; }
+    .hero-slide {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      opacity: 0; transition: opacity 1.5s ease-in-out; will-change: opacity;
+    }
+    .hero-slide.active { opacity: 1; }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(90deg, rgba(5, 21, 57, 0.95), rgba(11, 43, 115, 0.75));
+    }
+    .hero-content { position: relative; z-index: 3; max-width: 720px; }
+    .hero-label { color: var(--gold); font-size: 14px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+    .hero h1 { font-family: "Poppins", sans-serif; font-size: clamp(34px, 6vw, 62px); line-height: 1.1; margin-bottom: 20px; }
+    .hero h1 span { color: #ffdb25; }
+    .hero p { max-width: 650px; color: #e6edff; font-size: 18px; margin-bottom: 30px; }
+
+    .button-group { display: flex; flex-wrap: wrap; gap: 13px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 2px solid transparent; border-radius: 6px;
+      padding: 13px 21px; font-size: 14px; font-weight: 800;
+      cursor: pointer; transition: 0.2s ease; text-align: center;
+    }
+    .button-primary { color: var(--white); background: var(--secondary); }
+    .button-primary:hover { background: var(--secondary-dark); transform: translateY(-2px); }
+    .button-light { color: var(--primary); background: var(--white); }
+    .button-light:hover { background: #eef3ff; transform: translateY(-2px); }
+    .button-outline { color: var(--primary); border-color: var(--primary); background: transparent; }
+    .button-outline:hover { color: var(--white); background: var(--primary); }
+    .button[disabled] { opacity: 0.65; cursor: not-allowed; transform: none !important; }
+
+    /* Hero slider controls */
+    .hero-dots {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; z-index: 4;
+    }
+    .hero-dot {
+      width: 11px; height: 11px; border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.75); background: transparent;
+      cursor: pointer; padding: 0; transition: 0.25s ease;
+    }
+    .hero-dot.active { background: var(--gold); border-color: var(--gold); width: 30px; border-radius: 20px; }
+    .hero-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 4;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12); color: var(--white);
+      font-size: 20px; cursor: pointer; display: grid; place-items: center;
+      transition: 0.25s ease; backdrop-filter: blur(4px);
+    }
+    .hero-arrow:hover { background: rgba(255, 255, 255, 0.28); }
+    .hero-arrow.prev { left: 18px; }
+    .hero-arrow.next { right: 18px; }
+
+    /* Sections */
+    .section { padding: 85px 0; }
+    .section-light { background: var(--light); }
+    .section-heading { max-width: 700px; margin: 0 auto 42px; text-align: center; }
+    .section-heading .eyebrow { color: var(--secondary); font-size: 13px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+    .section-heading h2 { color: var(--primary); font-family: "Poppins", sans-serif; font-size: clamp(28px, 4vw, 40px); line-height: 1.2; margin-bottom: 12px; }
+    .section-heading p { color: var(--muted); }
+
+    /* Grids */
+    .grid-4-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .grid-2-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+
+    /* Trust Grid */
+    .trust-grid { margin-top: -42px; position: relative; z-index: 5; }
+    .trust-card { background: var(--white); padding: 24px 18px; text-align: center; border: 1px solid var(--border); border-radius: 9px; box-shadow: var(--shadow); }
+    .trust-card strong { display: block; color: var(--primary); font-size: 17px; margin-bottom: 4px; }
+    .trust-card span { color: var(--muted); font-size: 13px; }
+
+    /* Stats counters */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .stat-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+      padding: 28px 20px; text-align: center; box-shadow: var(--shadow-sm);
+    }
+    .stat-number {
+      font-family: "Poppins", sans-serif; font-weight: 800;
+      font-size: clamp(30px, 4vw, 42px); color: var(--primary); line-height: 1;
+    }
+    .stat-card p { color: var(--muted); font-size: 13.5px; margin-top: 8px; font-weight: 600; }
+
+    /* Cards */
+    .card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .service-card { padding: 28px; }
+    .service-icon {
+      display: grid; place-items: center; width: 54px; height: 54px;
+      color: var(--white); background: var(--primary); border-radius: 10px;
+      font-size: 25px; margin-bottom: 18px; transition: background 0.25s ease;
+    }
+    .service-card:hover .service-icon { background: var(--secondary); }
+    .card h3 { color: var(--primary); font-family: "Poppins", sans-serif; font-size: 20px; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 14px; }
+
+    .product-image { width: 100%; height: 210px; object-fit: cover; background: #eef2f7; }
+    .product-content { padding: 21px; }
+    .product-tag { display: inline-block; color: var(--secondary); background: #fff0f0; border-radius: 30px; padding: 5px 10px; font-size: 11px; font-weight: 800; margin-bottom: 10px; }
+    .product-content .button { width: 100%; margin-top: 17px; }
+
+    /* Split layouts */
+    .feature-layout { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 55px; }
+    .feature-image, .video-container iframe {
+      width: 100%; height: 420px; object-fit: cover;
+      border-radius: 12px; box-shadow: var(--shadow); border: none;
+    }
+    .feature-list { list-style: none; margin: 22px 0; }
+    .feature-list li { position: relative; padding-left: 30px; margin-bottom: 14px; color: #334155; font-size: 15px; }
+    .feature-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--secondary); font-weight: 900; font-size: 18px; }
+
+    /* Process steps */
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .process-card { position: relative; padding: 26px; background: var(--white); border: 1px solid var(--border); border-radius: 10px; transition: 0.25s ease; }
+    .process-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: #c7d2fe; }
+    .process-number {
+      color: var(--white); background: var(--secondary); display: grid; place-items: center;
+      width: 38px; height: 38px; border-radius: 50%; font-weight: 800; margin-bottom: 18px;
+    }
+    .process-card h3 { color: var(--primary); font-family: "Poppins", sans-serif; font-size: 17px; margin-bottom: 8px; }
+    .process-card p { color: var(--muted); font-size: 14px; }
+
+    /* Pricing */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+    .price-card {
+      display: flex; flex-direction: column;
+      background: var(--white); border: 2px solid var(--border);
+      border-radius: 12px; padding: 30px 26px;
+      box-shadow: var(--shadow-sm); transition: 0.25s ease; position: relative;
+    }
+    .price-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .price-card.featured { border-color: var(--secondary); }
+    .price-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--secondary); color: var(--white);
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      padding: 6px 14px; border-radius: 30px; white-space: nowrap;
+    }
+    .price-card h3 { color: var(--primary); font-family: "Poppins", sans-serif; font-size: 20px; margin-bottom: 6px; }
+    .price-card .price-note { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+    .price-value { font-family: "Poppins", sans-serif; font-size: 30px; font-weight: 800; color: var(--dark); margin-bottom: 18px; }
+    .price-value span { font-size: 13px; font-weight: 600; color: var(--muted); display: block; margin-top: 2px; }
+    .price-list { list-style: none; margin-bottom: 24px; flex-grow: 1; }
+    .price-list li { position: relative; padding-left: 26px; margin-bottom: 11px; font-size: 14px; color: #334155; }
+    .price-list li::before { content: "✓"; position: absolute; left: 0; color: var(--secondary); font-weight: 900; }
+    .price-card .button { width: 100%; }
+
+    /* Brand marquee */
+    .marquee { overflow: hidden; position: relative; padding: 8px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .marquee-track { display: flex; gap: 14px; width: max-content; animation: marquee 32s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .brand-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 26px; border: 1px solid var(--border); border-radius: 40px;
+      background: var(--white); color: var(--primary);
+      font-weight: 700; font-size: 15px; white-space: nowrap; box-shadow: var(--shadow-sm);
+    }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* Gallery */
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .gallery-item {
+      position: relative; overflow: hidden; border-radius: 10px;
+      cursor: pointer; aspect-ratio: 4 / 3; border: 0; padding: 0; background: #e2e8f0;
+    }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s ease; }
+    .gallery-item:hover img, .gallery-item:focus-visible img { transform: scale(1.08); }
+    .gallery-item::after {
+      content: attr(data-caption);
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 22px 14px 12px; color: var(--white); font-size: 13px; font-weight: 700;
+      background: linear-gradient(to top, rgba(5, 21, 57, 0.9), transparent);
+      opacity: 0; transition: opacity 0.3s ease; text-align: left;
+    }
+    .gallery-item:hover::after, .gallery-item:focus-visible::after { opacity: 1; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 3000;
+      background: rgba(8, 13, 24, 0.94);
+      display: none; place-items: center; padding: 24px;
+    }
+    .lightbox.open { display: grid; }
+    .lightbox img { max-width: 92vw; max-height: 80vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .lightbox-caption { color: #cbd5e1; text-align: center; margin-top: 16px; font-size: 14px; }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);
+      color: var(--white); font-size: 24px; cursor: pointer; display: grid; place-items: center;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.25); }
+
+    /* ============ THANK YOU PAGE ============ */
+    .thankyou {
+      position: fixed; inset: 0; z-index: 4000;
+      display: none; place-items: center;
+      padding: 24px; overflow-y: auto;
+      background: linear-gradient(150deg, #07183e, #0b2b73 55%, #123a94);
+    }
+    .thankyou.open { display: grid; }
+    .thankyou-card {
+      width: min(580px, 100%);
+      background: var(--white);
+      border-radius: 16px;
+      padding: 42px 34px;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      animation: tyPop 0.45s ease both;
+      margin: auto;
+    }
+    @keyframes tyPop {
+      from { opacity: 0; transform: translateY(26px) scale(0.97); }
+      to   { opacity: 1; transform: none; }
+    }
+    .thankyou-check {
+      width: 80px; height: 80px; margin: 0 auto 22px;
+      display: grid; place-items: center;
+      border-radius: 50%; font-size: 42px; font-weight: 800; color: #fff;
+      background: #16a34a;
+      box-shadow: 0 0 0 10px rgba(22, 163, 74, 0.15);
+    }
+    .thankyou-card h2 {
+      font-family: "Poppins", sans-serif; color: var(--primary);
+      font-size: clamp(24px, 4vw, 32px); line-height: 1.2; margin-bottom: 12px;
+    }
+    .thankyou-card > p { color: var(--muted); font-size: 15px; }
+    .thankyou-details {
+      margin: 24px 0; padding: 18px;
+      border: 1px dashed var(--border); border-radius: 10px;
+      background: var(--light);
+      display: grid; gap: 10px; text-align: left;
+    }
+    .thankyou-details div { font-size: 14px; color: #334155; display: flex; gap: 10px; align-items: flex-start; }
+    .thankyou-details a:hover { color: var(--secondary); }
+    .thankyou-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .thankyou-actions .button { flex: 1 1 210px; }
+    .thankyou-ref { margin-top: 20px; font-size: 12.5px; color: var(--muted); letter-spacing: 0.5px; }
+    .thankyou-warn {
+      margin-top: 16px; padding: 11px 13px; border-radius: 8px;
+      background: #fef3c7; border: 1px solid #fde68a; color: #92400e;
+      font-size: 12.5px; text-align: left; line-height: 1.5;
+    }
+
+    /* Testimonials */
+    .feedback-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 25px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      display: flex; flex-direction: column;
+    }
+    .feedback-stars { color: #f59e0b; margin-bottom: 12px; font-size: 16px; letter-spacing: 2px; }
+    .feedback-quote { color: #334155; font-size: 14px; font-style: italic; margin-bottom: 18px; line-height: 1.6; flex-grow: 1; }
+    .feedback-author { display: flex; align-items: center; gap: 12px; }
+    .feedback-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
+    .feedback-author-info strong { display: block; color: var(--primary); font-size: 15px; }
+    .feedback-author-info span { color: var(--muted); font-size: 12px; }
+
+    /* Spec table */
+    .table-container { overflow-x: auto; margin-top: 20px; border-radius: 8px; }
+    .spec-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); min-width: 720px; }
+    .spec-table th, .spec-table td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .spec-table th { background: var(--primary); color: var(--white); font-family: "Poppins", sans-serif; }
+    .spec-table tbody tr:hover { background: #f8fafc; }
+
+    /* FAQ accordion */
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 20px; transition: border-color 0.25s ease; }
+    .faq-item.open { border-color: var(--primary); }
+    .faq-question {
+      width: 100%; background: none; border: 0; padding: 0; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      text-align: left; color: var(--primary);
+      font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 600; line-height: 1.4;
+    }
+    .faq-toggle { flex-shrink: 0; color: var(--secondary); font-size: 22px; font-weight: 800; transition: transform 0.3s ease; line-height: 1; }
+    .faq-item.open .faq-toggle { transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, margin-top 0.3s ease; }
+    .faq-item.open .faq-answer { max-height: 320px; margin-top: 10px; }
+    .faq-answer p { color: var(--muted); font-size: 14px; }
+
+    /* Service areas */
+    .area-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .area-chip {
+      display: inline-block; padding: 8px 16px; border-radius: 30px;
+      background: var(--white); border: 1px solid var(--border);
+      color: var(--primary); font-size: 13px; font-weight: 600;
+    }
+    .map-wrapper { border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .map-wrapper iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }
+
+    /* Emergency strip */
+    .emergency {
+      background: linear-gradient(90deg, var(--secondary), #ff5a2c);
+      color: var(--white); padding: 16px 0; text-align: center; font-weight: 600; font-size: 15px;
+    }
+    .emergency a { text-decoration: underline; font-weight: 800; }
+
+    /* CTA */
+    .cta { color: var(--white); background: linear-gradient(110deg, var(--primary), var(--primary-dark)); padding: 60px 0; }
+    .cta-content { display: flex; justify-content: space-between; align-items: center; gap: 25px; flex-wrap: wrap; }
+    .cta h2 { font-family: "Poppins", sans-serif; font-size: clamp(25px, 4vw, 38px); line-height: 1.2; margin-bottom: 8px; }
+    .cta p { color: #d9e3ff; }
+
+    /* Contact */
+    .contact-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; align-items: start; }
+    .contact-box, .contact-form { padding: 30px; background: var(--white); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); }
+    .contact-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .contact-item:last-child { border-bottom: 0; }
+    .contact-item-icon { color: var(--secondary); font-size: 20px; width: 26px; flex-shrink: 0; }
+    .contact-item strong { display: block; color: var(--primary); margin-bottom: 3px; }
+    .contact-item span, .contact-item a { color: var(--muted); font-size: 14px; }
+    .contact-item a:hover { color: var(--secondary); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { display: block; color: var(--dark); font-size: 13px; font-weight: 700; margin-bottom: 7px; }
+    input, select, textarea {
+      width: 100%; border: 1px solid #cbd5e1; border-radius: 6px;
+      padding: 12px 13px; font: inherit; font-size: 14px;
+      outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      background: var(--white); color: var(--dark);
+    }
+    textarea { min-height: 115px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(11, 43, 115, 0.12); }
+    input:invalid:not(:placeholder-shown) { border-color: #f87171; }
+    .char-count { display: block; text-align: right; font-size: 12px; color: var(--muted); margin-top: 5px; }
+    .hp-field { position: absolute !important; left: -9999px !important; opacity: 0; height: 0; width: 0; }
+
+    .notice { display: none; margin-top: 15px; font-size: 14px; font-weight: 700; padding: 12px; border-radius: 6px; text-align: center; }
+    .notice.success { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .notice.error { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .notice.info { background: #e0f2fe; color: #075985; border: 1px solid #bae6fd; }
+
+    /* Footer */
+    footer { color: #cbd5e1; background: #080d18; padding: 55px 0 20px; }
+    .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; padding-bottom: 30px; }
+    footer h3 { color: var(--white); font-family: "Poppins", sans-serif; margin-bottom: 15px; font-size: 18px; }
+    footer p, footer li, footer a { color: #a9b4c7; font-size: 14px; }
+    footer ul { list-style: none; }
+    footer li { margin-bottom: 10px; }
+    footer a { transition: color 0.2s ease; }
+    footer a:hover { color: var(--white); }
+    .footer-contact li { display: flex; gap: 10px; align-items: flex-start; }
+    .copyright { border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 20px; text-align: center; font-size: 13px; color: #94a3b8; }
+
+    /* Floating action buttons */
+    .float-stack { position: fixed; right: 20px; bottom: 20px; z-index: 999; display: flex; flex-direction: column; gap: 12px; }
+    .fab {
+      width: 56px; height: 56px; border-radius: 50%;
+      display: grid; place-items: center; color: var(--white);
+      font-size: 26px; border: 0; cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+      transition: transform 0.25s ease, opacity 0.3s ease, background 0.25s ease;
+    }
+    .fab:hover { transform: scale(1.08); }
+    .fab-call { background: var(--secondary); box-shadow: 0 8px 22px rgba(237, 28, 36, 0.35); }
+    .fab-top {
+      background: var(--primary); font-size: 22px;
+      opacity: 0; pointer-events: none; transform: translateY(12px);
+    }
+    .fab-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* Responsive — nav collapses earlier to fit links */
+    @media (max-width: 1080px) {
+      .nav-links {
+        display: none; position: absolute; top: 78px; left: 0; width: 100%;
+        padding: 20px 4%; background: var(--white);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column; align-items: flex-start; gap: 16px;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+        max-height: calc(100vh - 78px); overflow-y: auto;
+      }
+      .nav-links.active { display: flex; }
+      .nav-links a:not(.nav-button)::after { display: none; }
+      .menu-button { display: block; }
+      .nav-button { width: 100%; text-align: center; }
+    }
+
+    @media (max-width: 992px) {
+      .grid-4-col, .stats-grid, .steps-grid, .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-3-col, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .feature-layout, .contact-layout { grid-template-columns: 1fr; gap: 32px; }
+      .cta-content { align-items: flex-start; flex-direction: column; }
+      .feature-image, .video-container iframe { height: 300px; }
+      .section { padding: 62px 0; }
+      .hero { padding: 90px 0 100px; }
+      .hero-arrow { display: none; }
+    }
+
+    @media (max-width: 576px) {
+      .grid-4-col, .grid-3-col, .grid-2-col, .footer-grid,
+      .stats-grid, .steps-grid, .gallery-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .topbar-content { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .topbar { font-size: 13px; }
+      .brand-name { font-size: 21px; }
+      .brand img { width: 46px; height: 46px; }
+      .hero { padding: 70px 0 84px; }
+      .hero p { font-size: 16px; }
+      .button-group .button { width: 100%; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: auto; }
+      .contact-box, .contact-form { padding: 20px; }
+      .float-stack { right: 14px; bottom: 14px; }
+      .fab { width: 50px; height: 50px; font-size: 23px; }
+      .thankyou-card { padding: 32px 20px; }
+      .thankyou-actions .button { flex: 1 1 100%; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+      .hero-slide { transition: none; }
+      .reveal { opacity: 1; transform: none; }
+      .marquee-track { animation: none; }
+      .thankyou-card { animation: none; }
+    }
+
+    /* Print */
+    @media print {
+      header, .topbar, .float-stack, #scrollProgress, .hero-arrow, .hero-dots, .map-wrapper, footer, .thankyou { display: none !important; }
+      body { color: #000; }
+      .section { padding: 20px 0; page-break-inside: avoid; }
+      .card, .price-card { box-shadow: none; border: 1px solid #999; }
+    }
+  </style>
 </head>
+
 <body>
 
-    <!-- Gurmukhi Blessing Line -->
-    <div class="gurbani-bar">
-        ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="container topbar-content">
+      <span>📍 V.P.O. Gehri Mandi, Near Railway Station, Jandiala</span>
+      <span>
+        🕘 Mon–Sat: 9:00 AM – 7:00 PM &nbsp;|&nbsp;
+        📞 <a href="tel:+917986712685">+91-7986712685</a>
+      </span>
     </div>
+  </div>
 
-    <!-- Top Contact & REAL TIME INDIA CLOCK Bar -->
-    <div class="top-bar">
-        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
-            <!-- REAL TIME CLOCK DISPLAY IN INDIA -->
-            <div class="live-clock-badge">
-                <i class="fa-regular fa-clock text-warning"></i>
-                <span id="liveIndiaDateTime">Loading IST Time...</span>
-            </div>
-            
-            <div class="d-flex align-items-center gap-4 text-white">
-                <span><i class="fa-solid fa-phone me-1 text-warning"></i><a href="tel:+917986712685">+91-7986712685</a></span>
-                <span class="d-none d-lg-inline"><i class="fa-solid fa-location-dot me-1 text-warning"></i>V.P.O Gehri Mandi, Jandiala</span>
-            </div>
-        </div>
-    </div>
+  <!-- HEADER -->
+  <header id="siteHeader">
+    <nav class="container navbar" aria-label="Main navigation">
+      <a href="#home" class="brand" aria-label="Be Secure Security Solutions — Home">
+        <img src="https://lh3.googleusercontent.com/d/1yoQb3YNSsOleAUzmqugI8H4oSQX2a5gm" alt="Be Secure Security Solutions logo" width="66" height="60">
+        <span class="brand-name">
+          BE SECURE
+          <small>SECURITY SOLUTIONS, JANDIALA</small>
+        </span>
+      </a>
 
-    <!-- Main Navigation Header -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
-                <i class="fa-solid fa-shield-halved fs-2 text-primary"></i>
-                <div>
-                    <span class="brand-name">BE SECURE</span>
-                    <span class="brand-tagline">Camera & Computer Solutions</span>
-                </div>
-            </a>
+      <button class="menu-button" id="menuButton" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">☰</button>
 
-            <div class="d-flex align-items-center gap-2 order-lg-3 ms-auto ms-lg-0">
-                <!-- Shopping Cart Button -->
-                <button class="btn btn-outline-dark cart-btn-wrapper position-relative me-2" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-badge-count" id="cartCount">0</span>
-                </button>
-
-                <!-- Admin PIN Security Button -->
-                <button class="btn btn-outline-primary me-2 fw-bold" onclick="handleAdminAccess()">
-                    <i class="fa-solid fa-lock me-1" id="adminLockIcon"></i> <span id="adminBtnText">Admin Portal</span>
-                </button>
-
-                <a href="#quote-section" class="btn btn-brand d-none d-sm-inline-block"><i class="fa-solid fa-paper-plane me-2"></i>Get Quote</a>
-                
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-
-            <div class="collapse navbar-collapse order-lg-2" id="navMenu">
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#store">Store</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Repairs & Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#packages">Packages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#quote-section">Contact</a></li>
-                </ul>
-            </div>
-        </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#expert">Expert</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#packages">Packages</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#specs">Specs</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a class="nav-button" href="tel:+917986712685">📞 Call Now</a></li>
+      </ul>
     </nav>
+  </header>
 
-    <!-- BELOW HEADER: SCROLLING ANNOUNCEMENT TICKER -->
-    <div class="ticker-bar">
-        <div class="ticker-label"><i class="fa-solid fa-bullhorn me-1"></i> UPDATES</div>
-        <div class="ticker-content-wrapper">
-            <div class="ticker-move">
-                <div class="ticker-item"><i class="fa-solid fa-bolt"></i> ⚡ NEW ARRIVAL: Ultra HD 4K Night Vision Security Cameras now available in stock!</div>
-                <div class="ticker-item"><i class="fa-solid fa-tag"></i> 🏷️ SPECIAL OFFER: Get 15% Instant Discount on Complete 4-Camera Installation Bundles.</div>
-                <div class="ticker-item"><i class="fa-solid fa-wrench"></i> 🛠️ SERVICE UPDATE: Express Motherboard Diagnostic & Printer Toner Refilling in Jandiala Guru.</div>
-                <div class="ticker-item"><i class="fa-solid fa-truck-fast"></i> 🚚 Same-Day Local Delivery & Installation Available. Call: +91-7986712685</div>
-            </div>
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="home">
+      <div class="hero-slider-bg" aria-hidden="true">
+        <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1920&q=80');"></div>
+        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=1920&q=80');"></div>
+        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1528312457263-2a44b41a5416?auto=format&fit=crop&w=1920&q=80');"></div>
+        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1920&q=80');"></div>
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+
+      <div class="container hero-content">
+        <p class="hero-label">Professional Security &amp; Technology Services</p>
+        <h1>Protect Your Home &amp; Business with <span>Reliable CCTV Solutions</span></h1>
+        <p>Be Secure Security Solutions delivers high-definition CCTV camera installation, smart security systems, networking and complete computer technology support across Jandiala and nearby regions.</p>
+        <div class="button-group">
+          <a class="button button-primary" href="#contact">Request a Service</a>
+          <a class="button button-light" href="#services">View Our Services</a>
         </div>
+      </div>
+
+      <button class="hero-arrow prev" id="heroPrev" aria-label="Previous slide">❮</button>
+      <button class="hero-arrow next" id="heroNext" aria-label="Next slide">❯</button>
+      <div class="hero-dots" id="heroDots" role="tablist" aria-label="Hero slides"></div>
+    </section>
+
+    <!-- ============ TRUST GRID ============ -->
+    <section class="container trust-grid grid-4-col" aria-label="Business highlights">
+      <div class="trust-card">
+        <strong>Professional Work</strong>
+        <span>Experienced technical support</span>
+      </div>
+      <div class="trust-card">
+        <strong>Quality Products</strong>
+        <span>Reliable security equipment</span>
+      </div>
+      <div class="trust-card">
+        <strong>Complete Solutions</strong>
+        <span>Supply, installation &amp; support</span>
+      </div>
+      <div class="trust-card">
+        <strong>Local Service</strong>
+        <span>Serving Jandiala &amp; nearby</span>
+      </div>
+    </section>
+
+    <!-- ============ STATS COUNTERS ============ -->
+    <section class="section" aria-label="Company statistics">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card reveal">
+            <div class="stat-number" data-count="1200" data-suffix="+">0</div>
+            <p>Cameras Installed</p>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-number" data-count="10" data-suffix="+">0</div>
+            <p>Years of Experience</p>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-number" data-count="850" data-suffix="+">0</div>
+            <p>Happy Customers</p>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-number" data-count="24" data-suffix="/7">0</div>
+            <p>Support Availability</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERT VIDEO ============ -->
+    <section class="section section-light" id="expert">
+      <div class="container feature-layout">
+        <div class="video-container reveal">
+          <div class="photo-frame" style="width:100%;max-width:900px;height:650px;margin:30px auto;padding:8px;background:#fff;border:3px solid #14213d;border-radius:35px;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 50px rgba(0,0,0,.20);box-sizing:border-box;"><img src="https://lh3.googleusercontent.com/d/1FisEVsKAvS3atOU-kSMDxZIr8_Gyam76" alt="BE SECURE - Er. Supreet Singh" style="width:100%;height:100%;object-fit:contain;object-position:center;border-radius:27px;display:block;"></div>
+        </div>
+        <div class="reveal">
+          <div class="section-heading" style="text-align:left; margin:0;">
+            <p class="eyebrow">Meet The Technical Expert</p>
+            <h2>Er. Supreet Singh</h2>
+            <p style="margin-top:15px; color:#334155;">
+              Watch our official introduction video to see how <strong>Be Secure Security Solutions</strong> delivers high-grade security camera setups and reliable IT solutions customised for your needs.
+            </p>
+          </div>
+          <ul class="feature-list">
+            <li>Expertise in Network Infrastructure &amp; Computer Hardware</li>
+            <li>Years of hands-on experience in high-definition CCTV setups</li>
+            <li>Full post-installation support and technical assistance</li>
+            <li>Engineered security layouts for commercial and residential units</li>
+          </ul>
+          <div class="button-group">
+            <a class="button button-primary" href="#contact">Book a Free Site Visit</a>
+            <a class="button button-outline" href="tel:+917986712685">Talk to Expert</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">What We Do</p>
+          <h2>Our Professional Services</h2>
+          <p>Complete tech and security setups for homes, retail shops, offices, schools, warehouses and factories.</p>
+        </div>
+        <div class="grid-3-col">
+          <article class="card service-card reveal">
+            <div class="service-icon" aria-hidden="true">📹</div>
+            <h3>CCTV Installation</h3>
+            <p>Camera mounting, DVR/NVR setup, remote mobile view configuration and routine maintenance.</p>
+          </article>
+          <article class="card service-card reveal">
+            <div class="service-icon" aria-hidden="true">🔐</div>
+            <h3>Security Systems</h3>
+            <p>Custom security camera architecture tailored to your property layout and safety requirements.</p>
+          </article>
+          <article class="card service-card reveal">
+            <div class="service-icon" aria-hidden="true">🌐</div>
+            <h3>Networking Services</h3>
+            <p>Wi-Fi coverage, LAN network setup, router configuration and structured CAT6 cabling.</p>
+          </article>
+          <article class="card service-card reveal">
+            <div class="service-icon" aria-hidden="true">💻</div>
+            <h3>Computer Services</h3>
+            <p>Computer hardware repair, OS installations, performance upgrades and technical troubleshooting.</p>
+          </article>
+          <article class="card service-card reveal">
+            <div class="service-icon" aria-hidden="true">🖨️</div>
+            <h3>Printer Services</h3>
+            <p>Printer maintenance, driver configuration, technical support and precision toner refilling.</p>
+          </article>
+          <article class="card service-card reveal">
+            <div class="service-icon" aria-hidden="true">🛠️</div>
+            <h3>Maintenance &amp; Support</h3>
+            <p>Regular lens cleaning, wiring inspection, storage integrity checks and emergency repairs.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY CHOOSE US ============ -->
+    <section class="section section-light" id="why">
+      <div class="container feature-layout">
+        <div class="reveal">
+          <div class="section-heading" style="text-align:left; margin:0 0 10px;">
+            <p class="eyebrow">Why Choose Us</p>
+            <h2>Security You Can Actually Rely On</h2>
+          </div>
+          <p style="color:#334155;">
+            A camera system is only as good as its installation. We plan every cable route, angle and
+            storage requirement so your footage is clean, complete and ready when you need it most.
+          </p>
+          <ul class="feature-list">
+            <li><strong>Free site survey</strong> before you commit to anything</li>
+            <li><strong>Neat concealed wiring</strong> — no messy cables on your walls</li>
+            <li><strong>Branded equipment</strong> with genuine warranty support</li>
+            <li><strong>Mobile viewing setup</strong> on all family or staff phones</li>
+            <li><strong>Transparent pricing</strong> — no hidden charges after work</li>
+            <li><strong>After-sales service</strong> — one call and we're on site</li>
+          </ul>
+          <a class="button button-primary" href="#packages">View Packages</a>
+        </div>
+        <div class="reveal">
+          <img class="feature-image" src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=900&q=70" alt="Technician installing a CCTV surveillance camera" loading="lazy" decoding="async" width="900" height="600">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS STEPS ============ -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">How It Works</p>
+          <h2>Our Simple 4-Step Process</h2>
+          <p>From the first phone call to the final handover — clear, quick and professional.</p>
+        </div>
+        <div class="steps-grid">
+          <div class="process-card reveal">
+            <div class="process-number">1</div>
+            <h3>Consultation</h3>
+            <p>Call us and describe your property, concerns and budget.</p>
+          </div>
+          <div class="process-card reveal">
+            <div class="process-number">2</div>
+            <h3>Site Survey &amp; Quote</h3>
+            <p>We visit, check coverage points and give you a clear written quotation.</p>
+          </div>
+          <div class="process-card reveal">
+            <div class="process-number">3</div>
+            <h3>Installation</h3>
+            <p>Neat cabling, secure mounting and full DVR/NVR configuration.</p>
+          </div>
+          <div class="process-card reveal">
+            <div class="process-number">4</div>
+            <h3>Testing &amp; Support</h3>
+            <p>We test every camera, set up mobile viewing and stay available after.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCTS ============ -->
+    <section class="section section-light" id="products">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Security Equipment</p>
+          <h2>Products Available on Enquiry</h2>
+          <p>Browse our catalogue of professional surveillance equipment. Contact us for specifications and custom quotes.</p>
+        </div>
+        <div class="grid-3-col">
+          <article class="card reveal">
+            <img class="product-image" src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=500&q=60" alt="Outdoor bullet CCTV camera" loading="lazy" decoding="async" width="500" height="210">
+            <div class="product-content">
+              <span class="product-tag">CCTV CAMERA</span>
+              <h3>Outdoor Bullet Cameras</h3>
+              <p>Weatherproof infrared cameras for outdoor perimeter monitoring.</p>
+              <button class="button button-outline enquiry-button" data-product="Outdoor Bullet Cameras">Enquire Now</button>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img class="product-image" src="https://images.unsplash.com/photo-1549421263-6064834b02fa?auto=format&fit=crop&w=500&q=60" alt="Indoor dome CCTV camera" loading="lazy" decoding="async" width="500" height="210">
+            <div class="product-content">
+              <span class="product-tag">CCTV CAMERA</span>
+              <h3>Indoor Dome Cameras</h3>
+              <p>Compact, wide-angle ceiling-mounted cameras for indoor surveillance.</p>
+              <button class="button button-outline enquiry-button" data-product="Indoor Dome Cameras">Enquire Now</button>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img class="product-image" src="https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=500&q=60" alt="Smart IP network camera" loading="lazy" decoding="async" width="500" height="210">
+            <div class="product-content">
+              <span class="product-tag">NETWORK CAMERA</span>
+              <h3>Smart IP Cameras</h3>
+              <p>High-definition digital network cameras with remote mobile app access.</p>
+              <button class="button button-outline enquiry-button" data-product="Smart IP Cameras">Enquire Now</button>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img class="product-image" src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=500&q=60" alt="DVR and NVR recording system" loading="lazy" decoding="async" width="500" height="210">
+            <div class="product-content">
+              <span class="product-tag">RECORDING SYSTEM</span>
+              <h3>DVR &amp; NVR Recorders</h3>
+              <p>Multi-channel digital and network video recorders for continuous footage storage.</p>
+              <button class="button button-outline enquiry-button" data-product="DVR & NVR Recorders">Enquire Now</button>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img class="product-image" src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=500&q=60" alt="Surveillance hard disk drive" loading="lazy" decoding="async" width="500" height="210">
+            <div class="product-content">
+              <span class="product-tag">STORAGE</span>
+              <h3>Surveillance Hard Disks</h3>
+              <p>High-capacity 24/7 continuous duty hard disk drives for video logging.</p>
+              <button class="button button-outline enquiry-button" data-product="Surveillance Hard Disks">Enquire Now</button>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img class="product-image" src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=500&q=60" alt="CCTV cables and power supply accessories" loading="lazy" decoding="async" width="500" height="210">
+            <div class="product-content">
+              <span class="product-tag">ACCESSORIES</span>
+              <h3>Cables &amp; Power Supplies</h3>
+              <p>Coaxial cables, CAT6 wiring, BNC connectors and central power boxes.</p>
+              <button class="button button-outline enquiry-button" data-product="Cables & Accessories">Enquire Now</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PACKAGES ============ -->
+    <section class="section" id="packages">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Popular Packages</p>
+          <h2>Choose Your CCTV Setup</h2>
+          <p>Indicative packages — final pricing depends on site conditions, cable length and camera model.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="price-card reveal">
+            <h3>Home Basic</h3>
+            <p class="price-note">Best for small homes &amp; shops</p>
+            <div class="price-value">4 Cameras <span>2MP HD · 1TB storage</span></div>
+            <ul class="price-list">
+              <li>4 × HD bullet/dome cameras</li>
+              <li>4-channel DVR + 1TB hard disk</li>
+              <li>Coaxial cable, connectors &amp; power supply</li>
+              <li>Mobile viewing app configuration</li>
+              <li>1-year installation warranty</li>
+            </ul>
+            <button class="button button-outline enquiry-button" data-product="Home Basic Package (4 Cameras)">Get Quote</button>
+          </div>
+
+          <div class="price-card featured reveal">
+            <span class="price-badge">MOST POPULAR</span>
+            <h3>Business Standard</h3>
+            <p class="price-note">Ideal for showrooms &amp; offices</p>
+            <div class="price-value">8 Cameras <span>5MP HD · 2TB storage</span></div>
+            <ul class="price-list">
+              <li>8 × HD cameras (mix of bullet &amp; dome)</li>
+              <li>8-channel DVR + 2TB surveillance disk</li>
+              <li>Neat concealed wiring &amp; casing</li>
+              <li>Multi-user mobile + desktop viewing</li>
+              <li>Priority on-site support</li>
+            </ul>
+            <button class="button button-primary enquiry-button" data-product="Business Standard Package (8 Cameras)">Get Quote</button>
+          </div>
+
+          <div class="price-card reveal">
+            <h3>Enterprise IP</h3>
+            <p class="price-note">For warehouses &amp; factories</p>
+            <div class="price-value">Custom <span>4K IP · PoE · NVR</span></div>
+            <ul class="price-list">
+              <li>4K IP cameras with full-colour night vision</li>
+              <li>PoE switch + NVR with RAID storage</li>
+              <li>CAT6 structured cabling</li>
+              <li>Central monitoring station setup</li>
+              <li>AMC &amp; scheduled maintenance</li>
+            </ul>
+            <button class="button button-outline enquiry-button" data-product="Enterprise IP Package (Custom)">Get Quote</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BRANDS ============ -->
+    <section class="section section-light" aria-label="Brands we work with">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Trusted Brands</p>
+          <h2>Equipment We Deal In</h2>
+          <p>We supply and install hardware from leading security and IT brands.</p>
+        </div>
+      </div>
+      <div class="marquee">
+        <div class="marquee-track">
+          <span class="brand-pill">CP PLUS</span>
+          <span class="brand-pill">Hikvision</span>
+          <span class="brand-pill">Dahua</span>
+          <span class="brand-pill">Godrej</span>
+          <span class="brand-pill">Honeywell</span>
+          <span class="brand-pill">TP-Link</span>
+          <span class="brand-pill">D-Link</span>
+          <span class="brand-pill">Seagate</span>
+          <span class="brand-pill">Western Digital</span>
+          <span class="brand-pill">HP</span>
+          <span class="brand-pill">Canon</span>
+          <span class="brand-pill">Epson</span>
+          <!-- duplicate set for seamless loop -->
+          <span class="brand-pill" aria-hidden="true">CP PLUS</span>
+          <span class="brand-pill" aria-hidden="true">Hikvision</span>
+          <span class="brand-pill" aria-hidden="true">Dahua</span>
+          <span class="brand-pill" aria-hidden="true">Godrej</span>
+          <span class="brand-pill" aria-hidden="true">Honeywell</span>
+          <span class="brand-pill" aria-hidden="true">TP-Link</span>
+          <span class="brand-pill" aria-hidden="true">D-Link</span>
+          <span class="brand-pill" aria-hidden="true">Seagate</span>
+          <span class="brand-pill" aria-hidden="true">Western Digital</span>
+          <span class="brand-pill" aria-hidden="true">HP</span>
+          <span class="brand-pill" aria-hidden="true">Canon</span>
+          <span class="brand-pill" aria-hidden="true">Epson</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Our Work</p>
+          <h2>Installation Gallery</h2>
+          <p>A glimpse of the security and network setups we deliver every day.</p>
+        </div>
+        <div class="gallery-grid">
+          <button class="gallery-item reveal" data-caption="Outdoor bullet camera installation" data-full="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=500&q=60" alt="Outdoor bullet CCTV camera mounted on a wall" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+          <button class="gallery-item reveal" data-caption="Indoor dome camera setup" data-full="https://images.unsplash.com/photo-1549421263-6064834b02fa?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1549421263-6064834b02fa?auto=format&fit=crop&w=500&q=60" alt="Indoor dome CCTV camera on a ceiling" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+          <button class="gallery-item reveal" data-caption="Smart IP camera configuration" data-full="https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=500&q=60" alt="Smart IP network camera" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+          <button class="gallery-item reveal" data-caption="DVR & NVR rack installation" data-full="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=500&q=60" alt="DVR and NVR recorder unit" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+          <button class="gallery-item reveal" data-caption="Storage & hard disk upgrade" data-full="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=500&q=60" alt="Surveillance hard disk drive" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+          <button class="gallery-item reveal" data-caption="Structured cabling & accessories" data-full="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=500&q=60" alt="Network cabling and connectors" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+          <button class="gallery-item reveal" data-caption="Control room monitoring setup" data-full="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=500&q=60" alt="Surveillance control room monitors" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+          <button class="gallery-item reveal" data-caption="Network & Wi-Fi infrastructure" data-full="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=1400&q=80">
+            <img src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=500&q=60" alt="Network router and cabling infrastructure" loading="lazy" decoding="async" width="500" height="375">
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SPECIFICATIONS ============ -->
+    <section class="section section-light" id="specs">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Technical Overview</p>
+          <h2>Camera System Specifications</h2>
+          <p>Compare the features and hardware capabilities of our surveillance systems.</p>
+        </div>
+        <div class="table-container reveal">
+          <table class="spec-table">
+            <caption class="sr-only">Comparison of CCTV camera types, resolution, night vision, connectivity and recommended use</caption>
+            <thead>
+              <tr>
+                <th scope="col">Camera Type</th>
+                <th scope="col">Resolution Options</th>
+                <th scope="col">Night Vision Range</th>
+                <th scope="col">Connectivity</th>
+                <th scope="col">Recommended Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>HD Analog Bullet</strong></td>
+                <td>2MP / 3MP / 5MP</td>
+                <td>Up to 30 Metres</td>
+                <td>BNC Coaxial Wire</td>
+                <td>Outdoor Perimeters, Main Gates</td>
+              </tr>
+              <tr>
+                <td><strong>HD Dome Camera</strong></td>
+                <td>2MP / 4MP</td>
+                <td>Up to 20 Metres</td>
+                <td>BNC Coaxial Wire</td>
+                <td>Indoors, Offices, Retail Shops</td>
+              </tr>
+              <tr>
+                <td><strong>4K Smart IP Camera</strong></td>
+                <td>4MP / 8MP (4K)</td>
+                <td>Up to 50 Metres (Full Colour)</td>
+                <td>CAT6 Ethernet / PoE</td>
+                <td>High Security Areas, Warehouses</td>
+              </tr>
+              <tr>
+                <td><strong>Wi-Fi Wireless Camera</strong></td>
+                <td>2MP / 3MP</td>
+                <td>Up to 15 Metres</td>
+                <td>Wireless Wi-Fi / MicroSD</td>
+                <td>Apartments, Single Rooms</td>
+              </tr>
+              <tr>
+                <td><strong>PTZ Rotating Camera</strong></td>
+                <td>2MP / 4MP</td>
+                <td>Up to 60 Metres</td>
+                <td>CAT6 Ethernet / PoE</td>
+                <td>Large Yards, Parking, Factory Floors</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="section" id="feedbacks">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Client Testimonials</p>
+          <h2>Feedback From Our Customers</h2>
+          <p>Read what home and business owners in Jandiala have to say about our services.</p>
+        </div>
+
+        <div class="grid-4-col">
+          <div class="feedback-card reveal">
+            <div class="feedback-stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="feedback-quote">"Er. Supreet Singh installed 8 IP cameras at my showroom. Neat wiring and excellent video clarity on mobile!"</p>
+            <div class="feedback-author">
+              <img class="feedback-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Gurpreet Singh" loading="lazy" decoding="async" width="45" height="45">
+              <div class="feedback-author-info">
+                <strong>Gurpreet Singh</strong>
+                <span>Shop Owner, Jandiala</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="feedback-card reveal">
+            <div class="feedback-stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="feedback-quote">"Very professional CCTV setup for our home. Quick service, polite behaviour and reasonable pricing."</p>
+            <div class="feedback-author">
+              <img class="feedback-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Harpreet Kaur" loading="lazy" decoding="async" width="45" height="45">
+              <div class="feedback-author-info">
+                <strong>Harpreet Kaur</strong>
+                <span>Homeowner</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="feedback-card reveal">
+            <div class="feedback-stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="feedback-quote">"Got Wi-Fi networking and 4 dome cameras installed at our school office. Everything runs smoothly!"</p>
+            <div class="feedback-author">
+              <img class="feedback-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt="Rajesh Kumar" loading="lazy" decoding="async" width="45" height="45">
+              <div class="feedback-author-info">
+                <strong>Rajesh Kumar</strong>
+                <span>School Administrator</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="feedback-card reveal">
+            <div class="feedback-stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="feedback-quote">"Best computer &amp; CCTV technical support in Gehri Mandi. Solved my DVR hard drive issue in no time."</p>
+            <div class="feedback-author">
+              <img class="feedback-avatar" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=100&q=80" alt="Aman Sharma" loading="lazy" decoding="async" width="45" height="45">
+              <div class="feedback-author-info">
+                <strong>Aman Sharma</strong>
+                <span>Local Business Owner</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICE AREAS + MAP ============ -->
+    <section class="section section-light" id="areas">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Service Coverage</p>
+          <h2>Areas We Serve</h2>
+          <p>On-site installation and support across Jandiala and surrounding regions.</p>
+        </div>
+        <div class="grid-2-col">
+          <div class="reveal">
+            <h3 style="color:var(--primary); font-family:'Poppins',sans-serif; margin-bottom:8px;">Local Coverage</h3>
+            <p style="color:var(--muted); font-size:14.5px;">We handle site visits, installation and maintenance in all of the following areas. Outside these? Call us — we may still be able to help.</p>
+            <div class="area-list">
+              <span class="area-chip">Jandiala Guru</span>
+              <span class="area-chip">Gehri Mandi</span>
+              <span class="area-chip">Amritsar</span>
+              <span class="area-chip">Jalandhar</span>
+              <span class="area-chip">Kapurthala</span>
+              <span class="area-chip">Beas</span>
+              <span class="area-chip">Baba Bakala Sahib</span>
+              <span class="area-chip">Sultanpur Lodhi</span>
+              <span class="area-chip">Tarn Taran</span>
+              <span class="area-chip">Goindwal Sahib</span>
+            </div>
+          </div>
+          <div class="map-wrapper reveal">
+            <iframe
+              title="Be Secure Security Solutions location map — Gehri Mandi, Jandiala"
+              src="https://www.google.com/maps?q=Gehri%20Mandi%2C%20Jandiala%2C%20Punjab&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Common Queries</p>
+          <h2>Frequently Asked Questions</h2>
+          <p>Find answers to common questions regarding CCTV camera installations and services.</p>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Can I view my cameras on my smartphone when I'm away?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes! We configure remote mobile viewing on your smartphone so you can watch live video footage from anywhere with an internet connection.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Do your cameras work at night?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes, all our CCTV models feature built-in Infrared (IR) or Full-Colour Night Vision to ensure crystal clear recordings in complete darkness.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>How long is camera footage recorded and saved?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Recording duration depends on the capacity of the hard disk installed. Typical setups store between 15 to 30 days of continuous footage before overwriting.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Do you offer on-site maintenance and visits?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes, we conduct site visits in Jandiala and neighbouring areas for site inspection, installation and post-installation repair services.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>How much does a basic CCTV setup cost?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Cost depends on the number of cameras, resolution, cable length and storage size. Share your requirement and we'll give you a transparent quote after a free site survey.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>How long does installation take?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>A standard 4-camera home setup is usually completed within a single day. Larger commercial installations may take 2–3 days depending on cabling work.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Do you provide warranty on cameras and installation?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. Cameras and recorders carry the manufacturer's warranty, and we provide our own service warranty on the installation and wiring work.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" aria-expanded="false">
+              <span>Can you repair an existing CCTV system installed by someone else?</span>
+              <span class="faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Absolutely. We diagnose faults in existing DVR/NVR units, cameras, cabling and power supplies, and repair or upgrade them as needed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EMERGENCY STRIP ============ -->
+    <div class="emergency">
+      ⚡ Camera down or DVR not recording? Same-day emergency support available — <a href="tel:+917986712685">Call +91-7986712685</a>
     </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-section">
-        <div class="container">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-7">
-                    <div class="hero-badge">
-                        <i class="fa-solid fa-star me-1"></i> Security Cameras & IT Hardware Store
-                    </div>
-                    <h1 class="hero-title">SURVEILLANCE & <span>COMPUTER HARDWARE</span> STORE</h1>
-                    <p class="lead mb-4 text-light">
-                        Deals in CCTV Camera Systems, Motherboards, Printers, Toners, Laptops & Desktop Computers. Direct Online Payments & Instant Service Setup.
-                    </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="#store" class="btn btn-brand btn-lg"><i class="fa-solid fa-bag-shopping me-2"></i>Shop Store</a>
-                        <a href="tel:+917986712685" class="btn btn-outline-light btn-lg"><i class="fa-solid fa-phone me-2"></i>Call: +91-7986712685</a>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="bg-white p-3 rounded-4 shadow-lg text-dark">
-                        <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=800&q=80" alt="CCTV & Hardware" class="img-fluid rounded-3 mb-3">
-                        <div class="text-center">
-                            <span class="badge bg-danger mb-2">INTEGRATED PAYMENT GATEWAY ENABLED</span>
-                            <h5 class="fw-bold mb-0 text-dark">Instant Checkout via UPI, Cards & Net Banking</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- ============ CTA ============ -->
+    <section class="cta">
+      <div class="container cta-content">
+        <div>
+          <h2>Need a Custom Security Solution?</h2>
+          <p>Contact Be Secure Security Solutions today for expert service and product advice.</p>
         </div>
+        <div class="button-group">
+          <a class="button button-primary" href="tel:+917986712685">Call +91-7986712685</a>
+          <a class="button button-light" href="#contact">Get a Free Quote</a>
+        </div>
+      </div>
     </section>
 
-    <!-- MY STORE SECTION -->
-    <section id="store" class="py-5 bg-light">
-        <div class="container py-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
-                <div>
-                    <span class="section-tag">Explore Store Products</span>
-                    <h2 class="fw-bold m-0">Store Products & Offers</h2>
-                </div>
-                <div class="mt-3 mt-md-0 d-flex gap-2">
-                    <button class="btn btn-warning fw-bold d-none" id="adminAddNewBtn" onclick="openAddProductModal()">
-                        <i class="fa-solid fa-plus me-2"></i>Add New Product
-                    </button>
-                </div>
-            </div>
-
-            <!-- Product Category Filter -->
-            <div class="d-flex flex-wrap gap-2 mb-4">
-                <button class="btn btn-dark btn-sm rounded-pill px-3 filter-btn active" onclick="filterProducts('all', this)">All Items</button>
-                <button class="btn btn-outline-dark btn-sm rounded-pill px-3 filter-btn" onclick="filterProducts('Camera', this)">Cameras & NVR</button>
-                <button class="btn btn-outline-dark btn-sm rounded-pill px-3 filter-btn" onclick="filterProducts('Computer', this)">Motherboards & Hardware</button>
-                <button class="btn btn-outline-dark btn-sm rounded-pill px-3 filter-btn" onclick="filterProducts('Toner', this)">Toners & Supplies</button>
-            </div>
-
-            <!-- Products Grid -->
-            <div class="row g-4" id="productGrid">
-                <!-- Dynamically rendered products -->
-            </div>
+    <!-- ============ CONTACT ============ -->
+    <section class="section section-light" id="contact">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Get In Touch</p>
+          <h2>Request a Product or Service Enquiry</h2>
+          <p>Fill out the form below and your enquiry will be submitted directly to our records.</p>
         </div>
-    </section>
 
-    <!-- REPAIRS & SERVICES SECTION -->
-    <section id="services" class="py-5">
-        <div class="container py-4">
-            <div class="text-center mb-5 max-w-2xl mx-auto">
-                <span class="section-tag">Professional Hardware Assistance</span>
-                <h2 class="fw-bold">Camera Installation & IT Repair Services</h2>
-                <p class="text-muted">We repair, service, and configure all types of surveillance and computer hardware.</p>
+        <div class="contact-layout">
+          <div class="contact-box reveal">
+            <h3 style="text-align:center; font-weight:800; color:#e51d2a; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:4px; font-family:Georgia,serif; margin:-10px 0 20px 0;">
+              CONTACT INFORMATION
+            </h3>
+            <div class="contact-item">
+              <div class="contact-item-icon" aria-hidden="true">👨‍💼</div>
+              <div><strong>Technical Expert</strong><span>Er. Supreet Singh</span></div>
             </div>
-
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-card">
-                        <div class="service-icon"><i class="fa-solid fa-video"></i></div>
-                        <h4 class="fw-bold fs-5 mb-2">CCTV Camera Installation</h4>
-                        <p class="text-muted small mb-3">HD Bullet, Dome & IP camera installation with live mobile access setup.</p>
-                        <a href="#quote-section" class="btn btn-sm btn-outline-danger fw-bold">Book Service &rarr;</a>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-card">
-                        <div class="service-icon"><i class="fa-solid fa-microchip"></i></div>
-                        <h4 class="fw-bold fs-5 mb-2">Motherboard Repair</h4>
-                        <p class="text-muted small mb-3">Chip-level diagnostics and repair for desktop, laptop, and CCTV circuit boards.</p>
-                        <a href="#quote-section" class="btn btn-sm btn-outline-danger fw-bold">Book Service &rarr;</a>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <div class="service-card">
-                        <div class="service-icon"><i class="fa-solid fa-print"></i></div>
-                        <h4 class="fw-bold fs-5 mb-2">Toner Refilling & Printer Repair</h4>
-                        <p class="text-muted small mb-3">Laserjet toner refilling, printhead alignment, and original cartridge supply.</p>
-                        <a href="#quote-section" class="btn btn-sm btn-outline-danger fw-bold">Book Service &rarr;</a>
-                    </div>
-                </div>
+            <div class="contact-item">
+              <div class="contact-item-icon" aria-hidden="true">📞</div>
+              <div><strong>Phone</strong><a href="tel:+917986712685">+91-7986712685</a></div>
             </div>
-        </div>
-    </section>
-
-    <!-- PACKAGES SECTION -->
-    <section id="packages" class="py-5 bg-light">
-        <div class="container py-4">
-            <div class="text-center mb-5">
-                <span class="section-tag">Pre-Built Bundles</span>
-                <h2 class="fw-bold">Popular Security & Hardware Bundles</h2>
+            <div class="contact-item">
+              <div class="contact-item-icon" aria-hidden="true">⚡</div>
+              <div><strong>Emergency Support</strong><span>Same-day service for breakdowns</span></div>
             </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                        <h4 class="fw-bold">2-Camera Home Bundle</h4>
-                        <p class="text-muted small">Ideal for main gate & entrance security</p>
-                        <h3 class="fw-bold text-danger my-3">₹8,999</h3>
-                        <ul class="list-unstyled text-start lh-lg small mb-4">
-                            <li><i class="fa-solid fa-check text-success me-2"></i>2 HD Outdoor Bullet Cameras</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>4-Channel DVR Recorder</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>500GB HDD Storage</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>Free Mobile Live Setup</li>
-                        </ul>
-                        <button class="btn btn-outline-dark w-100 fw-bold" onclick="addBundleToCart('2-Camera Home Bundle', 8999)">Buy Bundle Now</button>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card h-100 border-2 border-danger shadow-sm rounded-4 p-4 text-center position-relative">
-                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">Best Seller</span>
-                        <h4 class="fw-bold">4-Camera Commercial Kit</h4>
-                        <p class="text-muted small">Best for shops, showrooms & offices</p>
-                        <h3 class="fw-bold text-danger my-3">₹14,500</h3>
-                        <ul class="list-unstyled text-start lh-lg small mb-4">
-                            <li><i class="fa-solid fa-check text-success me-2"></i>4 Full HD Indoor/Outdoor Cameras</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>8-Channel HD NVR / DVR</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>1TB Surveillance Hard Disk</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>Audio + Mobile Remote Access</li>
-                        </ul>
-                        <button class="btn btn-brand w-100 fw-bold" onclick="addBundleToCart('4-Camera Commercial Kit', 14500)">Buy Bundle Now</button>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                        <h4 class="fw-bold">IT Hardware Maintenance</h4>
-                        <p class="text-muted small">For offices & businesses</p>
-                        <h3 class="fw-bold text-danger my-3">Custom Quote</h3>
-                        <ul class="list-unstyled text-start lh-lg small mb-4">
-                            <li><i class="fa-solid fa-check text-success me-2"></i>Motherboard & Chip Diagnostic</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>Printer Roller & Toner Refilling</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>Desktop / Laptop SSD Speedup</li>
-                            <li><i class="fa-solid fa-check text-success me-2"></i>On-Site Emergency Visit</li>
-                        </ul>
-                        <a href="#quote-section" class="btn btn-outline-dark w-100 fw-bold">Request Visit</a>
-                    </div>
-                </div>
+            <div class="contact-item">
+              <div class="contact-item-icon" aria-hidden="true">🕘</div>
+              <div><strong>Business Hours</strong><span>Mon to Sat: 9:00 AM – 7:00 PM</span></div>
             </div>
-        </div>
-    </section>
-
-    <!-- REQUEST QUOTE FORM SECTION -->
-    <section id="quote-section" class="py-5">
-        <div class="container py-4">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="bg-white border rounded-4 shadow-sm p-4 p-md-5">
-                        <div class="text-center mb-4">
-                            <span class="section-tag">Get Immediate Estimate</span>
-                            <h2 class="fw-bold">Request Service or Hardware Quote</h2>
-                        </div>
-                        <form id="quoteForm">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Your Name *</label>
-                                    <input type="text" name="fullName" class="form-control" required placeholder="e.g. Supreet Singh">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Phone Number *</label>
-                                    <input type="tel" name="phone" class="form-control" required placeholder="+91 79867 12685">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Service / Requirement *</label>
-                                    <select class="form-select" name="service" required>
-                                        <option value="New CCTV Installation">New CCTV Installation</option>
-                                        <option value="Motherboard Repair">Motherboard Diagnostics / Repair</option>
-                                        <option value="Toner Refilling / Printer">Toner Refilling / Printer Repair</option>
-                                        <option value="Computer / Laptop Repair">Computer / Laptop Repair</option>
-                                        <option value="Buy Hardware Item">Buy Specific Hardware Item</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">City / Location *</label>
-                                    <input type="text" name="city" class="form-control" value="Jandiala Guru" required>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fw-semibold">Requirement Details *</label>
-                                    <textarea class="form-control" name="details" rows="3" required placeholder="Describe the item you need or repair issue..."></textarea>
-                                </div>
-                                <div class="col-12 text-center mt-4">
-                                    <button type="submit" class="btn btn-brand btn-lg px-5 w-100"><i class="fa-solid fa-paper-plane me-2"></i>Send Request via WhatsApp</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="contact-item">
+              <div class="contact-item-icon" aria-hidden="true">📍</div>
+              <div><strong>Business Address</strong><span>V.P.O. Gehri Mandi, Near Railway Station, Jandiala</span></div>
             </div>
-        </div>
-    </section>
+          </div>
 
-    <!-- SHOPPING CART OFFCANVAS DRAWER -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title fw-bold"><i class="fa-solid fa-cart-shopping me-2"></i>Your Shopping Cart</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body d-flex flex-column">
-            <div id="cartItemsList" class="flex-grow-1 overflow-auto mb-3">
-                <!-- Dynamic Cart Items -->
-            </div>
-            <div class="border-top pt-3">
-                <div class="d-flex justify-content-between fs-5 fw-bold mb-3">
-                    <span>Total Amount:</span>
-                    <span id="cartTotalAmount">₹0</span>
-                </div>
-                <button class="btn btn-success w-100 py-2 fw-bold mb-2" onclick="openPaymentGatewayModal()">
-                    <i class="fa-solid fa-credit-card me-2"></i>Pay Online (Payment Gateway)
+          <form class="contact-form reveal" id="googleSheetForm" name="google-sheet-form" novalidate>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="Name">Full Name *</label>
+                <input type="text" id="Name" name="Name" required placeholder="John Doe" autocomplete="name" minlength="2">
+              </div>
+              <div class="form-group">
+                <label for="Phone">Phone Number *</label>
+                <input type="tel" id="Phone" name="Phone" required placeholder="+91 XXXXX XXXXX" autocomplete="tel" pattern="[0-9+\s\-()]{10,16}" title="Please enter a valid phone number (10–16 digits)">
+              </div>
+              <div class="form-group">
+                <label for="Enquiry_Type">Enquiry Type *</label>
+                <select id="Enquiry_Type" name="Enquiry_Type" required>
+                  <option value="">Select an option</option>
+                  <option value="CCTV Camera">CCTV Camera</option>
+                  <option value="CCTV Installation">CCTV Installation</option>
+                  <option value="DVR/NVR System">DVR/NVR System</option>
+                  <option value="Networking Service">Networking Service</option>
+                  <option value="Computer Service">Computer Service</option>
+                  <option value="Printer Service">Printer Service</option>
+                  <option value="AMC / Maintenance">AMC / Maintenance</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="Location">Your Location *</label>
+                <input type="text" id="Location" name="Location" required placeholder="City / Area" autocomplete="address-level2">
+              </div>
+              <div class="form-group full">
+                <label for="Message">Message *</label>
+                <textarea id="Message" name="Message" required maxlength="600" placeholder="Tell us what product or service you need"></textarea>
+                <span class="char-count"><span id="charCount">0</span>/600</span>
+              </div>
+
+              <!-- Honeypot: hidden from users, catches bots -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="_gotcha">Leave this field empty</label>
+                <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div class="form-group full">
+                <button type="submit" class="button button-primary" id="submitBtn" style="width:100%;">
+                  Submit Enquiry
                 </button>
-                <button class="btn btn-outline-success w-100 py-2 fw-bold" onclick="checkoutWhatsApp()">
-                    <i class="fa-brands fa-whatsapp me-2"></i>Order via WhatsApp
-                </button>
+                <div class="notice" id="formNotice" role="status" aria-live="polite"></div>
+              </div>
             </div>
+          </form>
         </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <h3>Be Secure Solutions</h3>
+        <p>Professional CCTV camera installation, security systems, networking and computer technology services in Jandiala.</p>
+        <ul class="footer-contact" style="margin-top:16px;">
+          <li><span aria-hidden="true">📞</span> <a href="tel:+917986712685">+91-7986712685</a></li>
+          <li><span aria-hidden="true">📍</span> <span>V.P.O. Gehri Mandi, Near Railway Station, Jandiala</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Quick Navigation</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#expert">Expert Intro</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#packages">Packages</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Information</h3>
+        <ul>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#specs">Specifications</a></li>
+          <li><a href="#feedbacks">Feedbacks</a></li>
+          <li><a href="#areas">Service Areas</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Our Services</h3>
+        <ul>
+          <li><a href="#services">CCTV Installation</a></li>
+          <li><a href="#services">Networking Setup</a></li>
+          <li><a href="#services">Computer Repair</a></li>
+          <li><a href="#services">Printer Services</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
     </div>
-
-    <!-- ADMIN PIN VERIFICATION MODAL -->
-    <div class="modal fade" id="adminPinModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-header text-white" style="background-color: var(--brand-navy);">
-                    <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-lock me-2"></i>Admin Verification</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4 text-center">
-                    <p class="small text-muted mb-3">Enter Admin PIN to enable store editing, discount updates & inventory controls.</p>
-                    <input type="password" id="adminPinInput" class="form-control text-center fs-4 mb-3" placeholder="******" maxlength="6">
-                    <div id="pinErrorMsg" class="text-danger small mb-2 d-none">Incorrect PIN! Try again.</div>
-                    <button type="button" class="btn btn-brand w-100 fw-bold" onclick="verifyAdminPin()">Unlock Dashboard</button>
-                </div>
-            </div>
-        </div>
+    <div class="container copyright">
+      © <span id="year"></span> Be Secure Security Solutions, Jandiala. All rights reserved.
     </div>
+  </footer>
 
-    <!-- ADMIN EDIT / ADD PRODUCT MODAL -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title fw-bold" id="productModalTitle"><i class="fa-solid fa-pen-to-square me-2"></i>Edit Product</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form id="productForm">
-                        <input type="hidden" id="editProdId">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Product Name *</label>
-                            <input type="text" id="editProdName" class="form-control" required placeholder="e.g. 4K Security Camera">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Category *</label>
-                            <select id="editProdCategory" class="form-select" required>
-                                <option value="Camera">Cameras & NVR</option>
-                                <option value="Computer">Computer & Hardware</option>
-                                <option value="Toner">Toners & Supplies</option>
-                            </select>
-                        </div>
-                        <div class="row g-2 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Original Price (₹) *</label>
-                                <input type="number" id="editProdOriginalPrice" class="form-control" required placeholder="e.g. 3000">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Discount (%) *</label>
-                                <input type="number" id="editProdDiscount" class="form-control" value="0" min="0" max="100">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Badge Tag</label>
-                            <input type="text" id="editProdBadge" class="form-control" placeholder="e.g. In Stock, Best Seller, New">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Image URL *</label>
-                            <input type="url" id="editProdImage" class="form-control" required placeholder="https://images.unsplash.com/...">
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-brand flex-grow-1 fw-bold">Save Product Changes</button>
-                            <button type="button" class="btn btn-outline-danger d-none" id="deleteProdBtn" onclick="deleteProduct()"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+  <!-- ============ THANK YOU PAGE ============ -->
+  <div class="thankyou" id="thankYouPage" role="dialog" aria-modal="true" aria-labelledby="tyTitle" aria-hidden="true">
+    <div class="thankyou-card">
+      <div class="thankyou-check" aria-hidden="true">✓</div>
+      <h2 id="tyTitle">Thank You<span id="thankYouName"></span>!</h2>
+      <p>Your service enquiry has been submitted successfully. Our technical expert <strong>Er. Supreet Singh</strong> will review your requirement and contact you shortly.</p>
+
+      <div class="thankyou-details">
+        <div><span aria-hidden="true">📞</span> <a href="tel:+917986712685">+91-7986712685</a></div>
+        <div><span aria-hidden="true">🕘</span> <span>Mon to Sat: 9:00 AM – 7:00 PM</span></div>
+        <div><span aria-hidden="true">📍</span> <span>V.P.O. Gehri Mandi, Near Railway Station, Jandiala</span></div>
+      </div>
+
+      <div class="thankyou-actions">
+        <button class="button button-primary" id="tyHome">Back to Home</button>
+        <button class="button button-outline" id="tyAnother">Submit Another Enquiry</button>
+      </div>
+
+      <p class="thankyou-ref">Reference ID: <strong id="tyRef">—</strong></p>
+      <p class="thankyou-warn" id="tyWarn" hidden>
+        ⚠ <strong>Demo mode:</strong> the form backend is not connected yet. Add your Google Apps Script URL to
+        <code>scriptURL</code> in the page code so real enquiries reach your records.
+      </p>
     </div>
+  </div>
 
-    <!-- PAYMENT GATEWAY MODAL -->
-    <div class="modal fade" id="paymentGatewayModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header text-white" style="background-color: var(--brand-navy);">
-                    <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-shield-halved text-warning me-2"></i>BE SECURE Payment Gateway</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="text-center mb-4">
-                        <span class="text-muted small">Total Payable Amount</span>
-                        <h2 class="fw-bold text-success mb-0" id="pgTotalAmount">₹0</h2>
-                    </div>
-
-                    <div class="payment-methods mb-4">
-                        <label class="form-label fw-semibold mb-2">Select Payment Method</label>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <div class="payment-option-card text-center selected" onclick="selectPayMethod('upi', this)">
-                                    <i class="fa-solid fa-qrcode fs-3 text-primary mb-1"></i>
-                                    <div class="fw-bold small">UPI / QR Code</div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="payment-option-card text-center" onclick="selectPayMethod('card', this)">
-                                    <i class="fa-solid fa-credit-card fs-3 text-danger mb-1"></i>
-                                    <div class="fw-bold small">Debit / Credit Card</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- UPI Dynamic View -->
-                    <div id="upiPaySection" class="text-center bg-light p-3 rounded-3 border mb-3">
-                        <p class="small fw-semibold text-muted mb-2">Scan QR Code using GooglePay, PhonePe or Paytm</p>
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=7986712685@upi&pn=BE_SECURE" alt="UPI QR" class="img-fluid border rounded p-2 bg-white mb-2" style="width: 150px;">
-                        <div class="small fw-bold">UPI ID: <span class="text-primary">7986712685@upi</span></div>
-                    </div>
-
-                    <!-- Card Form Section -->
-                    <div id="cardPaySection" class="bg-light p-3 rounded-3 border mb-3 d-none">
-                        <div class="mb-2">
-                            <label class="form-label small fw-semibold">Card Number</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="4532 •••• •••• 8921">
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <label class="form-label small fw-semibold">Expiry</label>
-                                <input type="text" class="form-control form-control-sm" placeholder="MM/YY">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-semibold">CVV</label>
-                                <input type="password" class="form-control form-control-sm" placeholder="•••" maxlength="3">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-success w-100 py-3 fw-bold fs-5" onclick="processPayment()">
-                        <i class="fa-solid fa-lock me-2"></i>Pay & Confirm Order
-                    </button>
-                </div>
-            </div>
-        </div>
+  <!-- ============ LIGHTBOX ============ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close image preview">✕</button>
+    <div>
+      <img id="lightboxImg" src="" alt="">
+      <p class="lightbox-caption" id="lightboxCaption"></p>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <footer style="background-color: var(--brand-navy);" class="text-white py-4">
-        <div class="container text-center text-md-start">
-            <div class="row align-items-center g-3">
-                <div class="col-md-6">
-                    <h4 class="fw-bold mb-1">BE SECURE</h4>
-                    <p class="small text-white-50 mb-0">V.P.O. Gehri Mandi, near Railway Station, Jandiala</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a class="text-white text-decoration-none fw-bold" href="tel:+917986712685"><i class="fa-solid fa-phone me-2 text-warning"></i>+91 79867 12685</a>
-                    <p class="small text-white-50 mb-0">&copy; BE SECURE. All Rights Reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+  <!-- ============ FLOATING ACTIONS ============ -->
+  <div class="float-stack">
+    <button class="fab fab-top" id="backToTop" aria-label="Back to top">↑</button>
+    <a class="fab fab-call" href="tel:+917986712685" aria-label="Call Be Secure Security Solutions">📞</a>
+  </div>
 
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/917986712685?text=Hello%20BE%20SECURE,%20I%20want%20to%20inquire%20about%20camera%20and%20computer%20items." class="whatsapp-float" target="_blank" aria-label="WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+  <script>
+  (function () {
+    "use strict";
 
-    <!-- Bootstrap 5 Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    /* ============================================================
+       1. HERO SLIDER — autoplay, dots, arrows, pause on hover
+       ============================================================ */
+    var slides = Array.prototype.slice.call(document.querySelectorAll(".hero-slide"));
+    var dotsWrap = document.getElementById("heroDots");
+    var currentSlide = 0;
+    var slideTimer = null;
+    var SLIDE_DELAY = 4000;
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    <!-- REAL-TIME INDIA TIME & E-COMMERCE LOGIC -->
-    <script>
-        // Real-Time India Standard Time (IST) Clock
-        function updateIndiaTime() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Asia/Kolkata',
-                weekday: 'short',
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            };
-            const formatter = new Intl.DateTimeFormat('en-IN', options);
-            document.getElementById('liveIndiaDateTime').innerText = formatter.format(now) + ' (IST)';
-        }
-        setInterval(updateIndiaTime, 1000);
-        updateIndiaTime();
+    slides.forEach(function (_, i) {
+      var dot = document.createElement("button");
+      dot.className = "hero-dot" + (i === 0 ? " active" : "");
+      dot.type = "button";
+      dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+      dot.addEventListener("click", function () { goToSlide(i); restartAutoplay(); });
+      dotsWrap.appendChild(dot);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
 
-        // State Management
-        let isAdminLoggedIn = false;
-        const ADMIN_PIN = "123456";
+    function goToSlide(index) {
+      slides[currentSlide].classList.remove("active");
+      dots[currentSlide].classList.remove("active");
+      currentSlide = (index + slides.length) % slides.length;
+      slides[currentSlide].classList.add("active");
+      dots[currentSlide].classList.add("active");
+    }
 
-        let products = [
-            {
-                id: 1,
-                name: "4K Ultra HD Outdoor Bullet Camera",
-                category: "Camera",
-                originalPrice: 3200,
-                discountPercent: 22,
-                badge: "Best Seller",
-                image: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=600&q=80"
-            },
-            {
-                id: 2,
-                name: "Smart 360° Wireless IP Dome Camera",
-                category: "Camera",
-                originalPrice: 2200,
-                discountPercent: 15,
-                badge: "In Stock",
-                image: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80"
-            },
-            {
-                id: 3,
-                name: "Pro Series Intel B760 WiFi Motherboard",
-                category: "Computer",
-                originalPrice: 14500,
-                discountPercent: 13,
-                badge: "High Performance",
-                image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80"
-            },
-            {
-                id: 4,
-                name: "Laserjet High-Yield Toner Cartridge 12A",
-                category: "Toner",
-                originalPrice: 1000,
-                discountPercent: 15,
-                badge: "Refill Available",
-                image: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=600&q=80"
-            },
-            {
-                id: 5,
-                name: "8-Channel HD NVR Security System",
-                category: "Camera",
-                originalPrice: 7500,
-                discountPercent: 17,
-                badge: "Commercial",
-                image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=80"
-            },
-            {
-                id: 6,
-                name: "Intel Core i5 16GB SSD Speedup Laptop",
-                category: "Computer",
-                originalPrice: 39999,
-                discountPercent: 12,
-                badge: "Warranty Included",
-                image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80"
-            }
-        ];
+    function nextSlide() { goToSlide(currentSlide + 1); }
 
-        let cart = [];
+    function startAutoplay() {
+      if (reduceMotion || slides.length < 2) return;
+      stopAutoplay();
+      slideTimer = setInterval(nextSlide, SLIDE_DELAY);
+    }
+    function stopAutoplay() { if (slideTimer) { clearInterval(slideTimer); slideTimer = null; } }
+    function restartAutoplay() { stopAutoplay(); startAutoplay(); }
 
-        function getFinalPrice(original, discount) {
-            return Math.round(original - (original * (discount / 100)));
-        }
+    startAutoplay();
 
-        function renderProducts(itemsToRender = products) {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
+    var heroEl = document.querySelector(".hero");
+    heroEl.addEventListener("mouseenter", stopAutoplay);
+    heroEl.addEventListener("mouseleave", startAutoplay);
 
-            itemsToRender.forEach(prod => {
-                const finalPrice = getFinalPrice(prod.originalPrice, prod.discountPercent);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) { stopAutoplay(); } else { startAutoplay(); }
+    });
 
-                grid.innerHTML += `
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="product-card">
-                            <span class="product-badge">${prod.badge}</span>
-                            ${prod.discountPercent > 0 ? `<span class="discount-badge">${prod.discountPercent}% OFF</span>` : ''}
-                            
-                            ${isAdminLoggedIn ? `
-                                <button class="btn btn-light btn-sm rounded-circle position-absolute" style="top:44px; right:12px; z-index:5;" onclick="openEditProductModal(${prod.id})" title="Edit Item">
-                                    <i class="fa-solid fa-pen text-dark"></i>
-                                </button>
-                            ` : ''}
+    document.getElementById("heroPrev").addEventListener("click", function () { goToSlide(currentSlide - 1); restartAutoplay(); });
+    document.getElementById("heroNext").addEventListener("click", function () { goToSlide(currentSlide + 1); restartAutoplay(); });
 
-                            <div class="product-img-box">
-                                <img src="${prod.image}" alt="${prod.name}">
-                            </div>
-                            <div class="p-3 d-flex flex-column flex-grow-1">
-                                <span class="text-muted small fw-semibold text-uppercase">${prod.category}</span>
-                                <h5 class="fw-bold fs-6 mb-2 text-dark">${prod.name}</h5>
-                                <div class="mt-auto pt-2 d-flex align-items-center justify-content-between">
-                                    <div>
-                                        ${prod.discountPercent > 0 ? `<span class="original-price">₹${prod.originalPrice.toLocaleString('en-IN')}</span>` : ''}
-                                        <span class="product-price">₹${finalPrice.toLocaleString('en-IN')}</span>
-                                    </div>
-                                    <button class="btn btn-sm btn-brand rounded-3" onclick="addToCart(${prod.id})">
-                                        <i class="fa-solid fa-cart-plus me-1"></i> Add
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+    /* ============================================================
+       2. MOBILE MENU
+       ============================================================ */
+    var menuButton = document.getElementById("menuButton");
+    var navLinks = document.getElementById("navLinks");
 
-        function filterProducts(category, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-dark', 'active'));
-            btnElement.classList.add('btn-dark', 'active');
+    function closeMenu() {
+      navLinks.classList.remove("active");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.textContent = "☰";
+    }
 
-            if (category === 'all') {
-                renderProducts(products);
-            } else {
-                const filtered = products.filter(p => p.category === category);
-                renderProducts(filtered);
-            }
-        }
+    menuButton.addEventListener("click", function () {
+      var isOpen = navLinks.classList.toggle("active");
+      menuButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      menuButton.textContent = isOpen ? "✕" : "☰";
+    });
 
-        function addToCart(productId) {
-            const prod = products.find(p => p.id === productId);
-            const finalPrice = getFinalPrice(prod.originalPrice, prod.discountPercent);
-            const cartItem = cart.find(item => item.id === productId);
+    navLinks.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", closeMenu);
+    });
 
-            if (cartItem) {
-                cartItem.qty += 1;
-            } else {
-                cart.push({ ...prod, price: finalPrice, qty: 1 });
-            }
-            updateCartUI();
-            new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show();
-        }
+    document.addEventListener("click", function (e) {
+      if (!navLinks.contains(e.target) && !menuButton.contains(e.target)) closeMenu();
+    });
 
-        function addBundleToCart(bundleName, bundlePrice) {
-            const existing = cart.find(item => item.name === bundleName);
-            if(existing) {
-                existing.qty += 1;
-            } else {
-                cart.push({
-                    id: Date.now(),
-                    name: bundleName,
-                    price: bundlePrice,
-                    qty: 1,
-                    image: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=200&q=80'
-                });
-            }
-            updateCartUI();
-            new bootstrap.Offcanvas(document.getElementById('cartOffcanvas')).show();
-        }
+    /* ============================================================
+       3. HEADER SHADOW + SCROLL PROGRESS + BACK TO TOP
+       ============================================================ */
+    var header = document.getElementById("siteHeader");
+    var progress = document.getElementById("scrollProgress");
+    var backToTop = document.getElementById("backToTop");
 
-        function updateCartUI() {
-            const list = document.getElementById('cartItemsList');
-            const cartCount = document.getElementById('cartCount');
-            const totalElement = document.getElementById('cartTotalAmount');
+    function onScroll() {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? (y / docHeight) * 100 : 0;
 
-            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      progress.style.width = pct + "%";
+      header.classList.toggle("scrolled", y > 10);
+      backToTop.classList.toggle("show", y > 500);
+    }
 
-            cartCount.innerText = totalItems;
-            totalElement.innerText = `₹${totalPrice.toLocaleString('en-IN')}`;
-            document.getElementById('pgTotalAmount').innerText = `₹${totalPrice.toLocaleString('en-IN')}`;
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
-            if (cart.length === 0) {
-                list.innerHTML = `<div class="text-center py-5 text-muted"><i class="fa-solid fa-basket-shopping fs-1 mb-2"></i><p>Your cart is empty.</p></div>`;
-                return;
-            }
+    backToTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    });
 
-            list.innerHTML = '';
-            cart.forEach(item => {
-                list.innerHTML += `
-                    <div class="d-flex align-items-center gap-3 mb-3 border-bottom pb-2">
-                        <img src="${item.image}" class="cart-item-img" alt="${item.name}">
-                        <div class="flex-grow-1">
-                            <h6 class="fw-bold mb-0 text-dark small">${item.name}</h6>
-                            <span class="small text-muted">₹${item.price.toLocaleString('en-IN')} x ${item.qty}</span>
-                        </div>
-                        <div class="d-flex align-items-center gap-1">
-                            <button class="btn btn-sm btn-light border" onclick="changeQty(${item.id}, -1)">-</button>
-                            <span class="px-2 small fw-bold">${item.qty}</span>
-                            <button class="btn btn-sm btn-light border" onclick="changeQty(${item.id}, 1)">+</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+    /* ============================================================
+       4. SCROLL SPY — highlight active nav link
+       ============================================================ */
+    var sections = Array.prototype.slice.call(document.querySelectorAll("main section[id]"));
+    var navAnchors = Array.prototype.slice.call(navLinks.querySelectorAll('a[href^="#"]:not(.nav-button)'));
 
-        function changeQty(id, delta) {
-            const item = cart.find(i => i.id === id);
-            if (!item) return;
-            item.qty += delta;
-            if (item.qty <= 0) {
-                cart = cart.filter(i => i.id !== id);
-            }
-            updateCartUI();
-        }
-
-        // Admin Auth Handling
-        function handleAdminAccess() {
-            if(isAdminLoggedIn) {
-                isAdminLoggedIn = false;
-                document.getElementById('adminBtnText').innerText = "Admin Portal";
-                document.getElementById('adminLockIcon').className = "fa-solid fa-lock me-1";
-                document.getElementById('adminAddNewBtn').classList.add('d-none');
-                renderProducts();
-            } else {
-                new bootstrap.Modal(document.getElementById('adminPinModal')).show();
-            }
-        }
-
-        function verifyAdminPin() {
-            const pin = document.getElementById('adminPinInput').value;
-            const err = document.getElementById('pinErrorMsg');
-
-            if(pin === ADMIN_PIN) {
-                isAdminLoggedIn = true;
-                err.classList.add('d-none');
-                bootstrap.Modal.getInstance(document.getElementById('adminPinModal')).hide();
-                document.getElementById('adminPinInput').value = '';
-
-                document.getElementById('adminBtnText').innerText = "Admin Unlocked (Exit)";
-                document.getElementById('adminLockIcon').className = "fa-solid fa-lock-open me-1 text-warning";
-                document.getElementById('adminAddNewBtn').classList.remove('d-none');
-                
-                renderProducts();
-            } else {
-                err.classList.remove('d-none');
-            }
-        }
-
-        function openAddProductModal() {
-            document.getElementById('productModalTitle').innerHTML = `<i class="fa-solid fa-plus me-2"></i>Add New Product`;
-            document.getElementById('editProdId').value = '';
-            document.getElementById('productForm').reset();
-            document.getElementById('deleteProdBtn').classList.add('d-none');
-
-            new bootstrap.Modal(document.getElementById('editProductModal')).show();
-        }
-
-        function openEditProductModal(id) {
-            const prod = products.find(p => p.id === id);
-            if(!prod) return;
-
-            document.getElementById('productModalTitle').innerHTML = `<i class="fa-solid fa-pen-to-square me-2"></i>Edit Product`;
-            document.getElementById('editProdId').value = prod.id;
-            document.getElementById('editProdName').value = prod.name;
-            document.getElementById('editProdCategory').value = prod.category;
-            document.getElementById('editProdOriginalPrice').value = prod.originalPrice;
-            document.getElementById('editProdDiscount').value = prod.discountPercent;
-            document.getElementById('editProdBadge').value = prod.badge;
-            document.getElementById('editProdImage').value = prod.image;
-            document.getElementById('deleteProdBtn').classList.remove('d-none');
-
-            new bootstrap.Modal(document.getElementById('editProductModal')).show();
-        }
-
-        document.getElementById('productForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = document.getElementById('editProdId').value;
-            const prodData = {
-                id: id ? parseInt(id) : Date.now(),
-                name: document.getElementById('editProdName').value,
-                category: document.getElementById('editProdCategory').value,
-                originalPrice: parseFloat(document.getElementById('editProdOriginalPrice').value),
-                discountPercent: parseFloat(document.getElementById('editProdDiscount').value) || 0,
-                badge: document.getElementById('editProdBadge').value || 'In Stock',
-                image: document.getElementById('editProdImage').value
-            };
-
-            if(id) {
-                const index = products.findIndex(p => p.id === parseInt(id));
-                if(index !== -1) products[index] = prodData;
-            } else {
-                products.push(prodData);
-            }
-
-            renderProducts();
-            bootstrap.Modal.getInstance(document.getElementById('editProductModal')).hide();
+    if ("IntersectionObserver" in window && sections.length) {
+      var spyObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var id = entry.target.getAttribute("id");
+          navAnchors.forEach(function (a) {
+            a.classList.toggle("active", a.getAttribute("href") === "#" + id);
+          });
         });
+      }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+      sections.forEach(function (s) { spyObserver.observe(s); });
+    }
 
-        function deleteProduct() {
-            const id = parseInt(document.getElementById('editProdId').value);
-            if(confirm("Are you sure you want to delete this product?")) {
-                products = products.filter(p => p.id !== id);
-                renderProducts();
-                bootstrap.Modal.getInstance(document.getElementById('editProductModal')).hide();
-            }
-        }
-
-        function openPaymentGatewayModal() {
-            if (cart.length === 0) {
-                alert("Your cart is empty!");
-                return;
-            }
-            bootstrap.Offcanvas.getInstance(document.getElementById('cartOffcanvas')).hide();
-            new bootstrap.Modal(document.getElementById('paymentGatewayModal')).show();
-        }
-
-        function selectPayMethod(type, element) {
-            document.querySelectorAll('.payment-option-card').forEach(c => c.classList.remove('selected'));
-            element.classList.add('selected');
-
-            if(type === 'upi') {
-                document.getElementById('upiPaySection').classList.remove('d-none');
-                document.getElementById('cardPaySection').classList.add('d-none');
-            } else {
-                document.getElementById('upiPaySection').classList.add('d-none');
-                document.getElementById('cardPaySection').classList.remove('d-none');
-            }
-        }
-
-        function processPayment() {
-            alert("Payment Successful! Your order has been placed successfully.");
-            bootstrap.Modal.getInstance(document.getElementById('paymentGatewayModal')).hide();
-            cart = [];
-            updateCartUI();
-        }
-
-        function checkoutWhatsApp() {
-            if (cart.length === 0) {
-                alert("Your cart is empty!");
-                return;
-            }
-            let message = "Hello BE SECURE, I want to place an order for:\n\n";
-            cart.forEach(item => {
-                message += `• ${item.name} (Qty: ${item.qty}) - ₹${item.price * item.qty}\n`;
-            });
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            message += `\nTotal Amount: ₹${total}\n\nPlease confirm availability and payment options.`;
-
-            window.open('https://wa.me/917986712685?text=' + encodeURIComponent(message), '_blank');
-        }
-
-        document.getElementById('quoteForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const data = new FormData(this);
-            const message = `Hello BE SECURE, I would like a quote/service request.\n\nName: ${data.get('fullName')}\nPhone: ${data.get('phone')}\nService: ${data.get('service')}\nCity: ${data.get('city')}\nDetails: ${data.get('details')}`;
-            window.open('https://wa.me/917986712685?text=' + encodeURIComponent(message), '_blank');
+    /* ============================================================
+       5. REVEAL ON SCROLL
+       ============================================================ */
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+    if ("IntersectionObserver" in window && !reduceMotion) {
+      var revealObserver = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            obs.unobserve(entry.target);
+          }
         });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+      revealEls.forEach(function (el) { revealObserver.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add("visible"); });
+    }
 
-        // Initialize Store
-        renderProducts();
-        updateCartUI();
-    </script>
+    /* ============================================================
+       6. ANIMATED STAT COUNTERS
+       ============================================================ */
+    var counters = Array.prototype.slice.call(document.querySelectorAll(".stat-number[data-count]"));
+
+    function animateCounter(el) {
+      var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+      var suffix = el.getAttribute("data-suffix") || "";
+      if (reduceMotion) { el.textContent = target + suffix; return; }
+
+      var duration = 1600;
+      var start = null;
+
+      function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(step);
+    }
+
+    if ("IntersectionObserver" in window) {
+      var counterObserver = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(function (c) { counterObserver.observe(c); });
+    } else {
+      counters.forEach(animateCounter);
+    }
+
+    /* ============================================================
+       7. FAQ ACCORDION
+       ============================================================ */
+    document.querySelectorAll(".faq-item").forEach(function (item) {
+      var btn = item.querySelector(".faq-question");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var isOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-item.open").forEach(function (openItem) {
+          openItem.classList.remove("open");
+          var b = openItem.querySelector(".faq-question");
+          if (b) b.setAttribute("aria-expanded", "false");
+        });
+        if (!isOpen) {
+          item.classList.add("open");
+          btn.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+
+    /* ============================================================
+       8. GALLERY LIGHTBOX
+       ============================================================ */
+    var lightbox = document.getElementById("lightbox");
+    var lightboxImg = document.getElementById("lightboxImg");
+    var lightboxCaption = document.getElementById("lightboxCaption");
+    var lightboxClose = document.getElementById("lightboxClose");
+    var lastFocused = null;
+
+    function openLightbox(fullSrc, caption, altText) {
+      lastFocused = document.activeElement;
+      lightboxImg.src = fullSrc;
+      lightboxImg.alt = altText || caption || "Gallery image";
+      lightboxCaption.textContent = caption || "";
+      lightbox.classList.add("open");
+      document.body.style.overflow = "hidden";
+      lightboxClose.focus();
+    }
+
+    function closeLightbox() {
+      if (!lightbox.classList.contains("open")) return;
+      lightbox.classList.remove("open");
+      lightboxImg.src = "";
+      document.body.style.overflow = "";
+      if (lastFocused) lastFocused.focus();
+    }
+
+    document.querySelectorAll(".gallery-item").forEach(function (item) {
+      item.addEventListener("click", function () {
+        var img = item.querySelector("img");
+        openLightbox(
+          item.getAttribute("data-full"),
+          item.getAttribute("data-caption"),
+          img ? img.alt : ""
+        );
+      });
+    });
+
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    /* ============================================================
+       9. THANK YOU PAGE (shown after successful form submission)
+       ============================================================ */
+    var thankYouPage = document.getElementById("thankYouPage");
+    var thankYouName = document.getElementById("thankYouName");
+    var tyRef = document.getElementById("tyRef");
+    var tyWarn = document.getElementById("tyWarn");
+    var tyHomeBtn = document.getElementById("tyHome");
+    var tyAnotherBtn = document.getElementById("tyAnother");
+
+    function makeReference() {
+      var stamp = Date.now().toString(36).toUpperCase().slice(-6);
+      var rand = Math.random().toString(36).toUpperCase().slice(2, 5);
+      return "BS-" + stamp + rand;
+    }
+
+    function showThankYou(name, demoMode) {
+      thankYouName.textContent = name ? ", " + name : "";
+      tyRef.textContent = makeReference();
+      tyWarn.hidden = !demoMode;
+
+      thankYouPage.classList.add("open");
+      thankYouPage.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      // Move focus into the dialog for screen readers / keyboard users
+      setTimeout(function () { tyHomeBtn.focus(); }, reduceMotion ? 0 : 120);
+    }
+
+    function closeThankYou() {
+      if (!thankYouPage.classList.contains("open")) return;
+      thankYouPage.classList.remove("open");
+      thankYouPage.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    tyHomeBtn.addEventListener("click", function () {
+      closeThankYou();
+      var home = document.getElementById("home");
+      if (home) home.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+    });
+
+    tyAnotherBtn.addEventListener("click", function () {
+      closeThankYou();
+      var contact = document.getElementById("contact");
+      if (contact) contact.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+      setTimeout(function () {
+        var nameField = document.getElementById("Name");
+        if (nameField) nameField.focus({ preventScroll: true });
+      }, reduceMotion ? 0 : 700);
+    });
+
+    /* ============================================================
+       10. PRODUCT / PACKAGE ENQUIRY AUTO-FILL
+       ============================================================ */
+    document.querySelectorAll(".enquiry-button").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var product = button.getAttribute("data-product") || "";
+        var typeSelect = document.getElementById("Enquiry_Type");
+        var messageField = document.getElementById("Message");
+
+        if (typeSelect) {
+          if (/package/i.test(product)) {
+            typeSelect.value = "CCTV Installation";
+          } else if (/cable|accessor/i.test(product)) {
+            typeSelect.value = "CCTV Camera";
+          } else if (/dvr|nvr|recorder|hard disk/i.test(product)) {
+            typeSelect.value = "DVR/NVR System";
+          } else {
+            typeSelect.value = "CCTV Camera";
+          }
+        }
+
+        if (messageField) {
+          messageField.value = "I would like to enquire about: " + product;
+          messageField.dispatchEvent(new Event("input"));
+        }
+
+        document.getElementById("contact").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+
+        setTimeout(function () {
+          var nameField = document.getElementById("Name");
+          if (nameField) nameField.focus({ preventScroll: true });
+        }, reduceMotion ? 0 : 700);
+      });
+    });
+
+    /* ============================================================
+       11. CHARACTER COUNTER
+       ============================================================ */
+    var messageField = document.getElementById("Message");
+    var charCount = document.getElementById("charCount");
+    if (messageField && charCount) {
+      messageField.addEventListener("input", function () {
+        charCount.textContent = messageField.value.length;
+      });
+    }
+
+    /* ============================================================
+       12. FORM SUBMISSION → GOOGLE SHEETS → THANK YOU PAGE
+       ============================================================ */
+    /* ⚠ IMPORTANT: paste your Google Apps Script Web App URL below.
+       Until you do, the form runs in demo mode (thank-you page shows,
+       but nothing is saved). */
+    var scriptURL = "https://script.google.com/macros/s/AKfycbxb0Apd3eqpz2zdV_5b9YdNPXVtL_OFAjRZcVl9wv1kkkqFgG5NUp0240BM-8tvWVWx1w/exec";
+    var isConfigured = scriptURL.indexOf("YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") === -1;
+
+    var form = document.getElementById("googleSheetForm");
+    var notice = document.getElementById("formNotice");
+    var submitBtn = document.getElementById("submitBtn");
+
+    function showNotice(type, text) {
+      notice.className = "notice " + type;
+      notice.textContent = text;
+      notice.style.display = "block";
+    }
+
+    function hideNotice() {
+      notice.style.display = "none";
+      notice.className = "notice";
+    }
+
+    function validateForm() {
+      // Honeypot: if a bot filled it, silently ignore the submission
+      var honeypot = document.getElementById("_gotcha");
+      if (honeypot && honeypot.value.trim() !== "") return "spam";
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return "invalid";
+      }
+      return "ok";
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var status = validateForm();
+      if (status === "spam") { form.reset(); return; }
+      if (status === "invalid") return;
+
+      hideNotice();
+
+      var nameValue = (document.getElementById("Name").value || "").trim();
+
+      // ---- Demo mode (backend not configured yet) ----
+      if (!isConfigured) {
+        console.warn("[Be Secure] Form backend not configured — running in demo mode. Set `scriptURL` in the page code.");
+        form.reset();
+        if (charCount) charCount.textContent = "0";
+        showThankYou(nameValue, true);
+        return;
+      }
+
+      // ---- Real submission ----
+      submitBtn.textContent = "Submitting…";
+      submitBtn.disabled = true;
+
+      fetch(scriptURL, { method: "POST", body: new FormData(form) })
+        .then(function (response) {
+          if (!response.ok) throw new Error("Network response was not ok");
+          form.reset();
+          if (charCount) charCount.textContent = "0";
+          showThankYou(nameValue, false);
+        })
+        .catch(function () {
+          showNotice("error", "❌ Could not submit right now. Please call us at +91-7986712685.");
+        })
+        .finally(function () {
+          submitBtn.textContent = "Submit Enquiry";
+          submitBtn.disabled = false;
+        });
+    });
+
+    /* ============================================================
+       13. GLOBAL ESCAPE KEY
+       ============================================================ */
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      closeMenu();
+      closeLightbox();
+      closeThankYou();
+    });
+
+    /* ============================================================
+       14. FOOTER YEAR
+       ============================================================ */
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+  })();
+  </script>
 </body>
 </html>
