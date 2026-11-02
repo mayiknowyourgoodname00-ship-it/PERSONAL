@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amritsar Law College — Student Data</title>
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+    --primary:        #1a365d;
+    --primary-light:  #2c5282;
+    --primary-dark:   #0f2338;
+    --primary-soft:   #ebf2fa;
+    --accent:         #3182ce;
+    --gold:           #d69e2e;
+    --success:        #2f855a;
+    --danger:         #c53030;
+
+    --bg:             #f4f7fb;
+    --surface:        #ffffff;
+    --text:           #1a202c;
+    --muted:          #718096;
+    --border:         #e2e8f0;
+
+    --radius-sm: 8px;
+    --radius:    12px;
+    --radius-lg: 18px;
+
+    --shadow-sm: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10);
+    --shadow-md: 0 4px 6px -1px rgba(16,24,40,.10), 0 2px 4px -2px rgba(16,24,40,.06);
+    --shadow-lg: 0 12px 28px -8px rgba(16,24,40,.28);
+}
+
+/* ============================================================
+   COPY / SCREENSHOT PROTECTION
+   ============================================================ */
+body,
+.modal,
+.table,
+.id-card,
+.detail-item,
+.stat-card,
+.site-header,
+.site-footer,
+.toolbar-card{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+input,
+textarea,
+select{
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
+}
+img{
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+}
+
+.app-shell,
+.modal{
+    transition: filter .18s ease;
+}
+body.privacy-lock .app-shell,
+body.privacy-lock .modal{
+    filter: blur(9px);
+    pointer-events: none;
+}
+body.privacy-lock::after{
+    content: "Content protected — click to restore";
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 3000;
+    background: rgba(10, 20, 35, .55);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .5px;
+    font-size: 1.05rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{ -webkit-tap-highlight-color: transparent; }
+
+body{
+    background: var(--bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.app-shell{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* ============================================================
+   SITE HEADER
+   ============================================================ */
+.site-header{
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.site-topbar{
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    padding: .55rem 0;
+}
+.site-clock{
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    flex-wrap: wrap;
+    font-size: .82rem;
+    color: #4a5568;
+    font-weight: 600;
+}
+.site-clock i{ color: var(--accent); font-size: .85rem; }
+.site-clock #clockDate{ color: var(--primary); font-weight: 700; }
+.site-clock #clockTime{
+    color: var(--primary);
+    font-weight: 800;
+    font-family: ui-monospace, 'Courier New', monospace;
+    letter-spacing: .5px;
+}
+.clock-divider{ color: #cbd5e0; font-weight: 400; }
+
+.access-badge{
+    background: #e6f0fb;
+    border: 1px solid #c3d9f0;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: .7rem;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    padding: .4rem .8rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.site-main{
+    background: linear-gradient(100deg, var(--primary-dark) 0%, var(--primary) 55%, var(--primary-light) 100%);
+    padding: 1.35rem 0;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+.site-main::after{
+    content: "";
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(214,158,46,.18), transparent 70%);
+    pointer-events: none;
+}
+.site-brand{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+}
+.site-brand__logo{
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.22);
+    font-size: 1.55rem;
+    color: var(--gold);
+    backdrop-filter: blur(6px);
+}
+.site-brand__name{
+    font-size: 1.42rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    margin: 0 0 .12rem;
+    line-height: 1.2;
+}
+.site-brand__tag{
+    margin: 0;
+    font-size: .74rem;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    opacity: .72;
+    font-weight: 500;
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card-custom{
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius);
+}
+
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+.stat-card{
+    display:flex;
+    align-items:center;
+    gap:.9rem;
+    padding:1rem 1.1rem;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-sm);
+    height:100%;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+.stat-card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.stat-card__icon{
+    width:46px;height:46px;flex:0 0 46px;
+    display:grid;place-items:center;
+    border-radius:12px;
+    font-size:1.05rem;
+    background: var(--primary-soft);
+    color: var(--primary);
+}
+.stat-card__icon.is-gold{ background:#fdf6e3; color:var(--gold); }
+.stat-card__icon.is-green{ background:#e6fffa; color:var(--success); }
+.stat-card__icon.is-blue{ background:#e6f0fb; color:var(--accent); }
+.stat-card__value{ font-size:1.45rem; font-weight:800; line-height:1.1; }
+.stat-card__label{
+    font-size:.72rem; text-transform:uppercase; letter-spacing:.8px;
+    color:var(--muted); font-weight:600;
+}
+
+/* ============================================================
+   TOOLBAR / SEARCH
+   ============================================================ */
+.toolbar-card{
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+}
+
+.search-wrap{ position:relative; }
+.search-wrap .search-icon{
+    position:absolute; left:14px; top:50%; transform:translateY(-50%);
+    color:var(--muted); font-size:.9rem; pointer-events:none;
+}
+.search-wrap input{
+    padding-left:40px;
+    padding-right:80px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    height:46px;
+    font-size:.92rem;
+    background:#fbfcfe;
+}
+.search-wrap input:focus{
+    background:#fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 .2rem rgba(49,130,206,.15);
+}
+.search-wrap .search-clear{
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    width:26px; height:26px; border-radius:50%;
+    border:none; background:#e8eef6; color:#4a5568;
+    display:none; place-items:center; cursor:pointer;
+    font-size:.75rem;
+}
+.search-wrap .search-clear:hover{ background:#d8e4f2; }
+.search-wrap.has-value .search-clear{ display:grid; }
+.search-wrap .search-hint{
+    position:absolute; right:46px; top:50%; transform:translateY(-50%);
+    font-size:.66rem; color:var(--muted);
+    border:1px solid var(--border); border-radius:5px;
+    padding:1px 6px; background:#fafbfd; pointer-events:none;
+}
+
+.filter-select{ position:relative; min-width: 170px; }
+.filter-select i{
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    color:var(--muted); font-size:.8rem; pointer-events:none;
+}
+.filter-select select{
+    padding-left:34px;
+    height:46px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#fbfcfe;
+    font-size:.88rem;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+}
+.filter-select select:focus{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 .2rem rgba(49,130,206,.15);
+}
+
+.btn{ border-radius:9px; font-weight:600; font-size:.875rem; }
+.btn-reset{
+    height:46px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:#4a5568;
+    padding:0 1rem;
+    display:inline-flex; align-items:center; gap:.4rem;
+}
+.btn-reset:hover{ background:#f4f7fb; color:var(--primary); border-color:var(--accent); }
+.btn-reset:disabled{ opacity:.5; cursor:not-allowed; }
+
+.filter-chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-top: .85rem;
+    min-height: 0;
+}
+.filter-chips:empty{ display: none; }
+.chip{
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: var(--primary-soft);
+    border: 1px solid #c3d9f0;
+    color: var(--primary);
+    font-size: .75rem;
+    font-weight: 700;
+    padding: .28rem .45rem .28rem .65rem;
+    border-radius: 999px;
+}
+.chip__label{ opacity: .7; font-weight: 600; letter-spacing: .3px; }
+.chip__value{ max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip__close{
+    width: 18px; height: 18px;
+    display: grid; place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(26,54,93,.12);
+    color: var(--primary);
+    font-size: .6rem;
+    cursor: pointer;
+    line-height: 1;
+}
+.chip__close:hover{ background: var(--primary); color: #fff; }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table-responsive{
+    max-height: 620px;
+    overflow-y: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+}
+.table{ margin-bottom:0; }
+.table thead th{
+    background: var(--primary);
+    color:#fff;
+    position: sticky; top:0; z-index:2;
+    font-size:.76rem;
+    text-transform:uppercase;
+    letter-spacing:.65px;
+    font-weight:700;
+    white-space:nowrap;
+    border-color: rgba(255,255,255,.12);
+    padding:.85rem 1rem;
+}
+.table thead th.sortable{ cursor:pointer; user-select:none; }
+.table thead th.sortable:hover{ background: var(--primary-light); }
+.table thead th .sort-ico{ opacity:.45; font-size:.7rem; margin-left:.35rem; }
+.table thead th.sorted .sort-ico{ opacity:1; color: var(--gold); }
+
+.table tbody td{
+    padding:.8rem 1rem;
+    font-size:.88rem;
+    vertical-align:middle;
+    border-color: var(--border);
+}
+.data-row{ cursor:pointer; transition: background .14s ease; }
+.data-row:hover{ background: var(--primary-soft); }
+.data-row:focus-visible{ outline:2px solid var(--accent); outline-offset:-2px; }
+
+.row-avatar{
+    width:34px;height:34px;border-radius:50%;
+    display:grid;place-items:center;
+    font-size:.75rem;font-weight:700;color:#fff;
+    flex:0 0 34px;
+}
+.name-cell{ display:flex; align-items:center; gap:.65rem; min-width:190px; }
+
+.roll-cell{
+    font-family: ui-monospace, 'Courier New', monospace;
+    font-weight:700;
+    letter-spacing:.4px;
+    white-space:nowrap;
+}
+
+.card-head{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: 1rem;
+    padding-bottom: .85rem;
+    border-bottom: 1px solid var(--border);
+}
+.card-head__title{
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+.card-head__title i{
+    width: 34px; height: 34px;
+    display: grid; place-items: center;
+    border-radius: 9px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: .9rem;
+}
+.card-head__count{
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: #f4f7fb;
+    border: 1px solid var(--border);
+    padding: .35rem .75rem;
+    border-radius: 999px;
+}
+
+/* ============================================================
+   ID CARD
+   ============================================================ */
+.id-card{
+    width:100%;
+    max-width: 370px;
+    border-radius: 18px;
+    overflow:hidden;
+    position:relative;
+    color:#fff;
+    background: linear-gradient(150deg, #1a365d 0%, #2c5282 48%, #1a365d 100%);
+    box-shadow: var(--shadow-lg);
+    font-family:'Segoe UI', Tahoma, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+.id-card::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+        radial-gradient(circle at 85% -10%, rgba(255,255,255,.16), transparent 55%),
+        radial-gradient(circle at -10% 110%, rgba(214,158,46,.20), transparent 55%);
+    pointer-events:none;
+}
+.id-card__header{
+    position:relative;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:.6rem;
+    padding: 1rem 1.15rem .85rem;
+    border-bottom: 1px solid rgba(255,255,255,.14);
+}
+.id-card__brand{ display:flex; align-items:center; gap:.6rem; min-width:0; }
+.id-card__brand i{ font-size:1.35rem; color: var(--gold); }
+.id-card__org{
+    font-size:.82rem; font-weight:800; letter-spacing:.7px;
+    text-transform:uppercase; line-height:1.15;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.id-card__sub{
+    font-size:.62rem; letter-spacing:1.3px; text-transform:uppercase;
+    opacity:.62; margin-top:1px;
+}
+.id-card__status{
+    font-size:.6rem; font-weight:800; letter-spacing:1px;
+    text-transform:uppercase;
+    padding:.28rem .55rem; border-radius:999px;
+    background: rgba(72,187,120,.18);
+    border:1px solid rgba(72,187,120,.5);
+    color:#9ae6b4;
+    white-space:nowrap;
+}
+.id-card__main{
+    position:relative;
+    display:flex; align-items:center; gap:1rem;
+    padding: 1.15rem;
+}
+.id-card__avatar{
+    width:88px;height:88px;flex:0 0 88px;
+    border-radius:16px;
+    display:grid; place-items:center;
+    font-size:1.7rem; font-weight:800;
+    letter-spacing:.5px;
+    background: rgba(255,255,255,.12);
+    border: 2px solid rgba(255,255,255,.55);
+    position:relative; overflow:hidden;
+    text-shadow: 0 1px 4px rgba(0,0,0,.35);
+}
+.id-card__avatar img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+}
+.id-card__identity{ min-width:0; flex:1; }
+.id-card__name{
+    font-size:1.16rem; font-weight:800; line-height:1.2;
+    margin:0 0 .18rem;
+    word-break:break-word;
+}
+.id-card__role{
+    font-size:.78rem; color: rgba(255,255,255,.82);
+    margin:0 0 .45rem; font-weight:600; letter-spacing:.3px;
+}
+.id-card__dept{
+    display:inline-block;
+    font-size:.63rem; font-weight:800; letter-spacing:1px;
+    text-transform:uppercase;
+    padding:.25rem .6rem; border-radius:6px;
+    background: rgba(214,158,46,.22);
+    border:1px solid rgba(214,158,46,.55);
+    color:#f6e05e;
+}
+.id-card__meta{
+    position:relative;
+    display:grid; grid-template-columns: repeat(3, 1fr);
+    gap:.4rem;
+    padding: .8rem 1.15rem;
+    border-top: 1px solid rgba(255,255,255,.12);
+    border-bottom: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.13);
+}
+.id-card__meta > div{ min-width:0; }
+.id-card__meta span{
+    display:block;
+    font-size:.55rem; letter-spacing:1px; text-transform:uppercase;
+    opacity:.6; margin-bottom:2px;
+}
+.id-card__meta strong{
+    display:block;
+    font-size:.74rem; font-weight:700;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.id-card__footer{
+    position:relative;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:.75rem;
+    padding: .8rem 1.15rem .95rem;
+}
+.barcode{
+    flex:1; height:36px; border-radius:4px;
+    background-color:#fff;
+    background-image: repeating-linear-gradient(
+        90deg,
+        #16233a 0 2px,  #fff 2px 4px,
+        #16233a 4px 5px, #fff 5px 9px,
+        #16233a 9px 12px, #fff 12px 15px,
+        #16233a 15px 16px, #fff 16px 20px
+    );
+}
+.id-card__idno{
+    font-size:.66rem; font-weight:800; letter-spacing:1.2px;
+    font-family: ui-monospace, 'Courier New', monospace;
+    white-space:nowrap;
+    opacity:.92;
+}
+.id-card__watermark{
+    position:absolute; right:-18px; bottom:-24px;
+    font-size:6rem; font-weight:900;
+    color: rgba(255,255,255,.045);
+    line-height:1; pointer-events:none; user-select:none;
+}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+.detail-section{ margin-bottom:1.35rem; }
+.detail-section__title{
+    display:flex; align-items:center; gap:.5rem;
+    font-size:.72rem; font-weight:800;
+    letter-spacing:1.1px; text-transform:uppercase;
+    color: var(--primary);
+    padding-bottom:.45rem;
+    border-bottom:2px solid var(--primary-soft);
+    margin-bottom:.85rem;
+}
+.detail-section__title i{ color: var(--accent); }
+.detail-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+    gap:.65rem;
+}
+.detail-item{
+    background:#fafcff;
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:.55rem .75rem;
+    min-width:0;
+}
+.detail-item__label{
+    display:block;
+    font-size:.63rem; font-weight:800;
+    letter-spacing:.85px; text-transform:uppercase;
+    color: var(--muted); margin-bottom:.18rem;
+}
+.detail-item__value{
+    font-size:.87rem; font-weight:600; word-break:break-word;
+}
+
+/* ============================================================
+   LOCATION / MAP
+   ============================================================ */
+.location-address{
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 9px;
+    padding: .7rem .85rem;
+    font-size: .87rem;
+    color: #2d3748;
+    font-weight: 600;
+    line-height: 1.45;
+    margin-bottom: .75rem;
+}
+.location-address i{ color: var(--accent); margin-top: 3px; flex: 0 0 auto; }
+.location-address.is-empty{
+    border-left-color: var(--muted);
+    color: var(--muted);
+    font-weight: 500;
+}
+.location-address.is-empty i{ color: var(--muted); }
+
+.location-map-wrap{
+    position: relative;
+    height: 340px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #eef3f9;
+    box-shadow: var(--shadow-sm);
+}
+.location-map{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #eef3f9;
+}
+.location-map iframe,
+.location-map-iframe{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    z-index: 1;
+}
+.location-map__status{
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(244, 247, 251, .92);
+    backdrop-filter: blur(2px);
+    color: var(--muted);
+    font-size: .85rem;
+    font-weight: 600;
+    transition: opacity .25s ease, visibility .25s ease;
+    pointer-events: none;
+}
+.location-map__status.is-hidden{
+    opacity: 0;
+    visibility: hidden;
+}
+
+.location-map__note{
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    z-index: 3;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: .45rem .8rem;
+    font-size: .75rem;
+    font-weight: 600;
+    color: #4a5568;
+    box-shadow: var(--shadow-md);
+    max-width: 92%;
+    text-align: center;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.map-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: .75rem;
+}
+.map-actions .btn{
+    font-size: .8rem;
+    padding: .45rem .85rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ============================================================
+   TOASTS
+   ============================================================ */
+.toast-stack{
+    position:fixed; right:20px; bottom:20px;
+    z-index:2100;
+    display:flex; flex-direction:column; gap:10px;
+    max-width: calc(100vw - 40px);
+}
+.app-toast{
+    display:flex; align-items:flex-start; gap:.7rem;
+    min-width:250px; max-width:360px;
+    background:#fff;
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    box-shadow: var(--shadow-lg);
+    padding:.8rem 1rem;
+    font-size:.85rem;
+    animation: toastIn .25s cubic-bezier(.2,.8,.3,1);
+}
+.app-toast.is-success{ border-left-color: var(--success); }
+.app-toast.is-error{ border-left-color: var(--danger); }
+.app-toast.is-info{ border-left-color: var(--accent); }
+.app-toast i{ font-size:1rem; margin-top:1px; }
+.app-toast.is-success i{ color: var(--success); }
+.app-toast.is-error i{ color: var(--danger); }
+.app-toast.is-info i{ color: var(--accent); }
+.app-toast.is-out{ animation: toastOut .22s ease forwards; }
+@keyframes toastIn{ from{ opacity:0; transform: translateY(14px) scale(.97);} to{opacity:1;transform:none;} }
+@keyframes toastOut{ to{ opacity:0; transform: translateY(10px) scale(.97);} }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state{
+    text-align:center;
+    padding:3.5rem 1rem;
+    color:var(--muted);
+}
+.empty-state i{ font-size:2.6rem; opacity:.35; margin-bottom:.85rem; display:block; }
+.empty-state h6{ font-weight:700; color:var(--text); }
+
+.loading-row td{ padding: 2.5rem 1rem !important; text-align:center; color: var(--muted); }
+
+::-webkit-scrollbar{ width:9px; height:9px; }
+::-webkit-scrollbar-track{ background:#eef2f7; }
+::-webkit-scrollbar-thumb{ background:#c3cddb; border-radius:99px; }
+::-webkit-scrollbar-thumb:hover{ background:#a7b4c6; }
+
+/* ============================================================
+   SITE FOOTER
+   ============================================================ */
+.site-footer{
+    margin-top: 2rem;
+    background: var(--primary-dark);
+    color: #cbd5e0;
+    padding: 1.4rem 0 1.15rem;
+    border-top: 3px solid var(--gold);
+}
+.site-footer__inner{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: .85rem;
+}
+.site-footer__admin{
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: .88rem;
+    margin: 0;
+    font-weight: 600;
+    color: #fff;
+}
+.site-footer__admin i{
+    width: 30px; height: 30px;
+    display: grid; place-items: center;
+    border-radius: 8px;
+    background: rgba(214,158,46,.18);
+    color: var(--gold);
+    font-size: .8rem;
+}
+.site-footer__admin strong{ color: var(--gold); letter-spacing: .5px; }
+.site-footer__copy{
+    margin: 0;
+    font-size: .74rem;
+    letter-spacing: .4px;
+    color: #8fa3ba;
+}
+
+/* ============================================================
+   PRINT SLIP
+   ============================================================ */
+#printArea{ display:none; }
+
+.print-slip{
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    color:#1a202c;
+    border:2px solid #1a365d;
+    border-radius:10px;
+    padding: 26px 30px;
+    max-width: 620px;
+    margin: 0 auto;
+}
+.print-slip__head{
+    text-align:center;
+    border-bottom: 2px solid #1a365d;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+.print-slip__head h1{
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: .6px;
+    margin: 0 0 4px;
+    text-transform: uppercase;
+}
+.print-slip__head p{
+    margin: 0;
+    font-size: .72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #4a5568;
+}
+.print-slip table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+}
+.print-slip th,
+.print-slip td{
+    border: 1px solid #cbd5e0;
+    padding: 12px 14px;
+    font-size: .95rem;
+    text-align: left;
+}
+.print-slip th{
+    width: 40%;
+    background: #ebf2fa;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: .76rem;
+    letter-spacing: .7px;
+    color: #1a365d;
+}
+.print-slip td{
+    font-weight: 700;
+    font-family: ui-monospace, 'Courier New', monospace;
+}
+.print-slip__foot{
+    margin-top: 22px;
+    text-align: center;
+    font-size: .7rem;
+    color: #718096;
+    letter-spacing: .5px;
+}
+
+@media print{
+    @page{ size: A4; margin: 20mm; }
+    body{ background:#fff !important; }
+    body *{ visibility: hidden !important; }
+    #printArea, #printArea *{ visibility: visible !important; }
+    #printArea{
+        display:block !important;
+        position:absolute;
+        left:0; top:0;
+        width:100%;
+    }
+    .print-slip{
+        box-shadow:none;
+        border-width: 2px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 767.98px){
+    .site-brand__name{ font-size: 1.1rem; }
+    .site-brand__logo{ width: 46px; height: 46px; flex-basis: 46px; font-size: 1.2rem; }
+    .site-brand__tag{ font-size: .62rem; letter-spacing: 1.6px; }
+    .stat-card{ padding:.8rem .85rem; gap:.65rem; }
+    .stat-card__icon{ width:38px;height:38px;flex-basis:38px; font-size:.9rem; }
+    .stat-card__value{ font-size:1.2rem; }
+    .stat-card__label{ font-size:.63rem; }
+    .id-card__main{ flex-direction:column; text-align:center; }
+    .id-card__meta{ grid-template-columns: repeat(2, 1fr); }
+    .site-footer__inner{ justify-content: center; text-align: center; }
+    .filter-select{ min-width: 0; flex: 1; }
+    .filter-select select{ width: 100%; }
+    .location-map-wrap{ height: 290px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- ============================================================
+         SITE HEADER
+         ============================================================ -->
+    <header class="site-header">
+
+        <div class="site-topbar">
+            <div class="container-fluid px-3 px-md-4">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div class="site-clock" aria-live="polite">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span id="clockDate">—</span>
+                        <span class="clock-divider">•</span>
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="clockTime">—</span>
+                    </div>
+                    <span class="access-badge d-none d-sm-inline-flex">
+                        <i class="fa-solid fa-lock me-1"></i> Authorized Access Only
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="site-main">
+            <div class="container-fluid px-3 px-md-4">
+                <div class="site-brand">
+                    <div class="site-brand__logo">
+                      <img src="https://media.licdn.com/dms/image/v2/C560BAQFHQUfkyDp2JA/company-logo_200_200/company-logo_200_200/0/1630641734650?e=2147483647&v=beta&t=wZD06s4NGLwLBKcNo9H2P6IybuLIXhZDYVJxiQwsYA0" style="width:49px; height:55px; object-fit:contain;" alt="Amritsar Law College Logo">
+                    </div>
+                    <div>
+                        <h1 class="site-brand__name">Amritsar Law College, Amritsar</h1>
+                        <p class="site-brand__tag">Student Records Management System</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- ============================================================
+         MAIN CONTAINER
+         ============================================================ -->
+    <main class="container-fluid py-4 px-3 px-md-4 flex-grow-1">
+
+        <!-- ---------- STAT CARDS ---------- -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+                <div class="stat-card">
+                    <div class="stat-card__icon"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <div class="stat-card__value" id="statTotal">—</div>
+                        <div class="stat-card__label">Total Students</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
+                <div class="stat-card">
+                    <div class="stat-card__icon is-blue"><i class="fa-solid fa-layer-group"></i></div>
+                    <div>
+                        <div class="stat-card__value" id="statBatches">—</div>
+                        <div class="stat-card__label">Batches</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
+                <div class="stat-card">
+                    <div class="stat-card__icon is-gold"><i class="fa-solid fa-book-open"></i></div>
+                    <div>
+                        <div class="stat-card__value" id="statCourses">—</div>
+                        <div class="stat-card__label">Courses</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------- SEARCH TOOLBAR ---------- -->
+        <div class="toolbar-card mb-4">
+            <div class="row g-3 align-items-center">
+
+                <div class="col-lg-5">
+                    <div class="search-wrap" id="searchWrap">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text"
+                               class="form-control"
+                               id="searchInput"
+                               autocomplete="off"
+                               placeholder="Search by name, roll number, course, batch or father name…"
+                               aria-label="Search records">
+                        <span class="search-hint d-none d-md-block">/</span>
+                        <button type="button" class="search-clear" id="searchClear"
+                                title="Clear search" aria-label="Clear search">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                        <div class="filter-select">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <select class="form-select" id="batchFilter" aria-label="Filter by batch">
+                                <option value="">All Batches</option>
+                            </select>
+                        </div>
+                        <div class="filter-select">
+                            <i class="fa-solid fa-book-open"></i>
+                            <select class="form-select" id="courseFilter" aria-label="Filter by course">
+                                <option value="">All Courses</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-reset" id="btnReset" disabled>
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                        <button type="button" class="btn btn-outline-primary px-4" id="btnRefresh">
+                            <i class="fa-solid fa-arrows-rotate me-1"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="filter-chips" id="filterChips"></div>
+        </div>
+
+        <!-- ---------- DATA CARD ---------- -->
+        <div class="card card-custom p-3">
+
+            <div class="card-head">
+                <h2 class="card-head__title">
+                    <i class="fa-solid fa-table-list"></i>
+                    Student Data
+                </h2>
+                <span class="card-head__count" id="recordCount">Loading live data…</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle mb-0" id="dataTable">
+                    <thead id="tableHeader">
+                        <tr><th class="text-center">Connecting to Google Sheet…</th></tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr class="loading-row">
+                            <td>
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Fetching live records…
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" class="empty-state d-none">
+                <i class="fa-regular fa-folder-open"></i>
+                <h6>No matching records</h6>
+                <p class="mb-0 small">Try adjusting your search or filters, or refresh the live data.</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================
+         SITE FOOTER
+         ============================================================ -->
+    <footer class="site-footer">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="site-footer__inner">
+                <p class="site-footer__admin">
+                    <i class="fa-solid fa-user-shield"></i>
+                    Managed by <strong>ADMIN OFFICE, ALC</strong>
+                </p>
+                <p class="site-footer__copy">
+                    © <span id="footerYear"></span> Amritsar Law College, Amritsar. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+</div><!-- /app-shell -->
+
+<!-- ============================================================
+     FULL PROFILE MODAL
+     ============================================================ -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header" style="background: linear-gradient(100deg, #0f2338, #1a365d); color:#fff;">
+                <h5 class="modal-title d-flex align-items-center" id="detailTitle">
+                    <i class="fa-solid fa-id-card me-2"></i> Student Profile
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div id="detailCardWrap" class="d-flex justify-content-center"></div>
+                    </div>
+                    <div class="col-lg-7" id="detailBody"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" id="btnPrintSlip">
+                    <i class="fa-solid fa-print me-1"></i> Print Record Slip
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark me-1"></i> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     PRINT AREA — only University Roll No, Name & Father Name
+     ============================================================ -->
+<div id="printArea" aria-hidden="true"></div>
+
+<!-- Toast stack -->
+<div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ================================================================
+   AMRITSAR LAW COLLEGE — STUDENT DATA PORTAL
+   ----------------------------------------------------------------
+   Google Apps Script requirements:
+     doGet() -> returns a JSON array of row objects:
+                [{ "Batch": "...", "Course": "...", "University Roll No": "...",
+                   "Name": "...", "Father Name": "...", "Address": "...", ... }, ...]
+   ================================================================ */
+(function () {
+    'use strict';
+
+    /* ------------------------------------------------------------
+       CONFIG
+       ------------------------------------------------------------ */
+    const CONFIG = {
+        // ⬇️ REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        scriptUrl: 'https://script.google.com/macros/s/AKfycbxhrnGrDh6xVTUiAEFVle1GMH91f5Z5AgmRmKStLcSb-iX-hSdodvOlj6tQPptq5Y-Y/exec',
+        orgName:  'Amritsar Law College',
+        orgSub:   'Amritsar'
+    };
+
+    /* ------------------------------------------------------------
+       FIELD MAPPING
+       ------------------------------------------------------------ */
+    const FIELD_MAP = {
+        name:   ['name', 'student name', 'full name', 'candidate name'],
+        father: ['father name', 'fathers name', 'guardian name', 'parent name', 'father'],
+        roll:   ['university roll number', 'university roll no', 'uni roll number', 'uni roll no',
+                 'university roll', 'uni roll', 'roll number', 'roll no', 'rollno',
+                 'enrollment number', 'enrollment no', 'enrolment number', 'enrolment no',
+                 'exam roll number'],
+        batch:  ['batch', 'batch no', 'batch number', 'admission batch', 'session', 'year'],
+        course: ['course', 'program', 'programme', 'class', 'stream', 'branch'],
+        department: ['department', 'dept'],
+        email:  ['email', 'email id', 'e-mail', 'mail', 'email address'],
+        phone:  ['phone', 'mobile', 'contact', 'phone number', 'contact number',
+                 'mobile number', 'phone no', 'mobile no', 'contact no'],
+        photo:  ['photo', 'photo url', 'photourl', 'image', 'image url', 'picture',
+                 'avatar', 'img', 'photo link'],
+        blood:  ['blood group', 'blood'],
+        address: ['address', 'location', 'city', 'residence', 'permanent address',
+                  'present address', 'home address'],
+        dob:    ['dob', 'date of birth', 'birth date', 'birthdate'],
+        status: ['status', 'state', 'active']
+    };
+
+    /* Table columns — ONLY these five */
+    const TABLE_COLS = [
+        { key: 'batch',  label: 'Batch' },
+        { key: 'course', label: 'Course' },
+        { key: 'roll',   label: 'University Roll Number' },
+        { key: 'name',   label: 'Name' },
+        { key: 'father', label: 'Father Name' }
+    ];
+
+    /* ------------------------------------------------------------
+       STATE
+       ------------------------------------------------------------ */
+    const state = {
+        records:      [],
+        headers:      [],
+        filtered:     [],
+        search:       '',
+        batchFilter:  '',
+        courseFilter: '',
+        sortKey:      null,
+        sortDir:      'asc',
+        active:       null,
+        loading:      false
+    };
+
+    const fieldCache = new WeakMap();
+    const $ = (id) => document.getElementById(id);
+    let detailModal = null;
+
+    /* ------------------------------------------------------------
+       UTILITIES
+       ------------------------------------------------------------ */
+    function esc(value) {
+        return String(value === null || value === undefined ? '' : value)
+            .replace(/[&<>"']/g, (c) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+    }
+
+    function norm(str) {
+        return String(str === null || str === undefined ? '' : str)
+            .toLowerCase()
+            .replace(/[_\-/]+/g, ' ')
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function isBlank(v) {
+        return v === null || v === undefined || String(v).trim() === '';
+    }
+
+    function initials(name) {
+        const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return '?';
+        return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+    }
+
+    function colorFrom(str) {
+        let hash = 0;
+        const s = String(str || 'x');
+        for (let i = 0; i < s.length; i++) hash = (hash * 31 + s.charCodeAt(i)) % 360;
+        return `hsl(${hash}, 58%, 42%)`;
+    }
+
+    function debounce(fn, wait) {
+        let t;
+        return function (...args) {
+            clearTimeout(t);
+            t = setTimeout(() => fn.apply(this, args), wait);
+        };
+    }
+
+    /* ------------------------------------------------------------
+       LIVE CLOCK
+       ------------------------------------------------------------ */
+    function updateClock() {
+        const now = new Date();
+
+        const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const months = ['January','February','March','April','May','June',
+                        'July','August','September','October','November','December'];
+
+        const day   = days[now.getDay()];
+        const dd    = String(now.getDate()).padStart(2, '0');
+        const month = months[now.getMonth()];
+        const year  = now.getFullYear();
+
+        let hours  = now.getHours();
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const secs = String(now.getSeconds()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        const hh = String(hours).padStart(2, '0');
+
+        $('clockDate').textContent = `${day}, ${dd} ${month} ${year}`;
+        $('clockTime').textContent = `${hh}:${mins}:${secs} ${ampm}`;
+    }
+
+    /* ------------------------------------------------------------
+       TOASTS
+       ------------------------------------------------------------ */
+    function showToast(message, type = 'info', timeout = 3600) {
+        const icons = {
+            success: 'fa-circle-check',
+            error:   'fa-circle-exclamation',
+            info:    'fa-circle-info'
+        };
+        const el = document.createElement('div');
+        el.className = `app-toast is-${type}`;
+        el.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i>
+                        <div class="flex-grow-1">${esc(message)}</div>`;
+        $('toastStack').appendChild(el);
+
+        setTimeout(() => {
+            el.classList.add('is-out');
+            el.addEventListener('animationend', () => el.remove(), { once: true });
+        }, timeout);
+    }
+
+    /* ------------------------------------------------------------
+       FIELD MAPPING
+       ------------------------------------------------------------ */
+    function findKey(record, candidates) {
+        const keys = Object.keys(record);
+        const normalised = keys.map((k) => ({ raw: k, n: norm(k) }));
+
+        for (const cand of candidates) {
+            const hit = normalised.find((k) => k.n === cand);
+            if (hit) return hit.raw;
+        }
+        for (const cand of candidates) {
+            const hit = normalised.find((k) => k.n.includes(cand) || cand.includes(k.n));
+            if (hit) return hit.raw;
+        }
+        return null;
+    }
+
+    function mapFields(record) {
+        if (fieldCache.has(record)) return fieldCache.get(record);
+
+        const out = { _src: {} };
+        Object.keys(FIELD_MAP).forEach((logical) => {
+            const key = findKey(record, FIELD_MAP[logical]);
+            if (key) {
+                const val = record[key];
+                if (!isBlank(val)) {
+                    out[logical] = val;
+                    out._src[logical] = key;
+                }
+            }
+        });
+        fieldCache.set(record, out);
+        return out;
+    }
+
+    function displayName(record) {
+        const f = mapFields(record);
+        if (f.name) return String(f.name).trim();
+        const first = Object.values(record).find((v) => !isBlank(v));
+        return first ? String(first).trim() : 'Unnamed Record';
+    }
+
+    /* ------------------------------------------------------------
+       DATA FETCHING
+       ------------------------------------------------------------ */
+    async function fetchLiveData(showSuccessToast = false) {
+        if (state.loading) return;
+        state.loading = true;
+
+        setTableLoading();
+        $('recordCount').textContent = 'Syncing live data…';
+        $('btnRefresh').disabled = true;
+
+        try {
+            const url = CONFIG.scriptUrl + (CONFIG.scriptUrl.includes('?') ? '&' : '?')
+                      + 't=' + Date.now();
+            const response = await fetch(url, { cache: 'no-store' });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+
+            const data = await response.json();
+            if (!Array.isArray(data)) throw new Error('Unexpected response format');
+
+            state.records = data.filter((r) => r && typeof r === 'object');
+
+            const keySet = new Set();
+            state.records.forEach((r) => Object.keys(r).forEach((k) => keySet.add(k)));
+            state.headers = Array.from(keySet);
+
+            if (state.sortKey && !TABLE_COLS.some((c) => c.key === state.sortKey)) {
+                state.sortKey = null;
+            }
+
+            renderStats();
+            populateFilterOptions();
+            applyFilters();
+
+            if (showSuccessToast) {
+                showToast('Live data refreshed successfully.', 'success');
+            }
+        } catch (err) {
+            console.error('[Portal] Failed to fetch live data:', err);
+
+            $('tableHeader').innerHTML =
+                '<tr><th class="text-center">Unable to load data</th></tr>';
+            $('tableBody').innerHTML =
+                `<tr class="loading-row"><td class="text-danger">
+                    <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                    Could not reach Google Sheets. Check the Web App URL and its access settings.
+                 </td></tr>`;
+            $('recordCount').textContent = 'Sync failed';
+            $('emptyState').classList.add('d-none');
+
+            showToast('Failed to load live data from Google Sheets.', 'error', 5000);
+        } finally {
+            state.loading = false;
+            $('btnRefresh').disabled = false;
+        }
+    }
+
+    function setTableLoading() {
+        $('emptyState').classList.add('d-none');
+        $('tableHeader').innerHTML = '<tr><th class="text-center">Connecting to Google Sheet…</th></tr>';
+        $('tableBody').innerHTML = `
+            <tr class="loading-row">
+                <td>
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Fetching live records…
+                </td>
+            </tr>`;
+    }
+
+    /* ------------------------------------------------------------
+       STATISTICS
+       ------------------------------------------------------------ */
+    function renderStats() {
+        const batches = new Set();
+        const courses = new Set();
+
+        state.records.forEach((rec) => {
+            const f = mapFields(rec);
+            if (f.batch)  batches.add(norm(f.batch));
+            if (f.course) courses.add(norm(f.course));
+        });
+
+        $('statTotal').textContent   = state.records.length.toLocaleString();
+        $('statBatches').textContent = batches.size.toLocaleString();
+        $('statCourses').textContent = courses.size.toLocaleString();
+    }
+
+    /* ------------------------------------------------------------
+       POPULATE FILTER DROPDOWNS
+       ------------------------------------------------------------ */
+    function populateFilterOptions() {
+        const batches = new Set();
+        const courses = new Set();
+
+        state.records.forEach((rec) => {
+            const f = mapFields(rec);
+            if (f.batch && !isBlank(f.batch)) batches.add(String(f.batch).trim());
+            if (f.course && !isBlank(f.course)) courses.add(String(f.course).trim());
+        });
+
+        fillSelect('batchFilter', 'All Batches', Array.from(batches).sort((a, b) =>
+            a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+        ));
+        fillSelect('courseFilter', 'All Courses', Array.from(courses).sort((a, b) =>
+            a.localeCompare(b, undefined, { sensitivity: 'base' })
+        ));
+
+        $('batchFilter').value  = state.batchFilter;
+        $('courseFilter').value = state.courseFilter;
+
+        if ($('batchFilter').value !== state.batchFilter)  state.batchFilter = '';
+        if ($('courseFilter').value !== state.courseFilter) state.courseFilter = '';
+    }
+
+    function fillSelect(id, placeholder, values) {
+        const sel = $(id);
+        let html = `<option value="">${esc(placeholder)}</option>`;
+        values.forEach((v) => {
+            html += `<option value="${esc(v)}">${esc(v)}</option>`;
+        });
+        sel.innerHTML = html;
+    }
+
+    /* ------------------------------------------------------------
+       FILTER + SORT
+       ------------------------------------------------------------ */
+    function applyFilters() {
+        const q = state.search.trim().toLowerCase();
+        const batchSel  = norm(state.batchFilter);
+        const courseSel = norm(state.courseFilter);
+
+        let rows = state.records.filter((rec) => {
+            const f = mapFields(rec);
+
+            if (batchSel  && norm(f.batch)  !== batchSel)  return false;
+            if (courseSel && norm(f.course) !== courseSel) return false;
+
+            if (!q) return true;
+            return Object.values(rec).some((v) => String(v ?? '').toLowerCase().includes(q));
+        });
+
+        if (state.sortKey) {
+            const key = state.sortKey;
+            const dir = state.sortDir === 'asc' ? 1 : -1;
+
+            rows = rows.slice().sort((a, b) => {
+                const av = String(mapFields(a)[key] ?? '').trim();
+                const bv = String(mapFields(b)[key] ?? '').trim();
+
+                const an = parseFloat(av.replace(/[^0-9.\-]/g, ''));
+                const bn = parseFloat(bv.replace(/[^0-9.\-]/g, ''));
+                const bothNumeric = av !== '' && bv !== '' && !isNaN(an) && !isNaN(bn);
+
+                const cmp = bothNumeric
+                    ? an - bn
+                    : av.localeCompare(bv, undefined, { numeric: true, sensitivity: 'base' });
+
+                return cmp * dir;
+            });
+        }
+
+        state.filtered = rows;
+        renderFilterChips();
+        updateResetButton();
+        render();
+    }
+
+    function updateResetButton() {
+        const active = !!(state.search || state.batchFilter || state.courseFilter);
+        $('btnReset').disabled = !active;
+    }
+
+    function renderFilterChips() {
+        const wrap = $('filterChips');
+        wrap.innerHTML = '';
+
+        const chips = [];
+
+        if (state.search) {
+            chips.push({ type: 'search', label: 'Search', value: state.search });
+        }
+        if (state.batchFilter) {
+            chips.push({ type: 'batch', label: 'Batch', value: state.batchFilter });
+        }
+        if (state.courseFilter) {
+            chips.push({ type: 'course', label: 'Course', value: state.courseFilter });
+        }
+
+        chips.forEach((c) => {
+            const el = document.createElement('span');
+            el.className = 'chip';
+            el.innerHTML = `
+                <span class="chip__label">${esc(c.label)}:</span>
+                <span class="chip__value">${esc(c.value)}</span>
+                <button type="button" class="chip__close" data-chip="${c.type}"
+                        aria-label="Remove ${esc(c.label)} filter">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>`;
+            wrap.appendChild(el);
+        });
+    }
+
+    /* ------------------------------------------------------------
+       RENDER TABLE
+       ------------------------------------------------------------ */
+    function render() {
+        if (!state.records.length) {
+            $('tableHeader').innerHTML = '<tr><th class="text-center">No records found in Google Sheet</th></tr>';
+            $('tableBody').innerHTML = '';
+            $('emptyState').classList.remove('d-none');
+            $('recordCount').textContent = 'No records found';
+            return;
+        }
+
+        if (!state.filtered.length) {
+            $('tableHeader').innerHTML = '';
+            $('tableBody').innerHTML = '';
+            $('emptyState').classList.remove('d-none');
+            $('recordCount').textContent = `0 of ${state.records.length} records match`;
+            return;
+        }
+
+        $('emptyState').classList.add('d-none');
+
+        const thead = $('tableHeader');
+        const tbody = $('tableBody');
+
+        /* Header */
+        let headHtml = '<tr>';
+        TABLE_COLS.forEach((col) => {
+            const isSorted = state.sortKey === col.key;
+            const cls = 'sortable' + (isSorted ? ' sorted' : '');
+            const ico = isSorted
+                ? (state.sortDir === 'asc' ? 'fa-arrow-up-short-wide' : 'fa-arrow-down-wide-short')
+                : 'fa-sort';
+            headHtml += `<th class="${cls}" data-key="${col.key}" title="Sort by ${esc(col.label)}">
+                            ${esc(col.label)}<i class="fa-solid ${ico} sort-ico"></i>
+                         </th>`;
+        });
+        headHtml += '<th class="text-center" style="width:70px;">View</th></tr>';
+        thead.innerHTML = headHtml;
+
+        /* Body */
+        let bodyHtml = '';
+        state.filtered.forEach((rec, idx) => {
+            const f = mapFields(rec);
+            const name = displayName(rec);
+            const color = colorFrom(name);
+
+            bodyHtml += `<tr class="data-row" data-idx="${idx}" tabindex="0"
+                             role="button" aria-label="Open profile for ${esc(name)}">`;
+
+            TABLE_COLS.forEach((col) => {
+                const raw = f[col.key];
+                const text = isBlank(raw) ? '—' : String(raw);
+
+                if (col.key === 'name') {
+                    bodyHtml += `<td>
+                        <div class="name-cell">
+                            <span class="row-avatar" style="background:${color}">${esc(initials(name))}</span>
+                            <span class="fw-semibold">${esc(text)}</span>
+                        </div>
+                    </td>`;
+                } else if (col.key === 'roll') {
+                    bodyHtml += `<td><span class="roll-cell">${esc(text)}</span></td>`;
+                } else {
+                    bodyHtml += `<td>${esc(text)}</td>`;
+                }
+            });
+
+            bodyHtml += `<td class="text-center">
+                            <i class="fa-solid fa-chevron-right text-muted"></i>
+                         </td>`;
+            bodyHtml += '</tr>';
+        });
+
+        tbody.innerHTML = bodyHtml;
+
+        const hasFilter = !!(state.search || state.batchFilter || state.courseFilter);
+        $('recordCount').textContent = hasFilter
+            ? `Showing ${state.filtered.length} of ${state.records.length} records`
+            : `Total Students: ${state.records.length}`;
+    }
+
+    /* ------------------------------------------------------------
+       ID CARD
+       ------------------------------------------------------------ */
+    function buildIdCard(rec) {
+        const f = mapFields(rec);
+        const name   = displayName(rec);
+        const roll   = !isBlank(f.roll)   ? String(f.roll)   : 'N/A';
+        const course = !isBlank(f.course) ? String(f.course) : '—';
+        const batch  = !isBlank(f.batch)  ? String(f.batch)  : '—';
+        const father = !isBlank(f.father) ? String(f.father) : '—';
+        const status = !isBlank(f.status) ? String(f.status) : 'Active';
+        const photo  = !isBlank(f.photo)  ? String(f.photo).trim() : '';
+        const color  = colorFrom(name);
+
+        return `
+        <div class="id-card">
+            <div class="id-card__watermark">${esc(initials(name))}</div>
+
+            <div class="id-card__header">
+                <div class="id-card__brand">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <div style="min-width:0;">
+                        <div class="id-card__org">${esc(CONFIG.orgName)}</div>
+                        <div class="id-card__sub">${esc(CONFIG.orgSub)}</div>
+                    </div>
+                </div>
+                <span class="id-card__status">${esc(status)}</span>
+            </div>
+
+            <div class="id-card__main">
+                <div class="id-card__avatar" style="background:${color}">
+                    <span>${esc(initials(name))}</span>
+                    ${photo ? `<img src="${esc(photo)}" alt="${esc(name)}" onerror="this.remove()">` : ''}
+                </div>
+                <div class="id-card__identity">
+                    <h3 class="id-card__name">${esc(name)}</h3>
+                    <p class="id-card__role">${esc(course)}</p>
+                    <span class="id-card__dept">${esc(batch)}</span>
+                </div>
+            </div>
+
+            <div class="id-card__meta">
+                <div><span>Roll No.</span><strong>${esc(roll)}</strong></div>
+                <div><span>Batch</span><strong>${esc(batch)}</strong></div>
+                <div><span>Father</span><strong>${esc(father)}</strong></div>
+            </div>
+
+            <div class="id-card__footer">
+                <div class="barcode" aria-hidden="true"></div>
+                <span class="id-card__idno">${esc(roll)}</span>
+            </div>
+        </div>`;
+    }
+
+    /* ------------------------------------------------------------
+       LOCATION SECTION — Google Maps embed (reliable)
+       ------------------------------------------------------------ */
+    function buildLocationSection(rec, f) {
+        const address = !isBlank(f.address) ? String(f.address).trim() : '';
+
+        if (!address) {
+            return `
+            <div class="detail-section">
+                <h6 class="detail-section__title">
+                    <i class="fa-solid fa-location-dot"></i> Location on Map
+                </h6>
+                <div class="location-address is-empty">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <span>No address recorded for this student.</span>
+                </div>
+            </div>`;
+        }
+
+        const encoded = encodeURIComponent(address);
+
+        return `
+        <div class="detail-section">
+            <h6 class="detail-section__title">
+                <i class="fa-solid fa-location-dot"></i> Location on Map
+            </h6>
+
+            <div class="location-address">
+                <i class="fa-solid fa-location-crosshairs"></i>
+                <span>${esc(address)}</span>
+            </div>
+
+            <div class="location-map-wrap">
+                <div class="location-map" id="locationMap" role="application"
+                     aria-label="Map showing the recorded address"></div>
+
+                <div class="location-map__status" id="mapStatus">
+                    <div>
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Loading map…
+                    </div>
+                </div>
+
+                <div class="location-map__note d-none" id="mapNote"></div>
+            </div>
+
+            <div class="map-actions">
+                <a class="btn btn-outline-primary" target="_blank" rel="noopener"
+                   href="https://www.google.com/maps/search/?api=1&query=${encoded}">
+                    <i class="fa-solid fa-map-location-dot me-1"></i> Open in Google Maps
+                </a>
+                <a class="btn btn-outline-secondary" target="_blank" rel="noopener"
+                   href="https://www.google.com/maps/dir/?api=1&destination=${encoded}">
+                    <i class="fa-solid fa-diamond-turn-right me-1"></i> Get Directions
+                </a>
+            </div>
+        </div>`;
+    }
+
+    /* ------------------------------------------------------------
+       DETAIL BODY
+       ------------------------------------------------------------ */
+    function buildDetailBody(rec, f) {
+        const usedKeys = new Set(Object.values(f._src));
+        const extras = state.headers.filter(
+            (h) => !usedKeys.has(h) && !isBlank(rec[h])
+        );
+
+        let html = '';
+
+        /* Personal */
+        const personal = [];
+        if (f.name)   personal.push(detailItem('Name', f.name));
+        if (f.father) personal.push(detailItem('Father Name', f.father));
+        if (f.roll)   personal.push(detailItem('University Roll Number', f.roll));
+        if (f.batch)  personal.push(detailItem('Batch', f.batch));
+        if (f.course) personal.push(detailItem('Course', f.course));
+        if (f.department) personal.push(detailItem('Department', f.department));
+        if (f.dob)    personal.push(detailItem('Date of Birth', f.dob));
+        if (f.blood)  personal.push(detailItem('Blood Group', f.blood));
+
+        if (personal.length) {
+            html += section('Personal Information', 'fa-user', personal.join(''));
+        }
+
+        /* Contact — address is shown in the map block below */
+        const contact = [];
+        if (f.email) contact.push(detailItem('Email', f.email));
+        if (f.phone) contact.push(detailItem('Phone', f.phone));
+
+        if (contact.length) {
+            html += section('Contact Information', 'fa-address-book', contact.join(''));
+        }
+
+        /* Location on Map */
+        html += buildLocationSection(rec, f);
+
+        /* Additional sheet columns */
+        if (extras.length) {
+            const items = extras.map((h) => detailItem(h, rec[h])).join('');
+            html += section('Additional Information', 'fa-circle-info', items);
+        }
+
+        if (!html) {
+            html = `<div class="empty-state">
+                        <i class="fa-regular fa-address-card"></i>
+                        <h6>No additional details</h6>
+                        <p class="mb-0 small">This record only contains the fields shown on the ID card.</p>
+                    </div>`;
+        }
+
+        return html;
+    }
+
+    function section(title, icon, inner) {
+        return `<div class="detail-section">
+                    <h6 class="detail-section__title">
+                        <i class="fa-solid ${icon}"></i> ${title}
+                    </h6>
+                    <div class="detail-grid">${inner}</div>
+                </div>`;
+    }
+
+    function detailItem(label, value) {
+        return `<div class="detail-item">
+                    <span class="detail-item__label">${esc(label)}</span>
+                    <span class="detail-item__value">${esc(isBlank(value) ? '—' : value)}</span>
+                </div>`;
+    }
+
+    /* ------------------------------------------------------------
+       PRINT SLIP
+       ------------------------------------------------------------ */
+    function buildPrintSlip(rec, f) {
+        return `
+        <div class="print-slip">
+            <div class="print-slip__head">
+                <h1>${esc(CONFIG.orgName)}, ${esc(CONFIG.orgSub)}</h1>
+                <p>Record Verification Slip</p>
+            </div>
+            <table>
+                <tr>
+                    <th>University Roll Number</th>
+                    <td>${esc(isBlank(f.roll) ? '—' : f.roll)}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>${esc(displayName(rec))}</td>
+                </tr>
+                <tr>
+                    <th>Father Name</th>
+                    <td>${esc(isBlank(f.father) ? '—' : f.father)}</td>
+                </tr>
+            </table>
+            <div class="print-slip__foot">
+                Managed by ADMIN OFFICE, ALC · Generated on ${esc(new Date().toLocaleDateString())}
+            </div>
+        </div>`;
+    }
+
+    /* ============================================================
+       MAP INITIALISATION
+       ------------------------------------------------------------
+       Uses the classic Google Maps embed URL (no API key needed).
+       Google Maps resolves any address, city, landmark or raw
+       "lat,lng" string and shows a marker automatically.
+       ============================================================ */
+    function initLocationMap(rec, f) {
+        const mapContainer = $('locationMap');
+        const statusEl     = $('mapStatus');
+        const noteEl       = $('mapNote');
+        if (!mapContainer) return;
+
+        const address = !isBlank(f.address) ? String(f.address).trim() : '';
+        if (!address) return;
+
+        /* Clear any previous content */
+        mapContainer.innerHTML = '';
+
+        /* Reset loading UI */
+        if (statusEl) {
+            statusEl.innerHTML = `<div>
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Loading map…
+            </div>`;
+            statusEl.classList.remove('is-hidden');
+        }
+        if (noteEl) noteEl.classList.add('d-none');
+
+        /* Build embed URL — Google Maps handles all geocoding & markers */
+        const encoded = encodeURIComponent(address);
+        const src = `https://maps.google.com/maps?q=${encoded}&t=m&z=15&ie=UTF8&iwloc=near&output=embed`;
+
+        const iframe = document.createElement('iframe');
+        iframe.className = 'location-map-iframe';
+        iframe.src = src;
+        iframe.loading = 'lazy';
+        iframe.referrerPolicy = 'no-referrer-when-downgrade';
+        iframe.allowFullscreen = true;
+        iframe.title = 'Live map showing the recorded address';
+
+        /* Hide loading overlay as soon as the iframe reports it loaded */
+        let settled = false;
+        const settle = () => {
+            if (settled) return;
+            settled = true;
+            if (statusEl) statusEl.classList.add('is-hidden');
+        };
+
+        iframe.addEventListener('load', settle, { once: true });
+        /* Safety net in case the load event is delayed or blocked */
+        setTimeout(settle, 3000);
+
+        mapContainer.appendChild(iframe);
+
+        /* Small informative note */
+        if (noteEl) {
+            noteEl.innerHTML = '<i class="fa-solid fa-location-dot me-1"></i>Live map · Marker shows the recorded address';
+            noteEl.classList.remove('d-none');
+        }
+    }
+
+    /* ------------------------------------------------------------
+       OPEN DETAIL MODAL
+       ------------------------------------------------------------ */
+    function openDetailByIndex(idx) {
+        const rec = state.filtered[Number(idx)];
+        if (!rec) return;
+
+        state.active = rec;
+        const f = mapFields(rec);
+        const name = displayName(rec);
+
+        $('detailTitle').innerHTML =
+            `<i class="fa-solid fa-id-card me-2"></i> ${esc(name)}`;
+
+        $('detailCardWrap').innerHTML = buildIdCard(rec);
+        $('detailBody').innerHTML = buildDetailBody(rec, f);
+
+        /* Prepare limited print slip */
+        $('printArea').innerHTML = buildPrintSlip(rec, f);
+
+        /* Map initialises once the modal is fully shown so the iframe
+           has real dimensions. */
+        detailModal.show();
+        /* Small delay then init to make sure the DOM node exists */
+        setTimeout(() => initLocationMap(rec, f), 60);
+    }
+
+    /* ------------------------------------------------------------
+       ANTI-COPY / ANTI-SCREENSHOT (best effort)
+       ------------------------------------------------------------ */
+    function installProtection() {
+        document.addEventListener('contextmenu', (e) => {
+            if (e.target.closest('input, textarea, select')) return;
+            e.preventDefault();
+            showToast('Right-click is disabled on this portal.', 'error', 2500);
+        });
+
+        ['copy', 'cut', 'dragstart', 'selectstart'].forEach((evt) => {
+            document.addEventListener(evt, (e) => {
+                if (e.target.closest('input, textarea, select')) return;
+                e.preventDefault();
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const ctrl = e.ctrlKey || e.metaKey;
+            const key = e.key.toLowerCase();
+
+            if (ctrl && ['c', 'x', 'a', 's', 'u'].includes(key)) {
+                e.preventDefault();
+                return;
+            }
+            if (e.key === 'F12') { e.preventDefault(); return; }
+            if (ctrl && e.shiftKey && ['i', 'j', 'c'].includes(key)) {
+                e.preventDefault();
+                return;
+            }
+            /* Ctrl+P is intentionally allowed; print CSS reveals only the slip. */
+        }, true);
+
+        window.addEventListener('blur', () => {
+            /* Don't lock when the user is interacting with our map iframe */
+            const active = document.activeElement;
+            if (active && active.tagName === 'IFRAME') return;
+            document.body.classList.add('privacy-lock');
+        });
+        window.addEventListener('focus', () => {
+            document.body.classList.remove('privacy-lock');
+        });
+        document.addEventListener('click', () => {
+            if (document.body.classList.contains('privacy-lock')) {
+                document.body.classList.remove('privacy-lock');
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------
+       EVENT WIRING
+       ------------------------------------------------------------ */
+    function bindEvents() {
+
+        /* --- Search --- */
+        const searchInput = $('searchInput');
+        const searchWrap  = $('searchWrap');
+        const searchClear = $('searchClear');
+
+        const syncSearchUI = () => {
+            searchWrap.classList.toggle('has-value', searchInput.value.length > 0);
+        };
+
+        searchInput.addEventListener('input', debounce(function () {
+            state.search = this.value;
+            syncSearchUI();
+            applyFilters();
+        }, 180));
+        searchInput.addEventListener('input', syncSearchUI);
+
+        searchClear.addEventListener('click', () => {
+            searchInput.value = '';
+            state.search = '';
+            syncSearchUI();
+            applyFilters();
+            searchInput.focus();
+        });
+
+        /* --- Dropdown filters --- */
+        $('batchFilter').addEventListener('change', function () {
+            state.batchFilter = this.value;
+            applyFilters();
+        });
+        $('courseFilter').addEventListener('change', function () {
+            state.courseFilter = this.value;
+            applyFilters();
+        });
+
+        /* --- Reset --- */
+        $('btnReset').addEventListener('click', () => {
+            searchInput.value = '';
+            state.search = '';
+            state.batchFilter = '';
+            state.courseFilter = '';
+            $('batchFilter').value = '';
+            $('courseFilter').value = '';
+            syncSearchUI();
+            applyFilters();
+            showToast('All filters cleared.', 'info', 2200);
+        });
+
+        /* --- Chip close --- */
+        $('filterChips').addEventListener('click', (e) => {
+            const btn = e.target.closest('.chip__close');
+            if (!btn) return;
+
+            const type = btn.dataset.chip;
+            if (type === 'search') {
+                searchInput.value = '';
+                state.search = '';
+                syncSearchUI();
+            }
+            if (type === 'batch') {
+                state.batchFilter = '';
+                $('batchFilter').value = '';
+            }
+            if (type === 'course') {
+                state.courseFilter = '';
+                $('courseFilter').value = '';
+            }
+            applyFilters();
+        });
+
+        /* --- Keyboard: "/" focus, Esc clear --- */
+        document.addEventListener('keydown', (e) => {
+            const tag = (document.activeElement && document.activeElement.tagName) || '';
+            const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+
+            if (e.key === '/' && !typing) {
+                e.preventDefault();
+                searchInput.focus();
+                searchInput.select();
+            }
+            if (e.key === 'Escape' && document.activeElement === searchInput) {
+                searchInput.value = '';
+                state.search = '';
+                syncSearchUI();
+                applyFilters();
+                searchInput.blur();
+            }
+        });
+
+        /* --- Refresh --- */
+        $('btnRefresh').addEventListener('click', () => fetchLiveData(true));
+
+        /* --- Sorting --- */
+        $('tableHeader').addEventListener('click', (e) => {
+            const th = e.target.closest('th[data-key]');
+            if (!th) return;
+
+            const key = th.dataset.key;
+            if (state.sortKey === key) {
+                state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+                state.sortKey = key;
+                state.sortDir = 'asc';
+            }
+            applyFilters();
+        });
+
+        /* --- Row click -> full profile --- */
+        $('tableBody').addEventListener('click', (e) => {
+            const tr = e.target.closest('tr[data-idx]');
+            if (tr) openDetailByIndex(tr.dataset.idx);
+        });
+
+        $('tableBody').addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            const tr = e.target.closest('tr[data-idx]');
+            if (tr) {
+                e.preventDefault();
+                openDetailByIndex(tr.dataset.idx);
+            }
+        });
+
+        /* --- Print limited slip --- */
+        $('btnPrintSlip').addEventListener('click', () => {
+            if (!state.active) {
+                showToast('Open a record first to print its slip.', 'error');
+                return;
+            }
+            window.print();
+        });
+
+        /* --- Clear map container on modal close --- */
+        $('detailModal').addEventListener('hidden.bs.modal', () => {
+            const mapContainer = $('locationMap');
+            if (mapContainer) mapContainer.innerHTML = '';
+        });
+    }
+
+    /* ------------------------------------------------------------
+       BOOTSTRAP
+       ------------------------------------------------------------ */
+    document.addEventListener('DOMContentLoaded', function () {
+        detailModal = new bootstrap.Modal($('detailModal'));
+
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        $('footerYear').textContent = new Date().getFullYear();
+
+        installProtection();
+        bindEvents();
+        fetchLiveData();
+    });
+
+})();
+</script>
+</body>
+</html>
