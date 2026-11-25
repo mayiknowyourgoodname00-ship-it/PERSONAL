@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institutional Certificate Generator & Management System - Amritsar Law College</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        alc: {
+                            maroon: '#800000',
+                            maroonDark: '#5e0000',
+                            gold: '#D4AF37',
+                            goldLight: '#f3e5ab',
+                            navy: '#002147',
+                            dark: '#1a1a1a',
+                            light: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Merriweather', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* On-Screen Preview Styles */
+        .paper-preview {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15), 0 10px 15px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Paper Canvas Sizes */
+        .size-a4 { width: 210mm; min-height: 297mm; }
+        .size-a4-landscape { width: 297mm; min-height: 210mm; }
+        .size-legal { width: 216mm; min-height: 356mm; }
+        .size-letter { width: 216mm; min-height: 279mm; }
+        .size-a5 { width: 148mm; min-height: 210mm; }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Toast notification animation */
+        @keyframes slideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .toast-animate {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        /* Strict Dashboard-to-Print Exact Match Protocol */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+                overflow: hidden !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Hide dashboard control tools */
+            header, .no-print, nav, sidebar, button, input[type="checkbox"], select, #toast-container, modal {
+                display: none !important;
+                visibility: hidden !important;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #certificate-print-area, #certificate-print-area * {
+                visibility: visible !important;
+            }
+
+            /* Force exact dashboard layout structure into print view */
+            #certificate-print-area {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                min-height: 297mm !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: white !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
+            }
+
+            .hidden-in-print {
+                display: none !important;
+                visibility: hidden !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Top Executive Header -->
+    <header class="no-print sticky top-0 z-40 shadow-xl">
+        <div class="bg-gradient-to-r from-alc-navy via-alc-maroon to-alc-navy text-white border-b-4 border-alc-gold">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 bg-gradient-to-br from-amber-300 to-alc-gold rounded-full flex items-center justify-center font-heading font-extrabold text-alc-maroon text-lg shadow-lg border-2 border-white/70">ALC</div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h1 class="font-heading font-extrabold text-base md:text-lg tracking-wider text-white">AMRITSAR LAW COLLEGE</h1>
+                            <span class="bg-alc-gold/20 text-amber-200 border border-alc-gold/40 text-[10px] uppercase tracking-widest px-2 py-0.5 rounded font-semibold hidden sm:inline-block">Official Portal</span>
+                        </div>
+                        <p class="text-[11px] text-amber-100/90 font-medium">Institutional Certificate Generator &amp; Registry Management System</p>
+                    </div>
+                </div>
+                <div class="flex items-center flex-wrap gap-2">
+                    <button onclick="saveRecord()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded-lg text-xs shadow-md border border-emerald-400 transition">Save Record</button>
+                    <button onclick="confirmRefreshForm()" class="bg-slate-800 hover:bg-slate-900 text-slate-100 font-semibold px-3 py-1.5 rounded-lg text-xs shadow border border-slate-600 transition">Refresh Form</button>
+                    <button onclick="toggleRegistryModal(true)" class="bg-alc-navy hover:bg-slate-900 text-amber-200 font-semibold px-3 py-1.5 rounded-lg text-xs shadow border border-alc-gold/40 transition">Saved Registry (<span id="savedCountBadge">0</span>)</button>
+                    <button onclick="downloadWordDoc()" class="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-3 py-1.5 rounded-lg text-xs shadow border border-blue-400 transition">Download Word</button>
+                    <button onclick="window.print()" class="bg-alc-gold hover:bg-amber-500 text-alc-maroon font-bold px-3.5 py-1.5 rounded-lg text-xs shadow border border-amber-300 transition">Print A4</button>
+                </div>
+            </div>
+        </div>
+        <div class="bg-alc-gold text-alc-maroon text-[11px] font-semibold tracking-wide">
+            <div class="max-w-7xl mx-auto px-4 py-1 flex flex-wrap justify-between items-center">
+                <span>Certificate Management Dashboard</span>
+                <span class="hidden sm:inline">Formal &bull; Secure &bull; Institutional</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid Layout -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Interactive Controls Panel (5 Cols) -->
+        <div class="lg:col-span-5 space-y-4 no-print">
+
+            <!-- Control Tabs Container -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                <div class="flex border-b border-slate-200 bg-slate-50">
+                    <button onclick="switchTab('form')" id="tab-btn-form" class="flex-1 py-3 px-2 text-[11px] font-bold uppercase tracking-wider text-alc-maroon border-b-2 border-alc-maroon bg-white transition">Form Input</button>
+                    <button onclick="switchTab('visibility')" id="tab-btn-visibility" class="flex-1 py-3 px-2 text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-slate-700 transition">Visibility</button>
+                    <button onclick="switchTab('style')" id="tab-btn-style" class="flex-1 py-3 px-2 text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-slate-700 transition">Layout & Pos</button>
+                    <button onclick="switchTab('logs')" id="tab-btn-logs" class="flex-1 py-3 px-2 text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-slate-700 transition">Registry</button>
+                </div>
+
+                <!-- TAB 1: FORM INPUTS -->
+                <div id="tab-form" class="p-4 md:p-5 space-y-4">
+
+                    <!-- Document Type Picker -->
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Select Certificate Format</label>
+                        <select id="certType" onchange="updateCertificate()" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs md:text-sm font-semibold focus:ring-2 focus:ring-alc-maroon focus:outline-none text-slate-800">
+                            <option value="attendance" selected>Attendance Certificate</option>
+                            <option value="character">Character Certificate</option>
+                            <option value="bonafide">Bonafide Student Certificate</option>
+                            <option value="experience">Experience / Service Certificate</option>
+                            <option value="clearance">No Dues / Clearance Certificate</option>
+                        </select>
+                    </div>
+
+                    <!-- Dispatch Meta Fields -->
+                    <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Ref Number</label>
+                            <input type="text" id="refNo" value="ALC/CERT/2026/3534" oninput="updateCertificate()" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono focus:ring-1 focus:ring-alc-maroon">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="block text-xs font-semibold text-slate-700">Top Issue Date</label>
+                                <button onclick="setFieldToday('issueDate')" class="text-[10px] text-alc-maroon font-bold hover:underline">Today</button>
+                            </div>
+                            <input type="text" id="issueDate" oninput="updateCertificate()" class="w-full bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-alc-maroon">
+                        </div>
+                    </div>
+
+                    <!-- Candidate Details -->
+                    <div class="space-y-3 pt-1">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-alc-maroon">Candidate Profile</h3>
+                            <!-- Gender Radio -->
+                            <div class="flex items-center space-x-3 text-xs font-medium bg-slate-100 px-2 py-1 rounded">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="radio" name="gender" value="Male" onchange="updateCertificate()" class="text-alc-maroon focus:ring-alc-maroon">
+                                    <span class="ml-1 text-slate-700 font-semibold">Male</span>
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="radio" name="gender" value="Female" checked onchange="updateCertificate()" class="text-alc-maroon focus:ring-alc-maroon">
+                                    <span class="ml-1 text-slate-700 font-semibold">Female</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700">Full Candidate Name</label>
+                            <input type="text" id="studentName" value="Taranpreet Kaur" oninput="formatTitleCase(this); updateCertificate();" class="w-full border border-slate-300 rounded p-2 text-sm font-semibold focus:ring-1 focus:ring-alc-maroon">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700">Father's Name</label>
+                            <input type="text" id="fatherName" value="Satinderpal Singh" oninput="formatTitleCase(this); updateCertificate();" class="w-full border border-slate-300 rounded p-2 text-sm focus:ring-1 focus:ring-alc-maroon">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700">Residential Address</label>
+                            <textarea id="streetAddress" rows="2" oninput="formatTitleCase(this); updateCertificate();" class="w-full border border-slate-300 rounded p-2 text-xs focus:ring-1 focus:ring-alc-maroon">H/No 97/1 Ward No 16, Behind Bus Stand, Ruby Paper And Card Store, Gurdaspur</textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">State</label>
+                                <select id="stateSelect" onchange="updateCertificate()" class="w-full border border-slate-300 rounded p-2 text-xs font-semibold focus:ring-1 focus:ring-alc-maroon bg-white">
+                                    <option value="Punjab" selected>Punjab</option>
+                                    <option value="Haryana">Haryana</option>
+                                    <option value="Bihar">Bihar</option>
+                                    <option value="Jammu & Kashmir">Jammu & Kashmir</option>
+                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Rajasthan">Rajasthan</option>
+                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                    <option value="Uttarakhand">Uttarakhand</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">Pincode (Strict 6 Digits)</label>
+                                <input type="text" id="pincodeInput" value="143521" maxlength="6" oninput="validatePincode(this); updateCertificate();" class="w-full border border-slate-300 rounded p-2 text-xs font-mono focus:ring-1 focus:ring-alc-maroon">
+                                <p id="pincodeError" class="text-[10px] text-red-600 font-semibold hidden mt-0.5">Must be 6 numeric digits!</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">Course Name</label>
+                                <select id="course" onchange="handleCourseChange()" class="w-full border border-slate-300 rounded p-2 text-xs font-semibold focus:ring-1 focus:ring-alc-maroon bg-white">
+                                    <option value="LL.B (TYC)">LL.B (TYC)</option>
+                                    <option value="BA.LL.B (FYIC)" selected>BA.LL.B (FYIC)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">Batch / Session</label>
+                                <select id="batch" onchange="updateCertificate()" class="w-full border border-slate-300 rounded p-2 text-xs font-semibold focus:ring-1 focus:ring-alc-maroon bg-white">
+                                    <!-- Dynamic Options Loaded via JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">GNDU Regd. No.</label>
+                                <input type="text" id="regNo" value="2021.ALC/A.25" oninput="validateRegNo(this); updateCertificate();" class="w-full border border-slate-300 rounded p-1.5 text-xs font-mono focus:ring-1 focus:ring-alc-maroon">
+                                <p id="regNoErr" class="text-[10px] text-red-600 font-semibold hidden mt-0.5">Pattern: 2001.ABC/A.123456</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">College Roll No. (11 Digits)</label>
+                                <input type="text" id="rollNo" value="11242151307" maxlength="11" oninput="validateRollNo(this); updateCertificate();" class="w-full border border-slate-300 rounded p-1.5 text-xs font-mono focus:ring-1 focus:ring-alc-maroon">
+                                <p id="rollNoErr" class="text-[10px] text-red-600 font-semibold hidden mt-0.5">11 Digits (Not starting with 9)</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">Admission Month/Yr</label>
+                                <select id="admissionDate" onchange="updateCertificate()" class="w-full border border-slate-300 rounded p-1.5 text-xs font-semibold focus:ring-1 focus:ring-alc-maroon bg-white">
+                                    <option value="September 2021">September 2021</option>
+                                    <option value="October 2021" selected>October 2021</option>
+                                    <option value="November 2021">November 2021</option>
+                                    <option value="December 2021">December 2021</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">Passing Month/Year</label>
+                                <input type="text" id="passingDate" value="May 2026" oninput="updateCertificate()" class="w-full border border-slate-300 rounded p-1.5 text-xs focus:ring-1 focus:ring-alc-maroon">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">Attendance %</label>
+                                <input type="text" id="attendancePct" value="75%" oninput="updateCertificate()" class="w-full border border-slate-300 rounded p-1.5 text-xs font-semibold focus:ring-1 focus:ring-alc-maroon">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700">Aadhaar (Optional)</label>
+                                <input type="text" id="aadhaarNo" value="2996 2725 4818" maxlength="14" oninput="formatAadhaarInput(this); updateCertificate();" class="w-full border border-slate-300 rounded p-1.5 text-xs font-mono focus:ring-1 focus:ring-alc-maroon">
+                            </div>
+                        </div>
+
+                        <!-- Footer Date/Place Meta -->
+                        <div class="border-t border-slate-200 pt-3">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Bottom Verification Footer</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <div class="flex justify-between items-center mb-1">
+                                        <label class="block text-xs font-medium text-slate-700">Bottom Date</label>
+                                        <button onclick="setFieldToday('footerDate')" class="text-[10px] text-alc-maroon font-bold hover:underline">Today</button>
+                                    </div>
+                                    <input type="text" id="footerDate" value="July 30, 2026" oninput="updateCertificate()" class="w-full border border-slate-300 rounded p-1.5 text-xs focus:ring-1 focus:ring-alc-maroon">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700">Bottom Place</label>
+                                    <input type="text" id="footerPlace" value="Amritsar" oninput="updateCertificate()" class="w-full border border-slate-300 rounded p-1.5 text-xs focus:ring-1 focus:ring-alc-maroon">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TAB 2: VISIBILITY TOGGLES -->
+                <div id="tab-visibility" class="p-5 space-y-4 hidden">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Show / Hide Certificate Elements</h3>
+                    <p class="text-xs text-slate-500">Toggle element visibilities. Changes apply to preview screen, printouts, and Word exports.</p>
+
+                    <div class="space-y-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        
+                        <!-- Header Meta Toggles -->
+                        <div class="space-y-2">
+                            <span class="block text-xs font-bold text-slate-800">Header Metadata</span>
+                            
+                            <label class="flex items-center justify-between cursor-pointer pl-2">
+                                <span class="text-xs text-slate-600">Reference Number (Ref No.)</span>
+                                <input type="checkbox" id="showRefNo" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                            </label>
+
+                            <label class="flex items-center justify-between cursor-pointer pl-2">
+                                <span class="text-xs text-slate-600">Top Issue Date</span>
+                                <input type="checkbox" id="showTopDate" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                            </label>
+                        </div>
+
+                        <hr class="border-slate-200">
+
+                        <!-- Bottom Date & Place Toggle -->
+                        <label class="flex items-center justify-between cursor-pointer">
+                            <span class="text-xs font-bold text-slate-800">Bottom Date & Place Block</span>
+                            <input type="checkbox" id="showMetaBlock" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                        </label>
+                        
+                        <hr class="border-slate-200">
+
+                        <!-- Signature Blocks Toggles -->
+                        <div class="space-y-2">
+                            <span class="block text-xs font-bold text-slate-800">Signature Line Blocks</span>
+                            
+                            <label class="flex items-center justify-between cursor-pointer pl-2">
+                                <span class="text-xs text-slate-600">Prepared by (Dealing Clerk)</span>
+                                <input type="checkbox" id="showSignClerk" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                            </label>
+
+                            <label class="flex items-center justify-between cursor-pointer pl-2">
+                                <span class="text-xs text-slate-600">Verified by (Academic-In-charge)</span>
+                                <input type="checkbox" id="showSignIncharge" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                            </label>
+
+                            <label class="flex items-center justify-between cursor-pointer pl-2">
+                                <span class="text-xs text-slate-600">Principal Signature Block</span>
+                                <input type="checkbox" id="showSignPrincipal" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                            </label>
+                        </div>
+
+                        <hr class="border-slate-200">
+
+                        <!-- Institutional Header Emblem Toggle -->
+                        <label class="flex items-center justify-between cursor-pointer">
+                            <span class="text-xs font-bold text-slate-800">Digital Header & Emblem</span>
+                            <input type="checkbox" id="showHeader" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                        </label>
+
+                        <!-- Footer Address Toggle -->
+                        <label class="flex items-center justify-between cursor-pointer">
+                            <span class="text-xs font-bold text-slate-800">Footer Contact Details</span>
+                            <input type="checkbox" id="showContactFooter" checked onchange="updateVisibility()" class="w-4 h-4 text-alc-maroon rounded focus:ring-alc-maroon">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- TAB 3: LAYOUT & POSITIONING CONTROLS -->
+                <div id="tab-style" class="p-5 space-y-4 hidden">
+                    
+                    <!-- Pre-Printed Letterhead Switcher -->
+                    <div class="bg-amber-50 border border-amber-300 rounded-lg p-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="letterheadMode" onchange="toggleLetterheadMode()" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-alc-maroon relative"></div>
+                            <span class="ml-3 text-xs font-bold text-slate-900">Print on Pre-Printed Letterhead stationary</span>
+                        </label>
+                    </div>
+
+                    <!-- Paper Canvas Selector -->
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Paper Canvas Format</label>
+                        <select id="paperSizeSelect" onchange="applyPaperSize()" class="w-full border border-slate-300 rounded p-2 text-xs font-semibold focus:ring-1 focus:ring-alc-maroon bg-white">
+                            <option value="size-a4" selected>A4 Portrait (210mm x 297mm)</option>
+                            <option value="size-a4-landscape">A4 Landscape (297mm x 210mm)</option>
+                            <option value="size-legal">Legal (216mm x 356mm)</option>
+                            <option value="size-letter">Letter (216mm x 279mm)</option>
+                            <option value="size-a5">A5 Small (148mm x 210mm)</option>
+                        </select>
+                    </div>
+
+                    <!-- Font Selector -->
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Body Font Family</label>
+                        <select id="fontFamilySelect" onchange="applyStyles()" class="w-full border border-slate-300 rounded p-2 text-xs font-semibold focus:ring-1 focus:ring-alc-maroon bg-white">
+                            <option value="Merriweather, serif" selected>Merriweather (Formal Serif)</option>
+                            <option value="'Times New Roman', Times, serif">Times New Roman (Standard Official)</option>
+                            <option value="'Cinzel', serif">Cinzel (Classic Institutional)</option>
+                            <option value="Arial, sans-serif">Arial (Clean Sans)</option>
+                            <option value="Georgia, serif">Georgia (Traditional)</option>
+                            <option value="'Courier New', monospace">Courier New (Typewriter Mono)</option>
+                        </select>
+                    </div>
+
+                    <!-- Paragraph First Line Indent Slider -->
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-bold uppercase tracking-wider text-slate-700">Paragraph Starting Tab Indent</span>
+                            <span id="val-para-indent" class="font-mono text-slate-600">30px</span>
+                        </div>
+                        <input type="range" id="paraIndent" min="0" max="80" value="30" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                    </div>
+
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 pt-1">Date & Place Positioning Controls</h3>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="font-medium text-slate-700">Vertical Offset (Y-Axis)</span>
+                                <span id="val-meta-y" class="font-mono text-slate-600">0px</span>
+                            </div>
+                            <input type="range" id="metaY" min="-50" max="100" value="0" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="font-medium text-slate-700">Horizontal Shift (X-Axis)</span>
+                                <span id="val-meta-x" class="font-mono text-slate-600">0px</span>
+                            </div>
+                            <input type="range" id="metaX" min="-100" max="100" value="0" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                        </div>
+                    </div>
+
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 pt-2">Signature Section Controls</h3>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="font-medium text-slate-700">Vertical Offset (Y-Axis)</span>
+                                <span id="val-sig-y" class="font-mono text-slate-600">0px</span>
+                            </div>
+                            <input type="range" id="sigY" min="-60" max="120" value="0" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="font-medium text-slate-700">Horizontal Shift (X-Axis)</span>
+                                <span id="val-sig-x" class="font-mono text-slate-600">0px</span>
+                            </div>
+                            <input type="range" id="sigX" min="-100" max="100" value="0" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="font-medium text-slate-700">Column Spacing / Gap</span>
+                                <span id="val-sig-gap" class="font-mono text-slate-600">16px</span>
+                            </div>
+                            <input type="range" id="sigGap" min="0" max="40" value="16" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                        </div>
+                    </div>
+
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 pt-2">Typography & Page Margins</h3>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-700">Main Title Size</span>
+                            <span id="val-heading-size" class="font-mono text-slate-600">24px</span>
+                        </div>
+                        <input type="range" id="headingSize" min="18" max="36" value="24" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-700">Body Text Size</span>
+                            <span id="val-body-size" class="font-mono text-slate-600">15px</span>
+                        </div>
+                        <input type="range" id="bodySize" min="12" max="20" value="15" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-700">Line Height Spacing</span>
+                            <span id="val-line-height" class="font-mono text-slate-600">1.8</span>
+                        </div>
+                        <input type="range" id="lineHeight" min="1.2" max="2.6" step="0.1" value="1.8" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-700">Top Content Padding</span>
+                            <span id="val-top-margin" class="font-mono text-slate-600">40px</span>
+                        </div>
+                        <input type="range" id="topMargin" min="0" max="200" value="40" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-700">Side Padding</span>
+                            <span id="val-side-margin" class="font-mono text-slate-600">50px</span>
+                        </div>
+                        <input type="range" id="sideMargin" min="20" max="90" value="50" oninput="applyStyles()" class="w-full accent-alc-maroon">
+                    </div>
+
+                </div>
+
+                <!-- TAB 4: SAVED RECORDS REGISTRY -->
+                <div id="tab-logs" class="p-5 space-y-3 hidden">
+                    <div class="flex justify-between items-center mb-2">
+                        <div>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">Local Registry Database</h3>
+                            <p class="text-[10px] text-slate-500">Stored in browser local persistence</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="toggleRegistryModal(true)" class="text-xs font-bold text-alc-navy hover:underline flex items-center">
+                                <svg class="w-3.5 h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                                Full Table View
+                            </button>
+                        </div>
+                    </div>
+                    <div id="recordsList" class="space-y-2 max-h-96 overflow-y-auto text-xs">
+                        <!-- Records Rendered Dynamically -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Printable Canvas Preview (7 Cols) -->
+        <div class="lg:col-span-7 flex justify-center items-start overflow-x-auto pb-8">
+            
+            <!-- A4 Document Container -->
+            <div id="certificate-print-area" class="paper-preview size-a4 relative flex flex-col justify-between text-slate-900 font-body transition-all">
+                
+                <!-- Digital Graphic Outer Frame Border -->
+                <div id="digitalFrame" class="absolute inset-3 border-2 border-alc-maroon/80 pointer-events-none p-1">
+                    <div class="w-full h-full border border-amber-600/40"></div>
+                </div>
+
+                <!-- Header Section -->
+                <div id="digitalHeader" class="pt-8 px-12 pb-4 border-b border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <!-- Institutional Crest Graphic -->
+                        <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center border-2 border-alc-maroon rounded p-1 bg-amber-50">
+                            <div class="w-full h-full bg-alc-maroon text-white flex flex-col items-center justify-center p-1 text-center rounded-sm border border-amber-400">
+                                <span class="font-heading font-extrabold text-xl text-amber-300 leading-none">ALC</span>
+                                <span class="text-[6px] font-bold tracking-widest text-slate-100 uppercase mt-1">Amritsar</span>
+                            </div>
+                        </div>
+
+                        <!-- Institutional Titles -->
+                        <div class="text-center flex-1 px-4">
+                            <h1 class="font-heading font-extrabold text-2xl text-alc-maroon tracking-wider uppercase">AMRITSAR LAW COLLEGE</h1>
+                            <p class="text-[11px] font-sans font-semibold text-slate-700 mt-1">
+                                Approved by Bar Council of India, New Delhi & Affiliated to Guru Nanak Dev University, Amritsar
+                            </p>
+                            <p class="text-[10px] font-sans text-slate-500 mt-0.5">
+                                12 km Stone, Amritsar-Jalandhar G.T. Road, Amritsar - 143115 (Punjab) INDIA
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reference Line & Date Bar -->
+                <div id="metaBar" class="px-12 pt-4 flex justify-between items-center text-xs font-sans font-bold text-slate-800">
+                    <div id="refNoContainer">
+                        <span>Ref. No. </span>
+                        <span id="preview-ref" class="font-mono text-slate-900">ALC/PDR/2026/07/127</span>
+                    </div>
+                    <div id="topDateContainer">
+                        <span>Date: </span>
+                        <span id="preview-date" class="font-mono text-slate-900">July 30, 2026</span>
+                    </div>
+                </div>
+
+                <!-- Main Printable Body Canvas -->
+                <div id="certificateBody" class="flex-1 px-12 py-6 flex flex-col items-center">
+                    
+                    <!-- Certificate Title -->
+                    <h2 id="preview-title" class="font-heading font-bold text-2xl text-alc-maroon tracking-wide border-b-2 border-alc-gold pb-1 mb-6 text-center uppercase">
+                        ATTENDANCE CERTIFICATE
+                    </h2>
+
+                    <!-- Text Paragraph Content -->
+                    <div id="preview-content" class="w-full text-justify text-slate-800 leading-relaxed space-y-4">
+                        <!-- Rendered Text -->
+                    </div>
+
+                    <!-- Closing Wish Line -->
+                    <div id="preview-closing" class="w-full text-left font-semibold text-slate-800 mt-6 text-sm">
+                        <!-- Rendered Wish -->
+                    </div>
+
+                </div>
+
+                <!-- Footer & Signature Section -->
+                <div id="digitalFooter" class="px-12 pb-10 pt-2">
+                    
+                    <!-- Date & Place Block -->
+                    <div id="footerMetaBlock" class="flex justify-between items-end text-xs text-slate-700 mb-10 font-sans transition-all">
+                        <div>
+                            <p><span class="font-semibold">Date:</span> <span id="preview-sub-date">July 30, 2026</span></p>
+                            <p><span class="font-semibold">Place:</span> <span id="preview-sub-place">Amritsar</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 3-Column Formal Signatures -->
+                    <div id="signatureGrid" class="grid grid-cols-3 gap-4 text-center font-sans text-xs transition-all">
+                        
+                        <!-- Left: Dealing Clerk -->
+                        <div id="colClerk" class="flex flex-col justify-end items-center h-20">
+                            <div class="border-t border-slate-400 w-36 pt-1 font-semibold text-slate-800">
+                                Prepared by
+                            </div>
+                            <span class="text-[10px] text-slate-500 mt-0.5 font-medium">Dealing Clerk</span>
+                        </div>
+
+                        <!-- Mid: Academic Incharge / Class Coordinator -->
+                        <div id="colIncharge" class="flex flex-col justify-end items-center h-20">
+                            <div class="border-t border-slate-400 w-40 pt-1 font-semibold text-slate-800">
+                                Class Coordinator
+                            </div>
+                            <span class="text-[10px] text-slate-500 mt-0.5 font-medium">Verified by</span>
+                        </div>
+
+                        <!-- Right: Principal -->
+                        <div id="colPrincipal" class="flex flex-col justify-end items-center h-20">
+                            <div class="border-t border-slate-400 w-44 pt-1 font-bold text-slate-900 uppercase">
+                                Principal
+                            </div>
+                            <span class="text-[10px] font-medium text-slate-700 mt-0.5">Amritsar Law College, Amritsar</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer Address Banner -->
+                    <div id="digitalFooterAddress" class="mt-8 pt-3 border-t border-slate-200 text-center text-[9px] font-sans text-slate-500 space-y-0.5">
+                        <p>Ph: 0183-5010426, 5069532 | Website: www.alcamritsar.ac.in | Email: principalalc@agcedu.in</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SAVED RECORDS REGISTRY FULL TABLE MODAL / DRAWER -->
+    <div id="registryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl border border-slate-200 flex flex-col max-h-[90vh] overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="bg-alc-maroon text-white p-4 px-6 flex justify-between items-center border-b border-alc-gold/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-amber-400 text-alc-maroon rounded-full flex items-center justify-center font-bold">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="font-heading font-bold text-lg">Saved Certificate Registry & Records</h2>
+                        <p class="text-xs text-amber-200">View previous entries, make corrections in main dashboard, or export data</p>
+                    </div>
+                </div>
+                <button onclick="toggleRegistryModal(false)" class="text-slate-300 hover:text-white p-1 text-2xl leading-none">&times;</button>
+            </div>
+
+            <!-- Search, Filter & Actions Toolbar -->
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-3 justify-between items-center">
+                <div class="flex items-center gap-2 flex-1 min-w-[240px]">
+                    <div class="relative flex-1">
+                        <input type="text" id="tableSearchInput" oninput="renderRegistryTable()" placeholder="Search Candidate Name, Roll No, or Ref No..." class="w-full bg-white border border-slate-300 rounded-lg pl-9 pr-3 py-2 text-xs focus:ring-2 focus:ring-alc-maroon focus:outline-none">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <select id="tableFilterType" onchange="renderRegistryTable()" class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-alc-maroon">
+                        <option value="ALL">All Certificates</option>
+                        <option value="ATTENDANCE">Attendance</option>
+                        <option value="CHARACTER">Character</option>
+                        <option value="BONAFIDE">Bonafide</option>
+                        <option value="EXPERIENCE">Experience</option>
+                        <option value="CLEARANCE">No Dues</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button onclick="exportRegistryCSV()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-3 py-2 rounded-lg text-xs transition flex items-center space-x-1 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Export CSV</span>
+                    </button>
+
+                    <button onclick="exportLogsJSON()" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3 py-2 rounded-lg text-xs transition flex items-center space-x-1 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        <span>Export JSON</span>
+                    </button>
+
+                    <button onclick="clearAllRegistry()" class="bg-red-50 hover:bg-red-100 text-red-700 font-semibold px-3 py-2 rounded-lg text-xs transition border border-red-200">
+                        Purge All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Registry Data Table Area -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider">
+                            <th class="p-3">Ref No</th>
+                            <th class="p-3">Candidate & Father Name</th>
+                            <th class="p-3">Course & Batch</th>
+                            <th class="p-3">Roll & Regd No</th>
+                            <th class="p-3">Certificate Type</th>
+                            <th class="p-3">Issue Date</th>
+                            <th class="p-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registryTableBody" class="divide-y divide-slate-200">
+                        <!-- Table Rows Rendered Dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-xs text-slate-500">
+                <span>Total Stored Entries: <strong id="modalTotalEntries">0</strong></span>
+                <button onclick="toggleRegistryModal(false)" class="bg-slate-800 text-white font-semibold px-4 py-1.5 rounded-lg hover:bg-slate-900 transition">Close Registry</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Application Controller Logic -->
+    <!-- Professional Dashboard Footer -->
+    <footer class="no-print mt-auto bg-gradient-to-r from-alc-navy via-alc-maroon to-alc-navy text-white border-t-4 border-alc-gold">
+        <div class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-amber-300 to-alc-gold rounded-full flex items-center justify-center font-heading font-extrabold text-alc-maroon text-sm border border-white/50">ALC</div>
+                <div>
+                    <p class="font-heading font-bold text-sm tracking-wider">AMRITSAR LAW COLLEGE</p>
+                    <p class="text-[10px] text-amber-100/80">Institutional Certificate Generator</p>
+                </div>
+            </div>
+            <div class="text-center text-[11px] text-amber-100/85">
+                <p>Approved by Bar Council of India, New Delhi</p>
+                <p>Affiliated to Guru Nanak Dev University, Amritsar</p>
+            </div>
+            <div class="text-right text-[11px] text-amber-100/85">
+                <p>Ph: 0183-5010426, 5069532</p>
+                <p>www.alcamritsar.ac.in &bull; principal@alcagc.edu.in</p>
+            </div>
+        </div>
+        <div class="bg-black/25 py-1.5 text-center text-[10px] tracking-wider text-amber-200/90">&copy; <span id="footerYear"></span> Amritsar Law College. All Rights Reserved.</div>
+    </footer>
+    <script>document.getElementById('footerYear').textContent=new Date().getFullYear();</script>
+    <script>
+        // Storage Constant Key
+        const STORAGE_KEY = 'ALC_CERTIFICATE_REGISTRY_V2';
+
+        // Memory array initialized from LocalStorage
+        let certificateLogs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+        // Dynamic Batch Lists based on selected Course
+        const batchOptions = {
+            'LL.B (TYC)': ['2022-2025', '2023-2026', '2024-2027', '2025-2028'],
+            'BA.LL.B (FYIC)': ['2020-2025', '2021-2026', '2022-2027', '2023-2028', '2024-2029']
+        };
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-800 text-white border-emerald-600' : 
+                           type === 'warning' ? 'bg-amber-800 text-white border-amber-600' : 
+                           'bg-blue-800 text-white border-blue-600';
+            
+            toast.className = `${bgClass} border shadow-xl rounded-lg px-4 py-3 text-xs font-semibold flex items-center space-x-2 pointer-events-auto toast-animate min-w-[240px]`;
+            toast.innerHTML = `
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Title Case Helper
+        function formatTitleCase(input) {
+            let words = input.value.toLowerCase().split(' ');
+            for (let i = 0; i < words.length; i++) {
+                if (words[i].length > 0) {
+                    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+                }
+            }
+            input.value = words.join(' ');
+        }
+
+        // Pincode Validator
+        function validatePincode(input) {
+            input.value = input.value.replace(/\D/g, '');
+            const pincodeErr = document.getElementById('pincodeError');
+            if (input.value.length !== 6 && input.value.length > 0) {
+                pincodeErr.classList.remove('hidden');
+            } else {
+                pincodeErr.classList.add('hidden');
+            }
+        }
+
+        // GNDU Regd No Pattern Validator
+        function validateRegNo(input) {
+            const regNoErr = document.getElementById('regNoErr');
+            const pattern = /^\d{4}\.[A-Za-z]+\/[A-Za-z]\.\d+$/;
+            if (input.value && !pattern.test(input.value)) {
+                regNoErr.classList.remove('hidden');
+            } else {
+                regNoErr.classList.add('hidden');
+            }
+        }
+
+        // Roll No Validator
+        function validateRollNo(input) {
+            input.value = input.value.replace(/\D/g, '');
+            const rollNoErr = document.getElementById('rollNoErr');
+            const startsWithNine = input.value.startsWith('9');
+            const isValidLen = input.value.length === 11;
+            
+            if (input.value.length > 0 && (startsWithNine || !isValidLen)) {
+                rollNoErr.classList.remove('hidden');
+            } else {
+                rollNoErr.classList.add('hidden');
+            }
+        }
+
+        // Aadhaar Formatter
+        function formatAadhaarInput(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val.length > 12) val = val.substring(0, 12);
+            let formatted = '';
+            for (let i = 0; i < val.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += ' ';
+                formatted += val[i];
+            }
+            input.value = formatted;
+        }
+
+        // Get Today's Date String
+        function getTodayFormatted() {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date().toLocaleDateString('en-US', options);
+        }
+
+        function setFieldToday(fieldId) {
+            document.getElementById(fieldId).value = getTodayFormatted();
+            updateCertificate();
+        }
+
+        // App Initialization
+        window.onload = function() {
+            handleCourseChange();
+            formatTitleCase(document.getElementById('studentName'));
+            formatTitleCase(document.getElementById('fatherName'));
+            formatTitleCase(document.getElementById('streetAddress'));
+            validatePincode(document.getElementById('pincodeInput'));
+            validateRegNo(document.getElementById('regNo'));
+            validateRollNo(document.getElementById('rollNo'));
+            formatAadhaarInput(document.getElementById('aadhaarNo'));
+            
+            updateCertificate();
+            updateVisibility();
+            applyStyles();
+            renderRecords();
+            updateBadgeCount();
+        };
+
+        // Tab Navigation Switcher
+        function switchTab(tabKey) {
+            ['form', 'visibility', 'style', 'logs'].forEach(key => {
+                const contentEl = document.getElementById(`tab-${key}`);
+                const btnEl = document.getElementById(`tab-btn-${key}`);
+                if (contentEl && btnEl) {
+                    if (key === tabKey) {
+                        contentEl.classList.remove('hidden');
+                        btnEl.classList.add('text-alc-maroon', 'border-b-2', 'border-alc-maroon', 'bg-white');
+                        btnEl.classList.remove('text-slate-500');
+                    } else {
+                        contentEl.classList.add('hidden');
+                        btnEl.classList.remove('text-alc-maroon', 'border-b-2', 'border-alc-maroon', 'bg-white');
+                        btnEl.classList.add('text-slate-500');
+                    }
+                }
+            });
+        }
+
+        // Toggle Saved Registry Drawer / Modal
+        function toggleRegistryModal(show) {
+            const modal = document.getElementById('registryModal');
+            if (show) {
+                renderRegistryTable();
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Paper Canvas Size Changer
+        function applyPaperSize() {
+            const paperArea = document.getElementById('certificate-print-area');
+            const selectedSize = document.getElementById('paperSizeSelect').value;
+            paperArea.classList.remove('size-a4', 'size-a4-landscape', 'size-legal', 'size-letter', 'size-a5');
+            paperArea.classList.add(selectedSize);
+        }
+
+        // Dynamic Course & Batch Switcher
+        function handleCourseChange() {
+            const courseSelect = document.getElementById('course');
+            const batchSelect = document.getElementById('batch');
+            const selectedCourse = courseSelect.value;
+
+            batchSelect.innerHTML = '';
+            batchOptions[selectedCourse].forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b;
+                opt.textContent = b;
+                batchSelect.appendChild(opt);
+            });
+
+            updateCertificate();
+        }
+
+        // Update Element Visibilities
+        function updateVisibility() {
+            const showRef = document.getElementById('showRefNo').checked;
+            const showTopDate = document.getElementById('showTopDate').checked;
+            const showMeta = document.getElementById('showMetaBlock').checked;
+            const showClerk = document.getElementById('showSignClerk').checked;
+            const showIncharge = document.getElementById('showSignIncharge').checked;
+            const showPrincipal = document.getElementById('showSignPrincipal').checked;
+            const showHeader = document.getElementById('showHeader').checked;
+            const showContactFooter = document.getElementById('showContactFooter').checked;
+
+            const refEl = document.getElementById('refNoContainer');
+            const dateEl = document.getElementById('topDateContainer');
+            refEl.style.display = showRef ? 'block' : 'none';
+            if (!showRef) refEl.classList.add('hidden-in-print'); else refEl.classList.remove('hidden-in-print');
+
+            dateEl.style.display = showTopDate ? 'block' : 'none';
+            if (!showTopDate) dateEl.classList.add('hidden-in-print'); else dateEl.classList.remove('hidden-in-print');
+
+            const metaBlockEl = document.getElementById('footerMetaBlock');
+            metaBlockEl.style.display = showMeta ? 'flex' : 'none';
+            if (!showMeta) metaBlockEl.classList.add('hidden-in-print'); else metaBlockEl.classList.remove('hidden-in-print');
+
+            const colClerk = document.getElementById('colClerk');
+            const colIncharge = document.getElementById('colIncharge');
+            const colPrincipal = document.getElementById('colPrincipal');
+
+            colClerk.style.visibility = showClerk ? 'visible' : 'hidden';
+            if (!showClerk) colClerk.classList.add('hidden-in-print'); else colClerk.classList.remove('hidden-in-print');
+
+            colIncharge.style.visibility = showIncharge ? 'visible' : 'hidden';
+            if (!showIncharge) colIncharge.classList.add('hidden-in-print'); else colIncharge.classList.remove('hidden-in-print');
+
+            colPrincipal.style.visibility = showPrincipal ? 'visible' : 'hidden';
+            if (!showPrincipal) colPrincipal.classList.add('hidden-in-print'); else colPrincipal.classList.remove('hidden-in-print');
+
+            const isLetterhead = document.getElementById('letterheadMode').checked;
+            const digitalHeader = document.getElementById('digitalHeader');
+            const digitalFooterAddress = document.getElementById('digitalFooterAddress');
+
+            if (!isLetterhead) {
+                digitalHeader.style.display = showHeader ? 'block' : 'none';
+                if (!showHeader) digitalHeader.classList.add('hidden-in-print'); else digitalHeader.classList.remove('hidden-in-print');
+
+                digitalFooterAddress.style.display = showContactFooter ? 'block' : 'none';
+                if (!showContactFooter) digitalFooterAddress.classList.add('hidden-in-print'); else digitalFooterAddress.classList.remove('hidden-in-print');
+            }
+        }
+
+        // Toggle Physical Pre-Printed Letterhead Mode
+        function toggleLetterheadMode() {
+            const isLetterhead = document.getElementById('letterheadMode').checked;
+            const digitalFrame = document.getElementById('digitalFrame');
+            const digitalHeader = document.getElementById('digitalHeader');
+            const digitalFooterAddress = document.getElementById('digitalFooterAddress');
+            
+            if (isLetterhead) {
+                digitalFrame.style.display = 'none';
+                digitalHeader.style.display = 'none';
+                digitalFooterAddress.style.display = 'none';
+                digitalFrame.classList.add('hidden-in-print');
+                digitalHeader.classList.add('hidden-in-print');
+                digitalFooterAddress.classList.add('hidden-in-print');
+            } else {
+                digitalFrame.style.display = 'block';
+                digitalFrame.classList.remove('hidden-in-print');
+
+                const showHeader = document.getElementById('showHeader').checked;
+                digitalHeader.style.display = showHeader ? 'block' : 'none';
+                if (!showHeader) digitalHeader.classList.add('hidden-in-print'); else digitalHeader.classList.remove('hidden-in-print');
+
+                const showContactFooter = document.getElementById('showContactFooter').checked;
+                digitalFooterAddress.style.display = showContactFooter ? 'block' : 'none';
+                if (!showContactFooter) digitalFooterAddress.classList.add('hidden-in-print'); else digitalFooterAddress.classList.remove('hidden-in-print');
+            }
+        }
+
+        // Apply Layout Styles & Offsets
+        function applyStyles() {
+            const headingSize = document.getElementById('headingSize').value;
+            const bodySize = document.getElementById('bodySize').value;
+            const lineHeight = document.getElementById('lineHeight').value;
+            const topMargin = document.getElementById('topMargin').value;
+            const sideMargin = document.getElementById('sideMargin').value;
+            const paraIndent = document.getElementById('paraIndent').value;
+            const selectedFont = document.getElementById('fontFamilySelect').value;
+
+            const metaX = document.getElementById('metaX').value;
+            const metaY = document.getElementById('metaY').value;
+            const sigX = document.getElementById('sigX').value;
+            const sigY = document.getElementById('sigY').value;
+            const sigGap = document.getElementById('sigGap').value;
+
+            document.getElementById('val-heading-size').textContent = `${headingSize}px`;
+            document.getElementById('val-body-size').textContent = `${bodySize}px`;
+            document.getElementById('val-line-height').textContent = lineHeight;
+            document.getElementById('val-top-margin').textContent = `${topMargin}px`;
+            document.getElementById('val-side-margin').textContent = `${sideMargin}px`;
+            document.getElementById('val-para-indent').textContent = `${paraIndent}px`;
+            document.getElementById('val-meta-x').textContent = `${metaX}px`;
+            document.getElementById('val-meta-y').textContent = `${metaY}px`;
+            document.getElementById('val-sig-x').textContent = `${sigX}px`;
+            document.getElementById('val-sig-y').textContent = `${sigY}px`;
+            document.getElementById('val-sig-gap').textContent = `${sigGap}px`;
+
+            const previewTitle = document.getElementById('preview-title');
+            const previewContent = document.getElementById('preview-content');
+            const certArea = document.getElementById('certificate-print-area');
+            const certBody = document.getElementById('certificateBody');
+            const footerMetaBlock = document.getElementById('footerMetaBlock');
+            const signatureGrid = document.getElementById('signatureGrid');
+
+            certArea.style.fontFamily = selectedFont;
+            previewTitle.style.fontSize = `${headingSize}px`;
+            previewContent.style.fontSize = `${bodySize}px`;
+            previewContent.style.lineHeight = lineHeight;
+            certBody.style.paddingTop = `${topMargin}px`;
+            certBody.style.paddingLeft = `${sideMargin}px`;
+            certBody.style.paddingRight = `${sideMargin}px`;
+
+            const paragraphs = previewContent.querySelectorAll('p');
+            paragraphs.forEach(p => {
+                p.style.textIndent = `${paraIndent}px`;
+            });
+
+            footerMetaBlock.style.transform = `translate(${metaX}px, ${metaY}px)`;
+            signatureGrid.style.transform = `translate(${sigX}px, ${sigY}px)`;
+            signatureGrid.style.gap = `${sigGap}px`;
+        }
+
+        // Live Dynamic Text & Pronoun Generator
+        function updateCertificate() {
+            const certType = document.getElementById('certType').value;
+            const refNo = document.getElementById('refNo').value;
+            const issueDate = document.getElementById('issueDate').value;
+            const footerDate = document.getElementById('footerDate').value;
+            const footerPlace = document.getElementById('footerPlace').value;
+            
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const name = document.getElementById('studentName').value || 'Student Name';
+            const father = document.getElementById('fatherName').value || 'Father Name';
+            const street = document.getElementById('streetAddress').value || 'Street Address';
+            const state = document.getElementById('stateSelect').value;
+            const pincode = document.getElementById('pincodeInput').value || '143115';
+            const fullAddress = `${street}, ${state}. Pin Code - ${pincode}`;
+
+            const course = document.getElementById('course').value;
+            const batch = document.getElementById('batch').value;
+            const regNo = document.getElementById('regNo').value || '[Regd No.]';
+            const rollNo = document.getElementById('rollNo').value || '[Roll No.]';
+            const admissionDate = document.getElementById('admissionDate').value;
+            const passingDate = document.getElementById('passingDate').value;
+            const attendancePct = document.getElementById('attendancePct').value;
+            const aadhaarNo = document.getElementById('aadhaarNo').value.trim();
+
+            // Pronouns & Salutations
+            const title = gender === 'Male' ? 'Mr.' : 'Ms.';
+            const relation = gender === 'Male' ? 'S/O' : 'D/O';
+            const subPronoun = gender === 'Male' ? 'He' : 'She';
+            const subPronounLower = gender === 'Male' ? 'he' : 'she';
+            const posPronoun = gender === 'Male' ? 'His' : 'Her';
+            const posPronounLower = gender === 'Male' ? 'his' : 'her';
+
+            // Dynamic Year Formatting based on Course
+            let yearText = course === 'BA.LL.B (FYIC)' ? 'First, Second, Third, Fourth and Fifth year' : 'First, Second and Third year';
+            let courseFullDisplay = course === 'BA.LL.B (FYIC)' ? 'BA.LL.B (FYIC)' : 'LL.B (TYC)';
+
+            document.getElementById('preview-ref').textContent = refNo;
+            document.getElementById('preview-date').textContent = issueDate;
+            document.getElementById('preview-sub-date').textContent = footerDate;
+            document.getElementById('preview-sub-place').textContent = footerPlace;
+
+            const previewTitle = document.getElementById('preview-title');
+            const previewContent = document.getElementById('preview-content');
+            const previewClosing = document.getElementById('preview-closing');
+
+            let aadhaarSnippet = aadhaarNo ? `, Aadhaar No. ${aadhaarNo},` : '';
+
+            if (certType === 'attendance') {
+                previewTitle.textContent = 'ATTENDANCE CERTIFICATE';
+                previewContent.innerHTML = `
+                    <p>
+                        This is to certify that <strong>${title} ${name}</strong> ${relation} <strong>${father}</strong>. R/O ${fullAddress}${aadhaarSnippet} was a regular student of <strong>${course}</strong> <strong>${yearText}</strong> of this College during the session <strong>${batch}</strong>, respectively.
+                    </p>
+                    <p>
+                        ${posPronoun} first admission in the College was in <strong>${admissionDate}</strong>. ${subPronoun} has completed <strong>${attendancePct}</strong> minimum attendance in ${posPronounLower} <strong>${yearText}</strong>. ${subPronoun} passed <strong>${courseFullDisplay}</strong> examination in <strong>${passingDate}</strong> under Guru Nanak Dev University, Amritsar, vide <strong>Roll Number ${rollNo}</strong>, Regd. No. <strong>${regNo}</strong>.
+                    </p>
+                    <p>
+                        To the best of my knowledge and belief, ${subPronounLower} bears a good moral character.
+                    </p>
+                `;
+                previewClosing.innerHTML = `Wishing ${title} ${name} all the best in ${posPronounLower} future endeavours.`;
+            }
+            else if (certType === 'character') {
+                previewTitle.textContent = 'Character Certificate';
+                previewContent.innerHTML = `
+                    <p>
+                        This is to certify that <strong>${title} ${name}</strong> ${relation} <strong>${father}</strong>. R/O R/O ${fullAddress}${aadhaarSnippet} and is vide Registration No. <strong>${regNo}</strong> and Roll No. <strong>${rollNo}</strong> was a regular student of <strong>${courseFullDisplay}</strong> in this college from ${batch.split('-')[0]}-${batch.split('-')[1]}.
+                    </p>
+                    <p>
+                        ${subPronoun} bears a good moral character.
+                    </p>
+                `;
+                previewClosing.innerHTML = `We wish all success and prosperity in ${posPronounLower} life.`;
+            } 
+            else if (certType === 'bonafide') {
+                previewTitle.textContent = 'BONAFIDE STUDENT CERTIFICATE';
+                previewContent.innerHTML = `
+                    <p>
+                        This is to certify that <strong>${title} ${name}</strong> ${relation} <strong>${father}</strong>. R/O ${fullAddress}${aadhaarSnippet} is a bonafide student of Amritsar Law College, Amritsar, pursuing <strong>${courseFullDisplay}</strong> under College Roll No. <strong>${rollNo}</strong> and GNDU Registration No. <strong>${regNo}</strong>.
+                    </p>
+                    <p>
+                        ${subPronoun} is currently enrolled in the academic session <strong>${batch}</strong>. ${posPronoun} conduct and attendance have been found to be satisfactory.
+                    </p>
+                `;
+                previewClosing.innerHTML = `This certificate is issued upon ${posPronounLower} request for official reference and verification purposes.`;
+            }
+            else if (certType === 'experience') {
+                previewTitle.textContent = 'EXPERIENCE / SERVICE CERTIFICATE';
+                previewContent.innerHTML = `
+                    <p>
+                        This is to certify that <strong>${title} ${name}</strong> ${relation} <strong>${father}</strong>, R/O ${fullAddress}${aadhaarSnippet} has served as a Junior Academic Assistant / Legal Intern at Amritsar Law College, Amritsar.
+                    </p>
+                    <p>
+                        During ${posPronounLower} tenure from <strong>${admissionDate}</strong> to <strong>${passingDate}</strong>, ${subPronounLower} performed ${posPronounLower} duties with diligence, hard work, and complete sincerity. ${posPronoun} professional behavior and commitment were highly commendable.
+                    </p>
+                `;
+                previewClosing.innerHTML = `We wish ${title} ${name} every success in all ${posPronounLower} future professional endeavors.`;
+            }
+            else if (certType === 'clearance') {
+                previewTitle.textContent = 'NO DUES & CLEARANCE CERTIFICATE';
+                previewContent.innerHTML = `
+                    <p>
+                        This is to certify that <strong>${title} ${name}</strong> ${relation} <strong>${father}</strong>, Roll No. <strong>${rollNo}</strong>, GNDU Regd. No. <strong>${regNo}</strong>${aadhaarSnippet} student of <strong>${courseFullDisplay}</strong> (Session <strong>${batch}</strong>), has cleared all outstanding dues towards the college library, laboratory, sports department, and administrative accounts.
+                    </p>
+                    <p>
+                        There are no outstanding liabilities or property pending against ${posPronounLower} name as on <strong>${issueDate}</strong>.
+                    </p>
+                `;
+                previewClosing.innerHTML = `Official clearance granted by Amritsar Law College Administration.`;
+            }
+
+            applyStyles();
+        }
+
+        // SAVE RECORD TO PERSISTENT LOCAL STORAGE
+        function saveRecord() {
+            const studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                showToast("Please enter candidate name before saving!", "warning");
+                return;
+            }
+
+            const record = {
+                id: Date.now(),
+                certType: document.getElementById('certType').value,
+                refNo: document.getElementById('refNo').value,
+                issueDate: document.getElementById('issueDate').value,
+                footerDate: document.getElementById('footerDate').value,
+                footerPlace: document.getElementById('footerPlace').value,
+                gender: document.querySelector('input[name="gender"]:checked').value,
+                studentName: studentName,
+                fatherName: document.getElementById('fatherName').value,
+                streetAddress: document.getElementById('streetAddress').value,
+                state: document.getElementById('stateSelect').value,
+                pincode: document.getElementById('pincodeInput').value,
+                course: document.getElementById('course').value,
+                batch: document.getElementById('batch').value,
+                regNo: document.getElementById('regNo').value,
+                rollNo: document.getElementById('rollNo').value,
+                admissionDate: document.getElementById('admissionDate').value,
+                passingDate: document.getElementById('passingDate').value,
+                attendancePct: document.getElementById('attendancePct').value,
+                aadhaarNo: document.getElementById('aadhaarNo').value,
+                timestamp: new Date().toLocaleString()
+            };
+
+            certificateLogs.unshift(record);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(certificateLogs));
+
+            renderRecords();
+            updateBadgeCount();
+            showToast(`Record for ${record.studentName} saved successfully!`);
+        }
+
+        // REFRESH / CLEAR FORM INPUTS FOR NEW CERTIFICATE
+        function confirmRefreshForm() {
+            if (confirm("Reset current form inputs for a new entry? (Saved registry records will remain intact)")) {
+                document.getElementById('studentName').value = '';
+                document.getElementById('fatherName').value = '';
+                document.getElementById('streetAddress').value = 'Amritsar';
+                document.getElementById('pincodeInput').value = '143115';
+                document.getElementById('regNo').value = '';
+                document.getElementById('rollNo').value = '';
+                document.getElementById('aadhaarNo').value = '';
+                
+                // Auto generate fresh reference number
+                const randomNo = Math.floor(1000 + Math.random() * 9000);
+                document.getElementById('refNo').value = `ALC/CERT/2026/${randomNo}`;
+                
+                setFieldToday('issueDate');
+                setFieldToday('footerDate');
+                updateCertificate();
+                switchTab('form');
+                showToast("Form refreshed for new entry", "info");
+            }
+        }
+
+        // LOAD PREVIOUS DATA BACK INTO MAIN DASHBOARD FOR EDITING
+        function loadRecordIntoDashboard(id) {
+            const record = certificateLogs.find(r => r.id === id);
+            if (!record) return;
+
+            document.getElementById('certType').value = record.certType || 'attendance';
+            document.getElementById('refNo').value = record.refNo || '';
+            document.getElementById('issueDate').value = record.issueDate || getTodayFormatted();
+            document.getElementById('footerDate').value = record.footerDate || getTodayFormatted();
+            document.getElementById('footerPlace').value = record.footerPlace || 'Amritsar';
+
+            // Set Gender
+            if (record.gender === 'Male') {
+                document.querySelector('input[name="gender"][value="Male"]').checked = true;
+            } else {
+                document.querySelector('input[name="gender"][value="Female"]').checked = true;
+            }
+
+            document.getElementById('studentName').value = record.studentName || '';
+            document.getElementById('fatherName').value = record.fatherName || '';
+            document.getElementById('streetAddress').value = record.streetAddress || '';
+            document.getElementById('stateSelect').value = record.state || 'Punjab';
+            document.getElementById('pincodeInput').value = record.pincode || '143115';
+            
+            document.getElementById('course').value = record.course || 'BA.LL.B (FYIC)';
+            handleCourseChange(); // reload batch select options
+            document.getElementById('batch').value = record.batch || '';
+
+            document.getElementById('regNo').value = record.regNo || '';
+            document.getElementById('rollNo').value = record.rollNo || '';
+            document.getElementById('admissionDate').value = record.admissionDate || 'October 2021';
+            document.getElementById('passingDate').value = record.passingDate || 'May 2026';
+            document.getElementById('attendancePct').value = record.attendancePct || '75%';
+            document.getElementById('aadhaarNo').value = record.aadhaarNo || '';
+
+            updateCertificate();
+            toggleRegistryModal(false);
+            switchTab('form');
+            showToast(`Loaded ${record.studentName}'s record into main screen`, "info");
+        }
+
+        // DELETE SINGLE RECORD
+        function deleteRecord(id, e) {
+            if (e) e.stopPropagation();
+            if (confirm("Delete this certificate record permanently from local registry?")) {
+                certificateLogs = certificateLogs.filter(r => r.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(certificateLogs));
+                renderRecords();
+                renderRegistryTable();
+                updateBadgeCount();
+                showToast("Record deleted", "warning");
+            }
+        }
+
+        // PURGE ALL RECORDS
+        function clearAllRegistry() {
+            if (confirm("Are you sure you want to PURGE ALL saved records from local storage? This cannot be undone.")) {
+                certificateLogs = [];
+                localStorage.removeItem(STORAGE_KEY);
+                renderRecords();
+                renderRegistryTable();
+                updateBadgeCount();
+                showToast("Registry database purged", "warning");
+            }
+        }
+
+        // UPDATE BADGE COUNT IN TOP NAV
+        function updateBadgeCount() {
+            document.getElementById('savedCountBadge').textContent = certificateLogs.length;
+            const modalTotal = document.getElementById('modalTotalEntries');
+            if (modalTotal) modalTotal.textContent = certificateLogs.length;
+        }
+
+        // RENDER SIDEBAR COMPACT LOGS
+        function renderRecords() {
+            const listEl = document.getElementById('recordsList');
+            if (certificateLogs.length === 0) {
+                listEl.innerHTML = `<p class="text-slate-400 italic text-center py-6">No saved certificate records found.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = certificateLogs.slice(0, 8).map(r => `
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 flex justify-between items-center hover:bg-slate-100 transition">
+                    <div>
+                        <p class="font-bold text-slate-800">${r.studentName} <span class="text-[10px] font-normal text-slate-500">(${r.course})</span></p>
+                        <p class="text-[10px] text-slate-500 font-mono">Ref: ${r.refNo} | Roll: ${r.rollNo}</p>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <button onclick="loadRecordIntoDashboard(${r.id})" title="Load into Dashboard" class="bg-alc-maroon text-white p-1 rounded hover:bg-alc-maroonDark text-[10px] font-semibold px-2">
+                            Load
+                        </button>
+                        <button onclick="deleteRecord(${r.id}, event)" title="Delete" class="text-slate-400 hover:text-red-600 p-1">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // RENDER FULL REGISTRY DATA TABLE IN MODAL
+        function renderRegistryTable() {
+            const tableBody = document.getElementById('registryTableBody');
+            const searchVal = (document.getElementById('tableSearchInput')?.value || '').toLowerCase();
+            const filterType = document.getElementById('tableFilterType')?.value || 'ALL';
+
+            let filtered = certificateLogs.filter(r => {
+                const matchesSearch = (r.studentName || '').toLowerCase().includes(searchVal) ||
+                                      (r.fatherName || '').toLowerCase().includes(searchVal) ||
+                                      (r.rollNo || '').toLowerCase().includes(searchVal) ||
+                                      (r.refNo || '').toLowerCase().includes(searchVal);
+                
+                const matchesType = filterType === 'ALL' || (r.certType || '').toUpperCase() === filterType;
+                return matchesSearch && matchesType;
+            });
+
+            if (filtered.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-8 text-slate-400 italic">No matching records found in local registry.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tableBody.innerHTML = filtered.map(r => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-3 font-mono font-bold text-slate-800">${r.refNo || '-'}</td>
+                    <td class="p-3">
+                        <span class="font-bold text-slate-900 block">${r.studentName}</span>
+                        <span class="text-[10px] text-slate-500">S/D/o ${r.fatherName}</span>
+                    </td>
+                    <td class="p-3">
+                        <span class="font-medium text-slate-800">${r.course}</span>
+                        <span class="text-[10px] text-slate-500 block">${r.batch}</span>
+                    </td>
+                    <td class="p-3 font-mono text-[11px]">
+                        <div>Roll: ${r.rollNo}</div>
+                        <div class="text-slate-400">Reg: ${r.regNo}</div>
+                    </td>
+                    <td class="p-3">
+                        <span class="bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">${r.certType}</span>
+                    </td>
+                    <td class="p-3 text-slate-600 font-mono text-[11px]">${r.issueDate}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="loadRecordIntoDashboard(${r.id})" class="bg-alc-maroon hover:bg-alc-maroonDark text-white px-2.5 py-1 rounded text-[11px] font-semibold shadow-sm mr-1">
+                            Load in Dashboard
+                        </button>
+                        <button onclick="deleteRecord(${r.id}, event)" class="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 px-2 py-1 rounded text-[11px] font-semibold">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // EXPORT REGISTRY DATA TO CSV
+        function exportRegistryCSV() {
+            if (certificateLogs.length === 0) {
+                showToast("No records available to export", "warning");
+                return;
+            }
+
+            const headers = ["Ref No", "Candidate Name", "Father Name", "Gender", "Course", "Batch", "Roll No", "Regd No", "Certificate Type", "Issue Date", "Timestamp"];
+            const rows = certificateLogs.map(r => [
+                `"${r.refNo || ''}"`,
+                `"${r.studentName || ''}"`,
+                `"${r.fatherName || ''}"`,
+                `"${r.gender || ''}"`,
+                `"${r.course || ''}"`,
+                `"${r.batch || ''}"`,
+                `"${r.rollNo || ''}"`,
+                `"${r.regNo || ''}"`,
+                `"${r.certType || ''}"`,
+                `"${r.issueDate || ''}"`,
+                `"${r.timestamp || ''}"`
+            ]);
+
+            const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `ALC_Certificate_Registry_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast("Exported CSV file", "success");
+        }
+
+        // EXPORT REGISTRY DATA TO JSON
+        function exportLogsJSON() {
+            if (certificateLogs.length === 0) {
+                showToast("No records to export", "warning");
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(certificateLogs, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `ALC_Certificate_Register_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Exported JSON file", "success");
+        }
+
+        // EXPORT TO EDITABLE MS WORD DOCUMENT
+        function downloadWordDoc() {
+            const source=document.getElementById('certificate-print-area');
+            const clone=source.cloneNode(true);
+            const props=['display','position','top','left','right','bottom','width','min-height','height','margin','padding','box-sizing','background','background-color','color','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-align','text-transform','text-decoration','border','border-top','border-right','border-bottom','border-left','border-radius','box-shadow','flex','flex-direction','justify-content','align-items','gap','grid-template-columns','overflow','z-index','opacity'];
+            function inline(node){
+                const cs=window.getComputedStyle(node);
+                let css='';
+                props.forEach(p=>{const v=cs.getPropertyValue(p);if(v)css+=p+':'+v+';';});
+                node.setAttribute('style',css);
+                Array.from(node.children).forEach(inline);
+            }
+            inline(clone);
+            clone.style.width='210mm';
+            clone.style.minHeight='297mm';
+            clone.style.position='relative';
+            clone.style.background='#ffffff';
+            clone.style.boxSizing='border-box';
+            const wordHtml='<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Certificate</title><style>@page WordSection1{size:210mm 297mm;margin:0;} div.WordSection1{page:WordSection1;} body{margin:0;padding:0;background:#fff;} table{border-collapse:collapse;}</style></head><body><div class="WordSection1">'+clone.outerHTML+'</div></body></html>';
+            const blob=new Blob(['\ufeff',wordHtml],{type:'application/msword'});
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');
+            a.href=url;
+            a.download='ALC_Certificate_'+(document.getElementById('studentName').value||'Export')+'.doc';
+            document.body.appendChild(a);a.click();document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Downloaded Word file with certificate frame preserved","success");
+        }
+    </script>
+</body>
+</html>
