@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amritsar Law College - Professional ID Card Management System</title>
+    <!-- SheetJS for Excel/CSV Parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- html2canvas for Image Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- JSZip for professional batch (ZIP) export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        :root {
+            --primary-blue: #003399;
+            --accent-red: #cc0000;
+            --dark-navy: #001a4d;
+            --gold: #d4af37;
+            --bg-body: #f0f4f8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: #333;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* Control Panel Styles */
+        .control-panel {
+            flex: 1;
+            min-width: 400px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        .control-panel h2 {
+            font-size: 1.15rem;
+            color: var(--dark-navy);
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 6px;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        .control-panel h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 4px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-blue);
+        }
+
+        .row-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row-group .form-group {
+            flex: 1;
+        }
+
+        /* Mode Switcher Tabs */
+        .mode-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--primary-blue);
+            background: white;
+            color: var(--primary-blue);
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Preview Area Styles */
+        .preview-area {
+            flex: 1;
+            min-width: 450px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .preview-area h2 {
+            color: var(--dark-navy);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* ID Card Container */
+        .id-card {
+            width: 680px;
+            height: 430px;
+            background: #ffffff;
+            border: 3px solid var(--primary-blue);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            background: #ffffff;
+            border-bottom: 2px solid #333;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-box {
+            width: 75px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .college-titles {
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 5px;
+        }
+
+        .college-titles h3 {
+            color: var(--primary-blue);
+            font-size: 2.75rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .college-titles p {
+            font-size: 0.64rem;
+            font-weight: 700;
+            color: #000;
+            line-height: 1.20;
+        }
+
+        .college-titles p.address-line {
+            font-size: 1.00rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .card-subheader {
+            background: #ffffff;
+            border-bottom: 1.5px solid #000;
+            padding: 4px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-subheader .student-name {
+            color: var(--primary-blue);
+            font-size: 1.40rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 470px;
+        }
+
+        .card-subheader .session-tag {
+            font-size: 1.00rem;
+            font-weight: 700;
+            color: #000;
+            white-space: nowrap;
+        }
+
+        .card-body {
+            display: flex;
+            padding: 12px 15px;
+            position: relative;
+            flex-grow: 1;
+            background: #fff;
+        }
+
+        .details-section {
+            flex-grow: 1;
+            font-size: 0.78rem;
+            color: #000;
+            font-weight: 600;
+            line-height: 1.5;
+            min-width: 0;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 2.5px;
+        }
+
+        .detail-label {
+            width: 115px;
+            font-weight: 700;
+            color: #111;
+            flex-shrink: 0;
+        }
+
+        .detail-colon {
+            width: 45px;
+            text-align: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            flex-grow: 1;
+            color: #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* -------- Photo + Signature + PRINCIPAL block -------- */
+        .photo-section {
+            width: 150px;
+            flex-shrink: 0;
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-box {
+            width: 145px;
+            height: 180px;
+            border: 1.5px solid #333;
+            background: #eaeaea;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sign-area {
+            position: relative;
+            width: 145px;
+            height: 48px;
+            margin-top: 2px;
+        }
+
+        .stamp-image {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            max-width: 85px;
+            max-height: 48px;
+            object-fit: contain;
+            transition: transform 0.1s ease;
+        }
+
+        .signature-image {
+            position: absolute;
+            right: 0;
+            bottom: 2px;
+            max-width: 85px;
+            max-height: 38px;
+            object-fit: contain;
+            transition: transform 0.1s ease;
+        }
+
+        .principal-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: #000;
+            margin-top: 1px;
+            line-height: 1;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            max-width: 680px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-navy);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-sm {
+            flex: none;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+        }
+
+        /* -------- Bulk preview (professional review workflow) -------- */
+        #bulkArea {
+            width: 100%;
+        }
+
+        .bulk-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            background: #f4f7fb;
+            border: 1px solid #d8e2ee;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .bulk-toolbar-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: #17324f;
+        }
+
+        .bulk-toolbar-info .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #1e9e5a;
+            box-shadow: 0 0 0 3px rgba(30,158,90,0.15);
+            flex-shrink: 0;
+        }
+
+        .bulk-toolbar-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        #bulkPreviewGrid {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            width: 100%;
+            max-height: 62vh;
+            overflow-y: auto;
+            overflow-x: auto;
+            padding: 6px 8px 20px;
+            align-items: center;
+        }
+
+        .bulk-card-wrapper {
+            width: 680px;
+            flex-shrink: 0;
+        }
+
+        .bulk-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .bulk-card-index {
+            background: var(--primary-blue);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .bulk-card-name {
+            font-weight: 800;
+            color: #12263f;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+
+        .bulk-card-sub {
+            color: #64748b;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+        }
+
+        .status-box {
+            background: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+        .status-box.ok {
+            background: #e7f6ec;
+            color: #1b6b3a;
+            border: 1px solid #b7e2c6;
+        }
+
+        .status-box.err {
+            background: #fdecec;
+            color: #a02020;
+            border: 1px solid #f3c2c2;
+        }
+
+        .card-viewport {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Amritsar Law College - ID Card Management System</h1>
+        <p>Professional Front-Side ID Card Creator &amp; Bulk Batch Generator</p>
+    </header>
+
+    <div class="main-container">
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="mode-tabs">
+                <button class="tab-btn active" onclick="switchMode('single')">Single Editor</button>
+                <button class="tab-btn" onclick="switchMode('bulk')">Bulk ID Generator</button>
+            </div>
+
+            <!-- SINGLE MODE TAB -->
+            <div id="singleTab" class="tab-content active">
+                <h2>Institutional Headers</h2>
+                <div class="form-group">
+                    <label>College Brand Title</label>
+                    <input type="text" id="inputCollegeTitle" value="AMRITSAR LAW COLLEGE" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Approval Sub-Text</label>
+                    <input type="text" id="inputApproval" value="APPROVED BY BAR COUNCIL OF INDIA, NEW DELHI" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Affiliation Sub-Text</label>
+                    <input type="text" id="inputAffiliation" value="AFFILIATED TO GURU NANAK DEV UNIVERSITY AMRITSAR" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Address &amp; Contact Line</label>
+                    <input type="text" id="inputAddressLine" value="12 K.M. Stone, Amritsar-Jalandhar G.T. Road, Amritsar. Tel: 0183-5010426" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Upload Institutional Logo</label>
+                    <input type="file" id="uploadLogo" accept="image/*" onchange="loadLogo(event)">
+                </div>
+
+                <h2>Student Particulars</h2>
+                <div class="row-group">
+                    <div class="form-group">
+                        <label>Full Student Name</label>
+                        <input type="text" id="inputName" value="ASHISH KUMAR SURI" oninput="updateCard()">
+                    </div>
+                    <div class="form-group">
+                        <label>Name Font Size (px)</label>
+                        <input type="number" id="inputNameSize" value="18" min="12" max="24" oninput="updateCard()">
+                    </div>
+                </div>
+                <div class="row-group">
+                    <div class="form-group">
+                        <label>Academic Session</label>
+                        <input type="text" id="inputSession" value="2025-2028" oninput="updateCard()">
+                    </div>
+                    <div class="form-group">
+                        <label>Course</label>
+                        <input type="text" id="inputCourse" value="LLB" oninput="updateCard()">
+                    </div>
+                </div>
+                <div class="row-group">
+                    <div class="form-group">
+                        <label>Father's Name (F/NAME)</label>
+                        <input type="text" id="inputFName" value="KIRTI KUMAR" oninput="updateCard()">
+                    </div>
+                    <div class="form-group">
+                        <label>Blood Group</label>
+                        <input type="text" id="inputBlood" value="A+" oninput="updateCard()">
+                    </div>
+                </div>
+                <div class="row-group">
+                    <div class="form-group">
+                        <label>Regd. No.</label>
+                        <input type="text" id="inputRegNo" value="2021.BC /A.135" oninput="updateCard()">
+                    </div>
+                    <div class="form-group">
+                        <label>Roll No.</label>
+                        <input type="text" id="inputRollNo" value="12232524715" oninput="updateCard()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Student ID Number</label>
+                    <input type="text" id="inputStudentID" value="2021010012978" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="text" id="inputEmail" value="ashishsuri597@gmail.com" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number(s)</label>
+                    <input type="text" id="inputMobile" value="9501580479, 9914510479" oninput="updateCard()">
+                </div>
+                <div class="form-group">
+                    <label>Residential Address</label>
+                    <input type="text" id="inputResAddress" value="3368 Gali arayian wali Jandiala Guru Amritsar" oninput="updateCard()">
+                </div>
+
+                <h2>Stamp &amp; Signature Controls</h2>
+                <div class="form-group">
+                    <label>Upload Official Stamp / Seal</label>
+                    <input type="file" id="uploadStamp" accept="image/*" onchange="loadStamp(event)">
+                </div>
+                <div class="row-group">
+                    <div class="form-group">
+                        <label>Stamp Horizontal (Left/Right)</label>
+                        <input type="range" id="stampX" min="-50" max="20" value="0" oninput="updateStampPosition()">
+                    </div>
+                    <div class="form-group">
+                        <label>Stamp Vertical (Up/Down)</label>
+                        <input type="range" id="stampY" min="-40" max="10" value="0" oninput="updateStampPosition()">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>Upload Authority Signature</label>
+                    <input type="file" id="uploadSignature" accept="image/*" onchange="loadSignature(event)">
+                </div>
+                <div class="row-group">
+                    <div class="form-group">
+                        <label>Sig. Horizontal (Left/Right)</label>
+                        <input type="range" id="sigX" min="-50" max="20" value="0" oninput="updateSigPosition()">
+                    </div>
+                    <div class="form-group">
+                        <label>Sig. Vertical (Up/Down)</label>
+                        <input type="range" id="sigY" min="-40" max="10" value="-20" oninput="updateSigPosition()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- BULK MODE TAB -->
+            <div id="bulkTab" class="tab-content">
+                <h2>Bulk Excel / CSV Generation</h2>
+                <p style="font-size: 0.85rem; color: #555; margin-bottom: 15px;">
+                    Upload an Excel file (.xlsx, .csv) containing columns:
+                    <b>Name, FName, RegNo, RollNo, Course, StudentID, Blood, Email, Mobile, Address, Session, PhotoUrl</b>.
+                </p>
+                <div class="form-group">
+                    <label>Select Student Registry File</label>
+                    <input type="file" id="uploadExcel" accept=".xlsx, .xls, .csv" onchange="handleExcelUpload(event)">
+                </div>
+                <div id="bulkStatus" class="status-box">No registry file uploaded yet.</div>
+                <p style="font-size: 0.78rem; color: #7a8794; line-height: 1.5;">
+                    <b>Note:</b> Every card and its photograph is rendered in the review panel first.
+                    The export button unlocks only after the complete batch has been generated, so you can
+                    verify all photos before downloading.
+                </p>
+            </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="preview-area">
+            <h2 id="previewHeading">Live Front-Side ID Card Preview</h2>
+
+            <!-- Single Card Preview Node -->
+            <div id="singlePreviewContainer">
+                <div class="card-viewport">
+                    <div id="idCardNode" class="id-card">
+                        <div class="card-header">
+                            <div class="logo-box">
+                                <img id="previewLogo" src="https://media.licdn.com/dms/image/v2/C560BAQFHQUfkyDp2JA/company-logo_200_200/company-logo_200_200/0/1630641734650?e=2147483647&v=beta&t=wZD06s4NGLwLBKcNo9H2P6IybuLIXhZDYVJxiQwsYA0" crossorigin="anonymous" alt="Amritsar Law College Logo">
+                            </div>
+                            <div class="college-titles">
+                                <h3 id="lblCollegeTitle">AMRITSAR LAW COLLEGE</h3>
+                                <p id="lblApproval">APPROVED BY BAR COUNCIL OF INDIA, NEW DELHI</p>
+                                <p id="lblAffiliation">AFFILIATED TO GURU NANAK DEV UNIVERSITY AMRITSAR</p>
+                                <p id="lblAddressLine" class="address-line">12 K.M. Stone, Amritsar-Jalandhar G.T. Road, Amritsar. Tel: 0183-5010426</p>
+                            </div>
+                        </div>
+
+                        <div class="card-subheader">
+                            <div id="lblStudentName" class="student-name">ASHISH KUMAR SURI</div>
+                            <div id="lblSession" class="session-tag">(2025-2028)</div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="details-section">
+                                <div class="detail-row">
+                                    <div class="detail-label">F/NAME</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblFName" class="detail-value">KIRTI KUMAR</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">REGD. NO.</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblRegNo" class="detail-value">2021.BC /A.135</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">ROLL NO.</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblRollNo" class="detail-value">12232524715</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">COURSE</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblCourse" class="detail-value">LLB</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">STUDENT ID</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblStudentID" class="detail-value">2021010012978</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">BLOOD GROUP</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblBlood" class="detail-value">A+</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">EMAIL</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblEmail" class="detail-value">ashishsuri597@gmail.com</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">MOBILE</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblMobile" class="detail-value">9501580479, 9914510479</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">ADDRESS</div>
+                                    <div class="detail-colon">:</div>
+                                    <div id="lblResAddress" class="detail-value">3368 Gali arayian wali Jandiala Guru Amritsar</div>
+                                </div>
+                            </div>
+
+                            <div class="photo-section">
+                                <div class="photo-box">
+                                    <img id="previewPhoto" alt="Student Photo">
+                                </div>
+                                <div class="sign-area">
+                                    <img id="previewStamp" class="stamp-image" src="" alt="" style="display:none;">
+                                    <img id="previewSig" class="signature-image" src="" alt="" style="display:none;">
+                                </div>
+                                <div class="principal-label">PRINCIPAL</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk Review Area -->
+            <div id="bulkArea" style="display:none;">
+                <div class="bulk-toolbar">
+                    <div class="bulk-toolbar-info">
+                        <span class="dot"></span>
+                        <span id="bulkReviewText">No records loaded yet.</span>
+                    </div>
+                    <div class="bulk-toolbar-actions">
+                        <button id="bulkDownloadAllBtn" class="btn btn-success btn-sm" onclick="downloadBulkCards()" disabled>
+                            Download All (ZIP)
+                        </button>
+                    </div>
+                </div>
+                <div id="bulkPreviewGrid"></div>
+            </div>
+
+            <div class="action-buttons" id="singleActionButtons">
+                <button id="singleDownloadBtn" class="btn btn-primary" onclick="downloadCard()">Download ID Card (PNG)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ------------------------------------------------------------------
+           GLOBAL STATE
+        ------------------------------------------------------------------ */
+        let currentMode = 'single';
+        let bulkDataRecords = [];
+        let bulkRendered = false;
+        let globalLogoSrc = null;
+        let globalStampSrc = null;
+        let globalSigSrc = null;
+
+        /* Neutral placeholder used when a student has no photograph */
+        const PLACEHOLDER_PHOTO =
+            "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240'>" +
+            "<rect width='200' height='240' fill='%23eef1f5'/>" +
+            "<circle cx='100' cy='88' r='38' fill='%23b9c4d0'/>" +
+            "<path d='M100 138c-40 0-70 27-70 60v42h140v-42c0-33-30-60-70-60z' fill='%23b9c4d0'/>" +
+            "</svg>";
+
+        /* ------------------------------------------------------------------
+           INIT
+        ------------------------------------------------------------------ */
+        window.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('previewPhoto').src = PLACEHOLDER_PHOTO;
+            updateCard();
+            updateStampPosition();
+            updateSigPosition();
+        });
+
+        /* ------------------------------------------------------------------
+           MODE SWITCHING
+        ------------------------------------------------------------------ */
+        function switchMode(mode) {
+            currentMode = mode;
+            const isSingle = mode === 'single';
+
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', (isSingle && i === 0) || (!isSingle && i === 1));
+            });
+            document.getElementById('singleTab').classList.toggle('active', isSingle);
+            document.getElementById('bulkTab').classList.toggle('active', !isSingle);
+
+            document.getElementById('singlePreviewContainer').style.display = isSingle ? 'block' : 'none';
+            document.getElementById('singleActionButtons').style.display = isSingle ? 'flex' : 'none';
+            document.getElementById('bulkArea').style.display = isSingle ? 'none' : 'block';
+
+            document.getElementById('previewHeading').innerText = isSingle
+                ? 'Live Front-Side ID Card Preview'
+                : 'Bulk Batch Preview — Review All Cards Before Export';
+        }
+
+        /* ------------------------------------------------------------------
+           SINGLE CARD LIVE UPDATE
+        ------------------------------------------------------------------ */
+        function updateCard() {
+            document.getElementById('lblCollegeTitle').innerText = document.getElementById('inputCollegeTitle').value;
+            document.getElementById('lblApproval').innerText = document.getElementById('inputApproval').value;
+            document.getElementById('lblAffiliation').innerText = document.getElementById('inputAffiliation').value;
+            document.getElementById('lblAddressLine').innerText = document.getElementById('inputAddressLine').value;
+
+            const nameEl = document.getElementById('lblStudentName');
+            nameEl.innerText = document.getElementById('inputName').value;
+            nameEl.style.fontSize = document.getElementById('inputNameSize').value + 'px';
+
+            document.getElementById('lblSession').innerText = '(' + document.getElementById('inputSession').value + ')';
+            document.getElementById('lblFName').innerText = document.getElementById('inputFName').value;
+            document.getElementById('lblRegNo').innerText = document.getElementById('inputRegNo').value;
+            document.getElementById('lblRollNo').innerText = document.getElementById('inputRollNo').value;
+            document.getElementById('lblCourse').innerText = document.getElementById('inputCourse').value;
+            document.getElementById('lblStudentID').innerText = document.getElementById('inputStudentID').value;
+            document.getElementById('lblBlood').innerText = document.getElementById('inputBlood').value;
+            document.getElementById('lblEmail').innerText = document.getElementById('inputEmail').value;
+            document.getElementById('lblMobile').innerText = document.getElementById('inputMobile').value;
+            document.getElementById('lblResAddress').innerText = document.getElementById('inputResAddress').value;
+        }
+
+        /* ------------------------------------------------------------------
+           IMAGE LOADERS (logo / stamp / signature)
+        ------------------------------------------------------------------ */
+        function loadLogo(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function () {
+                globalLogoSrc = reader.result;
+                document.getElementById('previewLogo').src = globalLogoSrc;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadStamp(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function () {
+                globalStampSrc = reader.result;
+                const img = document.getElementById('previewStamp');
+                img.src = globalStampSrc;
+                img.style.display = 'block';
+                updateStampPosition();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadSignature(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function () {
+                globalSigSrc = reader.result;
+                const img = document.getElementById('previewSig');
+                img.src = globalSigSrc;
+                img.style.display = 'block';
+                updateSigPosition();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateStampPosition() {
+            const x = document.getElementById('stampX').value;
+            const y = document.getElementById('stampY').value;
+            document.querySelectorAll('.stamp-image').forEach(el => {
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        }
+
+        function updateSigPosition() {
+            const x = document.getElementById('sigX').value;
+            const y = document.getElementById('sigY').value;
+            document.querySelectorAll('.signature-image').forEach(el => {
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        }
+
+        /* ------------------------------------------------------------------
+           RENDERING HELPERS
+        ------------------------------------------------------------------ */
+        function esc(value) {
+            return String(value === undefined || value === null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function renderCardToCanvas(node) {
+            return html2canvas(node, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: false
+            });
+        }
+
+        function safeFileName(value, fallback) {
+            const cleaned = String(value || '')
+                .trim()
+                .replace(/[^\w\-]+/g, '_')
+                .replace(/^_+|_+$/g, '');
+            return cleaned || fallback;
+        }
+
+        /* ------------------------------------------------------------------
+           SINGLE CARD DOWNLOAD
+        ------------------------------------------------------------------ */
+        async function downloadCard() {
+            const btn = document.getElementById('singleDownloadBtn');
+            const originalLabel = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Rendering…';
+
+            try {
+                const canvas = await renderCardToCanvas(document.getElementById('idCardNode'));
+                const link = document.createElement('a');
+                const name = safeFileName(document.getElementById('inputName').value, 'Student');
+                link.download = 'ALC_ID_' + name + '.png';
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                alert('Could not generate the ID card image.\n' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalLabel;
+            }
+        }
+
+        /* ------------------------------------------------------------------
+           BULK: EXCEL PARSING
+        ------------------------------------------------------------------ */
+        function normalizeRecord(row) {
+            const map = {};
+            Object.keys(row).forEach(key => {
+                map[String(key).toLowerCase().replace(/[\s_.\-]/g, '')] = row[key];
+            });
+            const pick = function () {
+                for (let i = 0; i < arguments.length; i++) {
+                    const v = map[arguments[i]];
+                    if (v !== undefined && v !== null && String(v).trim() !== '') return v;
+                }
+                return '';
+            };
+            return {
+                Name: pick('name', 'fullname', 'studentname'),
+                FName: pick('fname', 'fathername', 'fathersname'),
+                RegNo: pick('regno', 'registrationno', 'regdno', 'registrationnumber'),
+                RollNo: pick('rollno', 'rollnumber'),
+                Course: pick('course'),
+                StudentID: pick('studentid', 'studentidno', 'id'),
+                Blood: pick('blood', 'bloodgroup'),
+                Email: pick('email', 'emailaddress'),
+                Mobile: pick('mobile', 'mobileno', 'phone', 'contact'),
+                Address: pick('address', 'resaddress', 'residentialaddress'),
+                Session: pick('session', 'academicsession'),
+                PhotoUrl: pick('photourl', 'photo', 'image', 'imageurl')
+            };
+        }
+
+        function handleExcelUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusBox = document.getElementById('bulkStatus');
+            const grid = document.getElementById('bulkPreviewGrid');
+            const downloadBtn = document.getElementById('bulkDownloadAllBtn');
+
+            statusBox.className = 'status-box';
+            statusBox.innerText = 'Reading registry file…';
+            bulkDataRecords = [];
+            bulkRendered = false;
+            grid.innerHTML = '';
+            downloadBtn.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const rawRows = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+
+                    bulkDataRecords = rawRows
+                        .map(normalizeRecord)
+                        .filter(rec => String(rec.Name).trim() !== '');
+
+                    if (bulkDataRecords.length === 0) {
+                        statusBox.className = 'status-box err';
+                        statusBox.innerText = 'No valid student rows found. Please check that the file has a "Name" column.';
+                        document.getElementById('bulkReviewText').innerText = 'No records loaded yet.';
+                        return;
+                    }
+
+                    statusBox.className = 'status-box ok';
+                    statusBox.innerText = `Loaded ${bulkDataRecords.length} student record(s). Generating previews for review…`;
+
+                    renderBulkPreviews();
+                } catch (err) {
+                    statusBox.className = 'status-box err';
+                    statusBox.innerText = 'Could not read the file: ' + err.message;
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        /* ------------------------------------------------------------------
+           BULK: BUILD THE FULL PREVIEW SET (review before download)
+        ------------------------------------------------------------------ */
+        function renderBulkPreviews() {
+            const grid = document.getElementById('bulkPreviewGrid');
+            const downloadBtn = document.getElementById('bulkDownloadAllBtn');
+            const reviewText = document.getElementById('bulkReviewText');
+
+            grid.innerHTML = '';
+            downloadBtn.disabled = true;
+            bulkRendered = false;
+
+            const logoSrc = globalLogoSrc || document.getElementById('previewLogo').src;
+            const title = esc(document.getElementById('inputCollegeTitle').value);
+            const approval = esc(document.getElementById('inputApproval').value);
+            const affiliation = esc(document.getElementById('inputAffiliation').value);
+            const address = esc(document.getElementById('inputAddressLine').value);
+            const nameSize = document.getElementById('inputNameSize').value;
+            const defaultSession = esc(document.getElementById('inputSession').value);
+            const stampX = document.getElementById('stampX').value;
+            const stampY = document.getElementById('stampY').value;
+            const sigX = document.getElementById('sigX').value;
+            const sigY = document.getElementById('sigY').value;
+
+            const stampHtml = globalStampSrc
+                ? `<img src="${globalStampSrc}" class="stamp-image" style="display:block; transform: translate(${stampX}px, ${stampY}px);" alt="">`
+                : '';
+            const sigHtml = globalSigSrc
+                ? `<img src="${globalSigSrc}" class="signature-image" style="display:block; transform: translate(${sigX}px, ${sigY}px);" alt="">`
+                : '';
+
+            bulkDataRecords.forEach(function (row, index) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'bulk-card-wrapper';
+
+                const photoSrc = String(row.PhotoUrl || '').trim() || PLACEHOLDER_PHOTO;
+
+                wrapper.innerHTML = `
+                    <div class="bulk-card-meta">
+                        <span class="bulk-card-index">#${index + 1}</span>
+                        <span class="bulk-card-name">${esc(row.Name) || 'STUDENT NAME'}</span>
+                        <span class="bulk-card-sub">${esc(row.Course) || '—'} &middot; ${esc(row.Session) || defaultSession.replace(/[()]/g, '')}</span>
+                        <button class="btn btn-primary btn-sm" onclick="downloadSingleBulkCard(${index})">Download PNG</button>
+                    </div>
+
+                    <div class="id-card" id="bulkCard_${index}">
+                        <div class="card-header">
+                            <div class="logo-box">
+                                <img src="${logoSrc}" crossorigin="anonymous" alt="Logo">
+                            </div>
+                            <div class="college-titles">
+                                <h3>${title}</h3>
+                                <p>${approval}</p>
+                                <p>${affiliation}</p>
+                                <p class="address-line">${address}</p>
+                            </div>
+                        </div>
+
+                        <div class="card-subheader">
+                            <div class="student-name" style="font-size:${nameSize}px;">${esc(row.Name)}</div>
+                            <div class="session-tag">(${esc(row.Session) || defaultSession.replace(/[()]/g, '')})</div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="details-section">
+                                <div class="detail-row"><div class="detail-label">F/NAME</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.FName)}</div></div>
+                                <div class="detail-row"><div class="detail-label">REGD. NO.</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.RegNo)}</div></div>
+                                <div class="detail-row"><div class="detail-label">ROLL NO.</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.RollNo)}</div></div>
+                                <div class="detail-row"><div class="detail-label">COURSE</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.Course)}</div></div>
+                                <div class="detail-row"><div class="detail-label">STUDENT ID</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.StudentID)}</div></div>
+                                <div class="detail-row"><div class="detail-label">BLOOD GROUP</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.Blood)}</div></div>
+                                <div class="detail-row"><div class="detail-label">EMAIL</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.Email)}</div></div>
+                                <div class="detail-row"><div class="detail-label">MOBILE</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.Mobile)}</div></div>
+                                <div class="detail-row"><div class="detail-label">ADDRESS</div><div class="detail-colon">:</div><div class="detail-value">${esc(row.Address)}</div></div>
+                            </div>
+
+                            <div class="photo-section">
+                                <div class="photo-box">
+                                    <img src="${photoSrc}" crossorigin="anonymous" alt="Student Photo"
+                                         onerror="this.onerror=null;this.src='${PLACEHOLDER_PHOTO}';">
+                                </div>
+                                <div class="sign-area">${stampHtml}${sigHtml}</div>
+                                <div class="principal-label">PRINCIPAL</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(wrapper);
+            });
+
+            bulkRendered = true;
+            downloadBtn.disabled = false;
+            reviewText.innerText =
+                `${bulkDataRecords.length} ID card(s) generated. Review every photograph above, then download the complete batch.`;
+        }
+
+        /* ------------------------------------------------------------------
+           BULK: DOWNLOAD A SINGLE CARD FROM THE REVIEW LIST
+        ------------------------------------------------------------------ */
+        async function downloadSingleBulkCard(index) {
+            const node = document.getElementById('bulkCard_' + index);
+            if (!node) return;
+            try {
+                const canvas = await renderCardToCanvas(node);
+                const link = document.createElement('a');
+                const name = safeFileName(bulkDataRecords[index].Name, 'Student_' + (index + 1));
+                link.download = 'ALC_ID_' + String(index + 1).padStart(3, '0') + '_' + name + '.png';
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                alert('Could not generate this card.\n' + err.message);
+            }
+        }
+
+        /* ------------------------------------------------------------------
+           BULK: DOWNLOAD ENTIRE BATCH (ZIP)
+        ------------------------------------------------------------------ */
+        async function downloadBulkCards() {
+            if (!bulkDataRecords.length || !bulkRendered) {
+                alert('Please upload a valid student registry file first.');
+                return;
+            }
+
+            const btn = document.getElementById('bulkDownloadAllBtn');
+            const reviewText = document.getElementById('bulkReviewText');
+            const originalLabel = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Packaging…';
+
+            try {
+                if (typeof JSZip === 'undefined') {
+                    /* Fallback: sequential PNG downloads if the ZIP library is unavailable */
+                    for (let i = 0; i < bulkDataRecords.length; i++) {
+                        reviewText.innerText = `Downloading card ${i + 1} of ${bulkDataRecords.length}…`;
+                        await downloadSingleBulkCard(i);
+                        await new Promise(r => setTimeout(r, 350));
+                    }
+                    reviewText.innerText = `Export complete — ${bulkDataRecords.length} ID cards downloaded.`;
+                    return;
+                }
+
+                const zip = new JSZip();
+                const folder = zip.folder('ALC_ID_Cards');
+
+                for (let i = 0; i < bulkDataRecords.length; i++) {
+                    reviewText.innerText = `Rendering card ${i + 1} of ${bulkDataRecords.length}…`;
+                    const node = document.getElementById('bulkCard_' + i);
+                    if (!node) continue;
+
+                    const canvas = await renderCardToCanvas(node);
+                    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                    const name = safeFileName(bulkDataRecords[i].Name, 'Student_' + (i + 1));
+                    folder.file(`${String(i + 1).padStart(3, '0')}_${name}.png`, blob);
+
+                    /* Yield to the UI so the progress text stays responsive */
+                    await new Promise(r => setTimeout(r, 60));
+                }
+
+                reviewText.innerText = 'Compressing ZIP archive…';
+                const zipBlob = await zip.generateAsync(
+                    { type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } },
+                    function (meta) {
+                        reviewText.innerText = 'Compressing ZIP archive… ' + Math.round(meta.percent) + '%';
+                    }
+                );
+
+                const url = URL.createObjectURL(zipBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'ALC_ID_Cards_' + new Date().toISOString().slice(0, 10) + '.zip';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+                reviewText.innerText = `Export complete — ${bulkDataRecords.length} ID cards packaged into a ZIP archive.`;
+            } catch (err) {
+                alert('Batch export failed.\n' + err.message);
+                reviewText.innerText = 'Export failed. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalLabel;
+            }
+        }
+    </script>
+</body>
+</html>
